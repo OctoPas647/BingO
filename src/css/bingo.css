@@ -95,3 +95,16 @@
   --good-bg: #0C2217; --bad-bg: #2A1215; --meh-bg: #271E0B;
 }
 .settings .seg button { font-size: .92rem; }
+
+/* first-run setup */
+.onboarding { display: grid; gap: 10px; padding-top: 10px; }
+.ob-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.ob-top .bar { flex: 1; }
+.ob-count { font-weight: 800; color: var(--ink-3); font-size: .9rem; font-variant-numeric: tabular-nums; }
+.ob-brand { font-size: 2.6rem; margin: 18px 0 2px; }
+.ob-title { font-size: 1.8rem; text-wrap: balance; }
+.ob-text { margin: 0; font-size: 1.02rem; }
+.ob-card { display: grid; gap: 6px; margin: 8px 0 0; }
+.ob-card .seg { flex-wrap: wrap; }
+.ob-err { color: var(--bad); font-weight: 700; margin: -2px 2px 6px; }
+.ob-actions { display: grid; margin-top: 8px; }

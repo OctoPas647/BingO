@@ -58,5 +58,26 @@ if (plan.plan.some(x => ['quad', 'rtri'].includes(x.skill) && x.why === 'focus')
 console.log(`demo learner -> focus: ${plan.focus.join(', ')}${plan.check ? ' · check: ' + plan.check : ''}`);
 const sm = E("subjectSummary('math')"); console.log('demo learner loses ≈', sm.lost.toFixed(1), 'of', sm.total, 'points');
 
+/* 4. first-run setup (58-onboarding.js): steps, validation, resume */
+E('resetState(false); S.onboarding = null');
+if (!E('onboardingNeeded()')) fail('onboarding: a fresh install should see the setup');
+E('onboardingNext({})');                                                         // welcome
+if (E('onboardingNext({ name: "x".repeat(41), cls: "12а" }).ok')) fail('onboarding: a 41-letter name should be refused');
+if (!E('onboardingNext({ name: "Мария П.", cls: "12а" }).ok') || E('S.profile.name') !== 'Мария П.') fail('onboarding: name not saved');
+if (E('onboardingNext({ subject: "xx" }).ok')) fail('onboarding: unknown subject accepted');
+E('onboardingNext({ subject: "bel" })'); if (E('S.subject') !== 'bel') fail('onboarding: subject not saved');
+E('onboardingNext({ theme: "amoled" })');
+if (E('onboardingNext({ aiMode: "key", apiKey: "" }).ok')) fail('onboarding: API key mode without a key accepted');
+E('onboardingNext({ aiMode: "off" })');
+if (E('onboardingNext({ sheetUrl: "https://example.com" }).ok')) fail('onboarding: non-Apps-Script URL accepted');
+E('onboardingSkip()');
+if (!E('onboardingNext({}).done') || E('onboardingNeeded()')) fail('onboarding: finishing did not stick');
+E('S.onboarding = null; S.log = [{ t: 1 }]'); if (E('onboardingNeeded()')) fail('onboarding: an existing user should not see the setup');
+E('resetState(false)');
+
+/* 5. spaced review (57-review.js) */
+const box = E("reviewUpdate('math.quad', true, 0); reviewUpdate('math.quad', true, 0).box"); if (box !== 2) fail('review: two right answers should reach box 2, got ' + box);
+if (E("reviewUpdate('math.quad', false, 0).box") !== 0) fail('review: a wrong answer should go back to box 0');
+
 console.log(`${n} tasks checked, ${fails} problems`);
 process.exit(fails ? 1 : 0);

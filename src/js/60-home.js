@@ -12,7 +12,7 @@ function skillRow(subj, x) {
   return `<button class="skrow st-${x.status}" data-skill="${x.sk.id}">
     <div class="sk-main"><b>${esc(x.sk.name)}</b>
       <div class="sk-bar">${bar(x.st.p, 'm-' + x.status)}</div>
-      <small>${x.status === 'strong' ? 'Не се повтаря · само проверка след 3 дни' : x.st.n ? (top ? 'Честа грешка: ' + esc(plainMisc(top[0])) : `${x.st.ok} от ${x.st.n} верни`) : 'Още не е измерено'}</small></div>
+      <small>${x.status === 'strong' ? 'Не се повтаря · ' + reviewLabel(subj + '.' + x.sk.id, x.st.last) : x.st.n ? (top ? 'Честа грешка: ' + esc(plainMisc(top[0])) : `${x.st.ok} от ${x.st.n} верни`) : 'Още не е измерено'}</small></div>
     <div class="sk-side"><span class="stchip s-${x.status}">${STATUS_LABEL[x.status]}</span><span class="lost">${x.status === 'strong' ? '✓' : '−' + fmt1(x.lost) + ' т.'}</span></div></button>`;
 }
 const plainMisc = code => miscLabel(code).replace(/\$([^$]*)\$/g, '$1').replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '$1/$2').replace(/\\/g, '');

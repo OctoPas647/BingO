@@ -94,13 +94,22 @@ resetState = function (keepSettings) {
 };
 
 /* ---------- a plain screen on top of the logic (restyle later) ---------- */
+/* Android back and the browser back go one step back during setup instead of closing the app */
+const _backHook = window.__back;
+window.__back = () => {
+  const cur = NAV[NAV.length - 1];
+  if (cur && cur.screen === 'onboarding' && !overlays.length && obState().step > 0) { onboardingBack(); refresh(); return 'h'; }
+  return _backHook ? _backHook() : '';
+};
+
 SCREENS.onboarding = async el => {
+  el.style.setProperty('--accent', SUBJECTS[S.subject].color); el.style.setProperty('--accent-ink', inkOn(SUBJECTS[S.subject].color));
   const o = obState(), step = obStep(), n = ONBOARD.steps.length, isLast = o.step >= n - 1;
   const d = {}; step.fields.forEach(f => { const v = obGet(f.path); d[f.key] = v == null ? '' : v; });
   let errors = {};
   const fieldHtml = f => {
     if (!obVisible(f, d)) return '';
-    const err = errors[f.key] ? `<small class="bad">${esc(errors[f.key])}</small>` : '';
+    const err = errors[f.key] ? `<small class="ob-err">${esc(errors[f.key])}</small>` : '';
     if (f.type === 'choice') {
       const opts = typeof f.options === 'function' ? f.options() : f.options;
       return `<div class="seg" data-key="${f.key}">${opts.map(([v, label]) => `<button data-v="${esc(v)}" class="${d[f.key] === v ? 'on' : ''}">${esc(label)}</button>`).join('')}</div>${err}`;
@@ -108,13 +117,14 @@ SCREENS.onboarding = async el => {
     return `<label class="fld"><span>${esc(f.label)}</span><input class="field" data-k="${f.key}" type="${f.type}" value="${esc(d[f.key])}" placeholder="${esc(f.ph || '')}" autocomplete="off" spellcheck="false"></label>${err}`;
   };
   const draw = () => {
-    el.innerHTML = `<div class="pad onboarding">${bar((o.step + 1) / n)}
-      <p class="muted small">Стъпка ${o.step + 1} от ${n}</p>
-      <h1>${esc(step.title)}</h1><p class="muted">${esc(step.text)}</p>
-      ${step.fields.length ? `<section class="card">${step.fields.map(fieldHtml).join('')}</section>` : ''}
-      ${o.step > 0 ? '<button class="btn ghost block" data-ob="back">Назад</button>' : ''}
-      ${step.skippable ? '<button class="btn ghost block" data-ob="skip">Пропусни</button>' : ''}
-      <button class="btn primary block" data-ob="next">${isLast ? 'Към BingO' : 'Напред'}</button></div>`;
+    el.innerHTML = `<div class="pad onboarding">
+      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="Назад">${icon('back')}</button>` : '<span class="tb-gap"></span>'}${bar((o.step + 1) / n, 'ob-bar')}<span class="ob-count">${o.step + 1}/${n}</span></header>
+      ${o.step === 0 || isLast ? '<div class="brand bingo ob-brand">Bing<span>O</span></div>' : ''}
+      <h1 class="ob-title">${esc(step.title)}</h1><p class="muted ob-text">${esc(step.text)}</p>
+      ${step.fields.length ? `<section class="card ob-card">${step.fields.map(fieldHtml).join('')}</section>` : ''}
+      <div class="ob-actions"><button class="btn accent big block" data-ob="next">${isLast ? 'Към BingO' : 'Напред'}</button>
+      ${step.skippable ? '<button class="btn ghost block" data-ob="skip">Пропусни</button>' : ''}</div></div>`;
+    el.querySelector('[data-k]')?.focus({ preventScroll: true });
   };
   draw();
   el.addEventListener('click', e => {

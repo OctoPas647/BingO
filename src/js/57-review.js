@@ -38,3 +38,10 @@ planSession = function (subj, size = 8) {
   if (due) plan.splice(Math.min(3, plan.length), 0, { skill: due.sk.id, why: 'check' });
   return { plan, focus: base.focus, check: due ? due.sk.id : null };
 };
+
+/* "проверка днес" / "проверка след 5 дни", for the skill map */
+function reviewLabel(key, lastSeen, now = Date.now()) {
+  const r = S.review && S.review[key], due = r ? r.due : lastSeen + CHECK_AFTER;
+  const days = Math.ceil((due - now) / DAY_MS);
+  return days <= 0 ? 'проверка днес' : days === 1 ? 'проверка утре' : `проверка след ${days} дни`;
+}

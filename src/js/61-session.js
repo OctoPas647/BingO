@@ -124,7 +124,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       <div class="res-hero">${ring(right / P.answers.length, right + '/' + P.answers.length, 'big')}
         <h1>${mode === 'diag' ? 'Картата е готова' : gained > 0.05 ? `Върна си ≈ ${fmt1(gained)} т.` : 'Добра работа'}</h1>
         <p class="res-main">Сега губиш ≈ <b>${fmt1(endMap.lost)}</b> от ${endMap.total} т. ${mode !== 'diag' ? `(преди: ${fmt1(startMap.lost)})` : ''}</p></div>
-      ${newlyStrong.length ? `<div class="card strongnote">${icon('trophy')}<div><b>${esc(newlyStrong.map(r => r.x.sk.name).join(', '))} ${newlyStrong.length > 1 ? 'станаха силни' : 'стана силно'}.</b><br><span class="muted">Спираме да ${newlyStrong.length > 1 ? 'ги' : 'го'} повтаряме — само една проверка след 3 дни.</span></div></div>` : ''}
+      ${newlyStrong.length ? `<div class="card strongnote">${icon('trophy')}<div><b>${esc(newlyStrong.map(r => r.x.sk.name).join(', '))} ${newlyStrong.length > 1 ? 'станаха силни' : 'стана силно'}.</b><br><span class="muted">Спираме да ${newlyStrong.length > 1 ? 'ги' : 'го'} повтаряме — само кратки проверки, все по-рядко.</span></div></div>` : ''}
       <h2 class="sec-title">Какво се промени</h2>
       <div class="deltas">${rows.map(({ x }) => `<div class="delta"><b>${esc(x.sk.name)}</b><div class="dbar"><i class="was" style="width:${before[x.sk.id] * 100}%"></i><i class="now m-${x.status}" style="width:${x.st.p * 100}%"></i></div><small>${pctTxt(before[x.sk.id])} → <b>${pctTxt(x.st.p)}</b> · ${STATUS_LABEL[x.status]}</small></div>`).join('')}</div>
       <div class="res-actions"><button class="btn ghost" data-out>Към картата</button><button class="btn accent" data-again>${icon('target')}Още 8 задачи</button></div></div>`;

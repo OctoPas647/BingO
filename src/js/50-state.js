@@ -16,6 +16,8 @@ const DEFAULT_STATE = () => ({
   log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
   queue: [],             /* rows not yet sent to the Sheet */
   sessions: 0,
+  review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
+  onboarding: null,      /* first-run setup progress (58-onboarding.js) */
   aiFlags: []            /* AI-made tasks a learner reported as wrong */
 });
 

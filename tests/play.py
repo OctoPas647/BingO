@@ -5,6 +5,18 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGE = (ROOT / 'dist/web/index.html').as_uri(); SHOTS = ROOT / 'build/shots'; SHOTS.mkdir(parents=True, exist_ok=True)
 errors = []
 def shot(p, name): p.screenshot(path=str(SHOTS / f'{name}.png'), full_page=False)
+def setup(p, theme, take_shots):
+    """walk through the first-run setup"""
+    p.wait_for_selector('.onboarding')
+    for i in range(8):
+        if p.locator('.losscard').count(): return
+        if take_shots: shot(p, f'{theme}-00-setup-{i}')
+        if p.locator('[data-k="name"]').count():
+            p.fill('[data-k="name"]', 'x' * 41); p.click('[data-ob="next"]'); p.wait_for_selector('.ob-err')
+            if take_shots: shot(p, f'{theme}-00-setup-error')
+            p.fill('[data-k="name"]', 'Мария П.'); p.fill('[data-k="cls"]', '12а')
+        p.click('[data-ob="next"]'); p.wait_for_timeout(150)
+    p.wait_for_selector('.losscard')
 def answer(p, wrong=False):
     """answer the current task: pick an option, or type a number"""
     if p.locator('.opt').count():
@@ -22,7 +34,7 @@ with sync_playwright() as pw:
     for theme in ['light', 'dark']:
         ctx = b.new_context(viewport={'width': 412, 'height': 900}, device_scale_factor=2, color_scheme=theme, locale='bg-BG')
         p = ctx.new_page(); p.on('pageerror', lambda e: errors.append(str(e))); p.on('console', lambda m: m.type == 'error' and errors.append(m.text))
-        p.goto(PAGE); p.wait_for_selector('.losscard'); shot(p, f'{theme}-01-start')
+        p.goto(PAGE); setup(p, theme, theme == 'light'); shot(p, f'{theme}-01-start')
         if theme == 'dark':
             p.click('[data-demo]'); p.wait_for_timeout(300); shot(p, 'dark-02-demo-map')
             p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-key="theme"] [data-v="amoled"]'); p.wait_for_timeout(200); shot(p, 'dark-03-amoled-settings')

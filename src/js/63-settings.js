@@ -17,6 +17,7 @@ SCREENS.settings = async el => {
       <div class="rows"><div class="row"><span>${icon('sound')}Звуци</span><button class="switch${st.sound ? ' on' : ''}" data-sw="sound" role="switch"><i></i></button></div></div></section>
     <section class="card"><h3>${icon('eye')}Демо</h3>
       <button class="btn ghost block" data-demo>${icon('play')}Зареди демо ученик</button>
+      <button class="btn ghost block" data-setup>${icon('reset')}Начална настройка отново</button>
       <button class="btn ghost danger-text block" data-wipe>${icon('trash')}Изчисти всичките ми отговори</button></section>
     <section class="card"><h3>${icon('info')}За BingO</h3><p class="small"><b>BingO</b> alpha · подготовка за матура без зубрене: работа върху слабите места, не повтаряне на силните.</p>
       <p class="muted small">Построено върху Shelly (задачи, точкуване, модули) и идеи от BrainBurst, BandUp и SQL Practice. EduHack Plovdiv 2026.</p></section>
@@ -26,6 +27,7 @@ SCREENS.settings = async el => {
     if (b) { st[b.parentNode.dataset.key] = b.dataset.v; APP.settings.theme = st.theme; saveState(); applySettings(); return refresh(); }
     const w = e.target.closest('[data-sw]');
     if (w) { st.sound = !st.sound; APP.settings.sound = st.sound; saveState(); w.classList.toggle('on'); return; }
+    if (e.target.closest('[data-setup]')) { onboardingRestart(); NAV.length = 0; NAV.push({ screen: 'onboarding', params: {} }); return render(); }
     if (e.target.closest('[data-demo]')) { simulateLearner(); toast('Зареден е демо ученик'); return home(); }
     if (e.target.closest('[data-wipe]') && await confirmBox('Да изчистим ли всичко?', 'Картата на уменията и всички отговори на това устройство ще се изтрият.', 'Изчисти', true)) { resetState(true); toast('Изчистено'); return home(); }
     if (e.target.closest('[data-test]')) {

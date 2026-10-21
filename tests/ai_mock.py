@@ -17,7 +17,7 @@ with sync_playwright() as pw:
     ctx.route('https://generativelanguage.googleapis.com/**', fake)
     p = ctx.new_page(); p.on('pageerror', lambda e: errors.append(str(e)))
     p.goto((ROOT / 'dist/web/index.html').as_uri())
-    p.evaluate("""() => { const s = JSON.parse(localStorage.getItem('bingo.v1') || '{}'); s.settings = { ...(s.settings || {}), aiMode: 'key', apiKey: 'test', model: 'gemini-3.8-flash' }; localStorage.setItem('bingo.v1', JSON.stringify(s)); }""")
+    p.evaluate("""() => { const s = JSON.parse(localStorage.getItem('bingo.v1') || '{}'); s.settings = { ...(s.settings || {}), aiMode: 'key', apiKey: 'test', model: 'gemini-3.8-flash' }; s.onboarding = { done: true, step: 0 }; localStorage.setItem('bingo.v1', JSON.stringify(s)); }""")
     p.reload(); p.click('[data-demo]'); p.wait_for_timeout(200)
     p.click('[data-start="focus"]'); p.wait_for_selector('[data-aihint]')
     p.click('[data-aihint]'); p.wait_for_selector('.aibox b'); p.screenshot(path=str(SHOTS / 'ai-01-hint.png'))

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0
+- **First-run setup**: welcome, name and class, which matura first, theme, Gemini, teacher's Sheet. Saves each step, resumes if interrupted, and is never shown to people who already have answers. Back goes one step back; Settings can run it again
+- **БЕЛ: ~560 new tasks** (spelling, articles, commas), each rule as "Кое е правилно?" and "Къде е грешката?"
+- **Spaced review**: strong skills are rechecked after 1, 3, 7, 14, 30 days (Leitner boxes); a wrong answer starts over. The skill map shows when the next check is
+- **Theme**: "Автоматично" is now "Системна"
+- Language check of the new БЕЛ rows: removed rows whose comma rule is disputed ("според мен", "например", "следователно" at the start) and one unnatural phrase
+
 ## 0.2.0
 - **Bottom menu**: Начало · Статистики · Профил. Back always returns to Начало
 - **Статистики**: answers, accuracy, streak, the last 7 days, and a card per matura with where you lose the most points
