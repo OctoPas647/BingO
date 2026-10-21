@@ -623,8 +623,11 @@ body:has(.checkbar, .exambottom) .toast { bottom: calc(150px + env(safe-area-ins
 .center { text-align: center; }
 .btn.block { width: 100%; margin-top: 10px; }
 .btn.block + .btn.block { margin-top: 8px; }
-.subj-seg { margin: 4px 0 14px; }
-.subj-seg button { font-size: 1rem; padding: 10px 6px; }
+.subj-pick { display: grid; gap: 6px; margin: 4px 0 14px; }
+.selwrap { position: relative; display: block; }
+.selwrap::after { content: ''; position: absolute; right: 16px; top: 50%; width: 8px; height: 8px; border-right: 2.5px solid var(--accent); border-bottom: 2.5px solid var(--accent); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+.subj-select { appearance: none; -webkit-appearance: none; width: 100%; font-size: 1.05rem; font-weight: 800; padding: 13px 44px 13px 14px; border-radius: var(--r); border: 2px solid var(--accent); background: var(--surface); color: var(--ink); cursor: pointer; }
+.subj-select:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 2px; }
 .foot { margin-top: 22px; }
 
 /* the loss card */
@@ -704,13 +707,89 @@ body:has(.checkbar, .exambottom) .toast { bottom: calc(150px + env(safe-area-ins
 .plan li b { display: block; }
 .settings a.btn { text-decoration: none; }
 
+/* AMOLED theme: true black on top of the dark theme (set by applySettings in 50-state.js) */
+:root[data-theme="dark"][data-amoled="1"] {
+  --bg: #000000; --surface: #0B0B0E; --surface-2: #151519; --surface-3: #202026; --line: #26262D;
+  --shadow: 0 0 0 1px #1D1D23;
+  --good-bg: #0C2217; --bad-bg: #2A1215; --meh-bg: #271E0B;
+}
+.settings .seg button { font-size: .92rem; }
+
+/* ================= BingO: forecast card ================= */
+.forecast { display: block; width: 100%; text-align: left; border-top: 4px solid var(--accent); }
+.forecast.empty p { margin: 6px 0 0; }
+.fc-score { display: flex; align-items: baseline; gap: 8px; margin-top: 2px; }
+.fc-score b { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+.fc-score span { color: var(--ink-2); font-weight: 650; }
+.fc-grade { font-weight: 850; color: var(--accent); font-size: 1.05rem; }
+.fctrack { position: relative; height: 12px; border-radius: 99px; margin: 16px 0 4px; background: linear-gradient(90deg, var(--bad-bg) 30%, var(--meh-bg) 30% 62.5%, var(--good-bg) 62.5%); }
+.fcband { position: absolute; top: -3px; bottom: -3px; border-radius: 99px; background: color-mix(in srgb, var(--accent) 28%, transparent); border: 2px solid var(--accent); }
+.fcdot { position: absolute; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--surface); }
+.fcticks { position: relative; height: 18px; margin-bottom: 6px; }
+.fcticks span { position: absolute; transform: translateX(-50%); font-size: .74rem; font-weight: 800; color: var(--ink-3); }
+.forecast small { display: block; line-height: 1.35; }
+
+.fcrow { display: flex; align-items: center; gap: 10px; width: 100%; margin: 12px 0 0; padding: 10px 12px; border-radius: 12px; text-align: left; background: color-mix(in srgb, var(--accent) 10%, var(--surface-2)); }
+.fcrow span { color: var(--ink-2); font-weight: 700; }
+.fcrow b { font-size: 1.1rem; font-weight: 850; }
+.fcrow em { margin-left: auto; font-style: normal; font-weight: 800; color: var(--accent); }
+
+.fc-big { font-size: 1.05rem; }
+.fc-big b { font-size: 1.7rem; font-weight: 900; }
+.fc-detail h3 { font-size: 1rem; margin: 16px 0 8px; }
+.misclist.gains li b { color: var(--good); }
+.misclist.scale li b { color: var(--ink); }
+
+/* ================= BingO: bottom menu, Stats and Profile ================= */
+.has-nav { padding-bottom: calc(86px + env(safe-area-inset-bottom)); }
+.tabbar { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); width: min(760px, 100%); z-index: 10; display: flex; padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); background: var(--surface); box-shadow: 0 -1px 0 var(--line), 0 -6px 20px rgba(0, 0, 0, .06); }
+.tabbar button { flex: 1; display: grid; justify-items: center; gap: 2px; padding: 7px 4px; border-radius: 14px; color: var(--ink-3); font-size: .74rem; font-weight: 750; letter-spacing: .02em; transition: color .15s, background .15s; }
+.tabbar button .ic { width: 25px; height: 25px; }
+.tabbar button.on { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.tabbar button:active { transform: scale(.96); }
+
+.screen-title { font-size: 1.7rem; margin: 6px 2px 14px; }
+.stat-sub { font-size: .9rem; color: var(--ink-2); margin: 16px 0 8px; }
+
+.minis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0 10px; }
+.minis.four { grid-template-columns: repeat(4, 1fr); margin-top: 2px; }
+.minis > div { display: grid; justify-items: center; padding: 10px 4px; border-radius: 12px; background: var(--surface-2); text-align: center; }
+.minis b { font-size: 1.15rem; font-weight: 850; }
+.minis small { color: var(--ink-2); font-size: .72rem; }
+
+.weekbars { display: flex; align-items: flex-end; gap: 8px; height: 96px; }
+.wk { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; }
+.wk i { display: block; width: 100%; max-width: 30px; border-radius: 8px 8px 4px 4px; background: var(--accent); min-height: 4px; }
+.wk small { color: var(--ink-3); font-size: .72rem; }
+
+.statcard { border-top: 4px solid var(--accent); }
+.stat-head { display: flex; gap: 14px; align-items: center; }
+.stat-head h3 { font-size: 1.3rem; margin: 2px 0 4px; }
+.stat-head p { margin: 0; }
+.statchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.worst { list-style: none; padding: 0; margin: 0 0 4px; display: grid; gap: 6px; }
+.worst li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 12px; border-radius: 12px; background: var(--surface-2); }
+.worst li b { color: var(--bad); flex: none; }
+
+.profhead { display: grid; justify-items: center; text-align: center; margin: 6px 0 18px; }
+.avatar { width: 88px; height: 88px; display: grid; place-items: center; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-size: 2rem; font-weight: 900; letter-spacing: .02em; }
+.pname { font-size: 1.5rem; margin: 12px 0 2px; }
+.pcls { margin: 0; }
+.prows { margin-bottom: 8px; }
+.psub { display: grid; gap: 6px; margin-top: 14px; }
+.psub span { font-weight: 750; }
+.psub .bar i { background: var(--accent); }
+
+/* messages sit above the bottom menu */
+body:has(.tabbar) .toast { bottom: calc(96px + env(safe-area-inset-bottom)); }
+
 </style>
 </head>
 <body>
 <div id="app" class="screen"></div>
 
 <script>
-const APP_NAME = "BingO", APP_VERSION = "0.1.0";
+const APP_NAME = "BingO", APP_VERSION = "0.2.0";
 window.SHELLY_MODULE_JSON = {"bel": {"format": 1, "id": "bg.matura.bel.demo", "version": "0.1.0", "lang": "bg", "title": "ДЗИ по БЕЛ", "subtitle": "Матура по български език и литература · демо", "description": "Малък демо модул, построен като истинския държавен зрелостен изпит: задачи с избираем отговор, с кратък и с разширен свободен отговор и аргументативен текст (есе или интерпретативно съчинение). Резултатът се превръща в оценка по скалата на матурите: под 30 точки е Слаб 2, а от 30 до 100 точки оценката расте от Среден 3 до Отличен 6 (приблизително, по права линия).", "author": "Shelly (демо)", "color": "#B4532A", "icon": "📖", "scales": {"matura": {"title": "Оценка", "outOf": 100, "map": [[0, 2], [30, 2], [30, 3], [100, 6]], "round": 2, "bands": [[2, "Слаб"], [3, "Среден"], [3.5, "Добър"], [4.5, "Много добър"], [5.5, "Отличен"]], "pass": 3, "show": "{band} {value}"}}, "passages": {"debelyanov": {"title": "„Да се завърнеш в бащината къща“ (първа строфа)", "author": "Димчо Дебелянов", "text": "Да се завърнеш в бащината къща,\nкогато вечерта смирено гасне\nи тихи пазви тиха нощ разгръща\nда приласкае скръбни и нещастни."}}, "units": [{"id": "lang", "title": "Правопис и пунктуация", "description": "Най-честите грешки в задачите с избираем и с кратък отговор.", "lessons": [{"id": "bel-article", "title": "Пълен и кратък член", "summary": "Кога пишем **-ът/-ят** и кога **-а/-я**.", "content": ["Пълният и краткият член се отнасят за думи от **мъжки род, единствено число**: съществителни (*ученикът – ученика*), прилагателни (*новият – новия*), числителни редни (*първият – първия*), притежателни местоимения (*моят – моя*).", {"type": "note", "style": "key", "text": "**Пълен член** (-ът, -ят) пишем, когато думата е **подлог** или **сказуемно определение**.\n\n**Кратък член** (-а, -я) пишем във всички останали случаи: допълнение, обстоятелствено пояснение, след предлог."}, "### Бърза проверка\nЗамести думата с **той** или **него/му**:\n\n- *Учителят дойде.* → **Той** дойде. → пълен член.\n- *Видях учителя.* → Видях **него**. → кратък член.\n- *Говорих с учителя.* → Говорих с **него**. → кратък член.", {"type": "note", "style": "warn", "text": "След предлог членът винаги е **кратък**: *на стола, от прозореца, за отговора*."}, "### Сказуемно определение\nСлед глаголите **съм, бъда, ставам, оставам** думата описва подлога и също получава пълен член: *Победителят е **отборът** от Пловдив.*"], "practice": {"scale": "matura", "pass": 0.6, "tasks": [{"id": "a1", "type": "gaps", "points": 2, "prompt": "Изберете правилните окончания.", "text": "Учител[[1]] обясни задачата на ученик[[2]].", "gaps": [{"options": ["ят", "я"], "answer": 0}, {"options": ["ът", "а"], "answer": 1}], "explain": "**Учителят** е подлог (*той обясни*) → пълен член. **Ученика** е след предлога *на* → кратък член."}, {"id": "a2", "type": "choice", "prompt": "В кое изречение е допусната грешка при членуването?", "options": ["Директорът покани гостите в залата.", "Видях влака да пристига на перона.", "Подаръкът беше за брат ми.", "Срещнах учителят на улицата."], "answer": 3, "why": ["*Директорът* е подлог, затова пълният член е правилен.", "*Влака* е допълнение (*видях него*), а *перона* е след предлог. И двете са правилни.", "*Подаръкът* е подлог. Правилно."], "explain": "*Срещнах **него*** → допълнение → **учителя**.", "hint": ["Потърсете думата, която може да се замести с „него“.", "Пълният член е грешен, когато думата НЕ е подлог."]}, {"id": "a3", "type": "text", "points": 2, "prompt": "Запишете членуваната форма на думата **въпрос**, както трябва да стои в изречението:\n\nОтговорът на ___ беше ясен.", "answer": ["въпроса"], "explain": "След предлога *на* → кратък член: **въпроса**."}, {"id": "a4", "type": "gaps", "points": 2, "strict": true, "prompt": "Попълнете празните места с думите отдолу.", "text": "[[1]] влезе в класната стая и всички поздравиха [[2]].", "gaps": [{"answer": "Директорът"}, {"answer": "директора"}], "bank": ["Директора", "директорът"], "explain": "Първата дума е подлог и е в началото на изречението → **Директорът**. Втората е допълнение (*поздравиха него*) → **директора**."}, {"id": "a5", "type": "multi", "points": 2, "partial": true, "prompt": "В кои изречения членуването е **правилно**?", "options": ["Най-добрият ученик получи награда.", "Дадохме наградата на най-добрият ученик.", "Победителят е новият ни съученик.", "Чакахме автобусът цял час."], "answer": [0, 2], "explain": "*Най-добрият* е част от подлога, а *новият* е сказуемно определение след *е* → пълен член. В другите две изречения думите са допълнения: *на най-добрия ученик*, *чакахме автобуса*."}]}}, {"id": "bel-commas", "title": "Запетая в сложното изречение", "summary": "Подчинените изречения се отделят със запетая.", "content": ["Подчиненото изречение се отделя със запетая от главното. Най-често то започва със:", "- **съюзни думи**: който, която, което, които, чийто, какъвто, където, когато, колкото…\n- **съюзи**: че, защото, понеже, ако, за да, макар че, докато, щом…", {"type": "note", "style": "key", "text": "Подчинено изречение **в средата** на главното се отделя със запетая **от двете страни**:\n\n*Книгата**,** която ми подари**,** е много интересна.*"}, "Ако подчиненото изречение е **първо**, запетаята е след него: *Ако имаш време**,** ела при нас.*", {"type": "note", "style": "warn", "text": "Пред съединителния съюз **и** обикновено **не** се пише запетая: *Купих хляб и мляко.*"}], "practice": {"scale": "matura", "tasks": [{"id": "c1", "type": "choice", "prompt": "В кое изречение запетаите са поставени **правилно**?", "options": ["Книгата, която ми подари, е много интересна.", "Книгата която ми подари, е много интересна.", "Книгата, която ми подари е много интересна.", "Книгата, която, ми подари, е много интересна."], "answer": 0, "why": [null, "Липсва запетая пред *която*.", "Подчиненото изречение е в средата: нужна е запетая и след *подари*.", "Пред *ми* не се пише запетая: *която ми подари* е едно цяло."]}, {"id": "c2", "type": "multi", "points": 2, "partial": true, "prompt": "В кои изречения **липсва** запетая?", "options": ["Знам че ще успееш.", "Останах вкъщи, защото валеше.", "Ако имаш време ела при нас.", "Купих хляб и мляко."], "answer": [0, 2], "explain": "*Знам**,** че ще успееш.* и *Ако имаш време**,** ела при нас.*"}, {"id": "c3", "type": "gaps", "points": 2, "prompt": "Изберете дали на всяко място трябва запетая.", "text": "Мисля[[1]] че си прав[[2]] и ще те подкрепя.", "gaps": [{"options": ["запетая", "нищо"], "answer": 0}, {"options": ["запетая", "нищо"], "answer": 1}], "explain": "Пред *че* има запетая (подчинено изречение). Пред *и* тук не се пише запетая."}, {"id": "c4", "type": "order", "prompt": "Подредете частите така, че да се получи правилно изречение.", "items": ["Ученикът,", "който закъсня,", "влезе тихо", "в класната стая."], "explain": "Подчиненото изречение *който закъсня* е вътре в главното и е отделено от двете страни."}]}}]}, {"id": "lit", "title": "Литература", "description": "Тълкуване на текст и аргументация.", "lessons": [{"id": "bel-debelyanov", "title": "Дебелянов: копнежът по дома", "summary": "„Да се завърнеш в бащината къща“", "content": ["Димчо Дебелянов (1887–1916) е сред най-изтъкнатите поети на българския символизъм. Стихотворението „Да се завърнеш в бащината къща“ е от 1914 г.", {"type": "text", "text": "> Да се завърнеш в бащината къща,\n> когато вечерта смирено гасне\n> и тихи пазви тиха нощ разгръща\n> да приласкае скръбни и нещастни."}, "### Какво да забележим\n- Стихотворението започва с **„Да се завърнеш…“**: това не е разказ за действително завръщане, а **копнеж**, мечта, която може да остане неосъществена.\n- Домът е място на **покой и утеха**: вечерта *смирено гасне*, нощта идва *да приласкае скръбни и нещастни*.\n- Повторението **тихи… тиха** засилва усещането за тишина и спокойствие.", {"type": "note", "style": "key", "text": "**Олицетворение**: на неживото се приписват човешки качества. *Вечерта смирено гасне*, *нощ… да приласкае*."}, {"type": "note", "style": "tip", "text": "В есе или интерпретативно съчинение цитирайте кратко и обяснявайте **какво внушава** цитатът, а не само какво казва."}], "practice": {"scale": "matura", "tasks": [{"id": "d1", "type": "choice", "passage": "debelyanov", "prompt": "Какво внушава конструкцията **„Да се завърнеш…“** в началото на стихотворението?", "options": ["Копнеж по нещо желано, което може и да не се сбъдне", "Заповед към читателя", "Спомен за завръщане, което вече се е случило", "Упрек към някого"], "answer": 0, "why": [null, "Няма повелително наклонение: не е *завърни се*.", "Глаголната форма не разказва за минало събитие.", "В строфата няма обръщение или упрек."]}, {"id": "d2", "type": "choice", "passage": "debelyanov", "prompt": "Кое художествено средство е използвано в израза **„вечерта смирено гасне“**?", "options": ["Сравнение", "Олицетворение", "Хипербола", "Антитеза"], "answer": 1, "explain": "*Смирение* е човешко качество, приписано на вечерта → олицетворение."}, {"id": "d3", "type": "match", "points": 4, "prompt": "Свържете автора с творбата.", "left": ["Димчо Дебелянов", "Пейо Яворов", "Христо Смирненски", "Елин Пелин"], "right": ["„Да се завърнеш в бащината къща“", "„Две хубави очи“", "„Зимни вечери“", "„Андрешко“"], "extra": ["„Под игото“"], "explain": "„Под игото“ е романът на Иван Вазов."}, {"id": "d4", "type": "open", "points": 6, "passage": "debelyanov", "prompt": "В 4–5 изречения коментирайте как е представен домът в първата строфа.", "minWords": 40, "maxWords": 120, "answer": "Домът в първата строфа е място на покой и утеха. Вечерта „смирено гасне“, а нощта идва „да приласкае скръбни и нещастни“, сякаш домът сам посреща уморения човек. Повторението „тихи… тиха“ подчертава тишината, която контрастира на тревогите на света навън. Но строфата започва с „Да се завърнеш…“, затова завръщането е по-скоро копнеж, отколкото действителност.", "rubric": [{"text": "Разбиране на текста: домът като място на покой и утеха", "points": 2}, {"text": "Поне един уместен цитат, който е обяснен", "points": 2}, {"text": "Връзка с копнежа (*Да се завърнеш…*), а не с реално завръщане", "points": 1}, {"text": "Езикова и правописна правилност", "points": 1}]}]}}]}], "exams": [{"id": "dzi-demo", "title": "Пробна матура (демо)", "minutes": 120, "scale": "matura", "description": "Със структурата на истинския ДЗИ, но по-кратко. Истинският изпит има 41 задачи за 100 точки: 22 с избираем отговор, 16 с кратък свободен отговор, 2 с разширен свободен отговор и аргументативен текст за 30 точки. Тук резултатът се преизчислява към 100 точки. Критериите за оценяване на отворените задачи в демото са примерни.", "parts": [{"title": "Задачи с избираем отговор", "instructions": "Изберете **един** верен отговор.", "tasks": [{"ref": "a2"}, {"ref": "c1"}, {"ref": "d2"}, {"id": "x1", "type": "choice", "prompt": "В кой ред **всички** думи са написани правилно?", "options": ["по-добър, най-хубав, не знам", "подобър, най хубав, незнам", "по-добър, най хубав, незнам", "подобър, най-хубав, не знам"], "answer": 0, "explain": "*По-* и *най-* при степенуване се пишат с тире, а *не* с глагол се пише разделно."}, {"id": "x2", "type": "choice", "passage": "debelyanov", "prompt": "Към кое литературно направление се отнася поезията на Димчо Дебелянов?", "options": ["Символизъм", "Романтизъм", "Класицизъм", "Соцреализъм"], "answer": 0}]}, {"title": "Задачи с кратък свободен отговор", "tasks": [{"ref": "a3"}, {"ref": "c3"}, {"id": "x3", "type": "text", "points": 2, "prompt": "Запишете правилно думата, в която има правописна грешка:\n\n*Той винаги идваше навреме, но днес закъсня с цял час заради задръстването в центъра на града, което незнаеше никой.*", "answer": ["не знаеше"], "explain": "*Не* с глагол се пише разделно: **не знаеше**."}]}, {"title": "Задача с разширен свободен отговор", "tasks": [{"ref": "d4"}]}, {"title": "Аргументативен текст", "instructions": "Изберете **една** от двете теми и напишете текст до 4 страници.", "tasks": [{"id": "x4", "type": "open", "points": 30, "minWords": 300, "prompt": "**Тема 1 (есе):** Можем ли да се върнем у дома?\n\n**Тема 2 (интерпретативно съчинение):** Копнежът по дома в стихотворението „Да се завърнеш в бащината къща“ на Димчо Дебелянов.\n\nВ началото на текста посочете коя тема сте избрали.", "answer": "Примерен план за интерпретативното съчинение:\n\n1. **Увод:** Дебелянов и символизмът; домът като символ.\n2. **Теза:** Завръщането е копнеж, а не действителност.\n3. **Аргументи:** формата „Да се завърнеш…“; домът като утеха (*да приласкае скръбни и нещастни*); тишината (*тихи… тиха*).\n4. **Заключение:** домът като изгубен рай, към който човек мечтае да се върне.", "rubric": [{"text": "Съответствие с темата и ясна теза", "points": 5}, {"text": "Аргументация: уместни и обяснени примери и цитати", "points": 10}, {"text": "Композиция: увод, теза, развитие, заключение; логични връзки", "points": 5}, {"text": "Стил и уместна употреба на езика", "points": 4}, {"text": "Правопис и пунктуация", "points": 6}]}]}]}]}, "math": {"format": 1, "id": "bg.matura.math.demo", "version": "0.1.0", "lang": "bg", "title": "ДЗИ по математика", "subtitle": "Матура по математика · демо", "description": "Малък демо модул, построен като държавния зрелостен изпит по математика: задачи с избор от четири отговора (А–Г) и задачи с подробно решение. Резултатът се превръща в оценка по скалата на матурите: под 30 точки е Слаб 2, а от 30 до 100 точки оценката расте от Среден 3 до Отличен 6 (приблизително, по права линия).", "author": "Shelly (демо)", "color": "#2F5BD3", "icon": "📐", "scales": {"matura": {"title": "Оценка", "outOf": 100, "map": [[0, 2], [30, 2], [30, 3], [100, 6]], "round": 2, "bands": [[2, "Слаб"], [3, "Среден"], [3.5, "Добър"], [4.5, "Много добър"], [5.5, "Отличен"]], "pass": 3, "show": "{band} {value}"}}, "units": [{"id": "alg", "title": "Алгебра", "lessons": [{"id": "m-quad", "title": "Квадратни уравнения", "summary": "Дискриминанта, формула за корените и формули на Виет.", "content": ["Квадратното уравнение има вида $ax^2 + bx + c = 0$, където $a \\neq 0$.", {"type": "note", "style": "key", "text": "**Дискриминанта:** $D = b^2 - 4ac$\n\n- $D > 0$: два различни реални корена\n- $D = 0$: един (двоен) корен\n- $D < 0$: няма реални корени"}, "Когато $D \\geq 0$, корените са\n\n$$x_{1,2} = \\dfrac{-b \\pm \\sqrt{D}}{2a}$$", "### Пример\n$x^2 - 5x + 6 = 0$: $D = 25 - 24 = 1$, значи $x_{1,2} = \\dfrac{5 \\pm 1}{2}$, т.е. $x_1 = 3$ и $x_2 = 2$.", {"type": "note", "style": "key", "text": "**Формули на Виет:** $x_1 + x_2 = -\\dfrac{b}{a}$ и $x_1 \\cdot x_2 = \\dfrac{c}{a}$"}, {"type": "note", "style": "tip", "text": "Проверка: в примера $3 + 2 = 5 = -\\dfrac{-5}{1}$ и $3 \\cdot 2 = 6 = \\dfrac{6}{1}$."}], "practice": {"scale": "matura", "tasks": [{"id": "q1", "type": "choice", "points": 2, "prompt": "Корените на уравнението $x^2 - 5x + 6 = 0$ са:", "options": ["$2$ и $3$", "$-2$ и $-3$", "$1$ и $6$", "$-1$ и $6$"], "answer": 0, "why": [null, "Това са корените на $x^2 + 5x + 6 = 0$.", "$1 \\cdot 6 = 6$, но $1 + 6 = 7 \\neq 5$.", "$(-1) \\cdot 6 = -6 \\neq 6$."]}, {"id": "q2", "type": "number", "points": 2, "prompt": "Пресметнете дискриминантата на уравнението $2x^2 - 3x - 2 = 0$.", "answer": 25, "hint": ["$D = b^2 - 4ac$", "Тук $a = 2$, $b = -3$, $c = -2$."], "explain": "$D = (-3)^2 - 4 \\cdot 2 \\cdot (-2) = 9 + 16 = 25$"}, {"id": "q3", "type": "choice", "points": 2, "prompt": "Колко реални корена има уравнението $x^2 + 4x + 5 = 0$?", "options": ["Нито един", "Един", "Два", "Безброй много"], "answer": 0, "explain": "$D = 16 - 20 = -4 < 0$, следователно няма реални корени."}, {"id": "q4", "type": "number", "points": 2, "prompt": "Ако $x_1$ и $x_2$ са корените на $2x^2 - 6x + 1 = 0$, колко е $x_1 + x_2$?", "answer": 3, "explain": "По Виет: $x_1 + x_2 = -\\dfrac{b}{a} = -\\dfrac{-6}{2} = 3$"}, {"id": "q5", "type": "number", "points": 2, "prompt": "За същото уравнение $2x^2 - 6x + 1 = 0$: колко е $x_1 \\cdot x_2$?", "answer": 0.5, "explain": "$x_1 \\cdot x_2 = \\dfrac{c}{a} = \\dfrac{1}{2}$. Приемат се и $0{,}5$, и $1/2$."}, {"id": "q6", "type": "open", "points": 4, "prompt": "Решете уравнението $x^2 - 2x - 8 = 0$. Запишете решението подробно.", "answer": "$D = (-2)^2 - 4 \\cdot 1 \\cdot (-8) = 4 + 32 = 36$, $\\sqrt{D} = 6$\n\n$x_{1,2} = \\dfrac{2 \\pm 6}{2}$, т.е. $x_1 = 4$, $x_2 = -2$", "rubric": [{"text": "Вярно пресметната дискриминанта ($D = 36$)", "points": 1}, {"text": "Вярно приложена формула за корените", "points": 1}, {"text": "Двата корена: $4$ и $-2$", "points": 2}]}]}}, {"id": "m-pct", "title": "Проценти", "summary": "Процент от число, увеличение и намаление.", "content": ["$p\\%$ от числото $A$ е $A \\cdot \\dfrac{p}{100}$.", {"type": "note", "style": "key", "text": "- Увеличение с $p\\%$: умножаваме по $1 + \\dfrac{p}{100}$\n- Намаление с $p\\%$: умножаваме по $1 - \\dfrac{p}{100}$"}, "### Последователни промени\nПромените се **умножават**, а не се събират. Увеличение с $10\\%$ и после намаление с $10\\%$ дава $1{,}1 \\cdot 0{,}9 = 0{,}99$, тоест цената е с $1\\%$ **по-ниска** от началната.", {"type": "note", "style": "warn", "text": "Процентът винаги е спрямо стойността **преди** промяната."}], "practice": {"scale": "matura", "tasks": [{"id": "p1", "type": "number", "prompt": "Колко е $15\\%$ от $240$?", "answer": 36, "explain": "$240 \\cdot 0{,}15 = 36$"}, {"id": "p2", "type": "choice", "points": 2, "prompt": "Цена от $50$ лв. се увеличава с $20\\%$. Новата цена е:", "options": ["$60$ лв.", "$70$ лв.", "$52$ лв.", "$40$ лв."], "answer": 0, "why": [null, "Добавени са $20$ лв., а $20\\%$ от $50$ е $10$.", "$20\\%$ от $50$ не е $2$.", "Това е намаление с $20\\%$."]}, {"id": "p3", "type": "choice", "points": 3, "prompt": "Цена първо се увеличава с $10\\%$, а после се намалява с $10\\%$. Спрямо началната цена тя:", "options": ["е същата", "е по-ниска с $1\\%$", "е по-висока с $1\\%$", "е по-ниска с $10\\%$"], "answer": 1, "explain": "$1{,}1 \\cdot 0{,}9 = 0{,}99$"}, {"id": "p4", "type": "number", "points": 2, "prompt": "Цена от $80$ лв. е намалена на $68$ лв. С колко процента е намалена?", "answer": 15, "explain": "Намалението е $12$ лв.; $\\dfrac{12}{80} = 0{,}15 = 15\\%$"}, {"id": "p5", "type": "gaps", "points": 2, "prompt": "Попълнете числата.", "text": "Увеличение с 25% означава умножение по [[1]], а намаление с 25% означава умножение по [[2]].", "gaps": [{"answer": ["1,25", "1.25", "5/4"]}, {"answer": ["0,75", "0.75", ",75", "3/4"]}]}]}}]}, {"id": "geo", "title": "Геометрия", "lessons": [{"id": "m-right", "title": "Правоъгълен триъгълник", "summary": "Питагорова теорема и тригонометрични функции.", "content": [{"type": "image", "src": "media/triangle.svg", "alt": "Правоъгълен триъгълник ABC с прав ъгъл при C", "caption": "$a$ и $b$ са катети, $c$ е хипотенуза; $\\alpha$ е ъгълът при $A$."}, {"type": "note", "style": "key", "text": "**Питагорова теорема:** $c^2 = a^2 + b^2$"}, "За острия ъгъл $\\alpha$:\n\n$$\\sin\\alpha = \\dfrac{a}{c} \\qquad \\cos\\alpha = \\dfrac{b}{c} \\qquad \\operatorname{tg}\\alpha = \\dfrac{a}{b}$$", "Запомнете: **синус** = срещулежащ катет / хипотенуза, **косинус** = прилежащ катет / хипотенуза.", {"type": "note", "style": "tip", "text": "Питагорови тройки, които се срещат често: $3, 4, 5$ · $5, 12, 13$ · $6, 8, 10$ · $8, 15, 17$."}], "practice": {"scale": "matura", "tasks": [{"id": "g1", "type": "number", "points": 2, "prompt": "Катетите на правоъгълен триъгълник са $6$ и $8$. Колко е хипотенузата?", "answer": 10, "explain": "$c = \\sqrt{36 + 64} = \\sqrt{100} = 10$"}, {"id": "g2", "type": "choice", "points": 2, "prompt": "В правоъгълен триъгълник хипотенузата е $10$, а един от катетите е $5$. Ъгълът срещу този катет е:", "options": ["$30^\\circ$", "$45^\\circ$", "$60^\\circ$", "$90^\\circ$"], "answer": 0, "explain": "$\\sin\\alpha = \\dfrac{5}{10} = \\dfrac{1}{2}$, следователно $\\alpha = 30^\\circ$."}, {"id": "g3", "type": "number", "points": 2, "prompt": "Хипотенузата е $13$, а единият катет е $5$. Намерете другия катет.", "answer": 12, "explain": "$\\sqrt{169 - 25} = \\sqrt{144} = 12$"}, {"id": "g4", "type": "match", "points": 3, "media": {"type": "image", "src": "media/triangle.svg", "alt": "Правоъгълен триъгълник ABC"}, "prompt": "Свържете функцията на ъгъла $\\alpha$ с отношението.", "left": ["$\\sin\\alpha$", "$\\cos\\alpha$", "$\\operatorname{tg}\\alpha$"], "right": ["$\\dfrac{a}{c}$", "$\\dfrac{b}{c}$", "$\\dfrac{a}{b}$"], "extra": ["$\\dfrac{c}{a}$"]}, {"id": "g5", "type": "open", "points": 3, "prompt": "Стълба с дължина $5$ m е опряна на стена. Долният ѝ край е на $3$ m от стената. На каква височина опира стълбата? Запишете решението.", "answer": "Стълбата, стената и земята образуват правоъгълен триъгълник с хипотенуза $5$ m и катет $3$ m.\n\n$h = \\sqrt{5^2 - 3^2} = \\sqrt{16} = 4$ m", "rubric": [{"text": "Правоъгълен триъгълник и Питагорова теорема", "points": 1}, {"text": "Вярно изчисление", "points": 1}, {"text": "Отговор с мерна единица: $4$ m", "points": 1}]}]}}]}], "exams": [{"id": "dzi-demo", "title": "Пробна матура (демо)", "minutes": 90, "scale": "matura", "description": "Със структурата на истинския ДЗИ, но по-кратко: задачи с избор от четири отговора и задачи с подробно решение. Резултатът се преизчислява към 100 точки. Критериите за оценяване на задачите с подробно решение в демото са примерни.", "parts": [{"title": "Задачи с избираем отговор", "instructions": "Изберете **един** верен отговор от А, Б, В и Г.", "tasks": [{"id": "e1", "type": "choice", "points": 2, "prompt": "Стойността на израза $\\sqrt{49} - 2^3$ е:", "options": ["$-1$", "$1$", "$15$", "$-15$"], "answer": 0, "explain": "$7 - 8 = -1$"}, {"id": "e2", "type": "choice", "points": 2, "prompt": "Решенията на неравенството $2x - 3 > 5$ са:", "options": ["$x > 4$", "$x > 1$", "$x < 4$", "$x > 8$"], "answer": 0, "explain": "$2x > 8$, следователно $x > 4$."}, {"ref": "q1"}, {"id": "e4", "type": "choice", "points": 2, "prompt": "Числото $\\log_2 8$ е равно на:", "options": ["$3$", "$4$", "$2$", "$6$"], "answer": 0, "explain": "$2^3 = 8$"}, {"ref": "p3"}, {"id": "e6", "type": "choice", "points": 3, "prompt": "Аритметична прогресия има $a_1 = 3$ и разлика $d = 4$. Колко е $a_{10}$?", "options": ["$39$", "$43$", "$40$", "$36$"], "answer": 0, "explain": "$a_{10} = a_1 + 9d = 3 + 36 = 39$"}, {"id": "e7", "type": "choice", "points": 3, "prompt": "Хипотенузата на правоъгълен триъгълник с катети $5$ и $12$ е:", "options": ["$13$", "$17$", "$\\sqrt{119}$", "$60$"], "answer": 0, "explain": "$\\sqrt{25 + 144} = 13$"}, {"id": "e8", "type": "choice", "points": 3, "prompt": "Хвърля се зар. Вероятността да се падне четно число е:", "options": ["$\\dfrac{1}{2}$", "$\\dfrac{1}{3}$", "$\\dfrac{1}{6}$", "$\\dfrac{2}{3}$"], "answer": 0, "explain": "Четните числа са $2, 4, 6$: $\\dfrac{3}{6} = \\dfrac{1}{2}$"}]}, {"title": "Задачи с подробно решение", "instructions": "Запишете решенията **подробно**, с обосновка на всяка стъпка.", "tasks": [{"id": "e9", "type": "open", "points": 8, "prompt": "Решете системата\n\n$$\\begin{cases} x + y = 7 \\\\ x - y = 1 \\end{cases}$$", "answer": "Събираме двете уравнения: $2x = 8$, следователно $x = 4$. Тогава $y = 7 - 4 = 3$.\n\nПроверка: $4 + 3 = 7$, $4 - 3 = 1$. Отговор: $(4;\\ 3)$", "rubric": [{"text": "Избран и вярно приложен метод (събиране или заместване)", "points": 2}, {"text": "$x = 4$", "points": 2}, {"text": "$y = 3$", "points": 2}, {"text": "Проверка или ясно записан отговор", "points": 2}]}, {"id": "e10", "type": "open", "points": 12, "media": {"type": "image", "src": "media/triangle.svg", "alt": "Правоъгълен триъгълник ABC с прав ъгъл при C"}, "prompt": "В правоъгълния триъгълник $ABC$ ($\\angle C = 90^\\circ$) катетите са $AC = 8$ cm и $BC = 6$ cm. Намерете:\n\nа) хипотенузата $AB$;\n\nб) $\\sin\\angle A$;\n\nв) лицето на триъгълника.", "answer": "а) $AB = \\sqrt{8^2 + 6^2} = \\sqrt{100} = 10$ cm\n\nб) $\\sin\\angle A = \\dfrac{BC}{AB} = \\dfrac{6}{10} = 0{,}6$\n\nв) $S = \\dfrac{AC \\cdot BC}{2} = \\dfrac{8 \\cdot 6}{2} = 24$ cm²", "rubric": [{"text": "а) $AB = 10$ cm", "points": 4}, {"text": "б) $\\sin\\angle A = 0{,}6$", "points": 4}, {"text": "в) $S = 24$ cm²", "points": 4}]}]}]}]}};
 window.SHELLY_MEDIA = {"bg.matura.math.demo\nmedia/triangle.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNDAgMjMwIiB3aWR0aD0iMzQwIiBoZWlnaHQ9IjIzMCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsICdUaW1lcyBOZXcgUm9tYW4nLCBzZXJpZiIgZm9udC1zaXplPSIyMCI+CiAgPHJlY3Qgd2lkdGg9IjM0MCIgaGVpZ2h0PSIyMzAiIGZpbGw9IiNmZmZmZmYiLz4KICA8cGF0aCBkPSJNNTAgMTkwIEwyOTAgMTkwIEw1MCA0MCBaIiBmaWxsPSIjRTlFRUZGIiBzdHJva2U9IiMxRDFCMjQiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPHBhdGggZD0iTTUwIDE3MiBINjggVjE5MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUQxQjI0IiBzdHJva2Utd2lkdGg9IjIiLz4KICA8cGF0aCBkPSJNMjUyIDE5MCBBMzggMzggMCAwIDAgMjU3LjggMTY5LjkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJGNUJEMyIgc3Ryb2tlLXdpZHRoPSIyLjUiLz4KICA8dGV4dCB4PSIyMzYiIHk9IjE4MSIgZmlsbD0iIzJGNUJEMyIgZm9udC1zdHlsZT0iaXRhbGljIj7OsTwvdGV4dD4KICA8dGV4dCB4PSIyOTYiIHk9IjIwOCIgZm9udC1zdHlsZT0iaXRhbGljIj5BPC90ZXh0PgogIDx0ZXh0IHg9IjMwIiB5PSIzNiIgZm9udC1zdHlsZT0iaXRhbGljIj5CPC90ZXh0PgogIDx0ZXh0IHg9IjMwIiB5PSIyMTAiIGZvbnQtc3R5bGU9Iml0YWxpYyI+QzwvdGV4dD4KICA8dGV4dCB4PSIyOCIgeT0iMTIyIiBmaWxsPSIjQzI0MTBDIiBmb250LXN0eWxlPSJpdGFsaWMiIGZvbnQtd2VpZ2h0PSJib2xkIj5hPC90ZXh0PgogIDx0ZXh0IHg9IjE2NCIgeT0iMjE0IiBmaWxsPSIjQzI0MTBDIiBmb250LXN0eWxlPSJpdGFsaWMiIGZvbnQtd2VpZ2h0PSJib2xkIj5iPC90ZXh0PgogIDx0ZXh0IHg9IjE3OCIgeT0iMTA0IiBmaWxsPSIjQzI0MTBDIiBmb250LXN0eWxlPSJpdGFsaWMiIGZvbnQtd2VpZ2h0PSJib2xkIj5jPC90ZXh0Pgo8L3N2Zz4K"};
 
@@ -1871,6 +1950,17 @@ function resetState(keepSettings) {
   S = { ...DEFAULT_STATE(), ...keep }; saveState(true);
 }
 
+/* AMOLED theme: the dark theme with true-black surfaces (OLED pixels switch off).
+   Shelly's applySettings() only knows auto/light/dark, so BingO wraps it. */
+const _applyBase = applySettings;
+applySettings = function () {
+  _applyBase();
+  const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
+  if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
+};
+
 /* Shelly's media loader, reading the few pictures that the build embeds (window.SHELLY_MEDIA: "module id\npath" -> data URL) */
 function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
@@ -2629,7 +2719,7 @@ const pctTxt = p => Math.round(p * 100) + '%';
 const SRC_LABEL = { gen: 'Нов вариант', shelly: 'От Shelly', bank: 'Банка задачи', ai: 'Създадена от ИИ' };
 
 function subjectTabs(cur) {
-  return `<div class="seg subj-seg">${Object.values(SUBJECTS).map(s => `<button data-subj="${s.id}" class="${s.id === cur ? 'on' : ''}">${s.icon} ${esc(s.title)}</button>`).join('')}</div>`;
+  return `<label class="subj-pick"><span class="kicker">Предмет за матура</span><span class="selwrap"><select class="field subj-select" id="subjSelect" aria-label="Избери предмет за матура">${Object.values(SUBJECTS).map(s => `<option value="${s.id}"${s.id === cur ? ' selected' : ''}>${s.icon} ${esc(s.title)}</option>`).join('')}</select></span></label>`;
 }
 
 function skillRow(subj, x) {
@@ -2675,8 +2765,10 @@ SCREENS.home = async el => {
       ${started ? `<button class="btn ghost block" data-start="diag">${icon('reset')}Нова диагностика</button>` : ''}
       <p class="muted small center foot">${aiOn() ? '✦ Gemini е включен' : 'Без ИИ · включи Gemini в настройките'} · ${S.settings.sheetUrl ? 'данните отиват в Google Sheets' : 'данните остават на устройството'}</p>
     </section>`;
+  el.onchange = e => {
+    const s = e.target.closest('#subjSelect'); if (s && SUBJECTS[s.value]) { S.subject = s.value; saveState(); return refresh(); }
+  };
   el.addEventListener('click', async e => {
-    const s = e.target.closest('[data-subj]'); if (s) { S.subject = s.dataset.subj; saveState(); return refresh(); }
     const g = e.target.closest('[data-go]'); if (g) return go(g.dataset.go);
     const st = e.target.closest('[data-start]'); if (st) return go('session', { subj, mode: st.dataset.start });
     if (e.target.closest('[data-demo]')) { simulateLearner(); toast('Зареден е демо ученик с история от 6 дни'); return refresh(); }
@@ -2872,8 +2964,8 @@ SCREENS.insights = async el => {
       <a class="btn ghost block" href="https://lookerstudio.google.com/" target="_blank" rel="noopener">${icon('next')}Отвори Looker Studio</a></section>
     ${S.aiFlags.length ? `<section class="card"><h3>${icon('flag')}Докладвани ИИ задачи</h3><p class="small">${S.aiFlags.length} задачи чакат проверка от учител.</p><button class="btn ghost block" data-flags>${icon('download')}Изтегли (JSON)</button></section>` : ''}
   </div>`;
+  el.onchange = e => { const s = e.target.closest('#subjSelect'); if (s && SUBJECTS[s.value]) { S.subject = s.value; saveState(); refresh(); } };
   el.addEventListener('click', async e => {
-    const s = e.target.closest('[data-subj]'); if (s) { S.subject = s.dataset.subj; saveState(); return refresh(); }
     if (e.target.closest('[data-go]')) return go('settings');
     if (e.target.closest('[data-csv]')) return downloadText(`bingo-${slug(S.profile.name || 'uchenik')}-${todayKey()}.csv`, logCSV());
     if (e.target.closest('[data-class]')) return downloadText('bingo-primeren-klas.csv', logCSV(simulateClass()));
@@ -2900,8 +2992,6 @@ SCREENS.settings = async el => {
   const seg = (key, opts) => `<div class="seg" data-key="${key}">${opts.map(([v, label]) => `<button data-v="${v}" class="${st[key] === v ? 'on' : ''}">${esc(label)}</button>`).join('')}</div>`;
   const field = (key, label, ph, type = 'text', obj = 'settings') => `<label class="fld"><span>${esc(label)}</span><input class="field" data-f="${obj}.${key}" type="${type}" value="${esc((obj === 'profile' ? S.profile : st)[key] || '')}" placeholder="${esc(ph)}" autocomplete="off" spellcheck="false"></label>`;
   el.innerHTML = `${topbar('Настройки')}<div class="pad settings">
-    <section class="card"><h3>${icon('pen')}Ученик</h3>${field('name', 'Име', 'напр. Мария П.', 'text', 'profile')}${field('cls', 'Клас', 'напр. 12а', 'text', 'profile')}
-      <p class="muted small">Името и класът отиват в данните за учителя (Looker Studio), само ако свържеш Google Sheets.</p></section>
     <section class="card"><h3>✦ Gemini</h3>${seg('aiMode', [['off', 'Изключен'], ['key', 'API ключ'], ['proxy', 'Vertex AI сървър']])}
       <div class="ai-key" ${st.aiMode === 'key' ? '' : 'hidden'}>${field('apiKey', 'Gemini API ключ', 'от aistudio.google.com', 'password')}
         <p class="muted small">Ключът стои само на това устройство. За прототип е добре; за истински ученици ползвай сървъра (Vertex AI).</p></div>
@@ -2910,7 +3000,7 @@ SCREENS.settings = async el => {
       <p class="muted small">Gemini обяснява грешките, дава подсказки без отговора, прави нови задачи за слабите теми и седмичен план. Без него приложението работи изцяло.</p></section>
     <section class="card"><h3>${icon('upload')}Google Sheets → Looker Studio</h3>${field('sheetUrl', 'Адрес на Apps Script (Web app)', 'https://script.google.com/macros/s/…/exec')}
       <p class="muted small">Всеки отговор става ред в таблица на учителя. Как се прави — apps-script/Code.gs в проекта.</p></section>
-    <section class="card"><h3>${icon('moon')}Тема</h3>${seg('theme', [['auto', 'Автоматично'], ['light', 'Светла'], ['dark', 'Тъмна']])}
+    <section class="card"><h3>${icon('moon')}Тема</h3>${seg('theme', [['auto', 'Автоматично'], ['light', 'Светла'], ['dark', 'Тъмна'], ['amoled', 'AMOLED']])}
       <div class="rows"><div class="row"><span>${icon('sound')}Звуци</span><button class="switch${st.sound ? ' on' : ''}" data-sw="sound" role="switch"><i></i></button></div></div></section>
     <section class="card"><h3>${icon('eye')}Демо</h3>
       <button class="btn ghost block" data-demo>${icon('play')}Зареди демо ученик</button>
@@ -2936,6 +3026,209 @@ SCREENS.settings = async el => {
     const f = e.target.closest('[data-f]'); if (!f) return;
     const [obj, key] = f.dataset.f.split('.'); (obj === 'profile' ? S.profile : st)[key] = f.value.trim(); saveState();
   });
+};
+
+;
+/* ==== src/js/64-nav.js ==== */
+/* ================= Bottom menu: Начало · Статистики · Профил =================
+   The menu sits on the three main screens. Home stays the root of the navigation stack:
+   Stats and Profile open on top of it, and switching between them replaces the top screen,
+   so the Android back button always goes back to Home. */
+
+Object.assign(ICONS, {
+  home: '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/>',
+  chart: '<path d="M5 20V10M12 20V4M19 20v-7"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'
+});
+
+const TABS = [['home', 'home', 'Начало'], ['stats', 'chart', 'Статистики'], ['profile', 'user', 'Профил']];
+const tabBar = cur => `<nav class="tabbar" aria-label="Основно меню">${TABS.map(([id, ic, label]) => `<button data-tab="${id}" class="${id === cur ? 'on' : ''}"${id === cur ? ' aria-current="page"' : ''}>${icon(ic)}<span>${label}</span></button>`).join('')}</nav>`;
+
+function goTab(from, to) {
+  if (to === from) return;
+  if (to === 'home') return home();
+  go(to, {}, from === 'home' ? {} : { replace: true });
+}
+
+/* ---------- numbers shared by Stats and Profile ---------- */
+const rowTime = r => r.t || Date.parse(r.timestamp) || 0;
+const dayKey = t => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+function activity() {
+  const days = new Set(S.log.map(r => dayKey(rowTime(r))));
+  let streak = 0; const d = new Date();
+  if (!days.has(dayKey(d))) d.setDate(d.getDate() - 1);
+  while (days.has(dayKey(d))) { streak++; d.setDate(d.getDate() - 1); }
+  const names = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+  const week = Array.from({ length: 7 }, (_, i) => {
+    const x = new Date(); x.setDate(x.getDate() - (6 - i)); const k = dayKey(x);
+    return { label: names[x.getDay()], n: S.log.filter(r => dayKey(rowTime(r)) === k).length };
+  });
+  return { days: days.size, streak, week };
+}
+const accOf = rows => rows.length ? rows.filter(r => r.correct).length / rows.length : 0;
+function setAccent(el) { const sub = SUBJECTS[S.subject]; el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); }
+
+/* ---------- Статистики: one card per matura ---------- */
+SCREENS.stats = async el => {
+  setAccent(el);
+  const act = activity(), total = S.log.length, max = Math.max(1, ...act.week.map(w => w.n));
+  const cards = Object.values(SUBJECTS).map(sub => {
+    const sm = subjectSummary(sub.id), rows = S.log.filter(r => r.subject === sub.title), started = sm.answered > 0, kept = sm.total - sm.lost;
+    const cnt = { strong: 0, mid: 0, weak: 0, new: 0 }; sm.list.forEach(x => cnt[x.status]++);
+    const worst = sm.list.filter(x => x.status !== 'strong').sort((a, b) => b.lost - a.lost).slice(0, 3);
+    const avgSec = rows.length ? Math.round(sum(rows.map(r => r.seconds || 0)) / rows.length) : 0;
+    return `<article class="card statcard" style="--accent:${sub.color};--accent-ink:${inkOn(sub.color)}">
+      <div class="stat-head">${ring(started ? kept / sm.total : 0, started ? Math.round(kept / sm.total * 100) + '%' : '?')}
+        <div><span class="kicker">Матура</span><h3>${sub.icon} ${esc(sub.title)}</h3>
+          <p class="muted small">${started ? `≈ ${fmt1(kept)} от ${sm.total} т. запазени` : 'Още не е измерено — направи диагностика'}</p></div></div>
+      <div class="minis"><div><b>${rows.length}</b><small>отговора</small></div><div><b>${rows.length ? pctTxt(accOf(rows)) : '–'}</b><small>верни</small></div><div><b>${rows.length ? avgSec + ' с' : '–'}</b><small>средно време</small></div></div>
+      <div class="statchips"><span class="stchip s-strong">${cnt.strong} силни</span><span class="stchip s-mid">${cnt.mid} почти</span><span class="stchip s-weak">${cnt.weak} слаби</span><span class="stchip">${cnt.new} малко данни</span></div>
+      ${started && worst.length ? `<h4 class="stat-sub">Къде губиш най-много</h4><ul class="worst">${worst.map(x => `<li><span>${esc(x.sk.name)}</span><b>−${fmt1(x.lost)} т.</b></li>`).join('')}</ul>` : ''}
+      <button class="btn accent block" data-open="${sub.id}">${icon('target')}Отвори картата · ${esc(sub.short)}</button></article>`;
+  }).join('');
+  el.innerHTML = `<header class="apphead"><div class="brand bingo">Bing<span>O</span></div></header>
+    <section class="pad"><h1 class="screen-title">Статистики</h1>
+      <div class="card"><div class="minis four"><div><b>${total}</b><small>отговора</small></div><div><b>${total ? pctTxt(accOf(S.log)) : '–'}</b><small>верни</small></div><div><b>${act.streak}</b><small>дни поредни</small></div><div><b>${act.days}</b><small>активни дни</small></div></div>
+        <h4 class="stat-sub">Последните 7 дни</h4>
+        <div class="weekbars">${act.week.map(w => `<div class="wk"><i style="height:${Math.max(4, w.n / max * 100)}%" title="${w.n}"></i><small>${w.label}</small></div>`).join('')}</div></div>
+      <h2 class="sec-title">По матури</h2>${cards}</section>`;
+  el.addEventListener('click', e => {
+    const o = e.target.closest('[data-open]'); if (o) { S.subject = o.dataset.open; saveState(); home(); }
+  });
+};
+
+/* ---------- Профил ---------- */
+SCREENS.profile = async el => {
+  setAccent(el);
+  const p = S.profile, act = activity(), total = S.log.length;
+  const subs = Object.values(SUBJECTS).map(s => ({ s, sm: subjectSummary(s.id) }));
+  const strongN = sum(subs.map(x => x.sm.list.filter(y => y.status === 'strong').length)), skillN = sum(subs.map(x => x.sm.list.length));
+  const initials = (name => name.trim().split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase() || 'У');
+  el.innerHTML = `<header class="apphead"><div class="brand bingo">Bing<span>O</span></div>
+      <div class="head-stats"><button class="iconbtn" data-go="settings" aria-label="Настройки">${icon('settings')}</button></div></header>
+    <section class="pad">
+      <div class="profhead"><div class="avatar">${esc(initials(p.name || ''))}</div>
+        <h1 class="pname">${esc(p.name || 'Ученик')}</h1><p class="muted pcls">${p.cls ? 'Клас ' + esc(p.cls) : 'Добави клас по-долу'}</p></div>
+      <div class="card"><h3>${icon('pen')}Данни</h3>
+        <label class="fld"><span>Име</span><input class="field" data-p="name" value="${esc(p.name || '')}" placeholder="напр. Мария П." autocomplete="off"></label>
+        <label class="fld"><span>Клас</span><input class="field" data-p="cls" value="${esc(p.cls || '')}" placeholder="напр. 12а" autocomplete="off"></label>
+        <p class="muted small">Името и класът отиват при учителя само ако си свързал Google Sheets.</p></div>
+      <div class="card"><h3>${icon('trophy')}Моят напредък</h3>
+        <div class="rows prows">
+          <div class="row"><span>${icon('flame')}Поредни дни</span><b>${act.streak}</b></div>
+          <div class="row"><span>${icon('check')}Отговори</span><b>${total}${total ? ' · ' + pctTxt(accOf(S.log)) + ' верни' : ''}</b></div>
+          <div class="row"><span>${icon('play')}Тренировки</span><b>${S.sessions}</b></div>
+          <div class="row"><span>${icon('target')}Силни умения</span><b>${strongN} от ${skillN}</b></div></div>
+        ${subs.map(({ s, sm }) => `<div class="psub" style="--accent:${s.color}"><span>${s.icon} ${esc(s.title)}</span>${bar(sm.answered ? 1 - sm.lost / sm.total : 0)}<small class="muted">${sm.answered ? 'запазени ≈ ' + fmt1(sm.total - sm.lost) + ' от ' + sm.total + ' т.' : 'още не е измерено'}</small></div>`).join('')}</div>
+      <div class="card"><button class="btn ghost block" data-go="insights">${icon('grid')}Грешки и данни</button>
+        <button class="btn ghost block" data-go="settings">${icon('settings')}Настройки</button>
+        <button class="btn ghost block" data-csv>${icon('download')}Моите отговори (CSV)</button></div>
+    </section>`;
+  el.addEventListener('click', e => {
+    const g = e.target.closest('[data-go]'); if (g) return go(g.dataset.go);
+    if (e.target.closest('[data-csv]')) return downloadText(`bingo-${slug(S.profile.name || 'uchenik')}-${todayKey()}.csv`, logCSV());
+  });
+  el.addEventListener('input', e => {
+    const f = e.target.closest('[data-p]'); if (!f) return;
+    S.profile[f.dataset.p] = f.value.trim(); saveState();
+    el.querySelector('.pname').textContent = S.profile.name || 'Ученик';
+    el.querySelector('.avatar').textContent = initials(S.profile.name || '');
+    el.querySelector('.pcls').textContent = S.profile.cls ? 'Клас ' + S.profile.cls : 'Добави клас по-долу';
+  });
+};
+
+/* ---------- put the menu under the three main screens ---------- */
+['home', 'stats', 'profile'].forEach(name => {
+  const inner = SCREENS[name];
+  SCREENS[name] = async (el, ...rest) => {
+    await inner(el, ...rest);
+    el.classList.add('has-nav');
+    el.insertAdjacentHTML('beforeend', tabBar(name));
+    el.querySelector('.tabbar').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) goTab(name, b.dataset.tab); });
+  };
+});
+
+;
+/* ==== src/js/65-forecast.js ==== */
+/* ================= Прогнозиран резултат =================
+   Expected matura points out of 100 = the weighted mastery of the skills in the app (BKT, see 51-skills.js).
+   The range gets narrower with every answer. The grade comes from the official MON scale
+   (one scale for DZI and NVO since 2022). Honest limit: the app only sees its own skills, not the whole exam. */
+
+const GRADES = [[84, 'Отличен 6'], [62.5, 'Мн. добър 5'], [41, 'Добър 4'], [30, 'Среден 3'], [0, 'Слаб 2']];
+const gradeOf = pts => GRADES.find(g => pts >= g[0]);
+const nextGrade = pts => [...GRADES].reverse().find(g => g[0] > pts) || null;
+const r0 = x => Math.round(x);
+const CONF_LABEL = { low: 'Малко данни — диапазонът е широк', mid: 'Средна сигурност', high: 'Добра сигурност' };
+
+function forecast(subj) {
+  const sm = subjectSummary(subj);
+  if (!sm.answered) return null;
+  const n = sm.list.length, pts = 100 * sum(sm.list.map(x => x.sk.weight * x.st.p)) / sm.total;
+  const margin = clamp(40 / Math.sqrt(sm.answered + 1), 4, 20);
+  const conf = sm.answered < n ? 'low' : sm.answered < 3 * n ? 'mid' : 'high';
+  const gains = sm.list.filter(x => x.status !== 'strong')
+    .map(x => ({ name: x.sk.name, gain: (Math.max(BKT.strong, x.st.p) - x.st.p) * x.sk.weight / sm.total * 100 }))
+    .sort((a, b) => b.gain - a.gain).slice(0, 3);
+  return { sm, n, pts, lo: clamp(pts - margin, 0, 100), hi: clamp(pts + margin, 0, 100), conf, gains, measured: sm.list.filter(x => x.st.n >= 1).length };
+}
+const gradeText = f => { const a = gradeOf(f.lo)[1], b = gradeOf(f.hi)[1]; return a === b ? a : a + ' – ' + b; };
+
+function fcScale(f) {
+  const ticks = [[30, '3'], [41, '4'], [62.5, '5'], [84, '6']];
+  return `<div class="fcscale"><div class="fctrack"><i class="fcband" style="left:${f.lo}%;width:${f.hi - f.lo}%"></i><b class="fcdot" style="left:${f.pts}%"></b></div>
+    <div class="fcticks">${ticks.map(([v, l]) => `<span style="left:${v}%">${l}</span>`).join('')}</div></div>`;
+}
+
+function fcCard(subj) {
+  const sub = SUBJECTS[subj], f = forecast(subj);
+  if (!f) return `<div class="card forecast empty"><span class="kicker">Прогнозен резултат · ${esc(sub.title)}</span><p class="muted">Направи диагностика и ще видиш колко точки очакваш на матурата.</p></div>`;
+  return `<button class="card forecast" data-forecast="${subj}">
+    <span class="kicker">Прогнозен резултат · ${esc(sub.title)}</span>
+    <div class="fc-score"><b>≈ ${r0(f.pts)}</b><span>от 100 т.</span></div>
+    <div class="fc-grade">${esc(gradeText(f))}</div>
+    ${fcScale(f)}
+    <small class="muted">Диапазон ${r0(f.lo)}–${r0(f.hi)} т. · ${CONF_LABEL[f.conf]} · натисни за подробности</small></button>`;
+}
+
+function fcSheet(subj) {
+  const sub = SUBJECTS[subj], f = forecast(subj); if (!f) return;
+  const nx = nextGrade(f.pts);
+  const scaleRows = [['Слаб 2', 'под 30 т.'], ['Среден 3', 'от 30 т.'], ['Добър 4', 'от 41 т.'], ['Мн. добър 5', 'от 62,5 т.'], ['Отличен 6', 'от 84 т.']];
+  sheet({
+    title: 'Прогноза · ' + sub.title,
+    body: `<div class="fc-detail">
+      <p class="fc-big"><b>≈ ${r0(f.pts)} т.</b> от 100 <span class="muted">(най-вероятно между ${r0(f.lo)} и ${r0(f.hi)})</span></p>
+      <p><span class="stchip s-mid">${esc(gradeOf(f.pts)[1])}</span> ${nx ? `До <b>${esc(nx[1])}</b> ти трябват още ≈ <b>${Math.max(1, Math.ceil(nx[0] - f.pts))} т.</b>` : 'Това е най-високата оценка.'}</p>
+      ${f.gains.length ? `<h3>Къде се печелят най-бързо точки</h3><ul class="misclist gains">${f.gains.map(g => `<li><span>${esc(g.name)}</span><b>+${fmt1(g.gain)} т.</b></li>`).join('')}</ul><p class="muted small">Ако темата стане силна (≥ 90%).</p>` : ''}
+      <h3>Скала за оценяване (МОН)</h3>
+      <ul class="misclist scale">${scaleRows.map(([a, b]) => `<li><span>${a}</span><b>${b}</b></li>`).join('')}</ul>
+      <p class="muted small">Прогнозата е ориентировъчна. Тя се смята от владеенето на ${f.n} теми в приложението (${f.measured} вече са измерени) и не вижда останалата част от изпита, напр. писането на есе или съчинение. Повече отговори дават по-тесен диапазон. Тежестите на темите са приблизителни.</p></div>`,
+    actions: [{ id: 'x', label: 'Затвори' }, { id: 'go', label: 'Тренирай слабото', kind: 'primary', icon: 'target' }]
+  }).then(v => { if (v === 'go') go('session', { subj, mode: 'focus' }); });
+}
+
+const bindForecast = el => el.addEventListener('click', e => { const f = e.target.closest('[data-forecast]'); if (f) fcSheet(f.dataset.forecast); });
+
+/* the forecast card on Home, under the "where you lose points" card */
+const _homeBase = SCREENS.home;
+SCREENS.home = async (el, ...rest) => {
+  await _homeBase(el, ...rest);
+  const lc = el.querySelector('.losscard');
+  if (lc) lc.insertAdjacentHTML('afterend', fcCard(S.subject));
+  bindForecast(el);
+};
+
+/* a forecast row in each matura card on Stats (cards come in the order of SUBJECTS) */
+const _statsBase = SCREENS.stats;
+SCREENS.stats = async (el, ...rest) => {
+  await _statsBase(el, ...rest);
+  const ids = Object.keys(SUBJECTS);
+  el.querySelectorAll('.statcard').forEach((c, i) => {
+    const f = ids[i] && forecast(ids[i]), head = c.querySelector('.stat-head');
+    if (f && head) head.insertAdjacentHTML('afterend', `<button class="fcrow" data-forecast="${ids[i]}"><span>Прогноза</span><b>≈ ${r0(f.pts)} т.</b><em>${esc(gradeText(f))}</em></button>`);
+  });
+  bindForecast(el);
 };
 
 ;

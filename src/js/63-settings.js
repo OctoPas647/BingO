@@ -4,8 +4,6 @@ SCREENS.settings = async el => {
   const seg = (key, opts) => `<div class="seg" data-key="${key}">${opts.map(([v, label]) => `<button data-v="${v}" class="${st[key] === v ? 'on' : ''}">${esc(label)}</button>`).join('')}</div>`;
   const field = (key, label, ph, type = 'text', obj = 'settings') => `<label class="fld"><span>${esc(label)}</span><input class="field" data-f="${obj}.${key}" type="${type}" value="${esc((obj === 'profile' ? S.profile : st)[key] || '')}" placeholder="${esc(ph)}" autocomplete="off" spellcheck="false"></label>`;
   el.innerHTML = `${topbar('Настройки')}<div class="pad settings">
-    <section class="card"><h3>${icon('pen')}Ученик</h3>${field('name', 'Име', 'напр. Мария П.', 'text', 'profile')}${field('cls', 'Клас', 'напр. 12а', 'text', 'profile')}
-      <p class="muted small">Името и класът отиват в данните за учителя (Looker Studio), само ако свържеш Google Sheets.</p></section>
     <section class="card"><h3>✦ Gemini</h3>${seg('aiMode', [['off', 'Изключен'], ['key', 'API ключ'], ['proxy', 'Vertex AI сървър']])}
       <div class="ai-key" ${st.aiMode === 'key' ? '' : 'hidden'}>${field('apiKey', 'Gemini API ключ', 'от aistudio.google.com', 'password')}
         <p class="muted small">Ключът стои само на това устройство. За прототип е добре; за истински ученици ползвай сървъра (Vertex AI).</p></div>

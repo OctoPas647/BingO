@@ -42,7 +42,7 @@ function fcCard(subj) {
 function fcSheet(subj) {
   const sub = SUBJECTS[subj], f = forecast(subj); if (!f) return;
   const nx = nextGrade(f.pts);
-  const scaleRows = [['Слаб 2', 'до 29,75 т.'], ['Среден 3', 'от 30 т.'], ['Добър 4', 'от 41 т.'], ['Мн. добър 5', 'от 62,5 т.'], ['Отличен 6', 'от 84 т.']];
+  const scaleRows = [['Слаб 2', 'под 30 т.'], ['Среден 3', 'от 30 т.'], ['Добър 4', 'от 41 т.'], ['Мн. добър 5', 'от 62,5 т.'], ['Отличен 6', 'от 84 т.']];
   sheet({
     title: 'Прогноза · ' + sub.title,
     body: `<div class="fc-detail">

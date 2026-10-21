@@ -50,7 +50,7 @@ SCREENS.stats = async el => {
         <div><span class="kicker">Матура</span><h3>${sub.icon} ${esc(sub.title)}</h3>
           <p class="muted small">${started ? `≈ ${fmt1(kept)} от ${sm.total} т. запазени` : 'Още не е измерено — направи диагностика'}</p></div></div>
       <div class="minis"><div><b>${rows.length}</b><small>отговора</small></div><div><b>${rows.length ? pctTxt(accOf(rows)) : '–'}</b><small>верни</small></div><div><b>${rows.length ? avgSec + ' с' : '–'}</b><small>средно време</small></div></div>
-      <div class="statchips"><span class="stchip s-strong">${cnt.strong} силни</span><span class="stchip s-mid">${cnt.mid} почти</span><span class="stchip s-weak">${cnt.weak} слаби</span><span class="stchip">${cnt.new} неизмерени</span></div>
+      <div class="statchips"><span class="stchip s-strong">${cnt.strong} силни</span><span class="stchip s-mid">${cnt.mid} почти</span><span class="stchip s-weak">${cnt.weak} слаби</span><span class="stchip">${cnt.new} малко данни</span></div>
       ${started && worst.length ? `<h4 class="stat-sub">Къде губиш най-много</h4><ul class="worst">${worst.map(x => `<li><span>${esc(x.sk.name)}</span><b>−${fmt1(x.lost)} т.</b></li>`).join('')}</ul>` : ''}
       <button class="btn accent block" data-open="${sub.id}">${icon('target')}Отвори картата · ${esc(sub.short)}</button></article>`;
   }).join('');

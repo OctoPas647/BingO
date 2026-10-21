@@ -7,7 +7,7 @@ BingO мери всяко умение от матурата поотделно,
 
 | Какво | Файл |
 |---|---|
-| Android | [`downloads/BingO-0.1.0.apk`](downloads/BingO-0.1.0.apk) |
+| Android | [`downloads/BingO-0.2.0.apk`](downloads/BingO-0.2.0.apk) |
 | Уеб версия (един файл, работи и офлайн) | [`downloads/BingO-web.html`](downloads/BingO-web.html) |
 | Примерни данни за клас (Looker Studio) | `data/sample-class.csv` |
 

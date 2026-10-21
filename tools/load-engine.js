@@ -9,7 +9,7 @@ module.exports = function load() {
     navigator: { onLine: false, language: 'bg' }, document: { documentElement: {} }, matchMedia: () => ({ matches: false, addEventListener() { } }),
     history: { pushState() { }, replaceState() { } }, fetch: async () => { throw new Error('no network in checks'); }
   };
-  ctx.window = ctx; ctx.addEventListener = () => { };
+  ctx.window = ctx; ctx.addEventListener = () => { }; ctx.applySettings = () => { }; /* Shelly's UI (20-ui.js) is not loaded in Node */
   vm.createContext(ctx);
   const run = f => vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8'), ctx, { filename: f });
   run('engine/vendor/katex.min.js');

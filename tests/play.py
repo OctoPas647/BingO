@@ -23,7 +23,10 @@ with sync_playwright() as pw:
         ctx = b.new_context(viewport={'width': 412, 'height': 900}, device_scale_factor=2, color_scheme=theme, locale='bg-BG')
         p = ctx.new_page(); p.on('pageerror', lambda e: errors.append(str(e))); p.on('console', lambda m: m.type == 'error' and errors.append(m.text))
         p.goto(PAGE); p.wait_for_selector('.losscard'); shot(p, f'{theme}-01-start')
-        if theme == 'dark': p.click('[data-demo]'); p.wait_for_timeout(300); shot(p, 'dark-02-demo-map'); ctx.close(); continue
+        if theme == 'dark':
+            p.click('[data-demo]'); p.wait_for_timeout(300); shot(p, 'dark-02-demo-map')
+            p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-key="theme"] [data-v="amoled"]'); p.wait_for_timeout(200); shot(p, 'dark-03-amoled-settings')
+            p.click('[data-back]'); p.wait_for_timeout(200); p.click('[data-tab="home"]'); p.wait_for_timeout(200); shot(p, 'dark-04-amoled-home'); ctx.close(); continue
         # diagnostic
         p.click('[data-start="diag"]'); p.wait_for_selector('.task'); shot(p, 'light-02-diag-task')
         for i in range(30):
@@ -46,7 +49,10 @@ with sync_playwright() as pw:
         p.wait_for_selector('.result'); p.wait_for_timeout(900); shot(p, 'light-12-focus-result')
         p.click('[data-out]'); p.wait_for_selector('.losscard')
         p.click('[data-go="insights"]'); p.wait_for_selector('.misclist, .card'); shot(p, 'light-13-insights')
-        p.click('[data-subj="bel"]'); p.wait_for_timeout(200); p.click('[data-back]'); p.wait_for_selector('.losscard'); shot(p, 'light-14-bel-map')
+        p.select_option('#subjSelect', 'bel'); p.wait_for_timeout(200); p.click('[data-back]'); p.wait_for_selector('.losscard'); shot(p, 'light-14-bel-map')
+        p.click('[data-tab="stats"]'); p.wait_for_selector('.statcard'); shot(p, 'light-16-stats')
+        p.click('[data-tab="profile"]'); p.wait_for_selector('.profhead'); shot(p, 'light-17-profile')
+        p.click('[data-tab="home"]'); p.wait_for_selector('[data-forecast]'); p.click('[data-forecast]'); p.wait_for_timeout(400); shot(p, 'light-18-forecast'); p.click('[data-act="x"]'); p.wait_for_timeout(300)
         p.click('[data-start="focus"]'); p.wait_for_selector('.task'); shot(p, 'light-15-bel-task')
         ctx.close()
     b.close()
