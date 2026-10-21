@@ -84,3 +84,11 @@
 .plan { padding-left: 1.2em; margin: 10px 0 0; display: grid; gap: 10px; }
 .plan li b { display: block; }
 .settings a.btn { text-decoration: none; }
+
+/* AMOLED theme: true black on top of the dark theme (set by applySettings in 50-state.js) */
+:root[data-theme="dark"][data-amoled="1"] {
+  --bg: #000000; --surface: #0B0B0E; --surface-2: #151519; --surface-3: #202026; --line: #26262D;
+  --shadow: 0 0 0 1px #1D1D23;
+  --good-bg: #0C2217; --bad-bg: #2A1215; --meh-bg: #271E0B;
+}
+.settings .seg button { font-size: .92rem; }

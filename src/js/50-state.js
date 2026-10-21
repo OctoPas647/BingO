@@ -36,6 +36,17 @@ function resetState(keepSettings) {
   S = { ...DEFAULT_STATE(), ...keep }; saveState(true);
 }
 
+/* AMOLED theme: the dark theme with true-black surfaces (OLED pixels switch off).
+   Shelly's applySettings() only knows auto/light/dark, so BingO wraps it. */
+const _applyBase = applySettings;
+applySettings = function () {
+  _applyBase();
+  const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
+  if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
+};
+
 /* Shelly's media loader, reading the few pictures that the build embeds (window.SHELLY_MEDIA: "module id\npath" -> data URL) */
 function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
