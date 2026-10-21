@@ -14,7 +14,7 @@ SCREENS.settings = async el => {
       <p class="muted small">Gemini обяснява грешките, дава подсказки без отговора, прави нови задачи за слабите теми и седмичен план. Без него приложението работи изцяло.</p></section>
     <section class="card"><h3>${icon('upload')}Google Sheets → Looker Studio</h3>${field('sheetUrl', 'Адрес на Apps Script (Web app)', 'https://script.google.com/macros/s/…/exec')}
       <p class="muted small">Всеки отговор става ред в таблица на учителя. Как се прави — apps-script/Code.gs в проекта.</p></section>
-    <section class="card"><h3>${icon('moon')}Тема</h3>${seg('theme', [['auto', 'Автоматично'], ['light', 'Светла'], ['dark', 'Тъмна']])}
+    <section class="card"><h3>${icon('moon')}Тема</h3>${seg('theme', [['auto', 'Автоматично'], ['light', 'Светла'], ['dark', 'Тъмна'], ['amoled', 'AMOLED']])}
       <div class="rows"><div class="row"><span>${icon('sound')}Звуци</span><button class="switch${st.sound ? ' on' : ''}" data-sw="sound" role="switch"><i></i></button></div></div></section>
     <section class="card"><h3>${icon('eye')}Демо</h3>
       <button class="btn ghost block" data-demo>${icon('play')}Зареди демо ученик</button>
