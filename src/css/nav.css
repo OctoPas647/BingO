@@ -1,0 +1,39 @@
+/* ================= BingO: bottom menu, Stats and Profile ================= */
+.has-nav { padding-bottom: calc(86px + env(safe-area-inset-bottom)); }
+.tabbar { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); width: min(760px, 100%); z-index: 10; display: flex; padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); background: var(--surface); box-shadow: 0 -1px 0 var(--line), 0 -6px 20px rgba(0, 0, 0, .06); }
+.tabbar button { flex: 1; display: grid; justify-items: center; gap: 2px; padding: 7px 4px; border-radius: 14px; color: var(--ink-3); font-size: .74rem; font-weight: 750; letter-spacing: .02em; transition: color .15s, background .15s; }
+.tabbar button .ic { width: 25px; height: 25px; }
+.tabbar button.on { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.tabbar button:active { transform: scale(.96); }
+
+.screen-title { font-size: 1.7rem; margin: 6px 2px 14px; }
+.stat-sub { font-size: .9rem; color: var(--ink-2); margin: 16px 0 8px; }
+
+.minis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0 10px; }
+.minis.four { grid-template-columns: repeat(4, 1fr); margin-top: 2px; }
+.minis > div { display: grid; justify-items: center; padding: 10px 4px; border-radius: 12px; background: var(--surface-2); text-align: center; }
+.minis b { font-size: 1.15rem; font-weight: 850; }
+.minis small { color: var(--ink-2); font-size: .72rem; }
+
+.weekbars { display: flex; align-items: flex-end; gap: 8px; height: 96px; }
+.wk { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; }
+.wk i { display: block; width: 100%; max-width: 30px; border-radius: 8px 8px 4px 4px; background: var(--accent); min-height: 4px; }
+.wk small { color: var(--ink-3); font-size: .72rem; }
+
+.statcard { border-top: 4px solid var(--accent); }
+.stat-head { display: flex; gap: 14px; align-items: center; }
+.stat-head h3 { font-size: 1.3rem; margin: 2px 0 4px; }
+.stat-head p { margin: 0; }
+.statchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.worst { list-style: none; padding: 0; margin: 0 0 4px; display: grid; gap: 6px; }
+.worst li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 12px; border-radius: 12px; background: var(--surface-2); }
+.worst li b { color: var(--bad); flex: none; }
+
+.profhead { display: grid; justify-items: center; text-align: center; margin: 6px 0 18px; }
+.avatar { width: 88px; height: 88px; display: grid; place-items: center; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-size: 2rem; font-weight: 900; letter-spacing: .02em; }
+.pname { font-size: 1.5rem; margin: 12px 0 2px; }
+.pcls { margin: 0; }
+.prows { margin-bottom: 8px; }
+.psub { display: grid; gap: 6px; margin-top: 14px; }
+.psub span { font-weight: 750; }
+.psub .bar i { background: var(--accent); }
