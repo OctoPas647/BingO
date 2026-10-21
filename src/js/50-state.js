@@ -41,9 +41,18 @@ function resetState(keepSettings) {
 /* AMOLED theme: the dark theme with true-black surfaces (OLED pixels switch off).
    Shelly's applySettings() only knows auto/light/dark, so BingO wraps it. */
 const _applyBase = applySettings;
+/* "Системна": the phone's own setting. In the Android app the WebView reports the app theme, not the
+   phone's, so the app asks Android directly (AndroidUI.night); in a browser prefers-color-scheme works. */
+function systemDark() {
+  try { if (window.AndroidUI && typeof window.AndroidUI.night === 'function') return !!window.AndroidUI.night(); } catch (e) { }
+  return matchMedia('(prefers-color-scheme: dark)').matches;
+}
+window.__systemTheme = () => { if (S.settings.theme === 'auto') applySettings(); };
+document.addEventListener && document.addEventListener('visibilitychange', () => { if (!document.hidden) window.__systemTheme(); });
 applySettings = function () {
   _applyBase();
   const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
+  if (S.settings.theme === 'auto') rootEl.dataset.theme = systemDark() ? 'dark' : 'light';
   if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';

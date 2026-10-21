@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -277,7 +278,19 @@ public class MainActivity extends Activity {
     @Override protected void onDestroy() { web.destroy(); super.onDestroy(); }
 
     /* System bars follow the app theme */
+    /* the phone's light/dark setting, for the app's "System" theme */
+    boolean systemNight() { return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES; }
+
+    @Override
+    public void onConfigurationChanged(Configuration c) {
+        super.onConfigurationChanged(c);
+        js("window.__systemTheme && __systemTheme()");
+    }
+
     class UiBridge {
+        @JavascriptInterface
+        public boolean night() { return systemNight(); }
+
         @JavascriptInterface
         public void bars(final String hex, final boolean dark) {
             runOnUiThread(new Runnable() { @Override public void run() {

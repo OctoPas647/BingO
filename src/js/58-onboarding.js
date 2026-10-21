@@ -118,7 +118,7 @@ SCREENS.onboarding = async el => {
   };
   const draw = () => {
     el.innerHTML = `<div class="pad onboarding">
-      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="Назад">${icon('back')}</button>` : '<span class="tb-gap"></span>'}${bar((o.step + 1) / n, 'ob-bar')}<span class="ob-count">${o.step + 1}/${n}</span></header>
+      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="Назад">${icon('back')}</button>` : '<span class="tb-gap"></span>'}<span class="ob-count">${o.step + 1}/${n}</span></header>
       ${o.step === 0 || isLast ? '<div class="brand bingo ob-brand">Bing<span>O</span></div>' : ''}
       <h1 class="ob-title">${esc(step.title)}</h1><p class="muted ob-text">${esc(step.text)}</p>
       ${step.fields.length ? `<section class="card ob-card">${step.fields.map(fieldHtml).join('')}</section>` : ''}

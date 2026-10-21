@@ -717,8 +717,7 @@ body:has(.checkbar, .exambottom) .toast { bottom: calc(150px + env(safe-area-ins
 
 /* first-run setup */
 .onboarding { display: grid; gap: 10px; padding-top: 10px; }
-.ob-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-.ob-top .bar { flex: 1; }
+.ob-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin-bottom: 8px; }
 .ob-count { font-weight: 800; color: var(--ink-3); font-size: .9rem; font-variant-numeric: tabular-nums; }
 .ob-brand { font-size: 2.6rem; margin: 18px 0 2px; }
 .ob-title { font-size: 1.8rem; text-wrap: balance; }
@@ -1968,9 +1967,18 @@ function resetState(keepSettings) {
 /* AMOLED theme: the dark theme with true-black surfaces (OLED pixels switch off).
    Shelly's applySettings() only knows auto/light/dark, so BingO wraps it. */
 const _applyBase = applySettings;
+/* "Системна": the phone's own setting. In the Android app the WebView reports the app theme, not the
+   phone's, so the app asks Android directly (AndroidUI.night); in a browser prefers-color-scheme works. */
+function systemDark() {
+  try { if (window.AndroidUI && typeof window.AndroidUI.night === 'function') return !!window.AndroidUI.night(); } catch (e) { }
+  return matchMedia('(prefers-color-scheme: dark)').matches;
+}
+window.__systemTheme = () => { if (S.settings.theme === 'auto') applySettings(); };
+document.addEventListener && document.addEventListener('visibilitychange', () => { if (!document.hidden) window.__systemTheme(); });
 applySettings = function () {
   _applyBase();
   const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
+  if (S.settings.theme === 'auto') rootEl.dataset.theme = systemDark() ? 'dark' : 'light';
   if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
@@ -3252,7 +3260,7 @@ SCREENS.onboarding = async el => {
   };
   const draw = () => {
     el.innerHTML = `<div class="pad onboarding">
-      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="Назад">${icon('back')}</button>` : '<span class="tb-gap"></span>'}${bar((o.step + 1) / n, 'ob-bar')}<span class="ob-count">${o.step + 1}/${n}</span></header>
+      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="Назад">${icon('back')}</button>` : '<span class="tb-gap"></span>'}<span class="ob-count">${o.step + 1}/${n}</span></header>
       ${o.step === 0 || isLast ? '<div class="brand bingo ob-brand">Bing<span>O</span></div>' : ''}
       <h1 class="ob-title">${esc(step.title)}</h1><p class="muted ob-text">${esc(step.text)}</p>
       ${step.fields.length ? `<section class="card ob-card">${step.fields.map(fieldHtml).join('')}</section>` : ''}

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+- "Системна" theme now follows the phone's dark mode in the Android app (the app asks Android directly and updates when the phone switches); the window is dark while loading too
+- Setup screens: no progress bar
+
 ## 0.3.0
 - **First-run setup**: welcome, name and class, which matura first, theme, Gemini, teacher's Sheet. Saves each step, resumes if interrupted, and is never shown to people who already have answers. Back goes one step back; Settings can run it again
 - **БЕЛ: ~560 new tasks** (spelling, articles, commas), each rule as "Кое е правилно?" and "Къде е грешката?"

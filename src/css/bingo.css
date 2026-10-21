@@ -98,8 +98,7 @@
 
 /* first-run setup */
 .onboarding { display: grid; gap: 10px; padding-top: 10px; }
-.ob-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-.ob-top .bar { flex: 1; }
+.ob-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin-bottom: 8px; }
 .ob-count { font-weight: 800; color: var(--ink-3); font-size: .9rem; font-variant-numeric: tabular-nums; }
 .ob-brand { font-size: 2.6rem; margin: 18px 0 2px; }
 .ob-title { font-size: 1.8rem; text-wrap: balance; }
