@@ -1,0 +1,4 @@
+dist/
+build/
+platforms/android/signing/
+server/node_modules/

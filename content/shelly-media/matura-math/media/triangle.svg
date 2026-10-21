@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 230" width="340" height="230" font-family="Georgia, 'Times New Roman', serif" font-size="20">
+  <rect width="340" height="230" fill="#ffffff"/>
+  <path d="M50 190 L290 190 L50 40 Z" fill="#E9EEFF" stroke="#1D1B24" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M50 172 H68 V190" fill="none" stroke="#1D1B24" stroke-width="2"/>
+  <path d="M252 190 A38 38 0 0 0 257.8 169.9" fill="none" stroke="#2F5BD3" stroke-width="2.5"/>
+  <text x="236" y="181" fill="#2F5BD3" font-style="italic">α</text>
+  <text x="296" y="208" font-style="italic">A</text>
+  <text x="30" y="36" font-style="italic">B</text>
+  <text x="30" y="210" font-style="italic">C</text>
+  <text x="28" y="122" fill="#C2410C" font-style="italic" font-weight="bold">a</text>
+  <text x="164" y="214" fill="#C2410C" font-style="italic" font-weight="bold">b</text>
+  <text x="178" y="104" fill="#C2410C" font-style="italic" font-weight="bold">c</text>
+</svg>

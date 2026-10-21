@@ -1,0 +1,11 @@
+{
+  "name": "bingo-ai",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "BingO: Gemini on Vertex AI behind a tiny Cloud Run service",
+  "main": "index.js",
+  "scripts": { "start": "node index.js" },
+  "engines": { "node": ">=20" },
+  "dependencies": { "@google/genai": "^2.30.0" }
+}

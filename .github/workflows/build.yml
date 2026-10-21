@@ -1,0 +1,101 @@
+# Checks BingO, builds the APK and the web page on every push to main.
+# With the BINGO_SIGNING secret set (see README.md, "Signing"), each build is signed with your key
+# and published as a GitHub Release with the APK and the module files. Without it, the build still
+# runs and a test APK can be downloaded from the run's Artifacts, but nothing is published.
+name: Build
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['**.md', 'docs/**', 'data/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Android SDK platform and build tools
+        run: |
+          SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$SDK" "platforms;android-34" "build-tools;35.0.0" > /dev/null
+          echo "ANDROID_HOME=$SDK" >> "$GITHUB_ENV"
+
+      - name: Check
+        run: python3 tools/build.py check
+
+      - name: Restore signing key
+        id: key
+        env:
+          SIGNING: ${{ secrets.BINGO_SIGNING }}
+        run: |
+          if [ -n "$SIGNING" ]; then
+            mkdir -p platforms/android/signing
+            echo "$SIGNING" | base64 -d > /tmp/signing.zip
+            python3 -c "import zipfile; zipfile.ZipFile('/tmp/signing.zip').extractall('platforms/android/signing')"
+            rm /tmp/signing.zip
+            echo "signed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::No BINGO_SIGNING secret: building a test APK with a temporary key. It won't install over the app on your phone, and no release is published."
+          fi
+
+      - name: Build APK and web page
+        run: |
+          python3 tools/build.py android
+          python3 tools/build.py web
+
+      - name: Read version
+        id: ver
+        run: echo "version=$(python3 -c "import json; print(json.load(open('tools/config.json'))['version'])")" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to this run
+        uses: actions/upload-artifact@v4
+        with:
+          name: BingO-${{ steps.ver.outputs.version }}${{ steps.key.outputs.signed == 'true' && '' || '-test-key' }}
+          path: |
+            dist/android/*.apk
+            dist/web/index.html
+
+      - name: Publish release
+        if: steps.key.outputs.signed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VER: ${{ steps.ver.outputs.version }}
+        run: |
+          TAG="v$VER"
+          python3 - <<'PY' > notes.md
+          import os, re
+          ver = os.environ['VER']
+          text = open('CHANGELOG.md', encoding='utf-8').read()
+          m = re.search(r'^## ' + re.escape(ver) + r'.*?\n(.*?)(?=^## |\Z)', text, re.S | re.M)
+          print((m.group(1).strip() if m else 'BingO ' + ver) + '\n\nInstall the APK on your phone.')
+          PY
+          FILES="dist/android/*.apk"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" $FILES --clobber
+            gh release edit "$TAG" --notes-file notes.md
+          else
+            gh release create "$TAG" $FILES --title "BingO $VER" --notes-file notes.md --target "$GITHUB_SHA"
+          fi
+
+      - name: Remove signing key
+        if: always()
+        run: rm -rf platforms/android/signing

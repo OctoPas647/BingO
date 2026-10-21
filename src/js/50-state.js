@@ -1,0 +1,45 @@
+/* ================= BingO: state that lives in this browser =================
+   Shelly's engine (rich text, task views, scoring) is reused as is; this file replaces
+   Shelly's IndexedDB store with one small localStorage record. */
+const STORE_KEY = 'bingo.v1';
+const APP_NAME_UI = 'BingO';
+
+/* Shelly's 20-ui.js reads APP.settings (theme, sound, motion, lang) */
+let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, shuffle: false }, xp: 0, days: {} };
+
+const DEFAULT_STATE = () => ({
+  v: 1,
+  profile: { name: '', cls: '', id: uid() },
+  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true },
+  subject: 'math',
+  skills: {},            /* "math.quad" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] } */
+  log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
+  queue: [],             /* rows not yet sent to the Sheet */
+  sessions: 0,
+  aiFlags: []            /* AI-made tasks a learner reported as wrong */
+});
+
+let S = DEFAULT_STATE();
+function loadState() {
+  try { const raw = localStorage.getItem(STORE_KEY); if (raw) { const v = JSON.parse(raw); S = { ...DEFAULT_STATE(), ...v, profile: { ...DEFAULT_STATE().profile, ...(v.profile || {}) }, settings: { ...DEFAULT_STATE().settings, ...(v.settings || {}) } }; } }
+  catch (e) { console.warn('state not loaded', e); }
+  APP.settings.theme = S.settings.theme; APP.settings.sound = S.settings.sound !== false;
+}
+let saveTimer = 0;
+function saveState(now) {
+  clearTimeout(saveTimer);
+  const put = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { console.warn('state not saved', e); } };
+  if (now) put(); else saveTimer = setTimeout(put, 120);
+}
+function resetState(keepSettings) {
+  const keep = keepSettings ? { settings: S.settings, profile: S.profile } : {};
+  S = { ...DEFAULT_STATE(), ...keep }; saveState(true);
+}
+
+/* Shelly's media loader, reading the few pictures that the build embeds (window.SHELLY_MEDIA: "module id\npath" -> data URL) */
+function hydrateMedia(root, id) {
+  root.querySelectorAll('[data-media]').forEach(el => {
+    const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
+    if (url) el.src = url; else el.classList.add('missing');
+  });
+}
