@@ -4,8 +4,11 @@
 .center { text-align: center; }
 .btn.block { width: 100%; margin-top: 10px; }
 .btn.block + .btn.block { margin-top: 8px; }
-.subj-seg { margin: 4px 0 14px; }
-.subj-seg button { font-size: 1rem; padding: 10px 6px; }
+.subj-pick { display: grid; gap: 6px; margin: 4px 0 14px; }
+.selwrap { position: relative; display: block; }
+.selwrap::after { content: ''; position: absolute; right: 16px; top: 50%; width: 8px; height: 8px; border-right: 2.5px solid var(--accent); border-bottom: 2.5px solid var(--accent); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+.subj-select { appearance: none; -webkit-appearance: none; width: 100%; font-size: 1.05rem; font-weight: 800; padding: 13px 44px 13px 14px; border-radius: var(--r); border: 2px solid var(--accent); background: var(--surface); color: var(--ink); cursor: pointer; }
+.subj-select:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 2px; }
 .foot { margin-top: 22px; }
 
 /* the loss card */

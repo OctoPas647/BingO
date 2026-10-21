@@ -4,7 +4,7 @@ const pctTxt = p => Math.round(p * 100) + '%';
 const SRC_LABEL = { gen: 'Нов вариант', shelly: 'От Shelly', bank: 'Банка задачи', ai: 'Създадена от ИИ' };
 
 function subjectTabs(cur) {
-  return `<div class="seg subj-seg">${Object.values(SUBJECTS).map(s => `<button data-subj="${s.id}" class="${s.id === cur ? 'on' : ''}">${s.icon} ${esc(s.title)}</button>`).join('')}</div>`;
+  return `<label class="subj-pick"><span class="kicker">Предмет за матура</span><span class="selwrap"><select class="field subj-select" id="subjSelect" aria-label="Избери предмет за матура">${Object.values(SUBJECTS).map(s => `<option value="${s.id}"${s.id === cur ? ' selected' : ''}>${s.icon} ${esc(s.title)}</option>`).join('')}</select></span></label>`;
 }
 
 function skillRow(subj, x) {
@@ -50,8 +50,10 @@ SCREENS.home = async el => {
       ${started ? `<button class="btn ghost block" data-start="diag">${icon('reset')}Нова диагностика</button>` : ''}
       <p class="muted small center foot">${aiOn() ? '✦ Gemini е включен' : 'Без ИИ · включи Gemini в настройките'} · ${S.settings.sheetUrl ? 'данните отиват в Google Sheets' : 'данните остават на устройството'}</p>
     </section>`;
+  el.onchange = e => {
+    const s = e.target.closest('#subjSelect'); if (s && SUBJECTS[s.value]) { S.subject = s.value; saveState(); return refresh(); }
+  };
   el.addEventListener('click', async e => {
-    const s = e.target.closest('[data-subj]'); if (s) { S.subject = s.dataset.subj; saveState(); return refresh(); }
     const g = e.target.closest('[data-go]'); if (g) return go(g.dataset.go);
     const st = e.target.closest('[data-start]'); if (st) return go('session', { subj, mode: st.dataset.start });
     if (e.target.closest('[data-demo]')) { simulateLearner(); toast('Зареден е демо ученик с история от 6 дни'); return refresh(); }
