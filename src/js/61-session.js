@@ -28,19 +28,23 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     <footer class="checkbar"><div class="verdict"></div><button class="btn accent big" data-main></button></footer>`;
   const main = el.querySelector('.playmain'), foot = el.querySelector('.checkbar'), btn = foot.querySelector('[data-main]'), verdict = foot.querySelector('.verdict');
   nav.guard = async () => P.done || !P.touched || confirmBox('Да спрем ли?', 'Отговорите досега вече са записани в картата на уменията.', 'Спри', true);
-  let view = null, task = null, shownAt = 0, aiHints = 0;
+  let view = null, task = null, shownAt = 0, aiHints = 0, checkedAt = 0;
   const paintCount = () => { el.querySelector('.pcount').textContent = `${Math.min(P.i + 1, Q.length)} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
 
+  /* The same question never comes twice in one session (P.used holds ids and, for generated
+     tasks, the question text). If a skill has no unseen task left, its place is dropped. */
   function nextTask() {
     const item = Q[P.i], st = skillState(subj, item.skill), lvl = item.level || levelFor(st.p);
-    let t = item.task || pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used);
-    if (!t) t = pickTask(subj, item.skill, lvl, sessionId + ':' + P.i + 'b'); /* bank used up: allow a repeat */
-    item.task = t; P.used.add(t.id);
+    const t = item.task && !P.used.has(taskKey(item.task)) ? item.task : pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used);
+    if (!t) return null;
+    item.task = t; P.used.add(t.id); P.used.add(taskKey(t));
     return t;
   }
 
   function showTask() {
-    const item = Q[P.i]; task = nextTask(); P.phase = 'answer'; aiHints = 0; shownAt = Date.now();
+    while (P.i < Q.length && !(task = nextTask())) Q.splice(P.i, 1);
+    if (P.i >= Q.length) return P.answers.length ? finish() : (toast('Няма нови задачи по тази тема'), back());
+    const item = Q[P.i]; P.phase = 'answer'; aiHints = 0; shownAt = Date.now();
     view = taskView(task, m, { mode: 'practice', seed: sessionId, onChange: upd });
     const sk = skillDef(subj, task.skill);
     const tag = item.why === 'check' ? `<i class="chk">${icon('check')}Проверка на силно умение</i>` : item.why === 'twin' ? `<i class="twin">${icon('reset')}Близнак: същото, нови числа</i>` : '';
@@ -51,7 +55,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     window.scrollTo(0, 0); paintCount();
     foot.className = 'checkbar'; verdict.innerHTML = ''; btn.textContent = 'Провери'; upd();
   }
-  function upd() { if (P.phase === 'answer') { btn.disabled = !(view.ready() || task.type === 'order'); P.touched = P.touched || view.ready(); } }
+  function upd() { if (P.phase === 'answer') { btn.disabled = !view.ready(); P.touched = P.touched || view.ready(); } }
 
   function mistakeOf(resp) {
     if (task.type === 'choice' && Array.isArray(task.misc)) return task.misc[resp] || null;
@@ -65,7 +69,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const ch = recordAnswer(subj, task, correct, misc);
     logAnswer({ subj, task, correct, misc, secs, hints, before: ch.before, after: ch.after, mode: item.why === 'check' ? 'check' : mode, session: sessionId });
     P.answers.push({ skill: task.skill, correct, misc, task, resp, res });
-    view.show(res); P.phase = 'next'; P.touched = true;
+    view.show(res); P.phase = 'next'; P.touched = true; checkedAt = Date.now();
     sound(correct ? 'right' : 'wrong');
     foot.className = 'checkbar ' + (correct ? 'good' : 'bad');
     const sk = skillDef(subj, task.skill);
@@ -87,6 +91,8 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
 
   btn.addEventListener('click', () => {
     if (P.phase === 'answer') return check();
+    /* a quick second tap on "Провери" must not skip the feedback the first tap just opened */
+    if (Date.now() - checkedAt < 450) return;
     if (++P.i < Q.length) showTask(); else finish();
   });
   main.addEventListener('submit-answer', () => { if (P.phase === 'answer' && !btn.disabled) check(); });

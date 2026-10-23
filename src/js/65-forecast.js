@@ -7,20 +7,21 @@ const GRADES = [[84, 'Отличен 6'], [62.5, 'Мн. добър 5'], [41, 'Д
 const gradeOf = pts => GRADES.find(g => pts >= g[0]);
 const nextGrade = pts => [...GRADES].reverse().find(g => g[0] > pts) || null;
 const r0 = x => Math.round(x);
-const CONF_LABEL = { low: 'Малко данни — диапазонът е широк', mid: 'Средна сигурност', high: 'Добра сигурност' };
+const CONF_LABEL = { low: 'Малко данни — диапазонът е широк, оценка още не показваме', mid: 'Средна сигурност', high: 'Добра сигурност' };
 
 function forecast(subj) {
   const sm = subjectSummary(subj);
   if (!sm.answered) return null;
   const n = sm.list.length, pts = 100 * sum(sm.list.map(x => x.sk.weight * x.st.p)) / sm.total;
   const margin = clamp(40 / Math.sqrt(sm.answered + 1), 4, 20);
-  const conf = sm.answered < n ? 'low' : sm.answered < 3 * n ? 'mid' : 'high';
+  /* one answer per skill (the diagnostic) is not enough to name a grade: a single lucky guess moves a skill a lot */
+  const conf = sm.answered < 2 * n || sm.list.some(x => x.st.n < 1) ? 'low' : sm.answered < 4 * n ? 'mid' : 'high';
   const gains = sm.list.filter(x => x.status !== 'strong')
     .map(x => ({ name: x.sk.name, gain: (Math.max(BKT.strong, x.st.p) - x.st.p) * x.sk.weight / sm.total * 100 }))
     .sort((a, b) => b.gain - a.gain).slice(0, 3);
   return { sm, n, pts, lo: clamp(pts - margin, 0, 100), hi: clamp(pts + margin, 0, 100), conf, gains, measured: sm.list.filter(x => x.st.n >= 1).length };
 }
-const gradeText = f => { const a = gradeOf(f.lo)[1], b = gradeOf(f.hi)[1]; return a === b ? a : a + ' – ' + b; };
+const gradeText = f => { if (f.conf === 'low') return 'Оценка — след още няколко отговора'; const a = gradeOf(f.lo)[1], b = gradeOf(f.hi)[1]; return a === b ? a : a + ' – ' + b; };
 
 function fcScale(f) {
   const ticks = [[30, '3'], [41, '4'], [62.5, '5'], [84, '6']];
@@ -47,7 +48,7 @@ function fcSheet(subj) {
     title: 'Прогноза · ' + sub.title,
     body: `<div class="fc-detail">
       <p class="fc-big"><b>≈ ${r0(f.pts)} т.</b> от 100 <span class="muted">(най-вероятно между ${r0(f.lo)} и ${r0(f.hi)})</span></p>
-      <p><span class="stchip s-mid">${esc(gradeOf(f.pts)[1])}</span> ${nx ? `До <b>${esc(nx[1])}</b> ти трябват още ≈ <b>${Math.max(1, Math.ceil(nx[0] - f.pts))} т.</b>` : 'Това е най-високата оценка.'}</p>
+      ${f.conf === 'low' ? `<p class="muted">Още е рано за оценка: имаш ${f.sm.answered} отговора в ${f.n} теми. След още няколко тренировки прогнозата ще покаже и оценка.</p>` : `<p><span class="stchip s-mid">${esc(gradeOf(f.pts)[1])}</span> ${nx ? `До <b>${esc(nx[1])}</b> ти трябват още ≈ <b>${Math.max(1, Math.ceil(nx[0] - f.pts))} т.</b>` : 'Това е най-високата оценка.'}</p>`}
       ${f.gains.length ? `<h3>Къде се печелят най-бързо точки</h3><ul class="misclist gains">${f.gains.map(g => `<li><span>${esc(g.name)}</span><b>+${fmt1(g.gain)} т.</b></li>`).join('')}</ul><p class="muted small">Ако темата стане силна (≥ 90%).</p>` : ''}
       <h3>Скала за оценяване (МОН)</h3>
       <ul class="misclist scale">${scaleRows.map(([a, b]) => `<li><span>${a}</span><b>${b}</b></li>`).join('')}</ul>

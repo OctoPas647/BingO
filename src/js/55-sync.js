@@ -15,22 +15,36 @@ function logAnswer({ subj, task, correct, misc, secs, hints, before, after, mode
     mastery_before: roundTo(before, 3), mastery_after: roundTo(after, 3), mode, session_id: session, task_id: task.id
   };
   S.log.push(row); if (S.log.length > 3000) S.log.splice(0, S.log.length - 3000);
-  if (S.settings.sheetUrl) S.queue.push(row);
+  if (S.settings.sheetUrl) { S.queue.push(row); if (S.queue.length > 3000) S.queue.splice(0, S.queue.length - 3000); }
   saveState();
   scheduleFlush();
 }
 
-let flushTimer = 0;
-function scheduleFlush() { clearTimeout(flushTimer); flushTimer = setTimeout(flushToSheet, 4000); }
+/* Rows leave the queue only after the Sheet answers {ok: true}. A server error, a bad answer or no
+   network keeps them for the next try (with a growing pause). Apps Script skips rows it already has
+   (same student, session and task), so sending a row twice never makes a duplicate. */
+let flushTimer = 0, flushFails = 0, flushing = false;
+function scheduleFlush(ms = 4000) { clearTimeout(flushTimer); flushTimer = setTimeout(flushToSheet, ms); }
 async function flushToSheet() {
-  const url = S.settings.sheetUrl; if (!url || !S.queue.length || !navigator.onLine) return false;
-  const rows = S.queue.slice(0, 200).map(r => LOG_COLUMNS.map(c => r[c]));
+  const url = S.settings.sheetUrl; if (!url || !S.queue.length || !navigator.onLine || flushing) return false;
+  flushing = true;
+  const batch = S.queue.slice(0, 200), rows = batch.map(r => LOG_COLUMNS.map(c => r[c]));
   try {
-    /* Apps Script web apps do not send CORS headers; a plain-text POST still arrives */
-    await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ columns: LOG_COLUMNS, rows }) });
-    S.queue.splice(0, rows.length); saveState(); if (S.queue.length) scheduleFlush();
+    /* text/plain keeps this a "simple" request (no CORS preflight, which Apps Script cannot answer);
+       Apps Script replies through a redirect that does allow reading the answer */
+    const res = await fetch(url, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ columns: LOG_COLUMNS, rows }) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const j = await res.json().catch(() => null);
+    if (!j || j.ok !== true) throw new Error((j && j.error) || 'the Sheet did not confirm');
+    /* remove exactly the rows that were sent (new answers may have been queued meanwhile) */
+    S.queue = S.queue.filter(r => !batch.includes(r)); flushFails = 0; saveState();
+    if (S.queue.length) scheduleFlush(500);
     return true;
-  } catch (e) { console.warn('sheet sync failed', e); return false; }
+  } catch (e) {
+    console.warn('sheet sync failed, rows kept for later', e);
+    flushFails++; scheduleFlush(Math.min(10 * 60e3, 15e3 * 2 ** Math.min(flushFails, 6)));
+    return false;
+  } finally { flushing = false; }
 }
 window.addEventListener('online', scheduleFlush);
 

@@ -43,18 +43,18 @@ with sync_playwright() as pw:
         p.click('[data-start="diag"]'); p.wait_for_selector('.task'); shot(p, 'light-02-diag-task')
         for i in range(30):
             if not p.locator('[data-main]').count(): break
-            answer(p, wrong=(i % 3 == 1)); p.wait_for_timeout(120)
+            answer(p, wrong=(i % 3 == 1)); p.wait_for_timeout(500)  # a quick second tap is ignored on purpose
             if i == 1: shot(p, 'light-03-diag-wrong')
             p.click('[data-main]'); p.wait_for_timeout(120)
         p.wait_for_selector('.result'); shot(p, 'light-04-diag-result')
         p.click('[data-out]'); p.wait_for_selector('.losscard'); shot(p, 'light-05-map')
         # demo learner and focus
-        p.click('[data-go="settings"]'); p.wait_for_selector('.settings'); shot(p, 'light-06-settings'); p.click('[data-demo]'); p.wait_for_selector('.losscard'); shot(p, 'light-07-demo-map')
+        p.click('[data-go="settings"]'); p.wait_for_selector('.settings'); shot(p, 'light-06-settings'); p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard'); shot(p, 'light-07-demo-map')
         p.locator('.skrow').first.click(); p.wait_for_timeout(400); shot(p, 'light-08-skill-sheet'); p.click('[data-act="x"]'); p.wait_for_timeout(300)
         p.click('[data-start="focus"]'); p.wait_for_selector('.task'); shot(p, 'light-09-focus-task')
         for i in range(25):
             if not p.locator('[data-main]').count(): break
-            answer(p, wrong=(i == 0)); p.wait_for_timeout(150)
+            answer(p, wrong=(i == 0)); p.wait_for_timeout(500)
             if i == 0: shot(p, 'light-10-focus-wrong')
             if i == 1: shot(p, 'light-11-twin')
             p.click('[data-main]'); p.wait_for_timeout(150)

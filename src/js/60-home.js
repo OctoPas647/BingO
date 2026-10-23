@@ -56,7 +56,7 @@ SCREENS.home = async el => {
   el.addEventListener('click', async e => {
     const g = e.target.closest('[data-go]'); if (g) return go(g.dataset.go);
     const st = e.target.closest('[data-start]'); if (st) return go('session', { subj, mode: st.dataset.start });
-    if (e.target.closest('[data-demo]')) { simulateLearner(); toast('Зареден е демо ученик с история от 6 дни'); return refresh(); }
+    if (e.target.closest('[data-demo]')) { if (await loadDemoLearner()) { toast('Зареден е демо ученик с история от 6 дни'); refresh(); } return; }
     const k = e.target.closest('[data-skill]'); if (k) return skillSheet(subj, k.dataset.skill);
   });
 };
@@ -70,7 +70,7 @@ function skillSheet(subj, id) {
     title: sk.name, body: `<div class="sk-detail">
       <p><span class="stchip s-${status}">${STATUS_LABEL[status]}</span> Овладяно ≈ <b>${pctTxt(st.p)}</b> · ${st.ok}/${st.n} верни · губиш ≈ <b>${fmt1(pointsLost(sk, st))}</b> от ${sk.weight} т.</p>
       ${spark ? `<div class="spark">${spark}<small class="muted">как се променя увереността с всеки отговор</small></div>` : ''}
-      ${miscs.length ? `<h3>Твоите типични грешки</h3><ul class="misclist">${miscs.map(([k, n]) => `<li><span class="rt">${richInline(miscLabel(k))}</span><b>×${n}</b></li>`).join('')}</ul>` : '<p class="muted">Още няма грешки в тази тема.</p>'}
+      ${miscs.length ? `<h3>Твоите типични грешки</h3><ul class="misclist">${miscs.map(([k, n]) => `<li><span class="rt">${richInline(miscLabel(k))}</span><b>×${n}</b></li>`).join('')}</ul>` : (st.n > st.ok ? `<p class="muted">${st.n - st.ok} ${st.n - st.ok === 1 ? 'грешен отговор' : 'грешни отговора'}, но без разпозната типична грешка — виж обясненията след задачите.</p>` : st.n ? '<p class="muted">Още няма грешки в тази тема.</p>' : '<p class="muted">Още няма отговори в тази тема.</p>')}
       <p class="muted small">„Овладяно“ е вероятността да решиш вярно нова задача от темата (Bayesian Knowledge Tracing). Тежестта ${sk.weight} т. е приблизителна оценка за демото.</p></div>`,
     actions: [{ id: 'x', label: 'Затвори' }, { id: 'go', label: 'Тренирай само това', kind: 'primary', icon: 'target' }]
   }).then(v => { if (v === 'go') go('session', { subj, mode: 'skill', skill: id }); });

@@ -15,6 +15,8 @@ function checkTask(t, where) {
   n++;
   for (const s of [t.prompt, t.explain, ...(t.options || [])]) { const bad = mathOk(s); if (bad) fail(where + ' katex ' + bad, t); }
   if (!t.explain && t.src !== 'shelly') fail(where + ' no explain', t);
+  /* two signs in a row ("25--24", "3+-2") read as a typo; a negative number after an operator needs brackets */
+  for (const s of [t.prompt, t.explain, ...(t.options || [])]) for (const m of String(s || '').match(/\$[^$]+\$/g) || []) if (/[-+]\s*[-+]/.test(m.replace(/\\pm/g, '±'))) fail(where + ' double sign ' + m, t);
   if (t.type === 'choice') {
     if (t.options.length < 2) fail(where + ' few options', t);
     if (new Set(t.options).size !== t.options.length) fail(where + ' duplicate options', t);
@@ -78,6 +80,29 @@ E('resetState(false)');
 /* 5. spaced review (57-review.js) */
 const box = E("reviewUpdate('math.quad', true, 0); reviewUpdate('math.quad', true, 0).box"); if (box !== 2) fail('review: two right answers should reach box 2, got ' + box);
 if (E("reviewUpdate('math.quad', false, 0).box") !== 0) fail('review: a wrong answer should go back to box 0');
+
+/* 6. broken or old saved data must not stop the app, and must not be overwritten silently (50-state.js) */
+const bad = E(`sanitizeState({ subject: 'chem', log: null, queue: 'x', skills: { 'math.quad': { p: 'a', n: -3, misc: null, hist: 5 }, junk: 1 }, settings: { theme: 'neon', model: 'a b', proxyUrl: 'http://x', sheetUrl: 'https://example.com', sound: 'yes' }, review: { 'math.quad': { box: 99, due: 1 } }, onboarding: 'x', aiFlags: {} })`);
+if (bad.subject !== 'math' || !Array.isArray(bad.log) || !Array.isArray(bad.queue) || bad.onboarding !== null || !Array.isArray(bad.aiFlags)) fail('state: broken top-level fields not repaired');
+if (bad.skills['math.quad'].p !== 0.3 || bad.skills['math.quad'].n !== 0 || !Array.isArray(bad.skills['math.quad'].hist) || 'junk' in bad.skills) fail('state: broken skill not repaired', bad.skills);
+if (bad.settings.theme !== 'auto' || bad.settings.model !== 'gemini-3.8-flash' || bad.settings.proxyUrl !== '' || bad.settings.sheetUrl !== '' || bad.settings.sound !== true) fail('state: invalid settings kept', bad.settings);
+if (bad.review['math.quad'].box !== 5) fail('state: review box not clamped');
+const warn = console.warn; console.warn = () => { }; /* the expected "state not loaded" warning */
+E(`localStorage.setItem(STORE_KEY, '{"skills": {broken'); STATE_NOTICE = null; loadState()`);
+console.warn = warn;
+if (!E('STATE_NOTICE && STATE_NOTICE.backup') || E('localStorage.getItem(STATE_NOTICE.backup)') !== '{"skills": {broken') fail('state: unreadable save was not backed up');
+E('resetState(false); STATE_NOTICE = null');
+
+/* 7. one session never shows the same question twice (53-bel.js pickTask + taskKey) */
+for (const [subj, skill] of [['math', 'prob'], ['math', 'rtri'], ['bel', 'lit']]) for (const lvl of [1, 3]) {
+  const keys = E(`(() => { const used = new Set(), out = []; for (let i = 0; i < 9; i++) { const t = pickTask('${subj}', '${skill}', ${lvl}, 'sess:' + i, used); if (!t) break; used.add(t.id); used.add(taskKey(t)); out.push(taskKey(t)); } return out; })()`);
+  if (new Set(keys).size !== keys.length) fail(`session repeats a question: ${subj}.${skill} level ${lvl}`, keys);
+}
+
+/* 8. the forecast does not name a grade from a handful of answers (65-forecast.js) */
+E("SUBJECTS.math.skills.forEach((s, i) => recordAnswer('math', genMathTask(s.id, 1, i), i < 2, null))");
+if (E("forecast('math').conf") !== 'low' || !/след още/.test(E("gradeText(forecast('math'))"))) fail('forecast: a grade is shown after one answer per skill');
+E('resetState(false)');
 
 console.log(`${n} tasks checked, ${fails} problems`);
 process.exit(fails ? 1 : 0);

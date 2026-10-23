@@ -47,6 +47,7 @@ gcloud run deploy bingo-ai --source . --region europe-west1 --allow-unauthentica
 ### 3. Google Sheets → Looker Studio
 1. Нова Google таблица → Extensions → Apps Script → постави `apps-script/Code.gs` → Deploy → Web app (Execute as: Me, Who has access: Anyone) → копирай адреса.
 2. BingO → Настройки → Google Sheets → постави адреса. Отговорите отиват в лист `answers`.
+   Ако вече имаш стар deploy: постави новия `Code.gs` и направи **Deploy → Manage deployments → Edit → New version**. Новата версия пропуска повторно изпратени редове, така че приложението може спокойно да опитва пак при грешка.
 3. [Looker Studio](https://lookerstudio.google.com/) → Create → Data source → Google Sheets → таблицата (или **File upload** → `data/sample-class.csv`, ако още няма истински данни).
 4. Табло (≈15 мин):
    - **Таблица с топлинна карта**: редове `student`, колони `skill`, стойност `mastery_after` (Average) → кой ученик къде е слаб.
@@ -72,7 +73,7 @@ server/        Cloud Run + Vertex AI
 apps-script/   Google Sheets приемник
 platforms/     Android обвивка (WebView)
 tools/         build.py, check.js (3000+ генерирани задачи се проверяват при всеки build)
-tests/         play.py (играе приложението в браузър), ai_mock.py (Gemini пътищата с фалшив Gemini)
+tests/         play.py (играе приложението в браузър), fixes.py (поправките от 0.3.2), ai_mock.py (Gemini пътищата с фалшив Gemini)
 ```
 
 ## Build

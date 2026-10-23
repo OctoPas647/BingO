@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.2
+Fixes from the testers' feedback (Ники, Боби, Симон):
+- **Your progress is safe**: "Зареди демо ученик" asks first when you have real answers, keeps a copy, and Settings → "Върни моите отговори" brings them back
+- **Broken or old saved data** no longer stops the app: every saved field is checked and repaired; a save that cannot be read at all is kept as a backup copy (it used to be overwritten without a word) and the app says so
+- **Google Sheets**: answers leave the phone only after the Sheet confirms it got them; a server error keeps them for the next try. The Apps Script skips rows it already has, so a retry never makes duplicates (**redeploy `apps-script/Code.gs`**)
+- **Android: a ± button** next to number answers, because many phone keyboards have no minus (e.g. answer −29)
+- **A question never repeats in one session**; a topic that runs out of new questions ends early instead of repeating them
+- **Дебелянов**: 9 new tasks (there were 3); explanations added to the 6 bank tasks that only showed the answer
+- A quick double tap on "Провери" no longer skips the feedback
+- An ordering task can't be checked before you move anything
+- The browser's back button no longer gets "stuck" and then suddenly leaves the app
+- Confetti stays on the result screen instead of falling on the next one
+- "Още няма грешки в тази тема" is no longer shown after wrong answers; it now says how many wrong answers had no named mistake
+- Settings refuse invalid values (Sheet and server addresses, model name, API key) and say why
+- Quadratic equations: "$D=25--24$" is now "$D=25+24$" (a new check catches doubled signs in every generated task)
+- Forecast: no grade until there are at least two answers per topic (one diagnostic answer per topic moved the grade too much)
+
 ## 0.3.1
 - "Системна" theme now follows the phone's dark mode in the Android app (the app asks Android directly and updates when the phone switches); the window is dark while loading too
 - Setup screens: no progress bar

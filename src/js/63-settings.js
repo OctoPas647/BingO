@@ -17,6 +17,7 @@ SCREENS.settings = async el => {
       <div class="rows"><div class="row"><span>${icon('sound')}Звуци</span><button class="switch${st.sound ? ' on' : ''}" data-sw="sound" role="switch"><i></i></button></div></div></section>
     <section class="card"><h3>${icon('eye')}Демо</h3>
       <button class="btn ghost block" data-demo>${icon('play')}Зареди демо ученик</button>
+      ${demoBackupExists() ? `<button class="btn ghost block" data-restore>${icon('reset')}Върни моите отговори</button>` : ''}
       <button class="btn ghost block" data-setup>${icon('reset')}Начална настройка отново</button>
       <button class="btn ghost danger-text block" data-wipe>${icon('trash')}Изчисти всичките ми отговори</button></section>
     <section class="card"><h3>${icon('info')}За BingO</h3><p class="small"><b>BingO</b> alpha · подготовка за матура без зубрене: работа върху слабите места, не повтаряне на силните.</p>
@@ -28,7 +29,8 @@ SCREENS.settings = async el => {
     const w = e.target.closest('[data-sw]');
     if (w) { st.sound = !st.sound; APP.settings.sound = st.sound; saveState(); w.classList.toggle('on'); return; }
     if (e.target.closest('[data-setup]')) { onboardingRestart(); NAV.length = 0; NAV.push({ screen: 'onboarding', params: {} }); return render(); }
-    if (e.target.closest('[data-demo]')) { simulateLearner(); toast('Зареден е демо ученик'); return home(); }
+    if (e.target.closest('[data-demo]')) { if (await loadDemoLearner()) { toast('Зареден е демо ученик'); home(); } return; }
+    if (e.target.closest('[data-restore]')) { if (restoreFromDemo()) { APP.settings.theme = S.settings.theme; applySettings(); toast('Твоите отговори са върнати'); home(); } else toast('Копието не може да се прочете', 'bad'); return; }
     if (e.target.closest('[data-wipe]') && await confirmBox('Да изчистим ли всичко?', 'Картата на уменията и всички отговори на това устройство ще се изтрият.', 'Изчисти', true)) { resetState(true); toast('Изчистено'); return home(); }
     if (e.target.closest('[data-test]')) {
       const tb = e.target.closest('[data-test]'); tb.disabled = true;
@@ -37,8 +39,33 @@ SCREENS.settings = async el => {
       tb.disabled = false;
     }
   });
+  /* A value is saved only when it is valid; otherwise the field says what is wrong and the last
+     good value stays (the same rules the first-run setup and loadState use) */
+  const SETTING_MSG = {
+    apiKey: 'Ключът не може да съдържа интервали',
+    model: 'Само латински букви, цифри, точка и тире (напр. gemini-3.8-flash)',
+    proxyUrl: 'Адресът трябва да започва с https://',
+    sheetUrl: 'Адресът трябва да започва с https://script.google.com/'
+  };
+  const fieldError = (f, msg) => {
+    f.classList.toggle('invalid', !!msg); f.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    let m = f.parentNode.querySelector('.fld-err');
+    if (msg && !m) { m = document.createElement('small'); m.className = 'fld-err danger-text'; f.after(m); }
+    if (m) { m.textContent = msg || ''; m.hidden = !msg; }
+  };
   el.addEventListener('input', e => {
     const f = e.target.closest('[data-f]'); if (!f) return;
-    const [obj, key] = f.dataset.f.split('.'); (obj === 'profile' ? S.profile : st)[key] = f.value.trim(); saveState();
+    const [obj, key] = f.dataset.f.split('.'), v = f.value.trim(), ok = SETTING_OK[key];
+    if (obj === 'settings' && ok && !ok(v)) {
+      if (!(key === 'model' && v === '')) return fieldError(f, SETTING_MSG[key] || 'Невалидна стойност');
+      return fieldError(f, 'Задължително поле');
+    }
+    fieldError(f, ''); (obj === 'profile' ? S.profile : st)[key] = v; saveState();
+  });
+  /* leaving a field with a wrong value puts the saved value back */
+  el.addEventListener('focusout', e => {
+    const f = e.target.closest('[data-f]'); if (!f || !f.classList.contains('invalid')) return;
+    const [obj, key] = f.dataset.f.split('.'); f.value = (obj === 'profile' ? S.profile : st)[key] || ''; fieldError(f, '');
+    toast('Невалидната стойност не е запазена');
   });
 };

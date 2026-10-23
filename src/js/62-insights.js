@@ -10,7 +10,7 @@ SCREENS.insights = async el => {
     ${subjectTabs(subj)}
     <section class="card"><h3>${icon('target')}Типичните ти грешки · ${esc(sub.title)}</h3>
       ${miscs.length ? `<ol class="misclist big">${miscs.slice(0, 8).map(x => `<li><div><span class="rt">${richInline(miscLabel(x.k))}</span><small class="muted">${esc(x.sk.name)}</small></div><b>×${x.n}</b></li>`).join('')}</ol>
-        <p class="muted small">Всяка грешна опция в задачите идва от една конкретна типична грешка, затова виждаме не само <i>че</i> грешиш, а <i>как</i>.</p>` : '<p class="muted">Още няма грешки. Направи диагностика.</p>'}
+        <p class="muted small">Всяка грешна опция в задачите идва от една конкретна типична грешка, затова виждаме не само <i>че</i> грешиш, а <i>как</i>.</p>` : (mine.some(r => !r.correct) ? '<p class="muted">Имаш грешни отговори, но без разпозната типична грешка — виж обясненията след задачите.</p>' : mine.length ? '<p class="muted">Още няма грешки.</p>' : '<p class="muted">Още няма отговори. Направи диагностика.</p>')}
       <p class="muted small">${mine.length} отговора · ${pctTxt(acc)} верни</p></section>
     <section class="card"><h3>✦ План за седмицата от Gemini</h3>
       <div class="aiplan"><p class="muted small">${aiOn() ? 'Gemini прави 5-дневен план само върху слабите места, по 20 минути на ден.' : 'Включи Gemini в настройките, за да получиш план.'}</p></div>

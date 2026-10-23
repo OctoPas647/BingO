@@ -58,7 +58,7 @@ const MATH_GEN = {
         right: set(p, q),
         wrong: [{ t: set(-p, -q), misc: 'quad.viet_sign' }, { t: set(s, pr === s ? pr + 1 : pr), misc: 'quad.viet_swap' }, { t: set(p, -q), misc: 'calc' }],
         fill: [set(p + 1, q + 1), set(p - 1, q + 2)],
-        explain: `$D=${N(s * s)}-${N(4 * pr)}=${N((p - q) ** 2)}$, $\\sqrt{D}=${N(Math.abs(p - q))}$, затова $x_{1,2}=\\frac{${N(s)}\\pm${N(Math.abs(p - q))}}{2}$, т.е. $${set(p, q)}$. Проверка с Виет: $x_1+x_2=${N(s)}$, $x_1x_2=${N(pr)}$.`
+        explain: `$D=${N(s * s)}${pr < 0 ? '+' + N(-4 * pr) : '-' + N(4 * pr)}=${N((p - q) ** 2)}$, $\\sqrt{D}=${N(Math.abs(p - q))}$, затова $x_{1,2}=\\frac{${N(s)}\\pm${N(Math.abs(p - q))}}{2}$, т.е. $${set(p, q)}$. Проверка с Виет: $x_1+x_2=${N(s)}$, $x_1x_2=${N(pr)}$.`
       });
     }
     if (lvl === 2) {

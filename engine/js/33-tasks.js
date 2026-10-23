@@ -50,7 +50,7 @@ function taskView(task, m, opt = {}) {
   let locked = false;
   const api = {
     el, get: B.get, ready: () => isAnswered(task, B.get()), setMarks: v => B.setMarks && B.setMarks(v), hintsUsed: () => used,
-    lock() { locked = true; el.classList.add('locked'); el.querySelector('.hintbtn')?.remove(); B.lock && B.lock(); el.querySelectorAll('.answer input,.answer textarea').forEach(i => { i.readOnly = true; }); },
+    lock() { locked = true; el.classList.add('locked'); el.querySelector('.hintbtn')?.remove(); B.lock && B.lock(); el.querySelectorAll('.answer input,.answer textarea').forEach(i => { i.readOnly = true; }); el.querySelectorAll('.answer .signbtn').forEach(b => { b.disabled = true; }); },
     show(res) {
       api.lock();
       const extra = B.show ? B.show(res) || '' : '';
@@ -224,14 +224,25 @@ const TASK_BUILDERS = {
   }
 };
 
+/* Number answers get a "±" button: many Android number keyboards (inputmode=decimal) have no minus key */
 function fieldBuilder(task, m, resp, changed, numeric) {
   let val = resp ?? '', area;
   return {
     html: (() => {
       const input = `<input class="field${numeric ? ' num' : ''}" ${numeric ? 'inputmode="decimal"' : ''} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="${esc(numeric ? t('task.numHint') : t('task.typeHint'))}" value="${esc(val)}">`;
-      return numeric && task.unit ? `<div class="field-unit">${input}<span class="unit">${esc(task.unit)}</span></div>` : input;
+      if (!numeric) return input;
+      return `<div class="field-unit"><button type="button" class="signbtn" aria-label="${esc(t('task.sign'))}" title="${esc(t('task.sign'))}">±</button>${input}${task.unit ? `<span class="unit">${esc(task.unit)}</span>` : ''}</div>`;
     })(),
-    mount(a) { area = a; const f = a.querySelector('input'); f.addEventListener('input', () => { val = f.value; changed(); }); f.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); f.dispatchEvent(new CustomEvent('submit-answer', { bubbles: true })); } }); },
+    mount(a) {
+      area = a; const f = a.querySelector('input');
+      f.addEventListener('input', () => { val = f.value; changed(); });
+      f.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); f.dispatchEvent(new CustomEvent('submit-answer', { bubbles: true })); } });
+      a.querySelector('.signbtn')?.addEventListener('click', () => {
+        if (f.readOnly) return;
+        f.value = /^\s*[-−–]/.test(f.value) ? f.value.replace(/^\s*[-−–]\s*/, '') : '-' + f.value.trimStart();
+        val = f.value; changed(); f.focus();
+      });
+    },
     get: () => val,
     show(res) {
       const f = area.querySelector('input'); f.classList.add(res.status === 'right' ? 'right' : 'wrong');
