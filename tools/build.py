@@ -24,16 +24,26 @@ def say(msg): print(f'  {msg}', flush=True)
 # ---------------- bundling ----------------
 def js_files(): return sorted((ROOT / 'engine/js').glob('*.js')) + sorted((ROOT / 'src/js').glob('*.js'))
 
+MIME = {'svg': 'image/svg+xml', 'png': 'image/png', 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'webp': 'image/webp', 'gif': 'image/gif',
+        'mp4': 'video/mp4', 'webm': 'video/webm', 'mp3': 'audio/mpeg', 'ogg': 'audio/ogg', 'm4a': 'audio/mp4'}
+
+def embed_media(media, mod_id, src_dir):
+    for m in sorted(src_dir.rglob('*')) if src_dir.exists() else []:
+        if m.is_file():
+            mime = MIME.get(m.suffix[1:].lower(), 'application/octet-stream')
+            media[mod_id + '\n' + m.relative_to(src_dir).as_posix()] = f'data:{mime};base64,' + base64.b64encode(m.read_bytes()).decode()
+
 def content_js():
-    mods, media = {}, {}
+    mods, media, past = {}, {}, []
     for f in sorted((ROOT / 'content/shelly-modules').glob('*.json')):
         j = json.loads(read(f)); subj = 'math' if 'math' in f.stem else 'bel'; mods[subj] = j
-        src_dir = ROOT / 'content/shelly-media' / f.stem
-        for m in sorted(src_dir.rglob('*')) if src_dir.exists() else []:
-            if m.is_file():
-                mime = {'svg': 'image/svg+xml', 'png': 'image/png', 'jpg': 'image/jpeg', 'webp': 'image/webp'}.get(m.suffix[1:].lower(), 'application/octet-stream')
-                media[j['id'] + '\n' + m.relative_to(src_dir).as_posix()] = f'data:{mime};base64,' + base64.b64encode(m.read_bytes()).decode()
-    return f'window.SHELLY_MODULE_JSON = {json.dumps(mods, ensure_ascii=False)};\nwindow.SHELLY_MEDIA = {json.dumps(media)};\n'
+        embed_media(media, j['id'], ROOT / 'content/shelly-media' / f.stem)
+    # past exams (НВО / ДЗИ from earlier years): one module per exam, pictures and videos in media/<file name>/
+    for f in sorted((ROOT / 'content/past-exams').glob('*.json')):
+        j = json.loads(read(f)); past.append(j)
+        embed_media(media, j['id'], ROOT / 'content/past-exams/media' / f.stem)
+    return (f'window.SHELLY_MODULE_JSON = {json.dumps(mods, ensure_ascii=False)};\nwindow.PAST_EXAMS_JSON = {json.dumps(past, ensure_ascii=False)};\n'
+            f'window.SHELLY_MEDIA = {json.dumps(media)};\n')
 
 def js_bundle():
     head = f'const APP_NAME = {json.dumps(CFG["appName"])}, APP_VERSION = {json.dumps(CFG["version"])};\n' + content_js()

@@ -18,7 +18,8 @@ const DEFAULT_STATE = () => ({
   sessions: 0,
   review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
   onboarding: null,      /* first-run setup progress (58-onboarding.js) */
-  aiFlags: []            /* AI-made tasks a learner reported as wrong */
+  aiFlags: [],           /* AI-made tasks a learner reported as wrong */
+  pastResults: {}        /* past exam id -> { pts, max, at }: the last result (66-past.js) */
 });
 
 let S = DEFAULT_STATE();
@@ -63,5 +64,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
   });
 }

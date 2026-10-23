@@ -58,6 +58,34 @@ if (plan.plan.some(x => ['quad', 'rtri'].includes(x.skill) && x.why === 'focus')
 console.log(`demo learner -> focus: ${plan.focus.join(', ')}${plan.check ? ' · check: ' + plan.check : ''}`);
 const sm = E("subjectSummary('math')"); console.log('demo learner loses ≈', sm.lost.toFixed(1), 'of', sm.total, 'points');
 
+/* 3b. past exams (content/past-exams, 66-past.js): every file loads, math renders, media exists, the key scores right */
+{
+  const fsx = require('fs'), px = require('path'), dir = px.join(__dirname, '../content/past-exams');
+  const raw = E('PAST_EXAMS_JSON'), loaded = E('PAST.map(m => m.id)');
+  for (const j of raw) {
+    const at = 'past ' + j.id;
+    if (!loaded.includes(j.id)) { fail(at + ' not loaded', E(`checkModule(${JSON.stringify(j)}).errors`)); continue; }
+    if (!E(`!!EXAMS[${JSON.stringify(j.past.exam)}]`) || !['math', 'bel'].includes(j.past.subj)) fail(at + ' unknown exam or subject', j.past);
+    const files = p => fsx.existsSync(px.join(dir, 'media', j.id, p));
+    const texts = [...Object.values(j.passages || {}).map(p => p.text)];
+    for (const part of j.exams[0].parts) {
+      texts.push(part.instructions);
+      for (const t of part.tasks) {
+        n++;
+        texts.push(t.prompt, t.explain, ...(t.options || []), typeof t.answer === 'string' ? t.answer : '', ...(t.rubric || []).map(r => r.text));
+        for (const b of [...(t.media || []), ...(t.solutionMedia || [])]) if (b.src && !files(b.src)) fail(`${at} ${t.id} missing media ${b.src}`);
+        if (t.type === 'choice' || t.type === 'number' || t.type === 'text') {
+          const resp = t.type === 'number' ? String(t.answer).replace('.', ',') : t.type === 'text' ? [].concat(t.answer)[0] : t.answer;
+          if (E(`scoreTask(${JSON.stringify(t)}, ${JSON.stringify(resp)}, 'bg').status`) !== 'right') fail(`${at} ${t.id} key not scored right`);
+        }
+      }
+    }
+    for (const x of texts) { const bad = mathOk(x); if (bad) fail(`${at} katex ${bad}`); }
+  }
+  if (raw.length && !E(`pastFor(${JSON.stringify(raw[0].past.subj)}, ${JSON.stringify(raw[0].past.exam)}).length`)) fail('past exams: pastFor finds nothing');
+  console.log(`${raw.length} past exams checked`);
+}
+
 /* 4. first-run setup (58-onboarding.js): steps, validation, resume */
 const ONB_EXAM = E('ONBOARD.steps.findIndex(s => s.id === "exam")');
 E('resetState(false); S.onboarding = null');
