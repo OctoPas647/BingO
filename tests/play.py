@@ -8,13 +8,15 @@ def shot(p, name): p.screenshot(path=str(SHOTS / f'{name}.png'), full_page=False
 def setup(p, theme, take_shots):
     """walk through the first-run setup"""
     p.wait_for_selector('.onboarding')
-    for i in range(8):
+    for i in range(14):
         if p.locator('.losscard').count(): return
         if take_shots: shot(p, f'{theme}-00-setup-{i}')
         if p.locator('[data-k="name"]').count():
             p.fill('[data-k="name"]', 'x' * 41); p.click('[data-ob="next"]'); p.wait_for_selector('.ob-err')
             if take_shots: shot(p, f'{theme}-00-setup-error')
-            p.fill('[data-k="name"]', 'Мария П.'); p.fill('[data-k="cls"]', '12а')
+            p.fill('[data-k="name"]', 'Мария П.'); p.fill('[data-k="age"]', '18')
+        for seg in p.locator('.onboarding .seg').all():   # a choice with nothing picked yet: take the first option
+            if not seg.locator('button.on').count(): seg.locator('button:not([disabled])').first.click()
         p.click('[data-ob="next"]'); p.wait_for_timeout(150)
     p.wait_for_selector('.losscard')
 def answer(p, wrong=False):
