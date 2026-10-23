@@ -12,7 +12,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
   const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
-  const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), extraDiag: new Set() };
+  const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
   if (!Q.length) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
 
   /* Gemini: prepare one new task for the weakest skill in the background, and slot it in when ready */
@@ -31,11 +31,22 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   let view = null, task = null, shownAt = 0, aiHints = 0;
   const paintCount = () => { el.querySelector('.pcount').textContent = `${Math.min(P.i + 1, Q.length)} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
 
+  /* What the learner sees, so two tasks with different ids but the same question count as a repeat */
+  const sigOf = x => JSON.stringify([x.prompt, x.options, x.answer, x.gaps, x.text]);
   function nextTask() {
     const item = Q[P.i], st = skillState(subj, item.skill), lvl = item.level || levelFor(st.p);
-    let t = item.task || pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used);
-    if (!t) t = pickTask(subj, item.skill, lvl, sessionId + ':' + P.i + 'b'); /* bank used up: allow a repeat */
-    item.task = t; P.used.add(t.id);
+    let t = item.task && !P.sigs.has(sigOf(item.task)) ? item.task : null;
+    /* try other seeds, then the neighbouring levels, until the question is one not shown in this session */
+    const lvls = [lvl, ...[1, 2, 3].filter(l => l !== lvl).sort((a, b) => Math.abs(a - lvl) - Math.abs(b - lvl))];
+    for (const l of lvls) {
+      for (let k = 0; !t && k < 12; k++) {
+        const c = pickTask(subj, item.skill, l, sessionId + ':' + P.i + ':' + l + ':' + k, P.used);
+        if (!c) break;
+        if (P.sigs.has(sigOf(c))) P.used.add(c.id); else t = c;
+      }
+    }
+    if (!t) t = pickTask(subj, item.skill, lvl, sessionId + ':' + P.i + 'b'); /* nothing new left: allow a repeat */
+    item.task = t; P.used.add(t.id); P.sigs.add(sigOf(t));
     return t;
   }
 
