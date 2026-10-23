@@ -1,0 +1,491 @@
+{
+ "format": 1,
+ "id": "dzi12-math-2020-06-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Математика · 3 юни 2020 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "math",
+  "year": 2020,
+  "date": "2020-06-03",
+  "variant": 2,
+  "session": "юни",
+  "pages": [
+   671,
+   683
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "3 юни 2020 · вариант 2",
+   "minutes": 240,
+   "parts": [
+    {
+     "title": "Модул 1",
+     "minutes": 90,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Ако $x = \\dfrac{1}{6}$, а $y = \\dfrac{5}{6}$, с колко процента $y$ е по-голямо от $x$?",
+       "options": [
+        "с $500\\%$",
+        "с $400\\%$",
+        "с $250\\%$",
+        "със $100\\%$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на израза $\\sqrt{6^2 + 12^2} - \\sqrt{125} + \\sqrt{20}$ е:",
+       "options": [
+        "$18 - 3\\sqrt{5}$",
+        "$5\\sqrt{3}$",
+        "$7$",
+        "$3\\sqrt{5}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Кое от числата НЕ е допустима стойност на израза $A = \\sqrt{\\dfrac{3 - x}{x^2 + 4}}$?",
+       "options": [
+        "$-2$",
+        "$-(-1)^3$",
+        "$\\left(\\dfrac{1}{5}\\right)^{-3}$",
+        "$-3^{-4}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Множеството от решения на неравенството $\\dfrac{(x - 2)(x - 4)^2}{x + \\sqrt{2}} \\leq 0$ е:",
+       "options": [
+        "$\\left(-\\sqrt{2};2\\right]$",
+        "$\\left(-\\sqrt{2};2\\right] \\cup \\{4\\}$",
+        "$\\left(-\\infty;-\\sqrt{2}\\right] \\cup [2;4]$",
+        "$\\left(-\\sqrt{2};2\\right] \\cup [4;+\\infty)$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Сравнете числата $a = \\left(\\dfrac{1}{\\sqrt{3}}\\right)^{\\frac{1}{3}}$, $b = 1$ и $c = \\left(\\dfrac{1}{\\sqrt{3}}\\right)^{-3}$.",
+       "options": [
+        "$a < b < c$",
+        "$b < c < a$",
+        "$c < a < b$",
+        "$a < c < b$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Броят на различните наредени двойки $(x;y)$, които са решения на системата $\\begin{cases} y = x^2 + 3x + 1 \\\\ y = 2x^2 - 5x + 17 \\end{cases}$, е:",
+       "options": [
+        "$0$",
+        "$1$",
+        "$2$",
+        "$4$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Ако $x_1$ и $x_2$ са корени на уравнението $x - \\dfrac{22}{x} = 9$, то $x_1 + x_2$ е равно на:",
+       "options": [
+        "$-22$",
+        "$-9$",
+        "$9$",
+        "$22$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Ако $\\operatorname{tg}\\alpha = 2\\dfrac{2}{5}$, $\\alpha \\in (0^\\circ;90^\\circ)$, то стойността на $\\sin\\alpha$ е:",
+       "options": [
+        "$\\dfrac{12}{13}$",
+        "$\\dfrac{7}{12}$",
+        "$\\dfrac{5}{12}$",
+        "$\\dfrac{5}{13}$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Отсечката $CD$ е височина в правоъгълния $\\triangle ABC$. Катетът $BC = 6\\ \\text{cm}$ и $BD = 4\\ \\text{cm}$. Дължината на отсечката $AD$ е:",
+       "options": [
+        "$5\\sqrt{2}\\ \\text{cm}$",
+        "$6{,}5\\ \\text{cm}$",
+        "$6\\ \\text{cm}$",
+        "$5\\ \\text{cm}$"
+       ],
+       "answer": 3,
+       "media": [
+        {
+         "type": "image",
+         "src": "9-altitude.svg",
+         "alt": "Правоъгълен триъгълник ABC с височината CD; BC = 6, BD = 4"
+        }
+       ]
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 2,
+       "prompt": "На чертежа правите $AC$ и $BD$ се пресичат в точка $P$, като $\\sphericalangle ABP = \\sphericalangle CDP$. Ако $CP = 2\\ \\text{cm}$, $DP = 3\\ \\text{cm}$ и $BP = 15\\ \\text{cm}$, то дължината на отсечката $AC$ е:",
+       "options": [
+        "$7{,}5\\ \\text{cm}$",
+        "$10\\ \\text{cm}$",
+        "$12\\ \\text{cm}$",
+        "$24{,}5\\ \\text{cm}$"
+       ],
+       "answer": 2,
+       "media": [
+        {
+         "type": "image",
+         "src": "10-lines.svg",
+         "alt": "Правите AC и BD, пресичащи се в P; DP = 3, CP = 2, BP = 15"
+        }
+       ]
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 3,
+       "prompt": "В $\\triangle ABC$ отсечката $CL$ $(L \\in AB)$ е ъглополовяща, точката $O$ е центърът на вписаната окръжност, $AC = 6\\ \\text{cm}$ и $CO : OL = BL : AL = 3 : 2$. Периметърът на $\\triangle ABC$ е:",
+       "options": [
+        "$20\\ \\text{cm}$",
+        "$22\\ \\text{cm}$",
+        "$24\\ \\text{cm}$",
+        "$25\\ \\text{cm}$"
+       ],
+       "answer": 3,
+       "media": [
+        {
+         "type": "image",
+         "src": "11-bisector.svg",
+         "alt": "Триъгълник ABC с ъглополовящата CL и центъра O на вписаната окръжност"
+        }
+       ]
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Ординатите на пресечните точки на параболата $y = -x^2 + 2x + 4$ с ъглополовящата на втори и четвърти квадрант са:",
+       "options": [
+        "$-1$ и $4$",
+        "$-4$ и $1$",
+        "$-1$ и $1$",
+        "$-4$ и $4$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Числовата редица $\\{a_n\\}$ е определена по следния начин $a_1 = -2$, $a_2 = 1$ и $a_n = 3a_{n-1} + 2a_{n-2}$ за всяко естествено число $n \\geq 3$. Намерете $a_5$:",
+       "options": [
+        "$-5$",
+        "$-1$",
+        "$1$",
+        "$5$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 3,
+       "prompt": "За крайна геометрична прогресия е дадено, че $a_1 = 2$, $q = 3$ и сборът от членовете ѝ е $S_n = 242$. Броят $n$ на членовете на прогресията е:",
+       "options": [
+        "$4$",
+        "$5$",
+        "$6$",
+        "$7$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Стойността на израза $\\operatorname{tg}(\\alpha + 15^\\circ) \\cdot \\cos 2\\alpha + \\operatorname{cotg}(\\alpha - 60^\\circ) \\cdot \\sin 2\\alpha$ при $\\alpha = 30^\\circ$ е:",
+       "options": [
+        "$-1$",
+        "$0$",
+        "$\\dfrac{1}{6}$",
+        "$2$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q16",
+       "type": "choice",
+       "points": 3,
+       "prompt": "На диаграмата е представена честотата на срещане на цифрите на числата $445$, $655$, $341$, $100$, $777$ и на още едно трицифрено число.\n\nТова число може да е:",
+       "options": [
+        "$707$",
+        "$751$",
+        "$861$",
+        "$877$"
+       ],
+       "answer": 3,
+       "media": [
+        {
+         "type": "image",
+         "src": "16-digits.svg",
+         "alt": "Диаграма: колко пъти се среща всяка цифра – 0: 2; 1: 2; 2: 0; 3: 1; 4: 3; 5: 3; 6: 1; 7: 5; 8: 1; 9: 0"
+        }
+       ]
+      },
+      {
+       "id": "q17",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Редът, чиято мода е $1$, а медианата му е $2{,}5$ е:",
+       "options": [
+        "$0, 1, 1, 2, 3, 5, 9, 11$",
+        "$0, 1, 2, 2, 3, 4, 9, 11$",
+        "$0, 0, 1, 2, 3, 6, 9, 11$",
+        "$0, 0, 1, 1, 1, 6, 9, 11$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q18",
+       "type": "choice",
+       "points": 3,
+       "prompt": "В $\\triangle ABC$ $\\sphericalangle BAC = 45^\\circ$ и $\\sphericalangle ABC = 30^\\circ$. Отношението $BC : AC$ е:",
+       "options": [
+        "$\\sqrt{3} : \\sqrt{2}$",
+        "$2 : \\sqrt{3}$",
+        "$\\sqrt{2} : 1$",
+        "$\\sqrt{3} : 1$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q19",
+       "type": "choice",
+       "points": 3,
+       "prompt": "В $\\triangle ABC$ $AC = 5\\ \\text{cm}$, $BC = 3\\ \\text{cm}$, точката $M$ е средата на $AB$ и $CM = 2\\sqrt{2}\\ \\text{cm}$. Дължината на страната $AB$ е:",
+       "options": [
+        "$4\\ \\text{cm}$",
+        "$5\\ \\text{cm}$",
+        "$6\\ \\text{cm}$",
+        "$7\\ \\text{cm}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q20",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Лицето на успоредник със страни $2\\ \\text{cm}$ и $3\\ \\text{cm}$ е $3\\sqrt{3}\\ \\text{cm}^2$. Дължината на по-големия диагонал на успоредника е:",
+       "options": [
+        "$\\sqrt{7}\\ \\text{cm}$",
+        "$2\\sqrt{3}\\ \\text{cm}$",
+        "$4\\ \\text{cm}$",
+        "$\\sqrt{19}\\ \\text{cm}$"
+       ],
+       "answer": 3
+      }
+     ]
+    },
+    {
+     "title": "Модул 2",
+     "minutes": 150,
+     "tasks": [
+      {
+       "id": "q21",
+       "type": "number",
+       "points": 4,
+       "prompt": "Пресметнете стойността на израза $A = 6^{1 - \\log_6\\sqrt{3}} \\cdot \\sqrt{\\log_{\\sqrt{2}} 2\\sqrt{2}}$.",
+       "answer": 6
+      },
+      {
+       "id": "q22",
+       "type": "open",
+       "points": 4,
+       "prompt": "Намерете решенията на неравенството $\\left(x^2 - 5x + 6\\right)\\left(-x^2 - x + 6\\right) \\leq 0$.",
+       "answer": "**Отговор:** $x \\in (-\\infty;-3] \\cup \\{2\\} \\cup [3;+\\infty)$",
+       "rubric": [
+        {
+         "text": "$x \\in (-\\infty;-3] \\cup \\{2\\} \\cup [3;+\\infty)$",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q23",
+       "type": "open",
+       "points": 4,
+       "prompt": "Частното на членовете $a_9$ и $a_2$ на една аритметична прогресия е равно на $5$, а при деление на $a_{13}$ с $a_6$ се получава частно $2$ и остатък $5$. Намерете първия член и разликата на тази аритметична прогресия.",
+       "answer": "**Отговор:** $a_1 = 3$; $d = 4$",
+       "rubric": [
+        {
+         "text": "$a_1 = 3$; $d = 4$",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q24",
+       "type": "number",
+       "points": 4,
+       "prompt": "На класна работа по математика учениците от 12а клас, които са $26$, имат среден успех добър ($4{,}30$), а учениците от 12б клас, които са $24$, имат среден успех много добър ($5{,}30$). Колко е средният успех общо на учениците от 12а и 12б класове на тази класна работа?",
+       "answer": 4.78
+      },
+      {
+       "id": "q25",
+       "type": "open",
+       "points": 4,
+       "prompt": "В $\\triangle ABC$ отсечките $AM = 6\\ \\text{cm}$ и $BN = 9\\ \\text{cm}$ са медиани, $G$ е общата им точка, а лицето на четириъгълника $CNGM$ е $8\\ \\text{cm}^2$. Намерете $\\sin\\sphericalangle MGN$.",
+       "answer": "**Отговор:** $\\sin\\sphericalangle MGN = \\dfrac{2}{3}$",
+       "rubric": [
+        {
+         "text": "$\\sin\\sphericalangle MGN = \\frac{2}{3}$",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q26",
+       "type": "open",
+       "points": 10,
+       "prompt": "Решете уравнението и намерете сбора от корените му $\\sqrt{\\dfrac{x + 2}{x - 1}} = \\dfrac{5}{2} - \\sqrt{\\dfrac{x - 1}{x + 2}}$.",
+       "answer": "**Отговор:** $-1$\n\n**Решение:**\n\nРешаваме уравнението $\\sqrt{\\dfrac{x + 2}{x - 1}} = \\dfrac{5}{2} - \\sqrt{\\dfrac{x - 1}{x + 2}}$.\n\nПолагаме $\\sqrt{\\dfrac{x + 2}{x - 1}} = u$, $u > 0$.\n\nДостигаме до квадратното уравнение $u = \\dfrac{5}{2} - \\dfrac{1}{u} \\Leftrightarrow 2u^2 - 5u + 2 = 0$ с корени $u_1 = 2$, $u_2 = \\dfrac{1}{2}$, които са решения.\n\nРешаваме уравнението $\\sqrt{\\dfrac{x + 2}{x - 1}} = 2$: $x = 2$ и установяваме, че е решение.\n\nРешаваме уравнението $\\sqrt{\\dfrac{x + 2}{x - 1}} = \\dfrac{1}{2}$: $x = -3$ и установяваме, че е решение.\n\nСборът на двата корена е $2 - 3 = -1$.\n\n*Забележка:* Ако дефиниционното множество е намерено предварително, то проверката може да се прави и в дефиниционното множество на уравнението.",
+       "rubric": [
+        {
+         "text": "Полагаме $\\sqrt{\\frac{x + 2}{x - 1}} = u$, $u > 0$",
+         "points": 2
+        },
+        {
+         "text": "Достигане до квадратното уравнение $u = \\frac{5}{2} - \\frac{1}{u} \\Leftrightarrow 2u^2 - 5u + 2 = 0$",
+         "points": 1
+        },
+        {
+         "text": "За намиране на корените $u_1 = 2$, $u_2 = \\frac{1}{2}$ и определяне, че са решения",
+         "points": 2
+        },
+        {
+         "text": "Решаване на уравнението $\\sqrt{\\frac{x + 2}{x - 1}} = 2$, $x = 2$ и установяване, че е решение",
+         "points": 2
+        },
+        {
+         "text": "Решаване на уравнението $\\sqrt{\\frac{x + 2}{x - 1}} = \\frac{1}{2}$, $x = -3$ и установяване, че е решение",
+         "points": 2
+        },
+        {
+         "text": "Сборът на двата корена е $2 - 3 = -1$",
+         "points": 1
+        }
+       ]
+      },
+      {
+       "id": "q27",
+       "type": "open",
+       "points": 10,
+       "prompt": "Решете системата $\\begin{cases} x + y = \\dfrac{1}{x} + \\dfrac{1}{y} \\\\ x^2 + xy = y + 1 \\end{cases}$.",
+       "answer": "**Отговор:** $(1;\\ -1)$ и $(1;\\ 1)$\n\n**Решение:** При $x \\neq 0$, $y \\neq 0$ уравнението $x + y = \\dfrac{1}{x} + \\dfrac{1}{y}$ е еквивалентно на\n\n$(x + y)xy = x + y \\Leftrightarrow (x + y)xy - (x + y) = 0 \\Leftrightarrow (x + y)(xy - 1) = 0 \\Leftrightarrow x + y = 0$ или $xy - 1 = 0$.\n\nТогава дадената система е равносилна на обединението на системите\n\n$(1)\\ \\begin{cases} x + y = 0 \\\\ x^2 + xy = y + 1 \\end{cases}$ или $\\begin{cases} xy - 1 = 0 \\\\ x^2 + xy = y + 1 \\end{cases}\\ (2)$.\n\nРешаваме $(1)$: $\\begin{cases} x + y = 0 \\\\ x^2 + xy = y + 1 \\end{cases} \\Leftrightarrow \\begin{cases} y = -x \\\\ x^2 - x^2 = -x + 1 \\end{cases} \\Leftrightarrow x = 1,\\ y = -1$.\n\nРешаваме $(2)$: $\\begin{cases} xy = 1 \\\\ x^2 + xy = y + 1 \\end{cases} \\Leftrightarrow \\begin{cases} y = \\frac{1}{x} \\\\ x^2 + 1 = \\frac{1}{x} + 1 \\end{cases} \\Leftrightarrow \\begin{cases} y = \\frac{1}{x} \\\\ x^3 = 1 \\end{cases} \\Leftrightarrow x = 1,\\ y = 1$.\n\nСледователно системата има две решения – двойките числа $(1;\\ -1)$ и $(1;\\ 1)$.",
+       "rubric": [
+        {
+         "text": "Определяне на $x \\neq 0$, $y \\neq 0$",
+         "points": 1
+        },
+        {
+         "text": "Преобразуване на уравнението $x + y = \\frac{1}{x} + \\frac{1}{y}$ до получаване на $x + y = 0$ или $xy - 1 = 0$",
+         "points": 3
+        },
+        {
+         "text": "Решаване на системата $\\begin{cases} x + y = 0 \\\\ x^2 + xy = y + 1 \\end{cases}$",
+         "points": 2
+        },
+        {
+         "text": "Решаване на системата $\\begin{cases} xy - 1 = 0 \\\\ x^2 + xy = y + 1 \\end{cases}$",
+         "points": 3
+        },
+        {
+         "text": "Записване на двойките решения $(1;\\ -1)$ и $(1;\\ 1)$",
+         "points": 1
+        }
+       ]
+      },
+      {
+       "id": "q28",
+       "type": "open",
+       "points": 10,
+       "prompt": "Бедрото $BC$ на трапеца $ABCD$ има дължина $2\\left(\\sqrt{3} + 1\\right)$. Ако $\\sphericalangle BAD = 75^\\circ$, $\\sphericalangle ABC = 45^\\circ$ и в трапеца може да се впише окръжност, да се намери височината на трапеца и да се докаже, че лицето му е $S_{ABCD} = \\sqrt{6}\\left(\\sqrt{3} + 1\\right)^2$.",
+       "answer": "**Отговор:** $\\sqrt{6} + \\sqrt{2} = \\sqrt{2}\\left(\\sqrt{3} + 1\\right)$\n\n**Решение:** Построяваме височините $CQ$ и $DP$. От $\\triangle BQC$ намираме, че $CQ = BC \\cdot \\sin 45^\\circ = 2\\left(\\sqrt{3} + 1\\right) \\cdot \\dfrac{\\sqrt{2}}{2} = \\left(\\sqrt{3} + 1\\right) \\cdot \\sqrt{2} = \\sqrt{6} + \\sqrt{2}$.\n\nОт $\\triangle APD$ получаваме, че $\\dfrac{DP}{AD} = \\sin 75^\\circ \\Leftrightarrow AD = \\dfrac{DP}{\\sin 75^\\circ} = \\dfrac{\\sqrt{6} + \\sqrt{2}}{\\sin 75^\\circ}$.\n\nПресмятаме $\\sin 75^\\circ = \\sin(45^\\circ + 30^\\circ) = \\sin 45^\\circ \\cdot \\cos 30^\\circ + \\cos 45^\\circ \\cdot \\sin 30^\\circ = \\dfrac{\\sqrt{6} + \\sqrt{2}}{4}$.\n\nНамираме $AD = \\dfrac{DP}{\\sin 75^\\circ} = \\dfrac{\\sqrt{6} + \\sqrt{2}}{\\sin 75^\\circ} = 4$. От условието, че трапецът е описан около окръжност следва, че $AB + CD = BC + AD$ т.е. $AB + CD = 2\\sqrt{3} + 2 + 4 = 2\\sqrt{3} + 6$.\n\n$S_{ABCD} = \\dfrac{1}{2}(AB + CD) \\cdot CQ = \\left(\\sqrt{3} + 3\\right)\\left(\\sqrt{6} + \\sqrt{2}\\right) = \\sqrt{3}\\left(\\sqrt{3} + 1\\right)\\sqrt{2}\\left(\\sqrt{3} + 1\\right) = \\sqrt{6}\\left(\\sqrt{3} + 1\\right)^2$\n\n*Забележка:* Ако е изразено лицето чрез $\\sin 75^\\circ$ без да бъде пресметнато в писмената работа, да се оценява задачата с общо 8 точки.",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "28-trapezoid.svg",
+         "alt": "Трапецът ABCD с вписана окръжност и височините DP и CQ"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "За чертеж на трапеца с построени височини",
+         "points": 1
+        },
+        {
+         "text": "За намиране на $CQ = BC \\cdot \\sin 45^\\circ$",
+         "points": 1
+        },
+        {
+         "text": "За окончателно пресмятане на $CQ = \\left(\\sqrt{3} + 1\\right) \\cdot \\sqrt{2} = \\sqrt{6} + \\sqrt{2}$",
+         "points": 1
+        },
+        {
+         "text": "За изразяване на $\\frac{DP}{AD} = \\sin 75^\\circ$",
+         "points": 1
+        },
+        {
+         "text": "За намиране на $\\sin 75^\\circ = \\frac{\\sqrt{6} + \\sqrt{2}}{4}$",
+         "points": 2
+        },
+        {
+         "text": "За намиране на $AB + CD = BC + AD$",
+         "points": 1
+        },
+        {
+         "text": "За намиране на $AB + CD = 2\\sqrt{3} + 2 + 4 = 2\\sqrt{3} + 6$",
+         "points": 1
+        },
+        {
+         "text": "За изразяване на $S_{ABCD} = \\frac{1}{2}(AB + CD) \\cdot CQ = \\sqrt{6}\\left(\\sqrt{3} + 1\\right)^2$",
+         "points": 2
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
