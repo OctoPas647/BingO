@@ -1,0 +1,467 @@
+{
+ "format": 1,
+ "id": "dzi12-math-2021-05-v1",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Математика · 21 май 2021 · вариант 1",
+ "past": {
+  "exam": "dzi12",
+  "subj": "math",
+  "year": 2021,
+  "date": "2021-05-21",
+  "variant": 1,
+  "session": "май",
+  "pages": [
+   620,
+   631
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "21 май 2021 · вариант 1",
+   "minutes": 240,
+   "parts": [
+    {
+     "title": "Модул 1",
+     "minutes": 90,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на израза $\\dfrac{2^{\\frac{1}{2}} \\cdot 2^{\\frac{1}{3}}}{2^{\\frac{2}{3}}}$ е:",
+       "options": [
+        "$\\sqrt[6]{2}$",
+        "$\\sqrt[6]{4}$",
+        "$\\sqrt[6]{8}$",
+        "$\\sqrt[6]{32}$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на израза $\\sqrt{21^2 - 15^2} - \\sqrt{150} + \\sqrt{\\left(\\sqrt{6} - 3\\right)^2}$ е:",
+       "options": [
+        "$3 - 4\\sqrt{6}$",
+        "$2\\sqrt{6} - 3$",
+        "$2$",
+        "$3$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Множеството от НЕДОПУСТИМИТЕ стойности на израза $\\dfrac{x - 3}{x^2 + 9} - \\dfrac{x - 2}{x^2 - 4}$ е:",
+       "options": [
+        "$\\{-2;\\ 2\\}$",
+        "$\\{-2,\\ 3\\}$",
+        "$\\{-3;\\ 2;3\\}$",
+        "$\\{-3;\\ -2;\\ 2;3\\}$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Решенията на неравенството $(x - 6)^2(x - 1)(x + 5) \\leq 0$ са:",
+       "options": [
+        "$x \\in [-5;1] \\cup \\{6\\}$",
+        "$x \\in (-\\infty;-5] \\cup [1;6]$",
+        "$x \\in (-\\infty;-6] \\cup [-1;5]$",
+        "$x \\in [-1;5] \\cup \\{6\\}$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 2,
+       "prompt": "С колко процента трябва да се намали числото $72$, за да се получи числото $63$?",
+       "options": [
+        "$\\dfrac{1}{8}\\%$",
+        "$8\\%$",
+        "$12\\dfrac{1}{2}\\%$",
+        "$13\\dfrac{1}{2}\\%$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Най-големият корен на уравнението $\\left(x^2 - 4x\\right)^2 + 7\\left(x^2 - 4x\\right) + 12 = 0$ е:",
+       "options": [
+        "$-4$",
+        "$2$",
+        "$3$",
+        "$4$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Ако $x_1$ и $x_2$ са корените на уравнението $6x^2 - 3x - 1 = 0$, то НЕ е вярно, че:",
+       "options": [
+        "$x_1 + x_2 = \\dfrac{1}{2}$",
+        "$x_1 \\cdot x_2 < 0$",
+        "$x_1 + x_2 > 0$",
+        "$\\dfrac{1}{x_1} + \\dfrac{1}{x_2} = \\dfrac{1}{6}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на израза $\\dfrac{\\operatorname{tg} 405^\\circ}{\\sqrt{2}\\operatorname{tg}^2 765^\\circ}$ е:",
+       "options": [
+        "$\\dfrac{\\sqrt{2}}{2}$",
+        "$\\dfrac{\\sqrt{6}}{6}$",
+        "$\\dfrac{\\sqrt{6}}{2}$",
+        "$1$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 2,
+       "prompt": "В равнобедрен $\\triangle ABC$ $(AC = BC)$ е вписана окръжност с център $O$. Лъчът $AO^{\\rightarrow}$ пресича страната $BC$ в точка $L$. Ако $LB = 3\\ \\text{cm}$ и $LC = 5\\ \\text{cm}$, то периметърът на $\\triangle ABC$ е:",
+       "options": [
+        "$20\\ \\text{cm}$",
+        "$20{,}8\\ \\text{cm}$",
+        "$21{,}4\\ \\text{cm}$",
+        "$\\dfrac{88}{3}\\ \\text{cm}$"
+       ],
+       "answer": 1,
+       "media": [
+        {
+         "type": "image",
+         "src": "9-isosceles.svg",
+         "alt": "Равнобедрен триъгълник ABC с вписана окръжност с център O и ъглополовяща AL; LC = 5, LB = 3"
+        }
+       ]
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 2,
+       "prompt": "В $\\triangle ABC$ $AB = 8\\ \\text{cm}$, $BC = 5\\ \\text{cm}$ и $AC = 10\\ \\text{cm}$. Ако точка $M$ е средата на страната $AB$, а точката $N$ от страната $AC$ е такава, че $\\sphericalangle AMN = \\sphericalangle ACB$, то намерете дължината на $MN$.",
+       "options": [
+        "$2\\ \\text{cm}$",
+        "$2{,}5\\ \\text{cm}$",
+        "$3{,}2\\ \\text{cm}$",
+        "$4\\ \\text{cm}$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Графиката на коя от дадените функции има само една обща точка с абсцисната ос?",
+       "options": [
+        "$f(x) = x^2 + 25x + 25$",
+        "$f(x) = x^2 + 5x + 25$",
+        "$f(x) = x^2 - 10x - 25$",
+        "$f(x) = x^2 - 10x + 25$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Коя от редиците НЕ е монотонна?",
+       "options": [
+        "$-2;-4;-6;-8$",
+        "$-\\dfrac{1}{3};-\\dfrac{1}{9};-\\dfrac{1}{27};-\\dfrac{1}{81}$",
+        "$-1;\\dfrac{1}{2};-\\dfrac{1}{3};\\dfrac{1}{4}$",
+        "$1;\\dfrac{1}{2};\\dfrac{1}{4};\\dfrac{1}{8}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Сумата на първите шест члена на геометрична прогресия, за която $a_1 = 6$ и $q = \\dfrac{1}{2}$, е равна на:",
+       "options": [
+        "$\\dfrac{198}{16}$",
+        "$\\dfrac{189}{16}$",
+        "$\\dfrac{179}{16}$",
+        "$\\dfrac{21}{2}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Колко е $\\cos\\alpha$, ако $\\operatorname{cotg}\\left(\\alpha - \\dfrac{\\pi}{2}\\right) = 2$ и $\\alpha \\in \\left(\\dfrac{\\pi}{2};\\pi\\right)$?",
+       "options": [
+        "$-\\dfrac{2}{\\sqrt{5}}$",
+        "$-\\dfrac{1}{\\sqrt{5}}$",
+        "$\\dfrac{1}{\\sqrt{5}}$",
+        "$\\dfrac{2}{\\sqrt{5}}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 3,
+       "prompt": "С помощта на цифрите $2$, $3$, $4$ и $5$ са образувани всички възможни трицифрени числа с различни цифри. Броят на тези от тях, които НЕ се делят на $9$, е:",
+       "options": [
+        "$6$",
+        "$12$",
+        "$18$",
+        "$24$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q16",
+       "type": "choice",
+       "points": 3,
+       "prompt": "За статистическия ред $0$, $1$, $a$, $2$, $b$, $5$, $9$, $11$ модата е $1$, а медианата е $2{,}5$. Средноаритметичното на реда е равно на:",
+       "options": [
+        "$3$",
+        "$4$",
+        "$6{,}5$",
+        "$7$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q17",
+       "type": "choice",
+       "points": 3,
+       "prompt": "В остроъгълен $\\triangle ABC$ страната $AB = 2\\sqrt{3}\\ \\text{cm}$, а радиусът на описаната около него окръжност е $R = 2\\sqrt{3}\\ \\text{cm}$. Градусната мярка на $\\sphericalangle ACB$ е равна на:",
+       "options": [
+        "$30^\\circ$",
+        "$45^\\circ$",
+        "$60^\\circ$",
+        "$150^\\circ$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q18",
+       "type": "choice",
+       "points": 3,
+       "prompt": "В правоъгълния $\\triangle ABC$ $(\\sphericalangle C = 90^\\circ)$ височината $CH$ $(H \\in AB)$ разделя $AB$ на отсечки $AH$ и $BH$, като $BH = 9 \\cdot AH$. Ако $CH = 3\\sqrt{5}\\ \\text{cm}$, то лицето на $\\triangle ABC$ е равно на:",
+       "options": [
+        "$25\\ \\text{cm}^2$",
+        "$75\\ \\text{cm}^2$",
+        "$135\\ \\text{cm}^2$",
+        "$150\\ \\text{cm}^2$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q19",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Дължините на страните на успоредник се отнасят както $3:2$, а диагоналите му могат да са катети на правоъгълен триъгълник с хипотенуза с дължина $13\\sqrt{2}\\ \\text{cm}$. Периметърът на успоредника е:",
+       "options": [
+        "$5\\sqrt{13}\\ \\text{cm}$",
+        "$10\\sqrt{13}\\ \\text{cm}$",
+        "$40\\ \\text{cm}$",
+        "$10\\sqrt{26}\\ \\text{cm}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q20",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Бедрото на равнобедрен трапец е $2\\ \\text{cm}$, малката основа е $\\sqrt{2}\\ \\text{cm}$, а ъгълът при нея е $135^\\circ$. Лицето на трапеца е равно на:",
+       "options": [
+        "$3\\ \\text{cm}^2$",
+        "$4\\ \\text{cm}^2$",
+        "$6\\ \\text{cm}^2$",
+        "$8\\ \\text{cm}^2$"
+       ],
+       "answer": 1
+      }
+     ]
+    },
+    {
+     "title": "Модул 2",
+     "minutes": 150,
+     "tasks": [
+      {
+       "id": "q21",
+       "type": "open",
+       "points": 4,
+       "prompt": "Пресметнете стойността на израза $A = \\sqrt{3B + 2C}$, където $B = \\log_2(\\log_3 81)$, а $C = \\left(\\dfrac{1}{81}\\right)^{\\log_{16}\\frac{1}{2}}$.",
+       "answer": "**Отговор:** $A = 2\\sqrt{3}$",
+       "rubric": [
+        {
+         "text": "$A = 2\\sqrt{3}$",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q22",
+       "type": "open",
+       "points": 4,
+       "prompt": "Намерете множеството от решенията на неравенството $x^2 + 2x \\leq \\dfrac{9}{x^2 + 2x}$.",
+       "answer": "**Отговор:** $x \\in [-3;\\ -2) \\cup (0;\\ 1]$",
+       "rubric": [
+        {
+         "text": "$x \\in [-3;\\ -2) \\cup (0;\\ 1]$",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q23",
+       "type": "number",
+       "points": 4,
+       "prompt": "Дадена е аритметична прогресия с $n$ члена, за която $a_1 = 1$, $a_3 = 13$ и $S_n = 280$. Намерете броя $n$ на членовете.",
+       "answer": 10
+      },
+      {
+       "id": "q24",
+       "type": "number",
+       "points": 4,
+       "prompt": "В купа има $4$ червени и $7$ черни топки. Намерете вероятността при едновременно изваждане на три топки поне една от тях да е червена топка.",
+       "answer": 0.7878787878787878,
+       "explain": "$\\dfrac{26}{33}$"
+      },
+      {
+       "id": "q25",
+       "type": "open",
+       "points": 4,
+       "prompt": "В $\\triangle ABC$ страните $AB$, $BC$ и $AC$ са с дължини съответно $2\\sqrt{2}\\ \\text{cm}$, $\\sqrt{5}\\ \\text{cm}$ и $1\\ \\text{cm}$. Ако $CC_1$ е височината през върха $C$, намерете радиуса на вписаната в $\\triangle ACC_1$ окръжност.",
+       "answer": "**Отговор:** $r = \\dfrac{1}{2\\left(\\sqrt{2} + 1\\right)} = \\dfrac{\\sqrt{2} - 1}{2}\\ \\text{cm}$",
+       "rubric": [
+        {
+         "text": "$r = \\frac{\\sqrt{2} - 1}{2}\\ \\text{cm}$",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q26",
+       "type": "open",
+       "points": 10,
+       "prompt": "Дадена е функцията $f(x) = \\dfrac{x - 2}{2\\left(\\sqrt{x - 1} - 1\\right)} + \\sqrt{x - 1}$. Намерете:\n\nа) дефиниционното ѝ множество;\n\nб) стойностите на $x$, за които $f(x) = 1$.",
+       "answer": "**Отговор:** а) $x \\in [1;2) \\cup (2;\\infty)$; б) $x = \\dfrac{10}{9}$\n\n**Решение:**\n\nа) Дефиниционното множество $DM$ на функцията се определя от решенията на системата $\\begin{cases} x - 1 \\geq 0 \\\\ \\sqrt{x - 1} \\neq 1 \\end{cases} \\Leftrightarrow \\begin{cases} x \\geq 1 \\\\ x \\neq 2 \\end{cases} \\Leftrightarrow DM: x \\in [1;2) \\cup (2;\\infty)$.\n\nб) При $x \\in DM$: $f(x) = 1 \\Leftrightarrow \\dfrac{x - 2}{2\\left(\\sqrt{x - 1} - 1\\right)} + \\sqrt{x - 1} = 1 \\Leftrightarrow$\n\n$\\Leftrightarrow x - 2 + 2(x - 1) - 2\\sqrt{x - 1} = 2\\sqrt{x - 1} - 2 \\Leftrightarrow 4\\sqrt{x - 1} = 3x - 2$.\n\nПовдигаме в квадрат и решаваме уравнението $16(x - 1) = (3x - 2)^2 \\Leftrightarrow 16x - 16 = 9x^2 - 12x + 4 \\Leftrightarrow 9x^2 - 28x + 20 = 0$, $x_1 = 2 \\notin DM$, $x_2 = \\dfrac{10}{9} \\in DM$.\n\nС проверка $\\left(4\\sqrt{\\dfrac{10}{9} - 1} = 3 \\cdot \\dfrac{10}{9} - 2 \\Leftrightarrow 4 \\cdot \\dfrac{1}{3} = \\dfrac{10}{3} - 2\\right)$ или с еквивалентност $\\left(3x - 2 \\geq 0 \\Leftrightarrow x \\geq \\dfrac{2}{3}\\right)$ установяваме, че $x = \\dfrac{10}{9}$ е решение. Следователно уравнението има единствен корен $x = \\dfrac{10}{9}$.",
+       "rubric": [
+        {
+         "text": "а) Определяне на $x \\geq 1, x \\neq 2$ или $x \\in [1;2) \\cup (2;\\infty)$",
+         "points": 2
+        },
+        {
+         "text": "б) Преобразуване на уравнението до вида $4\\sqrt{x - 1} = 3x - 2$",
+         "points": 2
+        },
+        {
+         "text": "б) Получаване на уравнението $9x^2 - 28x + 20 = 0$",
+         "points": 2
+        },
+        {
+         "text": "б) Намиране на корените $x_1 = 2$ и $x_2 = \\frac{10}{9}$",
+         "points": 2
+        },
+        {
+         "text": "б) Установяване, че $x = 2$ не е решение",
+         "points": 1
+        },
+        {
+         "text": "б) Установяване, че $x = \\frac{10}{9}$ е решение (с проверка или с еквивалентност)",
+         "points": 1
+        }
+       ]
+      },
+      {
+       "id": "q27",
+       "type": "open",
+       "points": 10,
+       "prompt": "Дадени са изразите $A = \\dfrac{1 + \\sin\\alpha + \\cos\\alpha}{\\sqrt{2}\\cos\\frac{\\alpha}{2}}$ и $B = 2\\cos\\left(45^\\circ - \\dfrac{\\alpha}{2}\\right)$. За допустимите стойности на $\\alpha$ докажете, че:\n\nа) $A = B$;\n\nб) $B = \\dfrac{1 + \\sqrt{7}}{2}$, ако $\\operatorname{tg}\\dfrac{\\alpha}{2} = \\sqrt{7}$ и $\\alpha \\in (0^\\circ;\\ 180^\\circ)$.",
+       "answer": "**Отговор:** а) доказателство; б) доказателство\n\n**Решение:**\n\nа) $A = \\dfrac{1 + \\sin\\alpha + \\cos\\alpha}{\\sqrt{2}\\cos\\frac{\\alpha}{2}} = \\dfrac{2\\cos^2\\frac{\\alpha}{2} + 2\\sin\\frac{\\alpha}{2}\\cos\\frac{\\alpha}{2}}{\\sqrt{2}\\cos\\frac{\\alpha}{2}} =$\n\n$= \\dfrac{2\\left(\\sin\\frac{\\alpha}{2} + \\cos\\frac{\\alpha}{2}\\right)}{\\sqrt{2}} = \\sqrt{2}\\left[\\sin\\left(90^\\circ - \\dfrac{\\alpha}{2}\\right) + \\sin\\dfrac{\\alpha}{2}\\right] =$\n\n$= 2\\sqrt{2}\\sin\\dfrac{90^\\circ - \\frac{\\alpha}{2} + \\frac{\\alpha}{2}}{2}\\cos\\dfrac{90^\\circ - \\frac{\\alpha}{2} - \\frac{\\alpha}{2}}{2} = 2\\sqrt{2}\\sin 45^\\circ\\cos\\left(\\dfrac{90^\\circ - \\alpha}{2}\\right) =$\n\n$= 2\\sqrt{2} \\cdot \\dfrac{\\sqrt{2}}{2}\\cos\\left(45^\\circ - \\dfrac{\\alpha}{2}\\right) = 2\\cos\\left(45^\\circ - \\dfrac{\\alpha}{2}\\right)$ и следователно $A = B$\n\nб) От $\\operatorname{tg}\\dfrac{\\alpha}{2} = \\sqrt{7}$ и основното тригонометрично тъждество получаваме $\\begin{cases} \\frac{\\sin\\frac{\\alpha}{2}}{\\cos\\frac{\\alpha}{2}} = \\sqrt{7} \\\\ \\sin^2\\frac{\\alpha}{2} + \\cos^2\\frac{\\alpha}{2} = 1 \\end{cases}$\n\nполучаваме $\\cos\\dfrac{\\alpha}{2} = \\pm\\dfrac{\\sqrt{2}}{4}$, $\\dfrac{\\alpha}{2} \\in (0^\\circ;\\ 90^\\circ) \\Rightarrow \\cos\\dfrac{\\alpha}{2} = \\dfrac{\\sqrt{2}}{4}$ и $\\sin\\dfrac{\\alpha}{2} = \\dfrac{\\sqrt{14}}{4}$\n\nТогава $\\sin\\alpha = 2\\sin\\dfrac{\\alpha}{2}\\cos\\dfrac{\\alpha}{2} = 2\\dfrac{\\sqrt{14}}{4}\\dfrac{\\sqrt{2}}{4} = \\dfrac{\\sqrt{7}}{4}$ и $\\cos\\alpha = \\cos^2\\dfrac{\\alpha}{2} - \\sin^2\\dfrac{\\alpha}{2} = \\dfrac{2}{16} - \\dfrac{14}{16} = -\\dfrac{3}{4}$.\n\nСледователно $B = 2\\cos\\left(45^\\circ - \\dfrac{\\alpha}{2}\\right) = \\dfrac{1 + \\sin\\alpha + \\cos\\alpha}{\\sqrt{2}\\cos\\frac{\\alpha}{2}} = \\dfrac{1 + \\frac{\\sqrt{7}}{4} - \\frac{3}{4}}{\\sqrt{2}\\frac{\\sqrt{2}}{4}} = \\dfrac{1 + \\sqrt{7}}{2}$",
+       "rubric": [
+        {
+         "text": "а) $A = \\frac{2\\cos^2\\frac{\\alpha}{2} + 2\\sin\\frac{\\alpha}{2}\\cos\\frac{\\alpha}{2}}{\\sqrt{2}\\cos\\frac{\\alpha}{2}}$",
+         "points": 1
+        },
+        {
+         "text": "а) $= \\sqrt{2}\\left[\\sin\\left(90^\\circ - \\frac{\\alpha}{2}\\right) + \\sin\\frac{\\alpha}{2}\\right]$",
+         "points": 1
+        },
+        {
+         "text": "а) $= 2\\sqrt{2}\\sin 45^\\circ\\cos\\left(\\frac{90^\\circ - \\alpha}{2}\\right)$",
+         "points": 1
+        },
+        {
+         "text": "а) $= 2\\cos\\left(45^\\circ - \\frac{\\alpha}{2}\\right)$ и следователно $A = B$",
+         "points": 1
+        },
+        {
+         "text": "б) $\\cos\\frac{\\alpha}{2} = \\frac{\\sqrt{2}}{4}$ и $\\sin\\frac{\\alpha}{2} = \\frac{\\sqrt{14}}{4}$",
+         "points": 2
+        },
+        {
+         "text": "б) $\\sin\\alpha = \\frac{\\sqrt{7}}{4}$ и $\\cos\\alpha = -\\frac{3}{4}$",
+         "points": 2
+        },
+        {
+         "text": "б) $B = \\frac{1 + \\sqrt{7}}{2}$",
+         "points": 2
+        }
+       ]
+      },
+      {
+       "id": "q28",
+       "type": "open",
+       "points": 10,
+       "prompt": "В окръжност $k$ с център $O$ е вписан $\\triangle ABD$. Допирателната към окръжността $k$ в точка $D$ пресича правата $AB$ в точка $M$ ($A$ е между $B$ и $M$), като $MA = 2\\ \\text{cm}$, $AB = 6\\ \\text{cm}$ и $\\sphericalangle AMD = 60^\\circ$.\n\nа) Пресметнете дължината на $MD$ и докажете, че $AD \\perp MB$ и $O \\in BD$.\n\nб) Ако $C$ е средата на дъгата $\\overset{\\frown}{BD}$, несъдържаща точката $A$, докажете, че дължината на $MC = 2\\sqrt{10 + 4\\sqrt{3}}\\ \\text{cm}$.",
+       "answer": "**Отговор:** а) $MD = 4\\ \\text{cm}$; б) доказателство\n\n**Решение:**\n\nа) От равенството $MD^2 = MA \\cdot MB \\Leftrightarrow MD^2 = 2 \\cdot 8$ намираме $MD = 4\\ \\text{cm}$.\n\nЩе докажем, че $\\sphericalangle MAD = 90^\\circ$, от което ще следва, че $AD \\perp MB$.\n\nОт косинусовата теорема в $\\triangle MAD$ намираме $AD^2 = MA^2 + MD^2 - 2 \\cdot MA \\cdot MD \\cdot \\cos 60^\\circ = 4 + 16 - 2 \\cdot 2 \\cdot 4 \\cdot \\dfrac{1}{2} = 12$.\n\nОт $MA^2 + AD^2 = 4 + 12 = 16 = MD^2$ следва, че $\\triangle MAD$ е правоъгълен с $\\sphericalangle MAD = 90^\\circ$.\n\nОт $AD \\perp MB$ следва, че $\\sphericalangle BAD = 90^\\circ$. Но той е вписан в $k$, $BD$ е диаметър на $k$ и $O \\in BD$.\n\nб) Тъй като $MD$ е допирателна на $k$, то $MD \\perp DO$, $\\triangle MDB$ е правоъгълен, $\\sphericalangle BMD = 60^\\circ$ и $BD = MB \\cdot \\sin 60^\\circ = 8 \\cdot \\dfrac{\\sqrt{3}}{2} = 4\\sqrt{3}\\ \\text{cm}$.\n\nПо условие $\\overset{\\frown}{BC} = \\overset{\\frown}{CD}$. Тогава $BC = CD$, $\\triangle BCD$ е равнобедрен и правоъгълен ($BD$ е диаметър на $k$), $\\sphericalangle CBD = 45^\\circ$ и $BC = BD \\cdot \\sin 45^\\circ = 4\\sqrt{3} \\cdot \\dfrac{\\sqrt{2}}{2} = 2\\sqrt{6}\\ \\text{cm}$.\n\nВ $\\triangle MDC$ $\\sphericalangle MDC = \\sphericalangle MDB + \\sphericalangle CDB = 90^\\circ + 45^\\circ = 135^\\circ$.\n\nОт косинусовата теорема в $\\triangle MDC$ намираме: $MC^2 = MD^2 + DC^2 - 2MD \\cdot DC \\cdot \\cos 135^\\circ =$\n\n$= 16 + 24 + 2 \\cdot 4 \\cdot 2\\sqrt{6} \\cdot \\dfrac{\\sqrt{2}}{2} = 40 + 8 \\cdot 2\\sqrt{3} = 40 + 16\\sqrt{3} = 4\\left(10 + 4\\sqrt{3}\\right)$ и $MC = 2\\sqrt{10 + 4\\sqrt{3}}\\ \\text{cm}$.",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "28-circle.svg",
+         "alt": "Окръжността k с диаметъра BD, допирателната MD и точката C"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "а) Намиране на $MD = 4\\ \\text{cm}$",
+         "points": 1
+        },
+        {
+         "text": "а) Доказване, че $AD \\perp MB$",
+         "points": 3
+        },
+        {
+         "text": "а) Доказване, че $O \\in BD$",
+         "points": 1
+        },
+        {
+         "text": "б) Пресмятане на $BC = 2\\sqrt{6}\\ \\text{cm}$",
+         "points": 2
+        },
+        {
+         "text": "б) Пресмятане на $MC = 2\\sqrt{10 + 4\\sqrt{3}}\\ \\text{cm}$",
+         "points": 3
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
