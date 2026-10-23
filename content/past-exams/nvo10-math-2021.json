@@ -1,0 +1,353 @@
+{
+ "format": 1,
+ "id": "nvo10-math-2021",
+ "version": "1",
+ "lang": "bg",
+ "title": "НВО 10. клас · Математика · 18 юни 2021",
+ "past": {
+  "exam": "nvo10",
+  "subj": "math",
+  "year": 2021,
+  "date": "2021-06-18",
+  "variant": null,
+  "session": "юни",
+  "pages": [
+   347,
+   354
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "18 юни 2021",
+   "minutes": 90,
+   "parts": [
+    {
+     "title": "Част 1",
+     "minutes": null,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Правилната подредба на числата $7$, $4\\sqrt{3}$, $\\sqrt{200}$ във възходящ ред е:",
+       "options": [
+        "$\\sqrt{200},\\ 4\\sqrt{3},\\ 7$",
+        "$7,\\ 4\\sqrt{3},\\ \\sqrt{200}$",
+        "$\\sqrt{200},\\ 7,\\ 4\\sqrt{3}$",
+        "$4\\sqrt{3},\\ 7,\\ \\sqrt{200}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на израза $\\sqrt{\\left(2\\sqrt{6} - 5\\right)^2} - \\left(-\\sqrt{6}\\right)^3$ е:",
+       "options": [
+        "$5 + 4\\sqrt{6}$",
+        "$-5 + 8\\sqrt{6}$",
+        "$5 - 8\\sqrt{6}$",
+        "$-5 - 4\\sqrt{6}$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Ако $x_1$ и $x_2$ са корените на уравнението $x^2 + 5x - 2 = 0$, то стойността на израза $3x_1 + 3x_2 + 2x_1x_2$ е:",
+       "options": [
+        "$-19$",
+        "$-11$",
+        "$11$",
+        "$19$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Множеството от решенията на неравенството $\\dfrac{2x}{x^2 - 9} \\leq 0$ е:",
+       "options": [
+        "$x \\in (-\\infty;-3) \\cup [0;3)$",
+        "$x \\in (-\\infty;-3] \\cup [0;3]$",
+        "$x \\in (-3;0] \\cup (3;+\\infty)$",
+        "$x \\in [-3;0] \\cup [3;+\\infty)$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Броят на корените на уравнението $\\left(x^2 - 4\\right)\\sqrt{x - 5} = 0$ е:",
+       "options": [
+        "$0$",
+        "$1$",
+        "$3$",
+        "$4$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 2,
+       "prompt": "На кой чертеж е представена графиката на функцията $f(x) = 6 - 3x$?",
+       "options": [
+        "чертеж А)",
+        "чертеж Б)",
+        "чертеж В)",
+        "чертеж Г)"
+       ],
+       "answer": 0,
+       "media": [
+        {
+         "type": "image",
+         "src": "6-a.svg",
+         "alt": "Чертеж А): права през (0; 6) и (2; 0)",
+         "caption": "А)"
+        },
+        {
+         "type": "image",
+         "src": "6-b.svg",
+         "alt": "Чертеж Б): права през (0; 6) и (3; 0)",
+         "caption": "Б)"
+        },
+        {
+         "type": "image",
+         "src": "6-v.svg",
+         "alt": "Чертеж В): права през (0; −6) и (2; 0)",
+         "caption": "В)"
+        },
+        {
+         "type": "image",
+         "src": "6-g.svg",
+         "alt": "Чертеж Г): права през (0; −6) и (3; 0)",
+         "caption": "Г)"
+        }
+       ]
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 2,
+       "prompt": "На чертежа е дадена графиката на функцията $f(x) = ax^2 + bx + c$, $x \\in \\mathbb{R}$. Най-голямата стойност на функцията $f(x)$ е:",
+       "options": [
+        "$4$",
+        "$3$",
+        "$2$",
+        "$1$"
+       ],
+       "answer": 3,
+       "media": [
+        {
+         "type": "image",
+         "src": "7-parabola.svg",
+         "alt": "Парабола с нули 2 и 4 и връх в точката (3; 1)"
+        }
+       ]
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 2,
+       "prompt": "За аритметичната прогресия $a_1, a_2, a_3, \\ldots, a_n$, $n \\in \\mathbb{N}$, е известно, че $a_6 - a_4 = 6$. Разликата на прогресията е равна на:",
+       "options": [
+        "$12$",
+        "$6$",
+        "$3$",
+        "$2$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на израза $\\dfrac{\\sqrt{2}\\sin 45^\\circ + \\operatorname{tg}^2 60^\\circ}{\\sin^2 45^\\circ + \\cos^2 45^\\circ}$ е:",
+       "options": [
+        "$\\dfrac{1}{4}$",
+        "$2\\dfrac{\\sqrt{2}}{3}$",
+        "$3\\dfrac{\\sqrt{2}}{2}$",
+        "$4$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 2,
+       "prompt": "На клавиатурата на телефона има $10$ цифри от $0$ до $9$. Вероятността случайно избрана цифра да е четна и по-голяма от $3$ е:",
+       "options": [
+        "$0{,}2$",
+        "$0{,}3$",
+        "$0{,}4$",
+        "$0{,}5$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Кое число трябва да се добави към данните $11;\\ 1;\\ 12;\\ 7;\\ 2;\\ 10;\\ 3$ така, че медианата на получения статистически ред да е $8$?",
+       "options": [
+        "$7$",
+        "$8$",
+        "$9$",
+        "$11$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Ширината на реките по продължение на течението варира. Определете ширината на реката между точките $B$ и $C$ (в метри), ако $AB = 40\\ \\text{m}$, $BD = 32\\ \\text{m}$ и $CE = 60\\ \\text{m}$.",
+       "options": [
+        "$28$ m",
+        "$35$ m",
+        "$48$ m",
+        "$75$ m"
+       ],
+       "answer": 1,
+       "media": [
+        {
+         "type": "image",
+         "src": "12-river.svg",
+         "alt": "Река с брегове през B и C; AB = 40 m, BD = 32 m, CE = 60 m, точките A, D и E лежат на една права"
+        }
+       ]
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 2,
+       "prompt": "На чертежа хордите $AE$ и $DF$ се пресичат в точка $P$. Ако $\\sphericalangle ADF = 20^\\circ$ и $\\sphericalangle DFE = 30^\\circ$, то мярката на $\\sphericalangle DPE$ е:",
+       "options": [
+        "$25^\\circ$",
+        "$40^\\circ$",
+        "$50^\\circ$",
+        "$60^\\circ$"
+       ],
+       "answer": 2,
+       "media": [
+        {
+         "type": "image",
+         "src": "13-chords.svg",
+         "alt": "Окръжност с хордите AE и DF, пресичащи се в P; ъгъл ADF = 20°, ъгъл DFE = 30°"
+        }
+       ]
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 2,
+       "prompt": "В правоъгълния $\\triangle ABC$ хипотенузата $AC = \\sqrt{13}\\ \\text{cm}$ и $AB = 3\\ \\text{cm}$. Намерете $\\operatorname{tg}\\sphericalangle BAC$.",
+       "options": [
+        "$\\dfrac{3}{2}$",
+        "$\\dfrac{2}{\\sqrt{13}}$",
+        "$\\dfrac{3}{\\sqrt{13}}$",
+        "$\\dfrac{2}{3}$"
+       ],
+       "answer": 3,
+       "media": [
+        {
+         "type": "image",
+         "src": "14-right.svg",
+         "alt": "Правоъгълен триъгълник ABC с хипотенуза AC = √13 и катет AB = 3"
+        }
+       ]
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 2,
+       "prompt": "В успоредник $ABCD$ височината от върха $D$ към страната $AB$ е равна на $3$ cm. Ако $AD = BD = 5\\ \\text{cm}$, то лицето на успоредника $ABCD$ е:",
+       "options": [
+        "$8\\ \\text{cm}^2$",
+        "$12\\ \\text{cm}^2$",
+        "$24\\ \\text{cm}^2$",
+        "$32\\ \\text{cm}^2$"
+       ],
+       "answer": 2,
+       "media": [
+        {
+         "type": "image",
+         "src": "15-parallelogram.svg",
+         "alt": "Успоредник ABCD с височината DH = 3 и AD = BD = 5"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Част 2",
+     "minutes": null,
+     "tasks": [
+      {
+       "id": "q16",
+       "type": "open",
+       "points": 10,
+       "prompt": "Търговец купил два вида стоки от производител. След като увеличил цената им с по $20$ лв., отношението на цените им станало $8:5$. В края на сезона, при разпродажбата на стоката си, той намалил настоящата им цена с по $30$ лв. и отношението на цените им станало $5:2$. На каква цена е купил тези стоки търговецът и колко пъти единият вид стока е бил по-скъп от другия?",
+       "answer": "**Отговор:** $x = 60$ лв., $y = 30$ лв.; единият вид стока е $2$ пъти по-скъп от другия.\n\n**Примерно решение:**\n\nОзначаваме с $x$ и $y$ цените на двата вида стоки в началото, $x > 0$ и $y > 0$.\n\nТогава получаваме следната система:\n\n$\\begin{cases} \\frac{x + 20}{y + 20} = \\frac{8}{5} \\\\ \\frac{x + 20 - 30}{y + 20 - 30} = \\frac{5}{2} \\end{cases}$\n\n$\\begin{cases} \\frac{x + 20}{y + 20} = \\frac{8}{5} \\\\ \\frac{x - 10}{y - 10} = \\frac{5}{2} \\end{cases}$\n\n$\\begin{cases} 5(x + 20) = 8(y + 20) \\\\ 2(x - 10) = 5(y - 10) \\end{cases}$\n\n$\\begin{cases} 5x + 100 = 8y + 160 \\\\ 2x - 20 = 5y - 50 \\end{cases}$\n\n$\\begin{cases} 5x - 8y = 60 \\\\ 2x - 5y = -30 \\end{cases}$, която има за решение $x = 60$ лв., $y = 30$ лв.\n\nЦената на стоките е $60$ лв. и $30$ лв. и единият вид стока е $2$ пъти по-скъп от другия.",
+       "rubric": [
+        {
+         "text": "За означенията $x$ и $y$, $x > 0$ и $y > 0$",
+         "points": 1
+        },
+        {
+         "text": "За получаване на системата $\\begin{cases} \\frac{x + 20}{y + 20} = \\frac{8}{5} \\\\ \\frac{x + 20 - 30}{y + 20 - 30} = \\frac{5}{2} \\end{cases}$",
+         "points": 3
+        },
+        {
+         "text": "За достигане до линейната система $\\begin{cases} 5x - 8y = 60 \\\\ 2x - 5y = -30 \\end{cases}$",
+         "points": 3
+        },
+        {
+         "text": "$x = 60$ лв., $y = 30$ лв.",
+         "points": 2
+        },
+        {
+         "text": "Единият вид стока е $2$ пъти по-скъп от другия.",
+         "points": 1
+        }
+       ]
+      },
+      {
+       "id": "q17",
+       "type": "open",
+       "points": 10,
+       "prompt": "В $\\triangle ABC$ е вписана окръжност с център точка $O$. Ако $AO = 3\\ \\text{cm}$, $BO = 5\\ \\text{cm}$ и $\\sphericalangle ACB = 60^\\circ$, намерете:\n\nА) дължината на страната $AB$\n\nБ) радиуса на описаната около $\\triangle ABC$ окръжност\n\nВ) радиуса на вписаната в $\\triangle ABC$ окръжност.",
+       "answer": "**Отговор:** А) $AB = 7\\ \\text{cm}$; Б) $R = \\dfrac{7\\sqrt{3}}{3}\\ \\text{cm}$; В) $r = \\dfrac{15\\sqrt{3}}{14}\\ \\text{cm}$\n\n**Примерно решение:**\n\nА) Тъй като точка $O$ е център на вписната окръжност, то тя е пресечна точка на ъглополовящите. Тогава\n\n$\\sphericalangle OAB = \\dfrac{1}{2}\\sphericalangle CAB$, $\\sphericalangle OBA = \\dfrac{1}{2}\\sphericalangle CBA$\n\n$\\sphericalangle AOB = 180^\\circ - (\\sphericalangle OAB + \\sphericalangle OBA)$\n\n$\\sphericalangle AOB = 180^\\circ - \\left(\\dfrac{1}{2}\\sphericalangle CAB + \\dfrac{1}{2}\\sphericalangle CBA\\right) = 180^\\circ - \\dfrac{1}{2}(180^\\circ - \\sphericalangle ACB) =$\n\n$= 180^\\circ - 90^\\circ + \\dfrac{1}{2}\\sphericalangle ACB = 90^\\circ + 30^\\circ = 120^\\circ$\n\nОт косинусова теорема за $\\triangle AOB$:\n\n$AB^2 = AO^2 + BO^2 - 2 \\cdot AO \\cdot BO \\cdot \\cos\\sphericalangle AOB$\n\n$AB^2 = 3^2 + 5^2 - 2 \\cdot 3 \\cdot 5 \\cdot \\left(-\\dfrac{1}{2}\\right)$\n\n$AB^2 = 49$\n\n$AB = 7\\ \\text{cm}$\n\nБ) От синусова теорема за $\\triangle ABC$: $\\dfrac{AB}{\\sin\\sphericalangle ACB} = 2R$\n\n$R = \\dfrac{7\\sqrt{3}}{3}\\ \\text{cm}$\n\nВ) $S_{\\triangle AOB} = \\dfrac{1}{2} \\cdot AO \\cdot BO \\cdot \\sin\\sphericalangle AOB = \\dfrac{1}{2} \\cdot 3 \\cdot 5 \\cdot \\dfrac{\\sqrt{3}}{2} = \\dfrac{15\\sqrt{3}}{4}\\ \\text{cm}^2$\n\nРадиусът на вписаната окръжност е височина на $\\triangle AOB$.\n\n$S_{\\triangle AOB} = \\dfrac{1}{2} \\cdot AB \\cdot h = \\dfrac{1}{2} \\cdot 7 \\cdot r\\ \\text{cm}^2$\n\n$\\dfrac{15\\sqrt{3}}{4} = \\dfrac{1}{2} \\cdot 7 \\cdot r$\n\n$r = \\dfrac{15\\sqrt{3}}{14}\\ \\text{cm}$",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "17-incentre.svg",
+         "alt": "Триъгълник ABC с центъра O на вписаната окръжност; AO = 3, BO = 5, ъгълът AOB е 120°"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "А) $AB = 7\\ \\text{cm}$",
+         "points": 4
+        },
+        {
+         "text": "Б) $R = \\frac{7\\sqrt{3}}{3}\\ \\text{cm}$",
+         "points": 2
+        },
+        {
+         "text": "В) $r = \\frac{15\\sqrt{3}}{14}\\ \\text{cm}$",
+         "points": 4
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
