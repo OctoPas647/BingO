@@ -17,7 +17,7 @@ const ONBOARD = {
       { key: 'track', path: 'profile.track', type: 'choice', list: true, required: true, options: () => Object.entries(TRACKS).map(([id, t]) => [id, t.title]), validate: v => (TRACKS[v] ? '' : 'Избери профил') }
     ] },
     { id: 'subject', title: 'Коя матура първо?', text: () => examPlan(S.profile.exam, S.profile.track) + ' Можеш да сменяш предмета по всяко време от началния екран.', fields: [
-      { key: 'subject', path: 'subject', type: 'choice', required: true, options: () => Object.values(SUBJECTS).map(s => [s.id, s.icon + ' ' + s.title]), validate: v => (SUBJECTS[v] ? '' : 'Избери матура') }
+      { key: 'subject', path: 'subject', type: 'choice', required: true, options: () => subjectOptions(S.profile.track), validate: v => (SUBJECTS[v] ? '' : 'Избери матура') }
     ] },
     { id: 'theme', title: 'Как да изглежда?', text: '„Системна“ следва светлата или тъмната тема на телефона.', fields: [
       { key: 'theme', path: 'settings.theme', type: 'choice', required: true, options: [['auto', 'Системна'], ['light', 'Светла'], ['dark', 'Тъмна'], ['amoled', 'AMOLED']], validate: v => (['auto', 'light', 'dark', 'amoled'].includes(v) ? '' : 'Избери тема') }
@@ -72,6 +72,15 @@ function examPlan(exam, track) {
   if (track === 'prof') return 'На матурите: БЕЛ (задължителна) и държавен изпит за професионална квалификация.';
   return `На матурите: БЕЛ (задължителна) и втора по избор от профилиращите предмети: ${t.dzi.join(', ')}.`;
 }
+/* БЕЛ first (it is the 1st matura for everyone), then the learner's profile in the 2nd place. The app
+   only has mathematics besides БЕЛ, so a profile without mathematics is shown but can't be picked yet. */
+const trackHasMath = track => !!TRACKS[track] && TRACKS[track].dzi.includes('математика');
+function subjectOptions(track) {
+  const bel = SUBJECTS.bel, math = SUBJECTS.math, t = TRACKS[track];
+  const second = !t ? [math.id, math.icon + ' ' + math.title]
+    : trackHasMath(track) ? [math.id, math.icon + ' ' + t.title] : ['', '🎓 ' + t.title + ' (скоро)', true];
+  return [[bel.id, bel.icon + ' ' + bel.title], second];
+}
 const obText = v => (typeof v === 'function' ? v() : v);
 const obTitle = step => obText(step.title);
 const obActive = step => !step.when || step.when();
@@ -112,6 +121,7 @@ function obApply(step, d) {
   for (const f of step.fields) if (obVisible(f, d)) obSet(f.path, String(d[f.key] == null ? '' : d[f.key]).trim());
   if (step.id === 'theme') { APP.settings.theme = S.settings.theme; applySettings(); }
   if (step.id === 'exam' && !needsTrack(S.profile.exam)) S.profile.track = '';
+  if (step.id === 'track' && !trackHasMath(S.profile.track)) S.subject = 'bel';   /* its 2nd matura has no tasks here yet */
   if (step.id === 'profile') S.profile.exam = examFromAge(S.profile.age) || S.profile.exam || '';  /* the next step suggests the exam for this age */
 }
 function obMove(dir) {
@@ -166,7 +176,7 @@ SCREENS.onboarding = async el => {
     const err = errors[f.key] ? `<small class="ob-err">${esc(errors[f.key])}</small>` : '';
     if (f.type === 'choice') {
       const opts = typeof f.options === 'function' ? f.options() : f.options;
-      return `<div class="seg${f.list ? ' list' : ''}" data-key="${f.key}">${opts.map(([v, label]) => `<button data-v="${esc(v)}" class="${d[f.key] === v ? 'on' : ''}">${esc(label)}</button>`).join('')}</div>${err}`;
+      return `<div class="seg${f.list ? ' list' : ''}" data-key="${f.key}">${opts.map(([v, label, off]) => `<button data-v="${esc(v)}" class="${!off && d[f.key] === v ? 'on' : ''}"${off ? ' disabled' : ''}>${esc(label)}</button>`).join('')}</div>${err}`;
     }
     return `<label class="fld"><span>${esc(f.label)}</span><input class="field" data-k="${f.key}" type="${f.type}" value="${esc(d[f.key])}" placeholder="${esc(f.ph || '')}" autocomplete="off" spellcheck="false"></label>${err}`;
   };
