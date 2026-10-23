@@ -84,7 +84,7 @@ if (E('S.profile.track') !== 'math' || !E('examPlan("dzi12", "math")').includes(
 E('onboardingBack(); onboardingBack(); onboardingNext({ exam: "nvo7" })');
 if (E('obStep().id') !== 'subject' || E('S.profile.track') !== '') fail('onboarding: 7th grade should skip the profile');
 if (E('onboardingBack().step') !== ONB_EXAM) fail('onboarding: back from the subject should pass over the skipped profile');
-if (E('subjectOptions("math")[0][0]') !== 'bel' || E('subjectOptions("math")[1][1]') !== '📐 Математически') fail('onboarding: БЕЛ first, then the profile');
+if (E('subjectOptions("math")[0][0]') !== 'bel' || E('subjectOptions("math")[1][1]') !== '🧮 Математически') fail('onboarding: БЕЛ first, then the profile');
 if (!E('subjectOptions("music")[1][2]')) fail('onboarding: a profile without mathematics should not be selectable yet');
 E('onboardingNext({ exam: "dzi12" }); onboardingNext({ track: "prof" }); onboardingNext({ extra: "maths" })');
 if (E('S.subject') !== 'bel') fail('onboarding: a profile without mathematics should start with БЕЛ');

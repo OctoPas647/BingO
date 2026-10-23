@@ -14,7 +14,7 @@ const ONBOARD = {
       { key: 'exam', path: 'profile.exam', type: 'choice', required: true, options: () => Object.entries(EXAMS), validate: v => (EXAMS[v] ? '' : 'Избери изпит') }
     ] },
     { id: 'track', title: 'Какъв е профилът ти?', when: () => needsTrack(S.profile.exam), text: () => (S.profile.exam === 'nvo10' ? 'НВО в 10-ти клас е еднакво за всички, но профилът решава коя ще е втората ти матура в 12-ти клас.' : 'Профилът решава коя може да е втората ти матура.'), fields: [
-      { key: 'track', path: 'profile.track', type: 'choice', list: true, required: true, options: () => Object.entries(TRACKS).map(([id, t]) => [id, t.title]), validate: v => (TRACKS[v] ? '' : 'Избери профил') }
+      { key: 'track', path: 'profile.track', type: 'choice', list: true, required: true, options: () => Object.entries(TRACKS).map(([id, t]) => [id, t.icon + ' ' + t.title]), validate: v => (TRACKS[v] ? '' : 'Избери профил') }
     ] },
     { id: 'extra', title: 'Допълнителна матура?', when: () => needsTrack(S.profile.exam) && !!TRACKS[S.profile.track], skippable: true, text: 'Освен двете задължителни можеш да се явиш и на допълнителна матура. Пропусни, ако нямаш.', fields: [
       { key: 'extra', path: 'profile.extra', type: 'choice', list: true, required: true, options: () => extraOptions(S.profile.track), validate: (v, d) => (extraOptions(S.profile.track).some(o => o[0] === v) ? '' : 'Избери матура') }
@@ -50,18 +50,18 @@ function examFromAge(age) {
    profile the 2nd ДЗИ is one of the profiling subjects; in a vocational school it is the state exam for
    a professional qualification (ЗПУО, чл. 134). Schools pick the exact profiling subjects themselves. */
 const TRACKS = {
-  math: { title: 'Математически', dzi: ['математика', 'информатика', 'информационни технологии', 'физика и астрономия'] },
-  soft: { title: 'Софтуерни и хардуерни науки', dzi: ['информатика', 'информационни технологии', 'математика'] },
-  nat: { title: 'Природни науки', dzi: ['биология и здравно образование', 'химия и опазване на околната среда', 'физика и астрономия', 'математика'] },
-  econ: { title: 'Икономическо развитие', dzi: ['география и икономика', 'математика', 'информационни технологии', 'чужд език'] },
-  ent: { title: 'Предприемачески', dzi: ['предприемачество', 'география и икономика', 'информационни технологии', 'чужд език'] },
-  lang: { title: 'Чужди езици', dzi: ['чужд език'] },
-  hum: { title: 'Хуманитарни науки', dzi: ['български език и литература', 'история и цивилизации', 'чужд език', 'философия'] },
-  soc: { title: 'Обществени науки', dzi: ['история и цивилизации', 'география и икономика', 'философия'] },
-  art: { title: 'Изобразително изкуство', dzi: ['изобразително изкуство'] },
-  music: { title: 'Музика', dzi: ['музика'] },
-  sport: { title: 'Физическо възпитание и спорт', dzi: ['физическо възпитание и спорт', 'биология и здравно образование'] },
-  prof: { title: 'Професионална гимназия', dzi: [] }
+  math: { icon: '🧮', title: 'Математически', dzi: ['математика', 'информатика', 'информационни технологии', 'физика и астрономия'] },
+  soft: { icon: '💻', title: 'Софтуерни и хардуерни науки', dzi: ['информатика', 'информационни технологии', 'математика'] },
+  nat: { icon: '🔬', title: 'Природни науки', dzi: ['биология и здравно образование', 'химия и опазване на околната среда', 'физика и астрономия', 'математика'] },
+  econ: { icon: '📊', title: 'Икономическо развитие', dzi: ['география и икономика', 'математика', 'информационни технологии', 'чужд език'] },
+  ent: { icon: '🚀', title: 'Предприемачески', dzi: ['предприемачество', 'география и икономика', 'информационни технологии', 'чужд език'] },
+  lang: { icon: '🌍', title: 'Чужди езици', dzi: ['чужд език'] },
+  hum: { icon: '📜', title: 'Хуманитарни науки', dzi: ['български език и литература', 'история и цивилизации', 'чужд език', 'философия'] },
+  soc: { icon: '🏛️', title: 'Обществени науки', dzi: ['история и цивилизации', 'география и икономика', 'философия'] },
+  art: { icon: '🎨', title: 'Изобразително изкуство', dzi: ['изобразително изкуство'] },
+  music: { icon: '🎵', title: 'Музика', dzi: ['музика'] },
+  sport: { icon: '⚽', title: 'Физическо възпитание и спорт', dzi: ['физическо възпитание и спорт', 'биология и здравно образование'] },
+  prof: { icon: '🛠️', title: 'Професионална гимназия', dzi: [] }
 };
 /* 4th and 7th grade have no profile yet, so the profile question is skipped for them */
 const needsTrack = exam => exam === 'nvo10' || exam === 'dzi12';
@@ -82,16 +82,16 @@ const trackHasMath = track => !!TRACKS[track] && TRACKS[track].dzi.includes('м�
 function subjectOptions(track, extra) {
   const bel = SUBJECTS.bel, math = SUBJECTS.math, t = TRACKS[track];
   const second = !t ? [math.id, math.icon + ' ' + math.title]
-    : trackHasMath(track) ? [math.id, math.icon + ' ' + t.title] : ['', '🎓 ' + t.title + ' (скоро)', true];
+    : trackHasMath(track) ? [math.id, t.icon + ' ' + t.title] : ['', t.icon + ' ' + t.title + ' (скоро)', true];
   const opts = [[bel.id, bel.icon + ' ' + bel.title], second];
   /* the extra matura in the 3rd place; mathematics only once, so a math profile already covers it */
   if (extra === EXTRA_MATH && second[0] !== math.id) opts.push([math.id, math.icon + ' ' + math.title]);
-  else if (TRACKS[extra] && extra !== track) opts.push(trackHasMath(extra) && second[0] !== math.id ? [math.id, math.icon + ' ' + TRACKS[extra].title] : ['', '🎓 ' + TRACKS[extra].title + ' (скоро)', true]);
+  else if (TRACKS[extra] && extra !== track) opts.push(trackHasMath(extra) && second[0] !== math.id ? [math.id, TRACKS[extra].icon + ' ' + TRACKS[extra].title] : ['', TRACKS[extra].icon + ' ' + TRACKS[extra].title + ' (скоро)', true]);
   return opts;
 }
 /* The extra (optional) ДЗИ: mathematics or one of the other profiles' subjects */
 const EXTRA_MATH = 'maths';
-const extraOptions = track => [[EXTRA_MATH, '📐 Математика'], ...Object.entries(TRACKS).filter(([id]) => id !== track && id !== 'prof').map(([id, t]) => [id, t.title])];
+const extraOptions = track => [[EXTRA_MATH, '📐 Математика'], ...Object.entries(TRACKS).filter(([id]) => id !== track && id !== 'prof').map(([id, t]) => [id, t.icon + ' ' + t.title])];
 const extraText = extra => (extra === EXTRA_MATH ? 'математика' : TRACKS[extra] ? TRACKS[extra].title.toLowerCase() + ' (профилиращ предмет)' : '');
 const obText = v => (typeof v === 'function' ? v() : v);
 const obTitle = step => obText(step.title);
