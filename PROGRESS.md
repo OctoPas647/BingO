@@ -2,13 +2,15 @@
 
 ## Done
 - 0.3.2 release prepared: version 0.3.1 -> 0.3.2, androidVersionCode 4 -> 5, CHANGELOG entry.
+- Fix: confetti no longer falls on the next screen. The result screen now removes the confetti canvas when you leave it (nav.onLeave in src/js/61-session.js).
 
 ## Decisions
-- 0.3.2 is a maintenance release: the only change since 0.3.1 is AGENTS.md (rules for AI agents).
+- Fixed in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
 - Release and APK are built by the Build workflow (.github/workflows/build.yml) after merge to main.
 
 ## Left
-- Merge the PR, then check that release v0.3.2 has BingO-0.3.2.apk.
+- Merge the PRs in order, then check that release v0.3.2 has BingO-0.3.2.apk.
+- Fix: the same question can repeat in one session (separate PR).
 
 ## Bugs
-- None known.
+- Same question repeating in one session (being fixed).

@@ -118,6 +118,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const rows = touched.map(id => { const x = endMap.list.find(y => y.sk.id === id), was = skillStatus({ ...x.st, p: before[id] }); return { x, was }; });
     const newlyStrong = rows.filter(r => r.x.status === 'strong' && before[r.x.sk.id] < BKT.strong);
     if (right / P.answers.length >= 0.7) { sound('done'); confetti(); }
+    nav.onLeave = () => $$('canvas.confetti').forEach(c => c.remove()); /* confetti must not fall on the next screen */
     el.querySelector('.playbar').outerHTML = topbar(esc(MODE_TITLE[mode]), { closeIcon: true });
     foot.remove();
     main.innerHTML = `<div class="result pad">
