@@ -16,8 +16,11 @@ const ONBOARD = {
     { id: 'track', title: 'Какъв е профилът ти?', when: () => needsTrack(S.profile.exam), text: () => (S.profile.exam === 'nvo10' ? 'НВО в 10-ти клас е еднакво за всички, но профилът решава коя ще е втората ти матура в 12-ти клас.' : 'Профилът решава коя може да е втората ти матура.'), fields: [
       { key: 'track', path: 'profile.track', type: 'choice', list: true, required: true, options: () => Object.entries(TRACKS).map(([id, t]) => [id, t.title]), validate: v => (TRACKS[v] ? '' : 'Избери профил') }
     ] },
-    { id: 'subject', title: 'Коя матура първо?', text: () => examPlan(S.profile.exam, S.profile.track) + ' Можеш да сменяш предмета по всяко време от началния екран.', fields: [
-      { key: 'subject', path: 'subject', type: 'choice', required: true, options: () => subjectOptions(S.profile.track), validate: v => (SUBJECTS[v] ? '' : 'Избери матура') }
+    { id: 'extra', title: 'Допълнителна матура?', when: () => needsTrack(S.profile.exam) && !!TRACKS[S.profile.track], skippable: true, text: 'Освен двете задължителни можеш да се явиш и на допълнителна матура. Пропусни, ако нямаш.', fields: [
+      { key: 'extra', path: 'profile.extra', type: 'choice', list: true, required: true, options: () => extraOptions(S.profile.track), validate: (v, d) => (extraOptions(S.profile.track).some(o => o[0] === v) ? '' : 'Избери матура') }
+    ] },
+    { id: 'subject', title: 'Коя матура първо?', text: () => examPlanFull(S.profile.exam, S.profile.track, S.profile.extra) + ' Можеш да сменяш предмета по всяко време от началния екран.', fields: [
+      { key: 'subject', path: 'subject', type: 'choice', required: true, options: () => subjectOptions(S.profile.track, S.profile.extra), validate: v => (SUBJECTS[v] ? '' : 'Избери матура') }
     ] },
     { id: 'theme', title: 'Как да изглежда?', text: '„Системна“ следва светлата или тъмната тема на телефона.', fields: [
       { key: 'theme', path: 'settings.theme', type: 'choice', required: true, options: [['auto', 'Системна'], ['light', 'Светла'], ['dark', 'Тъмна'], ['amoled', 'AMOLED']], validate: v => (['auto', 'light', 'dark', 'amoled'].includes(v) ? '' : 'Избери тема') }
@@ -72,15 +75,24 @@ function examPlan(exam, track) {
   if (track === 'prof') return 'На матурите: БЕЛ (задължителна) и държавен изпит за професионална квалификация.';
   return `На матурите: БЕЛ (задължителна) и втора по избор от профилиращите предмети: ${t.dzi.join(', ')}.`;
 }
+const examPlanFull = (exam, track, extra) => examPlan(exam, track) + (exam === 'dzi12' && extraText(extra) ? ` Допълнителна: ${extraText(extra)}.` : '');
 /* БЕЛ first (it is the 1st matura for everyone), then the learner's profile in the 2nd place. The app
    only has mathematics besides БЕЛ, so a profile without mathematics is shown but can't be picked yet. */
 const trackHasMath = track => !!TRACKS[track] && TRACKS[track].dzi.includes('математика');
-function subjectOptions(track) {
+function subjectOptions(track, extra) {
   const bel = SUBJECTS.bel, math = SUBJECTS.math, t = TRACKS[track];
   const second = !t ? [math.id, math.icon + ' ' + math.title]
     : trackHasMath(track) ? [math.id, math.icon + ' ' + t.title] : ['', '🎓 ' + t.title + ' (скоро)', true];
-  return [[bel.id, bel.icon + ' ' + bel.title], second];
+  const opts = [[bel.id, bel.icon + ' ' + bel.title], second];
+  /* the extra matura in the 3rd place; mathematics only once, so a math profile already covers it */
+  if (extra === EXTRA_MATH && second[0] !== math.id) opts.push([math.id, math.icon + ' ' + math.title]);
+  else if (TRACKS[extra] && extra !== track) opts.push(trackHasMath(extra) && second[0] !== math.id ? [math.id, math.icon + ' ' + TRACKS[extra].title] : ['', '🎓 ' + TRACKS[extra].title + ' (скоро)', true]);
+  return opts;
 }
+/* The extra (optional) ДЗИ: mathematics or one of the other profiles' subjects */
+const EXTRA_MATH = 'maths';
+const extraOptions = track => [[EXTRA_MATH, '📐 Математика'], ...Object.entries(TRACKS).filter(([id]) => id !== track && id !== 'prof').map(([id, t]) => [id, t.title])];
+const extraText = extra => (extra === EXTRA_MATH ? 'математика' : TRACKS[extra] ? TRACKS[extra].title.toLowerCase() + ' (профилиращ предмет)' : '');
 const obText = v => (typeof v === 'function' ? v() : v);
 const obTitle = step => obText(step.title);
 const obActive = step => !step.when || step.when();
@@ -121,7 +133,9 @@ function obApply(step, d) {
   for (const f of step.fields) if (obVisible(f, d)) obSet(f.path, String(d[f.key] == null ? '' : d[f.key]).trim());
   if (step.id === 'theme') { APP.settings.theme = S.settings.theme; applySettings(); }
   if (step.id === 'exam' && !needsTrack(S.profile.exam)) S.profile.track = '';
+  if (step.id === 'exam' && !needsTrack(S.profile.exam)) S.profile.extra = '';
   if (step.id === 'track' && !trackHasMath(S.profile.track)) S.subject = 'bel';   /* its 2nd matura has no tasks here yet */
+  if (step.id === 'track' && S.profile.extra === S.profile.track) S.profile.extra = '';
   if (step.id === 'profile') S.profile.exam = examFromAge(S.profile.age) || S.profile.exam || '';  /* the next step suggests the exam for this age */
 }
 function obMove(dir) {
@@ -141,7 +155,11 @@ function onboardingNext(d) {
   return obMove(1);
 }
 function onboardingBack() { return obState().step > 0 ? obMove(-1) : { ok: false }; }
-function onboardingSkip() { return obStep().skippable ? obMove(1) : { ok: false }; }
+function onboardingSkip() {
+  const step = obStep(); if (!step.skippable) return { ok: false };
+  if (step.id === 'extra') S.profile.extra = '';   /* skipping means "no extra matura" */
+  return obMove(1);
+}
 function onboardingFinish() {
   const o = obState(); o.done = true; o.finishedAt = Date.now(); saveState(true);
   return { ok: true, done: true };
