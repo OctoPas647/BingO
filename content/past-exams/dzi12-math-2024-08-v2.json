@@ -1,0 +1,308 @@
+{
+ "format": 1,
+ "id": "dzi12-math-2024-08-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Математика · 23 август 2024 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "math",
+  "year": 2024,
+  "date": "2024-08-23",
+  "variant": 2,
+  "session": "август",
+  "pages": [
+   467,
+   477
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 август 2024 · вариант 2",
+   "minutes": 240,
+   "parts": [
+    {
+     "title": "Част 1",
+     "minutes": 90,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Даден е $\\triangle ABC$, в който $\\sphericalangle ACB = 30^\\circ$ и $\\overrightarrow{CA} \\cdot \\overrightarrow{CB} = 2\\sqrt{3}$. Лицето на $\\triangle ABC$ е равно на:",
+       "options": [
+        "$1$",
+        "$\\sqrt{3}$",
+        "$2$",
+        "$3$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 3,
+       "prompt": "За коя стойност на реалното число $a$, полиномът $g(x) = x + 1$ е делител на полинома $f(x) = a^3x^3 + 4ax + 5$?",
+       "options": [
+        "$-4$",
+        "$-1$",
+        "$1$",
+        "$5$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Околната повърхнина на прав кръгов конус е кръгов сектор с централен ъгъл $120^\\circ$ и радиус $6\\ \\text{cm}$. Пълната повърхнина на конуса е равна на:",
+       "options": [
+        "$12\\pi\\ \\text{cm}^2$",
+        "$16\\pi\\ \\text{cm}^2$",
+        "$18\\pi\\ \\text{cm}^2$",
+        "$24\\pi\\ \\text{cm}^2$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Тяло $M$ се движи праволинейно и изминава разстояние $S(t) = \\dfrac{1}{3}t^3 - 3t^2 - 5t + 3\\ \\text{m}$, в зависимост от времето $t$ (в секунди). При коя стойност на $t$ скоростта на $M$ е равна на $2\\ \\text{m/sec}$?",
+       "options": [
+        "$1$",
+        "$2$",
+        "$3$",
+        "$7$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Разпределението на случайната величина $X$ е дадено в таблицата\n\n| $X$ | $-1$ | $0$ | $1$ | $2$ | $3$ |\n|---|---|---|---|---|---|\n| $P$ | $p$ | $\\dfrac{2}{7}$ | $\\dfrac{5}{14}$ | $\\dfrac{p}{3}$ | $\\dfrac{p}{3}$ |\n\nМатематическото очакване на $X$ е равно на:",
+       "options": [
+        "$\\dfrac{3}{14}$",
+        "$\\dfrac{1}{2}$",
+        "$7$",
+        "$14$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Уравнението на окръжност с радиус $3$ и концентрична с окръжността $x^2 + y^2 + 2x - 4y + 2 = 0$ е:",
+       "options": [
+        "$(x - 1)^2 + (y + 2)^2 = 3$",
+        "$(x + 1)^2 + (y - 2)^2 = 3$",
+        "$(x - 1)^2 + (y + 2)^2 = 9$",
+        "$(x + 1)^2 + (y - 2)^2 = 9$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 4,
+       "prompt": "На чертежа $ABCDA_1B_1C_1D_1$ е правоъгълен паралелепипед, за който $AB = 20\\ \\text{cm}$, $BC = 15\\ \\text{cm}$ и $AA_1 = 12\\sqrt{3}\\ \\text{cm}$. Градусната мярка на ъгъла между равнините $(ABCD)$ и $(BC_1D)$ е:",
+       "options": [
+        "$30^\\circ$",
+        "$45^\\circ$",
+        "$60^\\circ$",
+        "$75^\\circ$"
+       ],
+       "answer": 2,
+       "media": [
+        {
+         "type": "image",
+         "src": "7-box.svg",
+         "alt": "Правоъгълният паралелепипед ABCDA₁B₁C₁D₁ и равнината BC₁D"
+        }
+       ]
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Уравнението $2x^3 + x - 8 = 0$ има корен в интервала:",
+       "options": [
+        "$(1;2)$",
+        "$(0;1)$",
+        "$(-1;0)$",
+        "$(-2;-1)$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Коя от функциите е нечетна в дефиниционното си множество?",
+       "options": [
+        "$f(x) = -x\\sin x$",
+        "$f(x) = \\operatorname{tg} x + \\sin 2x$",
+        "$f(x) = \\operatorname{cotg} x + \\cos 2x$",
+        "$f(x) = x^5 + x^2$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Намерете всички стойности на неизвестното $x$, за които $|x| < 1$ и $\\dfrac{1}{x} + x + x^2 + \\cdots + x^n + \\cdots = \\dfrac{7}{2}$.",
+       "options": [
+        "$\\dfrac{1}{3};\\ \\dfrac{2}{7}$",
+        "$\\dfrac{2}{3}$",
+        "$\\dfrac{1}{3};\\ \\dfrac{2}{3}$",
+        "$\\dfrac{2}{7}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Правата $y = 7x - 5$ е успоредна на допирателната в точка $A$ от графиката на функцията $f(x) = x^2 + 6x - 8$. Абсцисата на точка $A$ е равна на:",
+       "options": [
+        "$-2$",
+        "$-0{,}5$",
+        "$0{,}5$",
+        "$2$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 4,
+       "prompt": "В кой от интервалите функцията $y = (2x - 3)^3(x + 1)^2$ е намаляваща?",
+       "options": [
+        "$x \\in (-1;0)$",
+        "$x \\in \\left(0;\\dfrac{3}{2}\\right)$",
+        "$x \\in (-\\infty;-1)$",
+        "$x \\in (0;+\\infty)$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Броят на локалните екстремуми на функцията $y(x) = \\sqrt{x^2 - 5x + 6}$ е:",
+       "options": [
+        "$0$",
+        "$1$",
+        "$2$",
+        "$3$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Ако $f(x) = \\sqrt{x^2 - 1}$, то декартовото уравнение на допирателната към графиката на функцията $f(x)$ в точката с абсциса $x = \\sqrt{5}$ е:",
+       "options": [
+        "$y = \\sqrt{5}x - 3$",
+        "$y = x + 2 - \\sqrt{5}$",
+        "$y = \\dfrac{\\sqrt{5}}{2}x - \\dfrac{1}{2}$",
+        "$y = \\dfrac{1}{4}x + 2 - \\sqrt{5}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Трима приятели, които живеят в една и съща кооперация учат в едно и също училище. От кооперацията до училището може да се стигне по $5$ различни маршрута. Намерете вероятността тримата днес да са дошли на училище по един и същ маршрут?",
+       "options": [
+        "$0{,}008$",
+        "$0{,}03$",
+        "$0{,}04$",
+        "$0{,}25$"
+       ],
+       "answer": 2
+      }
+     ]
+    },
+    {
+     "title": "Част 2",
+     "minutes": 150,
+     "tasks": [
+      {
+       "id": "q16",
+       "type": "open",
+       "points": 15,
+       "prompt": "Точки $A(-2;-2)$ и $B(6;4)$ са върхове на успоредник $ABCD$ с пресечна точка на диагоналите $F\\left(\\dfrac{5}{2};\\dfrac{9}{2}\\right)$.\n\nа) Намерете координатите на върховете $C$ и $D$, както и периметъра на успоредника.\n\nб) Намерете координатите на петата $H$ на височината $DH$ към страната $AB$, косинуса на острия ъгъл и лицето на успоредника.\n\nв) Успоредникът е завъртян около страната $AB$. Намерете повърхнината и обема на полученото ротационно тяло.",
+       "answer": "**Отговор:** а) $C(7;11)$, $D(-1;5)$, $P = 20 + 10\\sqrt{2}$; б) $H(2;1)$, $\\cos\\alpha = \\dfrac{\\sqrt{2}}{2}$, $S = 50$; в) $S_{\\text{тяло}} = 50\\pi\\left(2 + \\sqrt{2}\\right)$, $V_{\\text{тяло}} = 250\\pi$.\n\n**Решение:**\n\nа) $C(a;b): \\begin{cases} \\frac{a - 2}{2} = \\frac{5}{2} \\\\ \\frac{b - 2}{2} = \\frac{9}{2} \\end{cases} \\Leftrightarrow \\begin{cases} a = 7 \\\\ b = 11 \\end{cases} \\Rightarrow C(7;11)$. $\\quad D(c;d): \\begin{cases} \\frac{c + 6}{2} = \\frac{5}{2} \\\\ \\frac{d + 4}{2} = \\frac{9}{2} \\end{cases} \\Leftrightarrow \\begin{cases} c = -1 \\\\ d = 5 \\end{cases} \\Rightarrow D(-1;5)$.\n\n$AB = \\sqrt{(6 + 2)^2 + (4 + 2)^2} = 10$ и $AD = \\sqrt{(-1 + 2)^2 + (5 + 2)^2} = \\sqrt{50} = 5\\sqrt{2}$. $P = 2 \\cdot 10 + 2 \\cdot 5\\sqrt{2} = 20 + 10\\sqrt{2}$\n\nб) $AB: \\dfrac{x + 2}{6 + 2} = \\dfrac{y + 2}{4 + 2} \\Rightarrow AB: 3x - 4y - 2 = 0$. Нека точката има координати $H(x;y)$. Тогава $\\overrightarrow{DH}(x + 1;y - 5)$ и $\\overrightarrow{AB}(8;6)$. От $\\overrightarrow{DH} \\cdot \\overrightarrow{AB} = 0 \\Rightarrow 8x + 8 + 6y - 30 = 0$.\n\n$H = DH \\cap AB \\Rightarrow \\begin{cases} 4x + 3y = 11 \\\\ 3x - 4y = 2 \\end{cases} \\Leftrightarrow \\begin{cases} x = 2 \\\\ y = 1 \\end{cases} \\Rightarrow H(2;1)$\n\nЗа височината се получава: $h = \\left|\\dfrac{3 \\cdot (-1) - 4 \\cdot 5 - 2}{\\sqrt{3^2 + 4^2}}\\right| = \\dfrac{25}{5} = 5 \\Rightarrow S = AB \\cdot h = 10 \\cdot 5 = 50$\n\nОт $\\overrightarrow{AB}(8;6)$ и $\\overrightarrow{AD}(1;7)$ се получава $\\cos\\alpha = \\dfrac{1 \\cdot 8 + 6 \\cdot 7}{\\sqrt{8^2 + 6^2}\\sqrt{1^2 + 7^2}} = \\dfrac{50}{10 \\cdot 5\\sqrt{2}} = \\dfrac{\\sqrt{2}}{2}$.\n\nв) $AH = \\sqrt{(2 + 2)^2 + (1 + 2)^2} = 5 = h_1 = h_2$\n\n$S_{\\text{тяло}} = S_{\\text{цилиндър}} + 2S_{\\text{конус}} = 2\\pi \\cdot 5 \\cdot 10 + 2\\pi \\cdot 5 \\cdot 5\\sqrt{2} = 100\\pi + 50\\pi\\sqrt{2} = 50\\pi\\left(2 + \\sqrt{2}\\right)$\n\n$V_{\\text{тяло}} = V_{\\text{конус}1} + V_{\\text{цилиндър}} - V_{\\text{конус}2}$, където $V_{\\text{конус}1} = V_{\\text{конус}2}$. Следователно $V_{\\text{тяло}} = V_{\\text{цилиндър}} = \\pi \\cdot 5^2 \\cdot 10 = 250\\pi$",
+       "rubric": [
+        {
+         "text": "а) $C(7;11)$, $D(-1;5)$, $P = 20 + 10\\sqrt{2}$",
+         "points": 5
+        },
+        {
+         "text": "б) $H(2;1)$, $\\cos\\alpha = \\frac{\\sqrt{2}}{2}$, $S = 50$",
+         "points": 7
+        },
+        {
+         "text": "в) $S_{\\text{тяло}} = 50\\pi\\left(2 + \\sqrt{2}\\right)$, $V_{\\text{тяло}} = 250\\pi$",
+         "points": 3
+        }
+       ]
+      },
+      {
+       "id": "q17",
+       "type": "open",
+       "points": 15,
+       "prompt": "Редицата $\\{a_n\\}$, $a_n \\neq 0$ е аритметична прогресия с разлика $d$.\n\nа) Докажете тъждеството $\\dfrac{1}{a_1a_2} + \\dfrac{1}{a_2a_3} + \\dfrac{1}{a_3a_4} + \\cdots + \\dfrac{1}{a_na_{n+1}} = \\dfrac{n}{a_1(a_1 + nd)}$.\n\nб) Ако $a_1 = \\dfrac{1}{2}$ и $d = 3$, намерете $\\displaystyle\\lim_{n \\to \\infty}\\left(\\frac{1}{a_1a_2} + \\frac{1}{a_2a_3} + \\frac{1}{a_3a_4} + \\cdots + \\frac{1}{a_na_{n+1}}\\right)$.",
+       "answer": "**Отговор:** а) доказателство; б) $\\dfrac{2}{3}$.\n\n**Решение:**\n\nа)\n\n1) При $n = 1$, $\\dfrac{1}{a_1a_2} = \\dfrac{1}{a_1(a_1 + d)}$, следователно равенството е вярно за $n = 1$.\n\n2) Нека при $n = k$ е в сила: $\\dfrac{1}{a_1a_2} + \\dfrac{1}{a_2a_3} + \\dfrac{1}{a_3a_4} + \\ldots + \\dfrac{1}{a_ka_{k+1}} = \\dfrac{k}{a_1(a_1 + kd)}$.\n\n3) Ще докажем, че равенството е вярно за $n = k + 1$.\n\n$\\dfrac{1}{a_1a_2} + \\ldots + \\dfrac{1}{a_ka_{k+1}} + \\dfrac{1}{a_{k+1}a_{k+2}} = \\dfrac{k}{a_1(a_1 + kd)} + \\dfrac{1}{a_{k+1}a_{k+2}} = \\dfrac{k}{a_1(a_1 + kd)} + \\dfrac{1}{(a_1 + kd)(a_1 + (k + 1)d)} =$\n\n$= \\dfrac{1}{a_1 + kd}\\left(\\dfrac{k}{a_1} + \\dfrac{1}{a_1 + (k + 1)d}\\right) = \\dfrac{1}{a_1 + kd} \\cdot \\dfrac{ka_1 + k(k + 1)d + a_1}{a_1(a_1 + (k + 1)d)} = \\dfrac{(k + 1)(a_1 + kd)}{(a_1 + kd)a_1(a_1 + (k + 1)d)} = \\dfrac{k + 1}{a_1(a_1 + (k + 1)d)}$\n\nСледователно равенството е вярно за всяко естествено число $n$.\n\nб) $\\displaystyle\\lim_{n \\to \\infty}\\left(\\frac{1}{a_1a_2} + \\ldots + \\frac{1}{a_na_{n+1}}\\right) = \\lim_{n \\to \\infty} \\frac{n}{a_1(a_1 + nd)} = \\lim_{n \\to \\infty} \\frac{n}{\\frac{1}{2}\\left(\\frac{1}{2} + 3n\\right)} = \\lim_{n \\to \\infty} \\frac{n}{n\\left(\\frac{1}{4n} + \\frac{3}{2}\\right)} = \\frac{2}{3}$",
+       "rubric": [
+        {
+         "text": "а) доказателство на тъждеството",
+         "points": 10
+        },
+        {
+         "text": "б) $\\dfrac{2}{3}$",
+         "points": 5
+        }
+       ]
+      },
+      {
+       "id": "q18",
+       "type": "open",
+       "points": 15,
+       "prompt": "Дадена е правилна четириъгълна пирамида $ABCDM$ с връх $M$. Мярката на ъгъла, определен от два несъседни околни ръба на пирамидата, е $2\\alpha$. Радиусът на описаната около пирамидата сфера е $4\\ \\text{cm}$.\n\nа) Ако $\\alpha = 60^\\circ$, то намерете обема на пирамидата.\n\nб) За коя стойност на $\\cos\\alpha$ обемът на пирамидата е най-голям?",
+       "answer": "**Отговор:** а) $V = 16\\ \\text{cm}^3$; б) $\\cos\\alpha = \\dfrac{\\sqrt{6}}{3}$.\n\n**Решение:**\n\nа) Тъй като пирамидата е правилна, то основата ѝ $ABCD$ е квадрат и ортогоналната проекция на върха $M$ на пирамидата в основата е точка $H = AC \\cap BD$. $\\sphericalangle AMC = 2\\alpha = 120^\\circ \\Rightarrow \\sphericalangle HMC = \\sphericalangle HMA = 60^\\circ$.\n\nТъй като пирамидата е правилна, то центърът на описаната около пирамидата сфера, точка $O$, лежи на височината на пирамидата $MH$. От $MO = CO$ и $\\sphericalangle OMC = 60^\\circ \\Rightarrow \\triangle MOC$ е равностранен. Следователно $MC = OC = OM = 4\\ \\text{cm}$ и тъй като в правоъгълния $\\triangle MHC$ $\\sphericalangle MCH = 30^\\circ$, то $MH = 2\\ \\text{cm}$.\n\nОт Питагорова теорема за $\\triangle MCH$ се намира, че $CH = 2\\sqrt{3}\\ \\text{cm}$, т.е. $AC = BD = 4\\sqrt{3}\\ \\text{cm}$. Следователно $S_{ABCD} = \\dfrac{\\left(4\\sqrt{3}\\right)^2}{2} = 24\\ \\text{cm}^2$. Така за обема на пирамидата се получава, че $V = \\dfrac{1}{3} \\cdot 24 \\cdot 2 = 16\\ \\text{cm}^3$.\n\nб) Нека правата на височината $MH$ на пирамидата пресича за втори път сферата в точка $P$. Тогава $MP = 8\\ \\text{cm}$ и $\\sphericalangle MCP = 90^\\circ$. От метрични зависимости в правоъгълния $\\triangle MCP$ се получава, че $MC^2 = 8 \\cdot MH$, но $MC = 8\\cos\\alpha \\Rightarrow MH = 8\\cos^2\\alpha$.\n\nОт Питагорова теорема за $\\triangle MCH$ се намира, че $CH = 8\\cos\\alpha\\sqrt{1 - \\cos^2\\alpha}$, т.е. $AC = BD = 16\\cos\\alpha\\sqrt{1 - \\cos^2\\alpha}$.\n\nСледователно $S_{ABCD} = 128\\cos^2\\alpha\\left(1 - \\cos^2\\alpha\\right)$, т.е. за обема на пирамидата се получава, че $V = \\dfrac{1024}{3}\\cos^4\\alpha\\left(1 - \\cos^2\\alpha\\right)$.\n\nНека $\\cos^2\\alpha = t$. Тъй като $\\alpha \\in (0^\\circ;90^\\circ)$, то $t \\in (0;1)$. Тогава обемът на пирамидата е най-голям, когато функцията $f(t) = -t^3 + t^2$ има най-голяма стойност при $t \\in (0;1)$.\n\n$f'(t) = -3t^2 + 2t$, $f'(t) = 0$ при $t_1 = 0$ и $t_2 = \\dfrac{2}{3}$. Функцията $f(t)$ расте при $t \\in \\left(0;\\dfrac{2}{3}\\right)$ и намалява при $t \\in \\left(\\dfrac{2}{3};1\\right)$.\n\nСледователно обемът на пирамидата е най-голям при $\\cos^2\\alpha = \\dfrac{2}{3}$, но $\\alpha \\in (0^\\circ;90^\\circ)$, т.е. при $\\cos\\alpha = \\dfrac{\\sqrt{6}}{3}$.",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "18-sphere.svg",
+         "alt": "Пирамидата ABCDM, вписана в сфера"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "а) $V = \\frac{1}{3} \\cdot 24 \\cdot 2 = 16\\ \\text{cm}^3$",
+         "points": 7
+        },
+        {
+         "text": "б) $V = \\frac{1024}{3}\\cos^4\\alpha\\left(1 - \\cos^2\\alpha\\right)$",
+         "points": 4
+        },
+        {
+         "text": "б) $\\cos\\alpha = \\frac{\\sqrt{6}}{3}$",
+         "points": 4
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
