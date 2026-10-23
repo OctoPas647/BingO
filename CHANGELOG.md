@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3
+- **English**: Настройки → "Език · Language" (also the first screen of the setup) switches the app to English: menus, buttons, screen titles, the skill map, statistics, profile, forecast and setup. **Tasks, explanations and the names of typical mistakes stay in Bulgarian** — they are matura content and will be translated separately
+- Translations live in `src/js/49-lang.js` (the Bulgarian text is the key); `python tools/build.py check` fails if a menu text has no English version
+
 ## 0.3.2
 Fixes from the testers' feedback (Ники, Боби, Симон):
 - **Your progress is safe**: "Зареди демо ученик" asks first when you have real answers, keeps a copy, and Settings → "Върни моите отговори" brings them back
