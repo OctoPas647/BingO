@@ -6,9 +6,12 @@
 const ONBOARD = {
   steps: [
     { id: 'welcome', title: 'Добре дошъл в BingO', text: 'Няколко кратки въпроса и приложението е готово. Всичко може да се промени по-късно в Профил и Настройки.', fields: [] },
-    { id: 'profile', title: 'Кой си ти?', text: 'Името и класът са по желание. Учителят ги вижда само ако свържеш Google Sheets.', skippable: true, fields: [
-      { key: 'name', path: 'profile.name', type: 'text', label: 'Име', ph: 'напр. Мария П.', validate: v => (v.length > 40 ? 'Най-много 40 знака' : '') },
-      { key: 'cls', path: 'profile.cls', type: 'text', label: 'Клас', ph: 'напр. 12а', validate: v => (v.length > 10 ? 'Най-много 10 знака' : '') }
+    { id: 'profile', title: 'Кой си ти?', text: 'Името и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.', skippable: true, fields: [
+      { key: 'name', path: 'profile.name', type: 'text', label: 'Име и фамилия', ph: 'напр. Мария Петрова', validate: v => (v.length > 40 ? 'Най-много 40 знака' : '') },
+      { key: 'age', path: 'profile.age', type: 'number', label: 'Години', ph: 'напр. 17', validate: v => (/^\d+$/.test(v) && +v >= 7 && +v <= 99 ? '' : 'Въведи години от 7 до 99') }
+    ] },
+    { id: 'exam', title: () => (examFromAge(S.profile.age) ? `Значи за ${EXAMS[examFromAge(S.profile.age)]}, нали?` : 'За кой изпит се готвиш?'), text: 'Ако не е така, избери своя клас.', fields: [
+      { key: 'exam', path: 'profile.exam', type: 'choice', required: true, options: () => Object.entries(EXAMS), validate: v => (EXAMS[v] ? '' : 'Избери изпит') }
     ] },
     { id: 'subject', title: 'Коя матура първо?', text: 'Можеш да сменяш предмета по всяко време от началния екран.', fields: [
       { key: 'subject', path: 'subject', type: 'choice', required: true, options: () => Object.values(SUBJECTS).map(s => [s.id, s.icon + ' ' + s.title]), validate: v => (SUBJECTS[v] ? '' : 'Избери матура') }
@@ -27,6 +30,16 @@ const ONBOARD = {
     { id: 'done', title: 'Готово!', text: 'Започни с кратка диагностика, за да видим къде губиш най-много точки.', fields: [] }
   ]
 };
+
+/* Which exam a learner of this age prepares for. In Bulgaria 1st grade starts at 7, so the grade is
+   about age − 6: up to 7th grade it is НВО 7, 8th–10th grade НВО 10, above 10th grade the ДЗИ in 12th. */
+const EXAMS = { nvo7: 'НВО 7-ми клас', nvo10: 'НВО 10-ти клас', dzi12: 'ДЗИ 12-ти клас' };
+function examFromAge(age) {
+  const a = parseInt(age, 10); if (!(a >= 7 && a <= 99)) return '';
+  const grade = a - 6;
+  return grade > 10 ? 'dzi12' : grade > 7 ? 'nvo10' : 'nvo7';
+}
+const obTitle = step => (typeof step.title === 'function' ? step.title() : step.title);
 
 /* ---------- state helpers ---------- */
 const obState = () => {
@@ -63,6 +76,7 @@ function obValidate(step, d) {
 function obApply(step, d) {
   for (const f of step.fields) if (obVisible(f, d)) obSet(f.path, String(d[f.key] == null ? '' : d[f.key]).trim());
   if (step.id === 'theme') { APP.settings.theme = S.settings.theme; applySettings(); }
+  if (step.id === 'profile') S.profile.exam = examFromAge(S.profile.age) || S.profile.exam || '';  /* the next step suggests the exam for this age */
 }
 function obMove(dir) {
   const o = obState(); o.step = clamp(o.step + dir, 0, ONBOARD.steps.length - 1); saveState(true);
@@ -120,7 +134,7 @@ SCREENS.onboarding = async el => {
     el.innerHTML = `<div class="pad onboarding">
       <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="Назад">${icon('back')}</button>` : '<span class="tb-gap"></span>'}<span class="ob-count">${o.step + 1}/${n}</span></header>
       ${o.step === 0 || isLast ? '<div class="brand bingo ob-brand">Bing<span>O</span></div>' : ''}
-      <h1 class="ob-title">${esc(step.title)}</h1><p class="muted ob-text">${esc(step.text)}</p>
+      <h1 class="ob-title">${esc(obTitle(step))}</h1><p class="muted ob-text">${esc(step.text)}</p>
       ${step.fields.length ? `<section class="card ob-card">${step.fields.map(fieldHtml).join('')}</section>` : ''}
       <div class="ob-actions"><button class="btn accent big block" data-ob="next">${isLast ? 'Към BingO' : 'Напред'}</button>
       ${step.skippable ? '<button class="btn ghost block" data-ob="skip">Пропусни</button>' : ''}</div></div>`;

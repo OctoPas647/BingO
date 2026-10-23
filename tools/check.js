@@ -62,8 +62,13 @@ const sm = E("subjectSummary('math')"); console.log('demo learner loses ≈', sm
 E('resetState(false); S.onboarding = null');
 if (!E('onboardingNeeded()')) fail('onboarding: a fresh install should see the setup');
 E('onboardingNext({})');                                                         // welcome
-if (E('onboardingNext({ name: "x".repeat(41), cls: "12а" }).ok')) fail('onboarding: a 41-letter name should be refused');
-if (!E('onboardingNext({ name: "Мария П.", cls: "12а" }).ok') || E('S.profile.name') !== 'Мария П.') fail('onboarding: name not saved');
+if (E('onboardingNext({ name: "x".repeat(41), age: "17" }).ok')) fail('onboarding: a 41-letter name should be refused');
+if (E('onboardingNext({ name: "Мария П.", age: "abc" }).ok')) fail('onboarding: a non-number age should be refused');
+if (!E('onboardingNext({ name: "Мария П.", age: "17" }).ok') || E('S.profile.name') !== 'Мария П.') fail('onboarding: name not saved');
+if (E('S.profile.exam') !== 'dzi12' || E('obTitle(obStep())') !== 'Значи за ДЗИ 12-ти клас, нали?') fail('onboarding: age 17 should suggest the ДЗИ in 12th grade');
+if (E('examFromAge(16)') !== 'nvo10' || E('examFromAge(13)') !== 'nvo7' || E('examFromAge("")') !== '') fail('onboarding: wrong exam for an age');
+if (E('onboardingNext({ exam: "xx" }).ok')) fail('onboarding: unknown exam accepted');
+E('onboardingNext({ exam: "dzi12" })');
 if (E('onboardingNext({ subject: "xx" }).ok')) fail('onboarding: unknown subject accepted');
 E('onboardingNext({ subject: "bel" })'); if (E('S.subject') !== 'bel') fail('onboarding: subject not saved');
 E('onboardingNext({ theme: "amoled" })');

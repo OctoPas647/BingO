@@ -9,7 +9,7 @@ let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, sh
 
 const DEFAULT_STATE = () => ({
   v: 1,
-  profile: { name: '', cls: '', id: uid() },
+  profile: { name: '', cls: '', age: '', exam: '', id: uid() },
   settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true },
   subject: 'math',
   skills: {},            /* "math.quad" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] } */
