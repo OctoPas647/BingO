@@ -3,13 +3,13 @@
  "id": "nvo7-bel-2025",
  "version": "1",
  "lang": "bg",
- "title": "НВО 7. клас · БЕЛ · 18 юни 2025",
+ "title": "НВО 7. клас · БЕЛ · 18 юни 2025 · вариант 2",
  "past": {
   "exam": "nvo7",
   "subj": "bel",
   "year": 2025,
   "date": "2025-06-18",
-  "variant": null,
+  "variant": 2,
   "session": "юни",
   "pages": [
    109,
@@ -19,7 +19,7 @@
  "exams": [
   {
    "id": "exam",
-   "title": "18 юни 2025",
+   "title": "18 юни 2025 · вариант 2",
    "minutes": 150,
    "parts": [
     {
