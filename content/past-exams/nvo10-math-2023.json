@@ -1,0 +1,323 @@
+{
+ "format": 1,
+ "id": "nvo10-math-2023",
+ "version": "1",
+ "lang": "bg",
+ "title": "НВО 10. клас · Математика · 16 юни 2023",
+ "past": {
+  "exam": "nvo10",
+  "subj": "math",
+  "year": 2023,
+  "date": "2023-06-16",
+  "variant": null,
+  "session": "юни",
+  "pages": [
+   314,
+   322
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "16 юни 2023",
+   "minutes": 90,
+   "parts": [
+    {
+     "title": "Част 1",
+     "minutes": null,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Броят на целите числа $x$, които изпълняват условията $-\\sqrt{2} \\leq x \\leq \\pi$, е:",
+       "options": [
+        "$2$",
+        "$3$",
+        "$4$",
+        "$5$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Стойността на израза $\\sqrt{2} + \\sqrt{162} - \\sqrt{2^5}$ е:",
+       "options": [
+        "$5\\sqrt{2}$",
+        "$6\\sqrt{2}$",
+        "$8\\sqrt{2}$",
+        "$14\\sqrt{2}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Ако единият корен на уравнението $x^2 + bx - 100 = 0$ е равен на $1$, то коефициентът $b$ е равен на:",
+       "options": [
+        "$-100$",
+        "$-99$",
+        "$99$",
+        "$100$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Ако $x_1$ и $x_2$ са корени на уравнението $2x^2 - 3x - 4 = 0$, то стойността на израза $(x_1x_2)^2 - (x_1 + x_2)$ е:",
+       "options": [
+        "$-\\dfrac{11}{2}$",
+        "$\\dfrac{3}{2}$",
+        "$\\dfrac{5}{2}$",
+        "$\\dfrac{11}{2}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Решенията на неравенството $\\dfrac{(x - 4)(x + 1)}{x + 4} \\leq 0$ са:",
+       "options": [
+        "$x \\in (-\\infty;-4) \\cup [-1;\\ 4]$",
+        "$x \\in (-4;-1] \\cup [4;\\ +\\infty)$",
+        "$x \\in [-1;\\ 4]$",
+        "$x \\in (-\\infty;-4] \\cup [-1;\\ 4]$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Най-голямата стойност на функцията $f(x) = -\\dfrac{1}{2}x^2 + 2x - 1$ е:",
+       "options": [
+        "$-1$",
+        "$1$",
+        "$2$",
+        "$5$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Стойността на израза $\\dfrac{\\sin 30^\\circ + \\cos 60^\\circ}{\\cos^2 90^\\circ - 1}$ е:",
+       "options": [
+        "$-\\sqrt{3}$",
+        "$-1$",
+        "$-\\dfrac{\\sqrt{3}}{4}$",
+        "$-\\dfrac{1}{4}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Числата $x - 2$, $x$ и $x + 6$, взети в този ред, са последователни членове на геометрична прогресия при стойност на $x$ равна на:",
+       "options": [
+        "$-3$",
+        "$2$",
+        "$3$",
+        "$9$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 4,
+       "prompt": "На чертежа през точка $A$, външна за окръжност $k$, са построени допирателната $AD$ и секущата $AC$, която пресича окръжността в точка $B$. Ако $AB = 2\\ \\text{cm}$ и $BC = 6\\ \\text{cm}$, дължината на $AD$ е:",
+       "options": [
+        "$3\\ \\text{cm}$",
+        "$2\\sqrt{3}\\ \\text{cm}$",
+        "$4\\ \\text{cm}$",
+        "$3\\sqrt{2}\\ \\text{cm}$"
+       ],
+       "answer": 2,
+       "media": [
+        {
+         "type": "image",
+         "src": "9-tangent.svg",
+         "alt": "Окръжност k, допирателна AD и секуща ABC; AB = 2, BC = 6"
+        }
+       ]
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Даден е $\\triangle ABC$ със страни $AB = 4\\ \\text{cm}$, $AC = 2\\ \\text{cm}$ и $\\sphericalangle BAC = 120^\\circ$. Дължината на страната $BC$ е:",
+       "options": [
+        "$2\\sqrt{7}\\ \\text{cm}$",
+        "$2\\sqrt{5}\\ \\text{cm}$",
+        "$3\\sqrt{2}\\ \\text{cm}$",
+        "$2\\sqrt{3}\\ \\text{cm}$"
+       ],
+       "answer": 0,
+       "media": [
+        {
+         "type": "image",
+         "src": "10-triangle.svg",
+         "alt": "Триъгълник ABC: AB = 4, AC = 2, ъгълът при A е 120°"
+        }
+       ]
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 4,
+       "prompt": "В правоъгълния $\\triangle ABC$ петàта на височината към хипотенузата я дели на отсечки с дължини $4$ cm и $1$ cm. Лицето на триъгълника е:",
+       "options": [
+        "$4\\ \\text{cm}^2$",
+        "$5\\ \\text{cm}^2$",
+        "$6\\ \\text{cm}^2$",
+        "$8\\ \\text{cm}^2$"
+       ],
+       "answer": 1,
+       "media": [
+        {
+         "type": "image",
+         "src": "11-right.svg",
+         "alt": "Правоъгълен триъгълник ABC с височината CH; AH = 4, HB = 1"
+        }
+       ]
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Детска пързалка с височина $3$ m е укрепена с вертикален стълб $CT$, както е показано на чертежа. Ако $AT : TH = 3 : 2$, височината на стълба $CT$ е:",
+       "options": [
+        "$1{,}2$ m",
+        "$1{,}5$ m",
+        "$1{,}6$ m",
+        "$1{,}8$ m"
+       ],
+       "answer": 3,
+       "media": [
+        {
+         "type": "image",
+         "src": "12-slide.svg",
+         "alt": "Пързалката AB с височина BH = 3 и стълба CT"
+        }
+       ]
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 4,
+       "prompt": "В балкански шампионат по гимнастика участват $20$ спортисти от три държави: $8$ от Румъния, $7$ от Гърция и останалите са от България. Редът на представянето им се определя с жребий. Вероятността български гимнастик да стартира първи, е:",
+       "options": [
+        "$\\dfrac{3}{4}$",
+        "$\\dfrac{2}{5}$",
+        "$\\dfrac{1}{4}$",
+        "$\\dfrac{1}{5}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 4,
+       "prompt": "В една фирма работят $7$ работници със заплати по $1250$ лв., $2$ специалисти – със заплати по $1820$ лв. и един ръководител – със заплата $2360$ лв. Средната заплата във фирмата е:",
+       "options": [
+        "$1250$ лв.",
+        "$1475$ лв.",
+        "$1810$ лв.",
+        "$1820$ лв."
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Прав кръгов конус има височина $12\\ \\text{cm}$ и образуваща $13\\ \\text{cm}$. Обемът на конуса е:",
+       "options": [
+        "$300\\pi\\ \\text{cm}^3$",
+        "$120\\pi\\ \\text{cm}^3$",
+        "$100\\pi\\ \\text{cm}^3$",
+        "$40\\pi\\ \\text{cm}^3$"
+       ],
+       "answer": 2,
+       "media": [
+        {
+         "type": "image",
+         "src": "15-cone.svg",
+         "alt": "Прав кръгов конус с височина 12 и образуваща 13"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Част 2",
+     "minutes": null,
+     "tasks": [
+      {
+       "id": "q16",
+       "type": "open",
+       "points": 20,
+       "prompt": "А) Решете уравнението $\\sqrt{3x + 4} - \\sqrt{x} = 2$\n\nБ) Решете системата $\\begin{cases} 2x - y = 3 \\\\ 2x^2 - y^2 = 7 \\end{cases}$\n\nВ) Едната страна на правоъгълен парцел е с $20$ m по-дълга от другата. Колко метра мрежа са необходими за неговото заграждане, ако площта му е $525\\ \\text{m}^2$?",
+       "answer": "**Отговор:** А) $x_1 = 0$, $x_2 = 4$; Б) $(2;\\ 1)$ и $(4;\\ 5)$; В) За заграждането на парцела са необходими $100$ m мрежа.\n\n**Примерно решение:**\n\nА) $\\sqrt{3x + 4} - \\sqrt{x} = 2 \\qquad DM: x \\in [0;+\\infty)$\n\n$\\sqrt{3x + 4} = 2 + \\sqrt{x}$\n\n$\\left(\\sqrt{3x + 4}\\right)^2 = \\left(2 + \\sqrt{x}\\right)^2$\n\n$3x + 4 = 4 + 4\\sqrt{x} + x$\n\n$2x = 4\\sqrt{x} \\quad |:2$\n\n$(x)^2 = \\left(2\\sqrt{x}\\right)^2$\n\n$x^2 - 4x = 0$\n\n$x(x - 4) = 0$\n\n$x_1 = 0$, $x_2 = 4$\n\nС проверка установяваме, че и двата корена са решение на уравнението.\n\nБ) Изразяваме $y$ от първото уравнение и заместваме във второто.\n\n$\\begin{cases} 2x - y = 3 \\rightarrow y = 2x - 3 \\\\ 2x^2 - y^2 = 7 \\end{cases}$\n\n$2x^2 - (2x - 3)^2 = 7$\n\n$2x^2 - \\left(4x^2 - 12x + 9\\right) = 7$\n\n$2x^2 - 4x^2 + 12x - 9 - 7 = 0$\n\n$-2x^2 + 12x - 16 = 0 \\ |:(-2)$\n\n$x^2 - 6x + 8 = 0$ с корени $x_1 = 2$, $x_2 = 4$.\n\n$\\begin{cases} x = 2 \\\\ y = 2x - 3 \\end{cases}$ или $\\begin{cases} x = 4 \\\\ y = 2x - 3 \\end{cases}$\n\n$\\begin{cases} x = 2 \\\\ y = 2 \\cdot 2 - 3 \\end{cases} \\qquad \\begin{cases} x = 4 \\\\ y = 2 \\cdot 4 - 3 \\end{cases}$\n\n$\\begin{cases} x_1 = 2 \\\\ y_1 = 1 \\end{cases} \\qquad \\begin{cases} x_2 = 4 \\\\ y_2 = 5 \\end{cases}$\n\nРешенията на системата са: $(2;\\ 1)$ и $(4;\\ 5)$.\n\nВ) Означаваме ширината $b$ на парцела с $x$, $x > 0$.\n\nТогава дължината му ще бъде $a = x + 20$.\n\nОт формулата $S = a \\cdot b$ получаваме уравнението $x(x + 20) = 525$.\n\nРешаваме уравнението $x^2 + 20x - 525 = 0 \\Rightarrow x_1 = 15$, $x_2 = -35$.\n\nТъй като $x > 0$, следователно $b = 15$ m.\n\nТогава дължината на парцела е $a = 35$ m.\n\nНамираме обиколката на парцела, която е $P = 2(a + b) = 2(35 + 15) = 100$ m.\n\n**Извод:** За заграждането на парцела са необходими $100$ m мрежа.\n\n*Предложените решения на задачи с номера 16. и 17. са примерни. Всяко друго вярно и пълно решение се оценява с максимален брой точки. При оценяване на непълно решение, различно от предложените, се присъждат точки според получените междинни резултати.*",
+       "rubric": [
+        {
+         "text": "А) $x_1 = 0$, $x_2 = 4$",
+         "points": 6
+        },
+        {
+         "text": "Б) $(2;\\ 1)$ и $(4;\\ 5)$",
+         "points": 6
+        },
+        {
+         "text": "В) За заграждането на парцела са необходими $100$ m мрежа.",
+         "points": 8
+        }
+       ]
+      },
+      {
+       "id": "q17",
+       "type": "open",
+       "points": 20,
+       "prompt": "В $\\triangle ABC$ със страни $AC = BC = 4\\sqrt{5}\\ \\text{cm}$, $CD$ $(D \\in AB)$ е височина и $AD = 4\\ \\text{cm}$. Намерете:\n\nА) лицето на $\\triangle ABC$;\n\nБ) радиуса на вписаната в $\\triangle ABC$ окръжност;\n\nВ) радиуса на описаната около $\\triangle ABC$ окръжност;\n\nГ) дължината на ъглополовящата $OL$ в $\\triangle BOD$, където точка $O$ е центърът на описаната около $\\triangle ABC$ окръжност.",
+       "answer": "**Отговор:** А) $S_{\\triangle ABC} = 32\\ \\text{cm}^2$; Б) $r = 2\\left(\\sqrt{5} - 1\\right)\\ \\text{cm}$; В) $R = 5\\ \\text{cm}$; Г) $OL = \\dfrac{3}{2}\\sqrt{5}\\ \\text{cm}$\n\n**Примерно решение:**\n\nА) $\\triangle ABC$ е равнобедрен $\\Rightarrow AB = 8\\ \\text{cm}$.\n\nПрилагаме Питагорова теорема за $\\triangle ADC$:\n\n$DC^2 = AC^2 - AD^2 \\Rightarrow DC^2 = \\left(4\\sqrt{5}\\right)^2 - 4^2 \\Rightarrow DC^2 = 64$\n\n$\\Rightarrow DC = 8\\ \\text{cm}$\n\n$S_{\\triangle ABC} = \\dfrac{1}{2}AB \\cdot DC = \\dfrac{1}{2} \\cdot 8 \\cdot 8 = 32\\ \\text{cm}^2$\n\nБ) Прилагаме формулата $S = p \\cdot r$ за $\\triangle ABC$:\n\n$p = \\dfrac{AB + AC + BC}{2} = \\dfrac{8 + 2 \\cdot 4\\sqrt{5}}{2} = 4 + 4\\sqrt{5}\\ \\text{cm}$\n\n$r = \\dfrac{S}{p} \\Rightarrow r = \\dfrac{32}{4 + 4\\sqrt{5}} \\Rightarrow r = 2\\left(\\sqrt{5} - 1\\right)\\ \\text{cm}$.\n\nВ) **Първи начин:** Прилагаме формулата $S = \\dfrac{a \\cdot b \\cdot c}{4R}$ за $\\triangle ABC$:\n\n$R = \\dfrac{a \\cdot b \\cdot c}{4S} \\Rightarrow R = \\dfrac{4\\sqrt{5} \\cdot 4\\sqrt{5} \\cdot 8}{4 \\cdot 32} \\Rightarrow R = 5\\ \\text{cm}$.\n\n**Втори начин:** Изразяваме $\\sin\\sphericalangle DAC = \\dfrac{DC}{AC} \\Rightarrow \\sin\\sphericalangle DAC = \\dfrac{8}{4\\sqrt{5}} \\Rightarrow \\sin\\sphericalangle DAC = \\dfrac{2}{\\sqrt{5}}$.\n\nПрилагаме синусова теорема за $\\triangle ABC$: $R = \\dfrac{BC}{2\\sin\\sphericalangle DAC} = \\dfrac{4\\sqrt{5}}{2 \\cdot \\frac{2}{\\sqrt{5}}} = 5\\ \\text{cm}$.\n\nГ) Прилагаме Питагорова теорема за $\\triangle BDO$:\n\n$OD^2 = OB^2 - DB^2 \\Rightarrow OD^2 = 5^2 - 4^2 \\Rightarrow OD^2 = 9 \\Rightarrow OD = 3\\ \\text{cm}$\n\nПрилагаме свойството на ъглополовящата за $\\triangle ODB$: $\\dfrac{OD}{OB} = \\dfrac{DL}{LB} \\Rightarrow \\dfrac{3}{5} = \\dfrac{DL}{BL}$.\n\nАко $DL = 3x$, то $BL = 5x$.\n\n$DL + BL = 4$\n\n$3x + 5x = 4 \\Rightarrow x = \\dfrac{1}{2}$\n\n$\\Rightarrow DL = \\dfrac{3}{2}\\ \\text{cm}$, $BL = \\dfrac{5}{2}\\ \\text{cm}$.\n\n**Първи начин:** Прилагаме формулата за ъглополовящата в $\\triangle ODB$:\n\n$OL^2 = OD \\cdot OB - DL \\cdot BL \\Rightarrow OL^2 = 3 \\cdot 5 - \\dfrac{3 \\cdot 5}{2 \\cdot 2} = \\dfrac{45}{4} \\Rightarrow OL = \\dfrac{3}{2}\\sqrt{5}\\ \\text{cm}$.\n\n**Втори начин:** Прилагаме Питагорова теорема за $\\triangle ODL$\n\n$OL^2 = OD^2 + DL^2$\n\n$OL^2 = 3^2 + \\left(\\dfrac{3}{2}\\right)^2$\n\n$OL^2 = 9 + \\dfrac{9}{4}$\n\n$OL^2 = \\dfrac{45}{4} \\Rightarrow OL = \\dfrac{3}{2}\\sqrt{5}\\ \\text{cm}$.\n\n*Предложените решения на задачи с номера 16. и 17. са примерни. Всяко друго вярно и пълно решение се оценява с максимален брой точки. При оценяване на непълно решение, различно от предложените, се присъждат точки според получените междинни резултати.*",
+       "media": [
+        {
+         "type": "image",
+         "src": "17-isosceles.svg",
+         "alt": "Равнобедрен триъгълник ABC с височината CD, центъра O на описаната окръжност и ъглополовящата OL"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "А) $S_{\\triangle ABC} = 32\\ \\text{cm}^2$",
+         "points": 5
+        },
+        {
+         "text": "Б) $r = 2\\left(\\sqrt{5} - 1\\right)\\ \\text{cm}$",
+         "points": 5
+        },
+        {
+         "text": "В) $R = 5\\ \\text{cm}$",
+         "points": 4
+        },
+        {
+         "text": "Г) $OL = \\frac{3}{2}\\sqrt{5}\\ \\text{cm}$",
+         "points": 6
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
