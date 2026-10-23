@@ -105,5 +105,7 @@
 .ob-text { margin: 0; font-size: 1.02rem; }
 .ob-card { display: grid; gap: 6px; margin: 8px 0 0; }
 .ob-card .seg { flex-wrap: wrap; }
+.ob-card .seg.list { flex-direction: column; }
+.ob-card .seg.list button { text-align: left; padding: 11px 14px; }
 .ob-err { color: var(--bad); font-weight: 700; margin: -2px 2px 6px; }
 .ob-actions { display: grid; margin-top: 8px; }

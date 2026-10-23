@@ -59,6 +59,7 @@ console.log(`demo learner -> focus: ${plan.focus.join(', ')}${plan.check ? ' · 
 const sm = E("subjectSummary('math')"); console.log('demo learner loses ≈', sm.lost.toFixed(1), 'of', sm.total, 'points');
 
 /* 4. first-run setup (58-onboarding.js): steps, validation, resume */
+const ONB_EXAM = E('ONBOARD.steps.findIndex(s => s.id === "exam")');
 E('resetState(false); S.onboarding = null');
 if (!E('onboardingNeeded()')) fail('onboarding: a fresh install should see the setup');
 E('onboardingNext({})');                                                         // welcome
@@ -66,9 +67,17 @@ if (E('onboardingNext({ name: "x".repeat(41), age: "17" }).ok')) fail('onboardin
 if (E('onboardingNext({ name: "Мария П.", age: "abc" }).ok')) fail('onboarding: a non-number age should be refused');
 if (!E('onboardingNext({ name: "Мария П.", age: "17" }).ok') || E('S.profile.name') !== 'Мария П.') fail('onboarding: name not saved');
 if (E('S.profile.exam') !== 'dzi12' || E('obTitle(obStep())') !== 'Значи за ДЗИ 12-ти клас, нали?') fail('onboarding: age 17 should suggest the ДЗИ in 12th grade');
-if (E('examFromAge(16)') !== 'nvo10' || E('examFromAge(13)') !== 'nvo7' || E('examFromAge("")') !== '') fail('onboarding: wrong exam for an age');
+if (E('examFromAge(16)') !== 'nvo10' || E('examFromAge(13)') !== 'nvo7' || E('examFromAge(9)') !== 'nvo4' || E('examFromAge("")') !== '') fail('onboarding: wrong exam for an age');
 if (E('onboardingNext({ exam: "xx" }).ok')) fail('onboarding: unknown exam accepted');
 E('onboardingNext({ exam: "dzi12" })');
+if (E('obStep().id') !== 'track') fail('onboarding: ДЗИ should ask for the profile');
+if (E('onboardingNext({ track: "xx" }).ok')) fail('onboarding: unknown profile accepted');
+E('onboardingNext({ track: "math" })');
+if (E('S.profile.track') !== 'math' || !E('examPlan("dzi12", "math")').includes('информатика')) fail('onboarding: profile not saved or not used');
+E('onboardingBack(); onboardingBack(); onboardingNext({ exam: "nvo7" })');
+if (E('obStep().id') !== 'subject' || E('S.profile.track') !== '') fail('onboarding: 7th grade should skip the profile');
+if (E('onboardingBack().step') !== ONB_EXAM) fail('onboarding: back from the subject should pass over the skipped profile');
+E('onboardingNext({ exam: "dzi12" }); onboardingNext({ track: "prof" })');
 if (E('onboardingNext({ subject: "xx" }).ok')) fail('onboarding: unknown subject accepted');
 E('onboardingNext({ subject: "bel" })'); if (E('S.subject') !== 'bel') fail('onboarding: subject not saved');
 E('onboardingNext({ theme: "amoled" })');

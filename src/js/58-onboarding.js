@@ -13,7 +13,10 @@ const ONBOARD = {
     { id: 'exam', title: () => (examFromAge(S.profile.age) ? `Значи за ${EXAMS[examFromAge(S.profile.age)]}, нали?` : 'За кой изпит се готвиш?'), text: 'Ако не е така, избери своя клас.', fields: [
       { key: 'exam', path: 'profile.exam', type: 'choice', required: true, options: () => Object.entries(EXAMS), validate: v => (EXAMS[v] ? '' : 'Избери изпит') }
     ] },
-    { id: 'subject', title: 'Коя матура първо?', text: 'Можеш да сменяш предмета по всяко време от началния екран.', fields: [
+    { id: 'track', title: 'Какъв е профилът ти?', when: () => needsTrack(S.profile.exam), text: () => (S.profile.exam === 'nvo10' ? 'НВО в 10-ти клас е еднакво за всички, но профилът решава коя ще е втората ти матура в 12-ти клас.' : 'Профилът решава коя може да е втората ти матура.'), fields: [
+      { key: 'track', path: 'profile.track', type: 'choice', list: true, required: true, options: () => Object.entries(TRACKS).map(([id, t]) => [id, t.title]), validate: v => (TRACKS[v] ? '' : 'Избери профил') }
+    ] },
+    { id: 'subject', title: 'Коя матура първо?', text: () => examPlan(S.profile.exam, S.profile.track) + ' Можеш да сменяш предмета по всяко време от началния екран.', fields: [
       { key: 'subject', path: 'subject', type: 'choice', required: true, options: () => Object.values(SUBJECTS).map(s => [s.id, s.icon + ' ' + s.title]), validate: v => (SUBJECTS[v] ? '' : 'Избери матура') }
     ] },
     { id: 'theme', title: 'Как да изглежда?', text: '„Системна“ следва светлата или тъмната тема на телефона.', fields: [
@@ -32,14 +35,46 @@ const ONBOARD = {
 };
 
 /* Which exam a learner of this age prepares for. In Bulgaria 1st grade starts at 7, so the grade is
-   about age − 6: up to 7th grade it is НВО 7, 8th–10th grade НВО 10, above 10th grade the ДЗИ in 12th. */
-const EXAMS = { nvo7: 'НВО 7-ми клас', nvo10: 'НВО 10-ти клас', dzi12: 'ДЗИ 12-ти клас' };
+   about age − 6: up to 4th grade it is НВО 4, 5th–7th НВО 7, 8th–10th НВО 10, above 10th the ДЗИ in 12th. */
+const EXAMS = { nvo4: 'НВО 4-ти клас', nvo7: 'НВО 7-ми клас', nvo10: 'НВО 10-ти клас', dzi12: 'ДЗИ 12-ти клас' };
 function examFromAge(age) {
   const a = parseInt(age, 10); if (!(a >= 7 && a <= 99)) return '';
   const grade = a - 6;
-  return grade > 10 ? 'dzi12' : grade > 7 ? 'nvo10' : 'nvo7';
+  return grade > 10 ? 'dzi12' : grade > 7 ? 'nvo10' : grade > 4 ? 'nvo7' : 'nvo4';
 }
-const obTitle = step => (typeof step.title === 'function' ? step.title() : step.title);
+
+/* High-school profiles (Наредба № 4 за учебния план) and the usual profiling subjects of each. With a
+   profile the 2nd ДЗИ is one of the profiling subjects; in a vocational school it is the state exam for
+   a professional qualification (ЗПУО, чл. 134). Schools pick the exact profiling subjects themselves. */
+const TRACKS = {
+  math: { title: 'Математически', dzi: ['математика', 'информатика', 'информационни технологии', 'физика и астрономия'] },
+  soft: { title: 'Софтуерни и хардуерни науки', dzi: ['информатика', 'информационни технологии', 'математика'] },
+  nat: { title: 'Природни науки', dzi: ['биология и здравно образование', 'химия и опазване на околната среда', 'физика и астрономия', 'математика'] },
+  econ: { title: 'Икономическо развитие', dzi: ['география и икономика', 'математика', 'информационни технологии', 'чужд език'] },
+  ent: { title: 'Предприемачески', dzi: ['предприемачество', 'география и икономика', 'информационни технологии', 'чужд език'] },
+  lang: { title: 'Чужди езици', dzi: ['чужд език'] },
+  hum: { title: 'Хуманитарни науки', dzi: ['български език и литература', 'история и цивилизации', 'чужд език', 'философия'] },
+  soc: { title: 'Обществени науки', dzi: ['история и цивилизации', 'география и икономика', 'философия'] },
+  art: { title: 'Изобразително изкуство', dzi: ['изобразително изкуство'] },
+  music: { title: 'Музика', dzi: ['музика'] },
+  sport: { title: 'Физическо възпитание и спорт', dzi: ['физическо възпитание и спорт', 'биология и здравно образование'] },
+  prof: { title: 'Професионална гимназия', dzi: [] }
+};
+/* 4th and 7th grade have no profile yet, so the profile question is skipped for them */
+const needsTrack = exam => exam === 'nvo10' || exam === 'dzi12';
+function examPlan(exam, track) {
+  if (exam === 'nvo4') return 'На НВО в 4-ти клас: БЕЛ, математика, човекът и обществото, човекът и природата.';
+  if (exam === 'nvo7') return 'На НВО в 7-ми клас: БЕЛ и математика, по желание и чужд език.';
+  if (exam === 'nvo10') return 'На НВО в 10-ти клас: БЕЛ и математика, по желание чужд език и информационни технологии.';
+  if (exam !== 'dzi12') return '';
+  const t = TRACKS[track];
+  if (!t) return 'На матурите: БЕЛ (задължителна) и втора по избор.';
+  if (track === 'prof') return 'На матурите: БЕЛ (задължителна) и държавен изпит за професионална квалификация.';
+  return `На матурите: БЕЛ (задължителна) и втора по избор от профилиращите предмети: ${t.dzi.join(', ')}.`;
+}
+const obText = v => (typeof v === 'function' ? v() : v);
+const obTitle = step => obText(step.title);
+const obActive = step => !step.when || step.when();
 
 /* ---------- state helpers ---------- */
 const obState = () => {
@@ -76,10 +111,14 @@ function obValidate(step, d) {
 function obApply(step, d) {
   for (const f of step.fields) if (obVisible(f, d)) obSet(f.path, String(d[f.key] == null ? '' : d[f.key]).trim());
   if (step.id === 'theme') { APP.settings.theme = S.settings.theme; applySettings(); }
+  if (step.id === 'exam' && !needsTrack(S.profile.exam)) S.profile.track = '';
   if (step.id === 'profile') S.profile.exam = examFromAge(S.profile.age) || S.profile.exam || '';  /* the next step suggests the exam for this age */
 }
 function obMove(dir) {
-  const o = obState(); o.step = clamp(o.step + dir, 0, ONBOARD.steps.length - 1); saveState(true);
+  const o = obState(), last = ONBOARD.steps.length - 1;
+  let i = clamp(o.step + dir, 0, last);
+  while (i > 0 && i < last && !obActive(ONBOARD.steps[i])) i += dir;   /* steps that don't apply are passed over */
+  o.step = i; saveState(true);
   return { ok: true, done: false, step: o.step };
 }
 
@@ -118,7 +157,8 @@ window.__back = () => {
 
 SCREENS.onboarding = async el => {
   el.style.setProperty('--accent', SUBJECTS[S.subject].color); el.style.setProperty('--accent-ink', inkOn(SUBJECTS[S.subject].color));
-  const o = obState(), step = obStep(), n = ONBOARD.steps.length, isLast = o.step >= n - 1;
+  const o = obState(), step = obStep(), isLast = o.step >= ONBOARD.steps.length - 1;
+  const shown = ONBOARD.steps.filter(obActive), n = shown.length, pos = shown.indexOf(step) + 1;
   const d = {}; step.fields.forEach(f => { const v = obGet(f.path); d[f.key] = v == null ? '' : v; });
   let errors = {};
   const fieldHtml = f => {
@@ -126,15 +166,15 @@ SCREENS.onboarding = async el => {
     const err = errors[f.key] ? `<small class="ob-err">${esc(errors[f.key])}</small>` : '';
     if (f.type === 'choice') {
       const opts = typeof f.options === 'function' ? f.options() : f.options;
-      return `<div class="seg" data-key="${f.key}">${opts.map(([v, label]) => `<button data-v="${esc(v)}" class="${d[f.key] === v ? 'on' : ''}">${esc(label)}</button>`).join('')}</div>${err}`;
+      return `<div class="seg${f.list ? ' list' : ''}" data-key="${f.key}">${opts.map(([v, label]) => `<button data-v="${esc(v)}" class="${d[f.key] === v ? 'on' : ''}">${esc(label)}</button>`).join('')}</div>${err}`;
     }
     return `<label class="fld"><span>${esc(f.label)}</span><input class="field" data-k="${f.key}" type="${f.type}" value="${esc(d[f.key])}" placeholder="${esc(f.ph || '')}" autocomplete="off" spellcheck="false"></label>${err}`;
   };
   const draw = () => {
     el.innerHTML = `<div class="pad onboarding">
-      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="Назад">${icon('back')}</button>` : '<span class="tb-gap"></span>'}<span class="ob-count">${o.step + 1}/${n}</span></header>
+      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="Назад">${icon('back')}</button>` : '<span class="tb-gap"></span>'}<span class="ob-count">${pos}/${n}</span></header>
       ${o.step === 0 || isLast ? '<div class="brand bingo ob-brand">Bing<span>O</span></div>' : ''}
-      <h1 class="ob-title">${esc(obTitle(step))}</h1><p class="muted ob-text">${esc(step.text)}</p>
+      <h1 class="ob-title">${esc(obTitle(step))}</h1><p class="muted ob-text">${esc(obText(step.text))}</p>
       ${step.fields.length ? `<section class="card ob-card">${step.fields.map(fieldHtml).join('')}</section>` : ''}
       <div class="ob-actions"><button class="btn accent big block" data-ob="next">${isLast ? 'Към BingO' : 'Напред'}</button>
       ${step.skippable ? '<button class="btn ghost block" data-ob="skip">Пропусни</button>' : ''}</div></div>`;
