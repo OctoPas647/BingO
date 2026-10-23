@@ -1,0 +1,325 @@
+{
+ "format": 1,
+ "id": "dzi12-math-2023-08-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Математика · 25 август 2023 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "math",
+  "year": 2023,
+  "date": "2023-08-25",
+  "variant": 2,
+  "session": "август",
+  "pages": [
+   512,
+   523
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "25 август 2023 · вариант 2",
+   "minutes": 240,
+   "parts": [
+    {
+     "title": "Част 1",
+     "minutes": 90,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Определете кои от дадените прави са взаимно перпендикулярни: $a: y = \\dfrac{1}{2}x - \\dfrac{1}{2}$, $b: y = -\\dfrac{1}{2}x + 1$, $c: y = 2x - 1$, $d: y = -2x + 2$.",
+       "options": [
+        "$a \\perp c$ и $b \\perp d$",
+        "$a \\perp d$ и $b \\perp c$",
+        "само $b \\perp c$",
+        "само $b \\perp d$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Векторите $\\vec{a}$ и $\\vec{b}$ са линейно независими. Ако $\\vec{p} = 4\\vec{a} - \\lambda\\vec{b}$ и $\\vec{q} = -3\\vec{a} + 2\\vec{b}$, то стойността на $\\lambda$, за която векторите $\\vec{p}$ и $\\vec{q}$ са линейно зависими е:",
+       "options": [
+        "$-\\dfrac{4}{3}$",
+        "$-\\dfrac{3}{4}$",
+        "$\\dfrac{8}{3}$",
+        "$-\\dfrac{3}{8}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Числото $3745_{(8)}$, записано в осмична бройна система, в десетична бройна система е равно на:",
+       "options": [
+        "$2021$",
+        "$2023$",
+        "$2025$",
+        "$2027$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Локалният максимум на функцията $y(x) = x^5 - \\dfrac{5}{4}x^4 + \\dfrac{3}{4}$ е равен на:",
+       "options": [
+        "$y_{\\max} = 0$",
+        "$y_{\\max} = \\dfrac{1}{2}$",
+        "$y_{\\max} = \\dfrac{3}{4}$",
+        "$y_{\\max} = 1$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Дадени са пет тела: четири еднакви правилни зара със съответно $1$, $2$, $3$, $4$, $5$ и $6$ точки върху стените им и един правилен тетраедър със съответно $1$, $2$, $3$ и $4$ точки върху стените му. Избираме едно от телата, хвърляме го и се падат $3$ точки. Каква е вероятността да сме избрали зар?",
+       "options": [
+        "$\\dfrac{1}{20}$",
+        "$\\dfrac{2}{15}$",
+        "$\\dfrac{8}{11}$",
+        "$\\dfrac{11}{60}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Правоъгълник с дължина на едната му страна $4$ см и диагонал с дължина $\\sqrt{41}$ см се завърта около по-голямата си страна на $360^\\circ$. Пълната повърхнина на полученото ротационно тяло е равна на:",
+       "options": [
+        "$40\\pi$ см$^2$",
+        "$72\\pi$ см$^2$",
+        "$80\\pi$ см$^2$",
+        "$90\\pi$ см$^2$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 4,
+       "prompt": "В правоъгълна координатна система е дадена окръжност с център точката $O_1(1;1)$. Какъв трябва да бъде радиусът на тази окръжност, така че тя да се допира до правата $g: 3x + 4y + 8 = 0$?",
+       "options": [
+        "$2$",
+        "$\\dfrac{5}{2}$",
+        "$3$",
+        "$4$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Сборът от коефициентите в нормалния вид на полинома $P(x) = \\left(x^3 - 3x^2 - 4x + 5\\right)^3 + (x - 3)^2$ е:",
+       "options": [
+        "$141$",
+        "$136$",
+        "$5$",
+        "$3$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Намерете границата $\\displaystyle\\lim_{x \\to \\frac{\\pi}{4}} \\frac{\\sqrt{2}\\cos x - 1}{1 - \\operatorname{tg}^2 x}$.",
+       "options": [
+        "$-\\infty$",
+        "$+\\infty$",
+        "$0$",
+        "$\\dfrac{1}{4}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Намерете сумата на безкрайната геометрична прогресия $8,\\ -4\\sqrt{2},\\ 4,\\ -2\\sqrt{2},\\ 2,\\ -\\sqrt{2},\\ 1,\\ -\\dfrac{\\sqrt{2}}{2}, \\cdots$",
+       "options": [
+        "$16 - 8\\sqrt{2}$",
+        "$16 + 8\\sqrt{2}$",
+        "$8\\sqrt{2} - 8$",
+        "$-8\\sqrt{2} - 8$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Втората производна на функцията $y(x) = \\sin(\\ln x)$ е:",
+       "options": [
+        "$y'' = \\dfrac{\\cos(\\ln x)}{x}$",
+        "$y'' = \\dfrac{\\cos(\\ln x) + \\sin(\\ln x)}{x^2}$",
+        "$y'' = -\\dfrac{\\cos(\\ln x) + \\sin(\\ln x)}{x^2}$",
+        "$y'' = \\dfrac{\\cos(\\ln x) - \\sin(\\ln x)}{x^2}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Правилна триъгълна пресечена пирамида има основни ръбове $6\\ \\text{cm}$ и $4\\ \\text{cm}$, и апотемата $\\dfrac{\\sqrt{93}}{3}\\ \\text{cm}$. Обемът на пирамидата е равен на:",
+       "options": [
+        "$\\dfrac{19\\sqrt{30}}{3}\\ \\text{cm}^3$",
+        "$\\dfrac{19\\sqrt{31}}{3}\\ \\text{cm}^3$",
+        "$\\dfrac{76\\sqrt{10}}{3}\\ \\text{cm}^3$",
+        "$\\dfrac{190\\sqrt{3}}{3}\\ \\text{cm}^3$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Инфлексните точки на функцията $f(x) = \\dfrac{2}{1 + 2x^2}$ са:",
+       "options": [
+        "$\\left(-\\dfrac{\\sqrt{6}}{6};\\dfrac{3}{2}\\right)$ и $\\left(\\dfrac{\\sqrt{6}}{6};\\dfrac{3}{2}\\right)$",
+        "$\\left(\\dfrac{\\sqrt{6}}{6};\\dfrac{3}{2}\\right)$",
+        "$\\left(-\\dfrac{\\sqrt{6}}{6};3\\right)$ и $\\left(\\dfrac{\\sqrt{6}}{6};\\dfrac{3}{2}\\right)$",
+        "$\\left(-\\dfrac{\\sqrt{6}}{6};\\dfrac{1}{2}\\right)$ и $\\left(\\dfrac{\\sqrt{6}}{6};\\dfrac{1}{2}\\right)$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Допирателната към графиката на функцията $f(x) = \\dfrac{8}{x - 5}$ в точката с абсциса $x = 3$ има общо уравнение:",
+       "options": [
+        "$x + 2y + 5 = 0$",
+        "$2x + y - 2 = 0$",
+        "$x + 2y - 10 = 0$",
+        "$2x - y - 10 = 0$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Математическото очакване на една нормално разпределена случайна величина $X$ е $400$, а стандартното отклонение $36$. Тогава интервалът около математическото очакване, в който случайната величина $X$ попада с вероятност $95\\%$, е:",
+       "options": [
+        "$[328;472]$",
+        "$[364;436]$",
+        "$[292;508]$",
+        "$[388;412]$"
+       ],
+       "answer": 0
+      }
+     ]
+    },
+    {
+     "title": "Част 2",
+     "minutes": 150,
+     "tasks": [
+      {
+       "id": "q16",
+       "type": "open",
+       "points": 15,
+       "prompt": "В правоъгълна координатна система е построен ромб $ABCD$ със страна $5$ мерни единици. Точка $B$ е с координати $(4;2)$, а върховете $A$ и $C$ лежат на права с уравнение $y = 2x - 1$, като $C$ лежи в I квадрант.\n\nа) Определете координатите на точки $A$, $C$ и $D$.\n\nб) Точка $M$ лежи на отсечката $AC$ и я дели в отношение $AM : MC = 1 : 3$. Определете скаларното произведение $\\overrightarrow{MD} \\cdot \\overrightarrow{MC}$ и големината на $\\sphericalangle DMC$.",
+       "answer": "**Отговор:** а) $A(0;-1)$, $C(4;7)$ и $D(0;4)$; б) $\\overrightarrow{MD} \\cdot \\overrightarrow{MC} = 15$, $\\sphericalangle DMC = 45^\\circ$.\n\n**Решение:**\n\nа) Точки $A$ и $C$ може да се разглеждат като пресечни точки на правата $AC$ и окръжност с център точка $B$ и радиус $5$. Окръжността е с уравнение $(x - 4)^2 + (y - 2)^2 = 25$. За получаване на координатите на пресечните точки се решава системата $\\begin{cases} (x - 4)^2 + (y - 2)^2 = 25 \\\\ y = 2x - 1 \\end{cases}$ чрез заместване:\n\n$\\begin{cases} (x - 4)^2 + (2x - 1 - 2)^2 = 25 \\\\ y = 2x - 1 \\end{cases} \\Leftrightarrow \\begin{cases} (x - 4)^2 + (2x - 3)^2 = 25 \\\\ y = 2x - 1 \\end{cases} \\Leftrightarrow \\begin{cases} x^2 - 4x = 0 \\\\ y = 2x - 1 \\end{cases}$.\n\nЗа решение се получават двете наредени двойки $(x;y)$, съответно $(0;-1)$ и $(4;7)$. Следователно координатите са съответно $A(0;-1)$ и $C(4;7)$. Определянето на координатите на точка $D$ следва от това, че $AC$ и $BD$ имат обща среда точка $K$. От средата на $AC \\Rightarrow K\\left(\\dfrac{x_A + x_C}{2};\\dfrac{y_A + y_C}{2}\\right) \\Rightarrow K(2;3)$. От средата на $BD \\Rightarrow K\\left(\\dfrac{x_D + 4}{2};\\dfrac{y_D + 2}{2}\\right) \\Rightarrow D(0;4)$.\n\nб) Определяне на координатите на векторите:\n\n$\\overrightarrow{AC}(x_C - x_A;y_C - y_A) \\Rightarrow \\overrightarrow{AC}(4;8)$\n\n$\\overrightarrow{AM}(x_M - 0;y_M + 1)$, но $\\overrightarrow{AM} = \\dfrac{1}{4}\\overrightarrow{AC} \\Rightarrow \\overrightarrow{AM}(1;2) \\Rightarrow M(1;1)$\n\n$\\overrightarrow{MD}(-1;3)$, $\\overrightarrow{MC}(3;6)$\n\n$\\overrightarrow{MD} \\cdot \\overrightarrow{MC} = x_{\\overrightarrow{MD}}x_{\\overrightarrow{MC}} + y_{\\overrightarrow{MD}}y_{\\overrightarrow{MC}} \\Rightarrow \\overrightarrow{MD} \\cdot \\overrightarrow{MC} = 15$\n\n$\\left|\\overrightarrow{MD}\\right| = \\sqrt{x_{\\overrightarrow{MD}}^2 + y_{\\overrightarrow{MD}}^2} \\Rightarrow \\left|\\overrightarrow{MD}\\right| = \\sqrt{10}$, аналогично $\\Rightarrow \\left|\\overrightarrow{MC}\\right| = 3\\sqrt{5}$\n\n$\\cos\\sphericalangle\\left(\\overrightarrow{MD},\\overrightarrow{MC}\\right) = \\dfrac{\\overrightarrow{MD} \\cdot \\overrightarrow{MC}}{\\left|\\overrightarrow{MD}\\right| \\cdot \\left|\\overrightarrow{MC}\\right|} = \\dfrac{15}{3\\sqrt{5}\\sqrt{10}} = \\dfrac{\\sqrt{2}}{2} \\Rightarrow \\sphericalangle DMC = 45^\\circ$\n\n**II начин**\n\nПресмятане на дължините на отсечките $AC = 4\\sqrt{5}$, $BD = 2\\sqrt{5}$, $MK = \\dfrac{1}{4}AC = \\sqrt{5}$, $DK = \\dfrac{1}{2}BD = \\sqrt{5}$, следователно $\\triangle KMD$ е равнобедрен и правоъгълен $\\Rightarrow \\sphericalangle DMC = 45^\\circ$.\n\nПресмятане на дължините $\\left|\\overrightarrow{MD}\\right| = \\sqrt{10}$ и $\\left|\\overrightarrow{MC}\\right| = 3\\sqrt{5}$\n\n$\\Rightarrow \\overrightarrow{MD} \\cdot \\overrightarrow{MC} = \\left|\\overrightarrow{MD}\\right| \\cdot \\left|\\overrightarrow{MC}\\right| \\cos\\sphericalangle\\left(\\overrightarrow{MD},\\overrightarrow{MC}\\right) \\Rightarrow \\overrightarrow{MD} \\cdot \\overrightarrow{MC} = 3\\sqrt{5} \\cdot \\sqrt{10} \\cdot \\dfrac{\\sqrt{2}}{2} = 15$.",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "16a-circle.svg",
+         "alt": "Окръжността с център B и радиус 5 и правата y = 2x − 1"
+        },
+        {
+         "type": "image",
+         "src": "16b-rhombus.svg",
+         "alt": "Ромбът ABCD с точките K и M"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "а) $A(0;-1)$, $C(4;7)$ и $D(0;4)$",
+         "points": 8
+        },
+        {
+         "text": "б) $\\overrightarrow{MD} \\cdot \\overrightarrow{MC} = 15$, $\\sphericalangle DMC = 45^\\circ$",
+         "points": 7
+        }
+       ]
+      },
+      {
+       "id": "q17",
+       "type": "open",
+       "points": 15,
+       "prompt": "а) Ако $a = \\displaystyle\\lim_{x \\to \\pm\\infty} \\frac{6x^2 - 5x + 4}{8x^2 + 2x}$, $b = \\displaystyle\\lim_{x \\to 2} \\frac{12 - 6x}{2\\left(\\sqrt{x + 2} - 2\\right)}$, $c = \\displaystyle\\lim_{x \\to 0} \\frac{2\\sin 2x}{\\sin\\frac{x}{2}}$ и $d = \\displaystyle\\lim_{x \\to 0} \\frac{4\\cos 4x - 4}{4x\\sin x}$, то намерете числата $a$, $b$, $c$ и $d$.\n\nб) Да се реши неравенството $\\dfrac{3}{4}x^3 - 9x^2 + 12x + 6 > 0$.\n\nв) Кои от числата $a$, $b$, $c$ и $d$ са решение на неравенството? Обосновете отговора си.",
+       "answer": "**Отговор:** а) $a = \\dfrac{3}{4}$, $b = -12$, $c = 8$ и $d = -8$; б) $x \\in \\left(5 - \\sqrt{29};2\\right) \\cup \\left(5 + \\sqrt{29};+\\infty\\right)$; в) само $a$ е решение.\n\n**Решение:**\n\nа) $a = \\displaystyle\\lim_{x \\to \\pm\\infty} \\frac{6x^2 - 5x + 4}{8x^2 + 2x} = \\lim_{x \\to \\pm\\infty} \\frac{x^2\\left(6 - \\frac{5}{x} - \\frac{4}{x^2}\\right)}{x^2\\left(8 + \\frac{2}{x}\\right)} = \\frac{6}{8} = \\frac{3}{4}$\n\n$b = \\displaystyle\\lim_{x \\to 2} \\frac{12 - 6x}{2\\left(\\sqrt{x + 2} - 2\\right)} = \\lim_{x \\to 2} \\frac{6(2 - x)\\left(\\sqrt{x + 2} + 2\\right)}{2\\left(\\sqrt{x + 2} - 2\\right)\\left(\\sqrt{x + 2} + 2\\right)} = \\lim_{x \\to 2} \\frac{3(2 - x)\\left(\\sqrt{x + 2} + 2\\right)}{x + 2 - 4} = \\lim_{x \\to 2} -\\frac{3(x - 2)\\left(\\sqrt{x + 2} + 2\\right)}{x - 2} = -3 \\cdot 4 = -12$\n\n$c = \\displaystyle\\lim_{x \\to 0} \\frac{2\\sin 2x}{\\sin\\frac{x}{2}} = \\lim_{x \\to 0} \\frac{2\\sin 2x \\cdot \\frac{x}{2} \\cdot 2x}{\\sin\\frac{x}{2} \\cdot \\frac{x}{2} \\cdot 2x} = \\lim_{x \\to 0} \\frac{4x}{\\frac{x}{2}} = 8$\n\n$d = \\displaystyle\\lim_{x \\to 0} \\frac{4\\cos 4x - 4}{4x\\sin x} = \\lim_{x \\to 0} \\frac{-4(1 - \\cos 4x)}{4x\\sin x} = \\lim_{x \\to 0} \\frac{-4 \\cdot 2\\sin^2 2x}{4x\\sin x} = \\lim_{x \\to 0} \\frac{-4 \\cdot 2\\sin^2 2x \\cdot 2x \\cdot 2x}{4x\\sin x \\cdot 2x \\cdot 2x} = -8$\n\nб) $\\dfrac{3}{4}x^3 - 9x^2 + 12x + 6 > 0$\n\n$x^3 - 12x^2 + 16x + 8 > 0$\n\nНамиране делителите на свободния член – $\\pm 1;\\pm 2;\\pm 4;\\pm 8$. Тъй като старшият коефициент е $1$, то ако полиномът $x^3 - 12x^2 + 16x + 8$ има нули, които са рационални числа, те ще са измежду числата $\\pm 1;\\pm 2;\\pm 4;\\pm 8$.\n\nПрилагане схемата на Хорнер и получаване, че $x = 2$ е нула на полинома.\n\nТогава неравенството има вида: $(x - 2)\\left(x^2 - 10x - 4\\right) > 0$\n\nТърсят се реалните корени на уравнението $x^2 - 10x - 4 = 0$.\n\n$D = 116$ и следователно $x_{2,3} = \\dfrac{10 \\pm \\sqrt{116}}{2} = 5 \\pm \\sqrt{29}$.\n\n$(x - 2)\\left(x - 5 - \\sqrt{29}\\right)\\left(x - 5 + \\sqrt{29}\\right) > 0$\n\n$x \\in \\left(5 - \\sqrt{29};2\\right) \\cup \\left(5 + \\sqrt{29};+\\infty\\right)$\n\nв) Единственото число измежду числата $a$, $b$, $c$ и $d$, което е решение на неравенството, е $a$, т.к. $a = \\dfrac{3}{4}$ и $5 - \\sqrt{29} < \\dfrac{3}{4} < 2$.",
+       "rubric": [
+        {
+         "text": "а) $a = \\frac{3}{4}$, $b = -12$, $c = 8$ и $d = -8$",
+         "points": 7
+        },
+        {
+         "text": "б) $(x - 2)\\left(x^2 - 10x - 4\\right) > 0$",
+         "points": 3
+        },
+        {
+         "text": "б) $(x - 2)\\left(x - 5 - \\sqrt{29}\\right)\\left(x - 5 + \\sqrt{29}\\right) > 0$, $x \\in \\left(5 - \\sqrt{29};2\\right) \\cup \\left(5 + \\sqrt{29};+\\infty\\right)$",
+         "points": 3
+        },
+        {
+         "text": "в) доказателство, че само $a = \\frac{3}{4}$ е решение",
+         "points": 2
+        }
+       ]
+      },
+      {
+       "id": "q18",
+       "type": "open",
+       "points": 15,
+       "prompt": "В права триъгълна призма $ABCA_1B_1C_1$ долната основа е $\\triangle ABC$, в който $\\sphericalangle ACB = 90^\\circ$ и $\\sin\\sphericalangle ABC = \\dfrac{1}{3}$. Точката $M$ е среда на ръба $AB$, като $C_1M = 6\\ \\text{cm}$.\n\nа) Да се изрази обемът на призмата като функция на височината ѝ $h$.\n\nб) Да се намери при каква стойност на височината $h$ обемът на призмата е най-голям и да се намери този обем.",
+       "answer": "**Отговор:** а) $V(h) = \\dfrac{4\\sqrt{2}}{9}\\left(36 - h^2\\right)h$, $h \\in (0;6)$; б) $V = \\dfrac{64\\sqrt{6}}{3}\\ \\text{cm}^3$ при $h = 2\\sqrt{3}\\ \\text{cm}$.\n\n**Решение:**\n\nа) Нека $AB = c$.\n\n$\\triangle ABC$ – правоъгълен $\\Rightarrow \\sin\\sphericalangle ABC = \\dfrac{AC}{AB} = \\dfrac{1}{3}$.\n\nПолучава се $AC = \\dfrac{c}{3}\\ \\text{cm}$ и $\\cos\\sphericalangle ABC = \\sqrt{1 - \\left(\\dfrac{1}{3}\\right)^2} = \\dfrac{2\\sqrt{2}}{3}$.\n\n$\\cos\\sphericalangle ABC = \\dfrac{BC}{AB} = \\dfrac{2\\sqrt{2}}{3} \\Rightarrow BC = \\dfrac{2\\sqrt{2}c}{3}$.\n\n$S_{\\triangle ABC} = \\dfrac{AC \\cdot BC}{2} = \\dfrac{c \\cdot 2\\sqrt{2}c}{18} = \\dfrac{\\sqrt{2}c^2}{9}\\ \\text{cm}^2$.\n\n$\\triangle CMC_1$ – правоъгълен, $\\sphericalangle C_1CM = 90^\\circ$, $CC_1 = h$, $C_1M = 6\\ \\text{cm}$ и $CM = \\dfrac{c}{2}\\ \\text{cm}$ ($CM$ медиана към хипотенузата в правоъгълния триъгълник $\\triangle ABC$).\n\nСледователно $CM^2 = C_1M^2 - C_1C^2$ (Питагорова теорема)\n\n$\\left(\\dfrac{c}{2}\\right)^2 = 6^2 - h^2 \\qquad c^2 = 4\\left(36 - h^2\\right)$\n\n$CC_1 = h$ е катет в правоъгълния $\\triangle CMC_1$ с хипотенуза $C_1M = 6\\ \\text{cm}$.\n\nСледователно $h \\in (0;6)$.\n\nЗа обема на призмата $ABCA_1B_1C_1$ се получава:\n\n$V_{ABCA_1B_1C_1} = S_{ABC} \\cdot h = \\dfrac{\\sqrt{2}c^2}{9}h = \\dfrac{4\\sqrt{2}}{9}\\left(36 - h^2\\right)h\\ \\text{cm}^3$,\n\nт.е. $V = V(h) = \\dfrac{4\\sqrt{2}}{9}\\left(36 - h^2\\right)h$, $h \\in (0;6)$.\n\nб) Обемът на призмата $ABCA_1B_1C_1$ е най-голям, когато функцията $V(h) = \\dfrac{4\\sqrt{2}}{9}\\left(36 - h^2\\right)h$ приема най-голяма стойност в интервала $(0;6)$.\n\nНамира се $V'(h) = \\left[\\dfrac{4\\sqrt{2}}{9}\\left(36 - h^2\\right)h\\right]' = \\dfrac{4\\sqrt{2}}{9}\\left(36h - h^3\\right)' = \\dfrac{4\\sqrt{2}}{9}\\left(36 - 3h^2\\right)$.\n\n$V(h)$ е растяща за $h \\in \\left(0;2\\sqrt{3}\\right)$ и намаляваща за $h \\in \\left(2\\sqrt{3};6\\right)$.\n\nНай-голямата стойност се достига при $h = 2\\sqrt{3}\\ \\text{cm}$.\n\n$V_{\\max} = \\dfrac{4\\sqrt{2}}{9}\\left[36 - \\left(2\\sqrt{3}\\right)^2\\right] \\cdot 2\\sqrt{3} = \\dfrac{64\\sqrt{6}}{3}\\ \\text{cm}^3$",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "18-prism.svg",
+         "alt": "Правата триъгълна призма ABCA₁B₁C₁ с медианата CM и отсечката C₁M"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "а) Намиране лицето на основата на призмата",
+         "points": 4
+        },
+        {
+         "text": "а) Намиране, че $h \\in (0;6)$",
+         "points": 3
+        },
+        {
+         "text": "а) $V(h) = \\frac{4\\sqrt{2}}{9}\\left(36 - h^2\\right)h$",
+         "points": 2
+        },
+        {
+         "text": "б) Изследване на функция и намиране на НГС",
+         "points": 3
+        },
+        {
+         "text": "б) $V = \\frac{64\\sqrt{6}}{3}\\ \\text{cm}^3$ при $h = 2\\sqrt{3}\\ \\text{cm}$",
+         "points": 3
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
