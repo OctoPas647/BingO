@@ -23,7 +23,7 @@ const pastFor = (subj, exam) => PAST.filter(m => m.past.subj === subj && m.past.
 const pastById = id => PAST.find(m => m.id === id);
 const pastTasks = m => m.exams[0].parts.flatMap(p => p.tasks.map(t => ({ task: t, part: p })));
 /* the MON scale (65-forecast.js) is for 100 points and holds for НВО 7, НВО 10 and ДЗИ */
-const pastGrade = (m, pts, max) => (m.past.exam === 'nvo4' || !max ? '' : gradeOf(pts / max * 100)[1]);
+const pastGrade = (m, pts, max) => (m.past.exam !== 'dzi12' || !max ? '' : gradeOf(pts / max * 100)[1]);
 
 /* the button on Home, under the training buttons */
 const _homePastBase = SCREENS.home;
