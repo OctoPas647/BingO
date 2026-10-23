@@ -1,0 +1,396 @@
+{
+ "format": 1,
+ "id": "dzi12-math-2026-05-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Математика · 22 май 2026 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "math",
+  "year": 2026,
+  "date": "2026-05-22",
+  "variant": 2,
+  "session": "май",
+  "pages": [
+   388,
+   398
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "22 май 2026 · вариант 2",
+   "minutes": 240,
+   "parts": [
+    {
+     "title": "Част 1",
+     "minutes": 90,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 3,
+       "prompt": "За коя стойност на $p$ векторите $\\vec{a}(p;4)$ и $\\vec{b}(2;-3)$ са перпендикулярни?",
+       "options": [
+        "$6$",
+        "$5$",
+        "$-\\sqrt{13}$",
+        "$-6$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Декартовото уравнение на правата, минаваща през точките $A(-3;2)$ и $B(-2;-1)$, е:",
+       "options": [
+        "$y = -3x - 11$",
+        "$y = -3x - 7$",
+        "$y = \\dfrac{3}{4}x + \\dfrac{17}{4}$",
+        "$y = \\dfrac{3}{4}x + \\dfrac{21}{4}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Окръжността с уравнение $x^2 - 4x + y^2 + 6y - 3 = 0$ има център точка $O$ и радиус $R$. Координатите на точка $O$ и дължината на $R$ са:",
+       "options": [
+        "$O(2;3),\\ R = 2\\sqrt{2}$",
+        "$O(2;-3),\\ R = 4$",
+        "$O(-2;3),\\ R = 4$",
+        "$O(2;-3),\\ R = 16$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 4,
+       "prompt": "В куба $ABCDA_1B_1C_1D_1$ с ръб $1$, разстоянието от върха $C$ до равнината $(DBC_1)$ е равно на:",
+       "options": [
+        "$\\dfrac{\\sqrt{3}}{3}$",
+        "$\\dfrac{\\sqrt{3}}{2}$",
+        "$\\dfrac{\\sqrt{2}}{3}$",
+        "$\\dfrac{\\sqrt{3}}{6}$"
+       ],
+       "answer": 0,
+       "media": [
+        {
+         "type": "image",
+         "src": "4-cube.svg",
+         "alt": "Кубът ABCDA₁B₁C₁D₁ и равнината DBC₁"
+        }
+       ]
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Сборът от коефициентите в нормалния вид на полинома $M(x) = \\left(x^3 - 3x + 1\\right)^3$ е:",
+       "options": [
+        "$-1$",
+        "$1$",
+        "$10$",
+        "$27$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Вярното твърдение за функцията $f(x) = x + \\sin x$, дефинирана за $x \\in (-\\infty;+\\infty)$, е:",
+       "options": [
+        "$f(x)$ е нечетна.",
+        "$f(x)$ е ограничена.",
+        "$f(x)$ е четна.",
+        "$f(x)$ е периодична."
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Границата $\\displaystyle\\lim_{x \\to 3} \\frac{1 - \\sqrt{4 - x}}{x^2 - 9}$ е равна на:",
+       "options": [
+        "$0$",
+        "$\\dfrac{1}{6}$",
+        "$\\dfrac{1}{12}$",
+        "$+\\infty$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Решенията на неравенството $-x^4 + 5x^3 - x^2 - 21x + 18 < 0$ са:",
+       "options": [
+        "$x \\in (-2;1)$",
+        "$x \\in (-\\infty;-2) \\cup (1;+\\infty)$",
+        "$x \\in (-2;1) \\cup (3;+\\infty)$",
+        "$x \\in (-\\infty;-2) \\cup (1;3) \\cup (3;+\\infty)$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Материална точка се движи по закона $S(t) = 2\\sin(\\pi t)$. Ако пътят $S$ се измерва в метри, а времето $t$ в секунди, то скоростта на точката при $t = 0\\ \\text{s}$ е равна на:",
+       "options": [
+        "$0\\ \\text{m/s}$",
+        "$1\\ \\text{m/s}$",
+        "$\\pi\\ \\text{m/s}$",
+        "$2\\pi\\ \\text{m/s}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Броят на асимптотите на функцията $f(x) = \\dfrac{x}{x^2 - 1}$ е:",
+       "options": [
+        "$0$",
+        "$1$",
+        "$2$",
+        "$3$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Сладкарница предлага четири вида понички с различен пълнеж: с шоколад, с ванилия, с карамел и с ябълка. Клиент купува кутия с $6$ понички за вкъщи. По колко различни начина може да напълни кутията, ако няма значение как са подредени поничките и може да взема по няколко от един вид?",
+       "options": [
+        "$24$",
+        "$30$",
+        "$84$",
+        "$256$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Успоредник е с остър ъгъл $\\alpha$ и със страни с дължини $a\\ \\text{cm}$ и $b\\ \\text{cm}$. Обемът $V$ на ротационното тяло, получено при въртенето на успоредника на $360^\\circ$ около страната с дължина $a\\ \\text{cm}$, е равен на:",
+       "options": [
+        "$\\pi a^2 b \\cos^2\\alpha\\ \\text{cm}^3$",
+        "$\\pi a^2 b \\sin\\alpha\\ \\text{cm}^3$",
+        "$\\pi a b^2 \\sin^2\\alpha\\ \\text{cm}^3$",
+        "$\\pi a b^2 \\cos\\alpha\\ \\text{cm}^3$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 4,
+       "prompt": "За кои стойности на реалното число $k$ функцията $f(x) = kx^3 + 3x^2 + kx + 1$ е растяща в интервала $(-\\infty;\\infty)$ за всяка реална стойност на $x$?",
+       "options": [
+        "$k \\in \\left(-\\infty;-\\sqrt{3}\\right]$",
+        "$k \\in \\left[\\sqrt{3};\\infty\\right)$",
+        "$k \\in \\left[-\\sqrt{3};\\sqrt{3}\\right]$",
+        "$k \\in \\left(0;\\sqrt{3}\\right]$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 4,
+       "prompt": "В таблицата е дадено разпределението на случайната величина $X$.\n\n| $x$ | $-2$ | $0$ | $1$ | $3$ |\n|---|---|---|---|---|\n| $P(X = x)$ | $\\dfrac{1}{4}$ | $\\mu$ | $\\dfrac{3}{5}$ | $2\\mu$ |\n\nМатематическото очакване на $X$ е равно на:",
+       "options": [
+        "$-\\dfrac{1}{5}$",
+        "$\\dfrac{1}{5}$",
+        "$\\dfrac{2}{5}$",
+        "$\\dfrac{4}{5}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 4,
+       "prompt": "При производството на детайли за коли фирма А произвежда $1\\%$ некачествени детайли, а фирма Б – $2\\%$ некачествени детайли. Клиент поръчва детайл в магазин, в който $80\\%$ от детайлите са на фирма А, а останалите – на фирма Б. Ако закупен детайл е некачествен, вероятността да е произведен от фирма А, е:",
+       "options": [
+        "$\\dfrac{1}{125}$",
+        "$\\dfrac{3}{250}$",
+        "$\\dfrac{1}{3}$",
+        "$\\dfrac{2}{3}$"
+       ],
+       "answer": 3
+      }
+     ]
+    },
+    {
+     "title": "Част 2",
+     "minutes": 150,
+     "tasks": [
+      {
+       "id": "q16",
+       "type": "open",
+       "points": 15,
+       "prompt": "В правоъгълна координатна система са дадени точките $A(-4;4)$ и $B(10;2)$ и правата $l: x - y + 8 = 0$.\n\nа) Точка $C$, различна от точка $A$, лежи на правата $l$ и на окръжността $k$ с диаметър отсечката $AB$. Намерете каноничното уравнение на $k$ и координатите на точката $C$.\n\nб) През средата на отсечката $AB$ е построена права $p$, успоредна на $l$. Намерете общото уравнение на $p$ и разстоянието между правите $p$ и $l$.",
+       "answer": "**Отговор:** а) $k: (x - 3)^2 + (y - 3)^2 = 50$, т. $C(2;10)$; б) $p: x - y = 0$, разстоянието между правите е $4\\sqrt{2}$.\n\n**Примерно решение:**\n\nа) Ако точка $O(x_O;y_O)$ е среда на $AB$, то $x_O = \\dfrac{-4 + 10}{2} = 3$; $y_O = \\dfrac{4 + 2}{2} = 3$. $AB = \\sqrt{(10 - (-4))^2 + (2 - 4)^2} = 10\\sqrt{2}$\n\n$k: (x - 3)^2 + (y - 3)^2 = \\left(5\\sqrt{2}\\right)^2$.\n\n$C: \\begin{cases} y = x + 8 \\\\ (x - 3)^2 + (y - 3)^2 = 50 \\end{cases} \\Leftrightarrow \\begin{cases} y = x + 8 \\\\ (x - 3)^2 + (x + 5)^2 = 50 \\end{cases} \\Leftrightarrow \\begin{cases} y = x + 8 \\\\ x^2 + 2x - 8 = 0 \\end{cases}$\n\n$x_1 = -4,\\ x_2 = 2,\\ y_1 = 4,\\ y_2 = 10$. Едното решение на системата води до точка $A(-4;4)$, а другото до точка $C(2;10)$.\n\nб) $p \\parallel l \\Rightarrow p: x - y + c = 0$. Точка $O(3;3) \\in p \\Rightarrow c = 0$, $p: x - y = 0$.\n\nРазстоянието $d$ между $p$ и $l$ е равно на разстоянието от точка $O(3;3)$ до $l$. Ако през $O(3;3)$ построим права $t \\perp l$, тя ще има уравнение $t: x + y - 6 = 0$. $l \\cap t = P(-1;7) \\Rightarrow OP = \\sqrt{4^2 + 4^2} = 4\\sqrt{2}$.",
+       "rubric": [
+        {
+         "text": "а) $x_O = \\dfrac{-4 + 10}{2} = 3$; $y_O = \\dfrac{4 + 2}{2} = 3$",
+         "points": 1
+        },
+        {
+         "text": "а) $AB = 10\\sqrt{2}$",
+         "points": 1
+        },
+        {
+         "text": "а) $k: (x - 3)^2 + (y - 3)^2 = 50$",
+         "points": 1
+        },
+        {
+         "text": "а) $C: \\begin{cases} y = x + 8 \\\\ (x - 3)^2 + (y - 3)^2 = 50 \\end{cases}$",
+         "points": 1
+        },
+        {
+         "text": "а) $\\begin{cases} y = x + 8 \\\\ x^2 + 2x - 8 = 0 \\end{cases}$, $x_1 = -4,\\ x_2 = 2,\\ y_1 = 4,\\ y_2 = 10$",
+         "points": 4
+        },
+        {
+         "text": "а) За точка $C(2;10)$",
+         "points": 1
+        },
+        {
+         "text": "б) За намиране на общото уравнение на $p$",
+         "points": 3
+        },
+        {
+         "text": "б) За намиране на разстоянието $OP = 4\\sqrt{2}$",
+         "points": 3
+        }
+       ]
+      },
+      {
+       "id": "q17",
+       "type": "open",
+       "points": 15,
+       "prompt": "Дадена е функцията $f(x) = x^3 + 3x^2 - 3mx + 5$, където $m$ е реално число.\n\nа) Ако точката $A(2;7)$ лежи на графиката на $f(x)$, решете уравнението $f(x) = 0$.\n\nб) Ако $m = 3$, определете интервалите на монотонност, локалните екстремуми на функцията $f(x)$ и нейната най-малка стойност в интервала $x \\in [-4;0]$.\n\nв) Ако $m = 3$, намерете $f''(x)$ и пресметнете границата $\\displaystyle\\lim_{x \\to \\infty}\\left(f''\\left(\\frac{1}{x}\\right) - 5\\right)^x$.",
+       "answer": "**Отговор:** а) $x_{1/2} = 1$, $x_3 = -5$; б) за $x \\in (-\\infty;-3)$ $f(x) \\nearrow$, за $x \\in (-3;1)$ $f(x) \\searrow$, за $x \\in (1;+\\infty)$ $f(x) \\nearrow$, $f_{\\max}(-3) = 32$, $f_{\\min}(1) = 0$, $\\min\\limits_{x \\in [-4;0]} f(x) = f(0) = 5$; в) $f''(x) = 6x + 6$, $\\lim\\limits_{x \\to \\infty}\\left(f''\\left(\\frac{1}{x}\\right) - 5\\right)^x = e^6$.\n\n**Примерно решение:**\n\nа) $f(2) = 7 \\Rightarrow m = 3$. $x^3 + 3x^2 - 9x + 5 = 0 \\Leftrightarrow (x - 1)(x^2 + 4x - 5) = 0$, $(x - 1)^2(x + 5) = 0$. Решения са $x_{1/2} = 1$, $x_3 = -5$.\n\nб) $f(x) = x^3 + 3x^2 - 9x + 5$, $f'(x) = 3x^2 + 6x - 9 = 3(x - 1)(x + 3)$.\n\nЗа $x \\in (-\\infty;-3)$ $f(x) \\nearrow$, за $x \\in (-3;1)$ $f(x) \\searrow$, за $x \\in (1;+\\infty)$ $f(x) \\nearrow$. $f_{\\max}(-3) = 32$, $f_{\\min}(1) = 0$.\n\n$x \\in [-4;-3]$ $f(x) \\nearrow$, $x \\in [-3;0]$ $f(x) \\searrow$, $f(-4) = 25$, $f(0) = 5$. $\\min\\limits_{x \\in [-4;0]} f(x) = f(0) = 5$\n\nв) $f''(x) = 6x + 6$, $f''\\left(\\dfrac{1}{x}\\right) - 5 = \\dfrac{6}{x} + 1$\n\n$\\displaystyle\\lim_{x \\to \\infty}\\left(f''\\left(\\frac{1}{x}\\right) - 5\\right)^x = \\lim_{x \\to \\infty}\\left(\\frac{6}{x} + 1\\right)^x = \\lim_{x \\to \\infty}\\left(\\left(1 + \\frac{1}{\\frac{x}{6}}\\right)^{\\frac{x}{6}}\\right)^6 = e^6.$",
+       "rubric": [
+        {
+         "text": "а) $f(2) = 7 \\Rightarrow m = 3$",
+         "points": 1
+        },
+        {
+         "text": "а) $x^3 + 3x^2 - 9x + 5 = 0 \\Leftrightarrow (x - 1)^2(x + 5) = 0$",
+         "points": 2
+        },
+        {
+         "text": "а) Решения са $x_{1/2} = 1$, $x_3 = -5$",
+         "points": 1
+        },
+        {
+         "text": "б) $f'(x) = 3x^2 + 6x - 9$",
+         "points": 1
+        },
+        {
+         "text": "б) $f'(x) = 3(x - 1)(x + 3)$ или намерени критичните точки",
+         "points": 1
+        },
+        {
+         "text": "б) За $x \\in (-\\infty;-3)$ $f(x) \\nearrow$, $x \\in (1;+\\infty)$ $f(x) \\nearrow$",
+         "points": 1
+        },
+        {
+         "text": "б) $x \\in (-3;1)$ $f(x) \\searrow$",
+         "points": 1
+        },
+        {
+         "text": "б) $f_{\\max}(-3) = 32$, $f_{\\min}(1) = 0$",
+         "points": 1
+        },
+        {
+         "text": "б) $x \\in [-4;-3]$ $f(x) \\nearrow$, $x \\in [-3;0]$ $f(x) \\searrow$, $f(-4) = 25$, $f(0) = 5$, $\\min\\limits_{x \\in [-4;0]} f(x) = f(0) = 5$",
+         "points": 2
+        },
+        {
+         "text": "в) $f''(x) = 6x + 6$",
+         "points": 1
+        },
+        {
+         "text": "в) $f''\\left(\\dfrac{1}{x}\\right) - 5 = \\dfrac{6}{x} + 1$",
+         "points": 1
+        },
+        {
+         "text": "в) $\\lim\\limits_{x \\to \\infty}\\left(f''\\left(\\frac{1}{x}\\right) - 5\\right)^x = e^6$",
+         "points": 2
+        }
+       ]
+      },
+      {
+       "id": "q18",
+       "type": "open",
+       "points": 15,
+       "prompt": "В триъгълната пирамида $ABCD$ ръбът $CD$ е перпендикулярен на равнината $(ABC)$, $AC = BC = 2\\ \\text{cm}$ и $AB = CD$.\n\nа) Ако $AB = 2x$, докажете, че обемът на пирамидата се изразява с функцията $V(x) = \\dfrac{2}{3}x^2\\sqrt{4 - x^2}$, $x \\in (0;2)$ и намерете максималния възможен обем на пирамидата.\n\nб) Ако $\\triangle ABC$ е равностранен и ъгълът между правата $AD$ и равнината $(BCD)$ е $\\alpha$, намерете $\\operatorname{tg}\\alpha$.",
+       "answer": "**Отговор:** а) $\\max V(x) = \\dfrac{32}{27}\\sqrt{3}\\ \\text{cm}^3$; б) $\\operatorname{tg}\\alpha = \\dfrac{\\sqrt{15}}{5}$.\n\n**Примерно решение:**\n\nа) Нека точка $M$ е средата на $AB$. $\\triangle AMC$ и $\\triangle CMD$ са правоъгълни. Тъй като $AM < AC \\Rightarrow x \\in (0;2)$. $CM = \\sqrt{4 - x^2}\\ \\text{cm}$.\n\n$V(x) = \\dfrac{1}{3} \\cdot S_{\\triangle ABC} \\cdot CD = \\dfrac{2}{3}x^2\\sqrt{4 - x^2}\\ \\text{cm}^3$.\n\n$V(x) = \\dfrac{2}{3}x^2\\sqrt{4 - x^2} = \\dfrac{2}{3}\\sqrt{x^4(4 - x^2)}$, $x \\in (0;2)$, $V'(x) = \\dfrac{16x^3 - 6x^5}{3\\sqrt{x^4(4 - x^2)}} = \\dfrac{16x - 6x^3}{3\\sqrt{4 - x^2}} = \\dfrac{-6x\\left(x^2 - \\frac{8}{3}\\right)}{3\\sqrt{4 - x^2}}$\n\n$V'(x) = \\dfrac{-6x\\left(x - \\frac{2\\sqrt{6}}{3}\\right)\\left(x + \\frac{2\\sqrt{6}}{3}\\right)}{3\\sqrt{4 - x^2}}$\n\nЗа $x \\in (0;2)$, $x \\in \\left(0;\\dfrac{2\\sqrt{6}}{3}\\right)$ $V(x) \\nearrow$, $x \\in \\left(\\dfrac{2\\sqrt{6}}{3};2\\right)$ $V(x) \\searrow$, $\\max V(x) = V\\left(\\dfrac{2\\sqrt{6}}{3}\\right) = \\dfrac{32}{27}\\sqrt{3}\\ \\text{cm}^3$\n\nб) Построяваме $AE$ – височина и медиана в $\\triangle ABC$. Тогава $AE \\perp (BCD)$. Проекцията на $AD$ в равнината $(BCD)$ е $ED$ и $\\sphericalangle AED = 90^\\circ$, а $\\sphericalangle ADE = \\alpha$, $\\operatorname{tg}\\alpha = \\dfrac{AE}{ED} = \\dfrac{\\sqrt{3}}{\\sqrt{5}} = \\dfrac{\\sqrt{15}}{5}$",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "18-pyramid.svg",
+         "alt": "Пирамидата ABCD с точките M и E"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "а) $x \\in (0;2)$",
+         "points": 1
+        },
+        {
+         "text": "а) $CM = \\sqrt{4 - x^2}\\ \\text{cm}$",
+         "points": 1
+        },
+        {
+         "text": "а) $V(x) = \\dfrac{2}{3}x^2\\sqrt{4 - x^2}\\ \\text{cm}^3$",
+         "points": 2
+        },
+        {
+         "text": "а) $V'(x) = \\dfrac{-6x\\left(x - \\frac{2\\sqrt{6}}{3}\\right)\\left(x + \\frac{2\\sqrt{6}}{3}\\right)}{3\\sqrt{4 - x^2}}$",
+         "points": 2
+        },
+        {
+         "text": "а) За $x \\in (0;2)$, $x \\in \\left(0;\\frac{2\\sqrt{6}}{3}\\right)$ $V(x) \\nearrow$, $x \\in \\left(\\frac{2\\sqrt{6}}{3};2\\right)$ $V(x) \\searrow$",
+         "points": 2
+        },
+        {
+         "text": "а) $\\max V(x) = V\\left(\\frac{2\\sqrt{6}}{3}\\right) = \\dfrac{32}{27}\\sqrt{3}\\ \\text{cm}^3$",
+         "points": 2
+        },
+        {
+         "text": "б) За построяване на проекцията на $AD$ в $(BCD)$ и обосновка",
+         "points": 2
+        },
+        {
+         "text": "б) За посочване на $\\sphericalangle ADE = \\alpha$",
+         "points": 1
+        },
+        {
+         "text": "б) За намиране на катетите в $\\triangle ADE$",
+         "points": 1
+        },
+        {
+         "text": "б) За намиране на $\\operatorname{tg}\\alpha = \\dfrac{\\sqrt{15}}{5}$",
+         "points": 1
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
