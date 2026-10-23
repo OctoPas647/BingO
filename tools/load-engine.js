@@ -18,7 +18,7 @@ module.exports = function load() {
     bel: JSON.parse(fs.readFileSync(path.join(ROOT, 'content/shelly-modules/matura-bel.json'), 'utf8'))
   };
   for (const f of ['engine/js/00-util.js', 'engine/js/02-module-format.js', 'engine/js/03-scoring.js', 'engine/js/10-i18n.js',
-    'src/js/50-state.js', 'src/js/51-skills.js', 'src/js/52-math.js', 'src/js/53-bel.js', 'src/js/53b-bel-bank.js', 'src/js/54-ai.js', 'src/js/55-sync.js', 'src/js/56-demo.js', 'src/js/57-review.js', 'src/js/58-onboarding.js', 'src/js/65-forecast.js']) run(f);
+    'src/js/49-lang.js', 'src/js/50-state.js', 'src/js/51-skills.js', 'src/js/52-math.js', 'src/js/53-bel.js', 'src/js/53b-bel-bank.js', 'src/js/54-ai.js', 'src/js/55-sync.js', 'src/js/56-demo.js', 'src/js/57-review.js', 'src/js/58-onboarding.js', 'src/js/65-forecast.js']) run(f);
   vm.runInContext('buildBanks()', ctx);
   return ctx;
 };

@@ -104,5 +104,32 @@ E("SUBJECTS.math.skills.forEach((s, i) => recordAnswer('math', genMathTask(s.id,
 if (E("forecast('math').conf") !== 'low' || !/след още/.test(E("gradeText(forecast('math'))"))) fail('forecast: a grade is shown after one answer per skill');
 E('resetState(false)');
 
+/* 9. English UI (49-lang.js): every text that goes through L(), a toast, a sheet button or a label table has an English entry */
+{
+  const fs = require('fs'), path = require('path'), dir = path.join(__dirname, '../src/js'), EN = E('EN_UI'), keys = new Set();
+  const unq = x => x.replace(/\\'/g, "'").replace(/\\\\/g, '\\');
+  for (const f of fs.readdirSync(dir)) {
+    if (f === '49-lang.js') continue;
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    for (const re of [/\bL\('((?:[^'\\]|\\.)*)'/g, /\btoast\('((?:[^'\\]|\\.)*)'/g, /\blabel: '((?:[^'\\]|\\.)*)'/g, /L\(\w+ [=!<>]+[^?]+\? '((?:[^'\\]|\\.)*)' : '((?:[^'\\]|\\.)*)'/g])
+      for (const m of src.matchAll(re)) for (const k of m.slice(1)) if (k && /[А-Яа-я]/.test(k)) keys.add(unq(k));
+    for (const m of src.matchAll(/toast\(ok \? '([^']*)' : '([^']*)'/g)) { keys.add(m[1]); keys.add(m[2]); }
+  }
+  E('Object.values(SUBJECTS)').forEach(s => { keys.add(s.title); keys.add(s.short); s.skills.forEach(k => keys.add(k.name)); });
+  [...Object.values(E('STATUS_LABEL')), ...Object.values(E('CONF_LABEL')), ...E('GRADES').map(g => g[1])].forEach(k => keys.add(k));
+  E('ONBOARD.steps').forEach(st => { keys.add(st.title); keys.add(st.text); st.fields.forEach(f => {
+    if (f.label) keys.add(f.label); if (f.ph && /[А-Яа-я]/.test(f.ph)) keys.add(f.ph);
+    if (!f.native && Array.isArray(f.options)) f.options.forEach(o => /[А-Яа-я]/.test(o[1]) && keys.add(o[1]));
+    if (f.validate) { const m = f.validate('x'.repeat(60)); if (m) keys.add(m); }
+  }); });
+  const missing = [...keys].filter(k => EN[k] == null);
+  missing.forEach(k => fail('English UI: no translation for ' + JSON.stringify(k)));
+  E("S.settings.lang = 'en'");
+  if (E("L('Начало')") !== 'Home' || E("L('Губиш ≈ {a} от {b} т.', { a: 3, b: 66 })") !== 'You lose ≈ 3 of 66 pts') fail('English UI: L() does not translate');
+  E("S.settings.lang = 'bg'");
+  if (E("L('Начало')") !== 'Начало') fail('English UI: Bulgarian changed');
+  console.log(`English UI: ${keys.size} texts, ${missing.length} without translation`);
+}
+
 console.log(`${n} tasks checked, ${fails} problems`);
 process.exit(fails ? 1 : 0);

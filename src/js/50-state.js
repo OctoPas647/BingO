@@ -10,7 +10,7 @@ let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, sh
 const DEFAULT_STATE = () => ({
   v: 1,
   profile: { name: '', cls: '', id: uid() },
-  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true },
+  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true, lang: 'bg' },
   subject: 'math',
   skills: {},            /* "math.quad" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] } */
   log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
@@ -37,7 +37,8 @@ const SETTING_OK = {
   proxyUrl: v => v === '' || (isStr(v) && /^https:\/\/[^\s]+$/.test(v)),
   sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/script\.google\.com\/[^\s]+$/.test(v)),
   theme: v => ['auto', 'light', 'dark', 'amoled'].includes(v),
-  sound: v => typeof v === 'boolean'
+  sound: v => typeof v === 'boolean',
+  lang: v => ['bg', 'en'].includes(v)
 };
 function cleanSkill(st) {
   if (!isObj(st)) return null;
@@ -82,7 +83,7 @@ function loadState() {
     try { S = sanitizeState(JSON.parse(raw)); }
     catch (e) { console.warn('state not loaded', e); S = DEFAULT_STATE(); STATE_NOTICE = { backup: backupRaw(raw) }; }
   }
-  APP.settings.theme = S.settings.theme; APP.settings.sound = S.settings.sound !== false;
+  APP.settings.theme = S.settings.theme; APP.settings.sound = S.settings.sound !== false; APP.settings.lang = S.settings.lang;
 }
 let saveTimer = 0;
 function saveState(now) {

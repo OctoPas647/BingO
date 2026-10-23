@@ -63,7 +63,7 @@ const hasRealProgress = () => S.sessions > 0 || S.log.some(r => r.student_id !==
 const demoBackupExists = () => { try { return !!localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return false; } };
 async function loadDemoLearner() {
   if (hasRealProgress()) {
-    const ok = await confirmBox('Да заредим ли демо ученик?', 'Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.', 'Зареди демото');
+    const ok = await confirmBox(L('Да заредим ли демо ученик?'), L('Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.'), L('Зареди демото'));
     if (!ok) return false;
     try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S)); }
     catch (e) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
