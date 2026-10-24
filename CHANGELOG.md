@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.2
+- Confetti no longer falls on the next screen after a session
+- The same question no longer comes back in one session (also when the numbers look the same); if a topic has no new question left, the app tries other levels first
+- Added rules for AI agents (AGENTS.md)
+
 ## 0.3.1
 - "Системна" theme now follows the phone's dark mode in the Android app (the app asks Android directly and updates when the phone switches); the window is dark while loading too
 - Setup screens: no progress bar
