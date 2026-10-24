@@ -1,7 +1,7 @@
 {
   "appName": "BingO",
-  "version": "0.3.2",
-  "androidVersionCode": 5,
+  "version": "0.4.0",
+  "androidVersionCode": 6,
   "androidPackage": "app.bingo",
   "androidMinSdk": 24,
   "androidTargetSdk": 34

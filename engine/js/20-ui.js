@@ -25,13 +25,23 @@ const ICONS = {
 };
 const icon = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[n] || ''}</svg>`;
 
-/* ---------- navigation: a stack of screens; Android back and the browser back both go through back() ---------- */
+/* ---------- navigation: a stack of screens; Android back and the browser back both go through back() ----------
+   The browser history holds at most ONE extra entry (a "trap") while there is somewhere to go back to:
+   a screen above the first one, or an open sheet. The browser's back button uses up the trap, the app
+   goes one step back and sets a new trap if it is still needed. Keeping one entry (instead of one per
+   screen) means in-app back buttons and home() can never leave stale entries behind, which made the
+   browser's back button seem stuck and then suddenly leave the app. */
 const SCREENS = {}, NAV = [];
-let root;
+let root, histTrap = false, histSkip = 0;
+const needTrap = () => NAV.length > 1 || overlays.length > 0;
+function syncHistory() {
+  if (needTrap() && !histTrap) { history.pushState({ trap: 1 }, ''); histTrap = true; }
+  else if (!needTrap() && histTrap) { histTrap = false; histSkip++; history.back(); }
+}
 function go(screen, params = {}, opt = {}) {
   const cur = NAV[NAV.length - 1];
   if (cur) { cur.y = window.scrollY; leave(cur); }
-  if (opt.replace) NAV.pop(); else history.pushState({ d: NAV.length + 1 }, '');
+  if (opt.replace) NAV.pop();
   NAV.push({ screen, params });
   render();
 }
@@ -48,10 +58,17 @@ function backTo(screen) { while (NAV.length > 1 && NAV[NAV.length - 1].screen !=
 function home() { while (NAV.length > 1) leave(NAV.pop()); render(); }
 /* Android's back button: 'h' means the app handled it; '' lets Android close the app */
 window.__back = () => { if (!overlays.length && NAV.length <= 1) return ''; back(); return 'h'; };
-window.addEventListener('popstate', async () => { if ((await back()) === 'blocked') history.pushState({}, ''); });
+window.addEventListener('popstate', async () => {
+  if (histSkip) { histSkip--; return; } /* our own history.back() from syncHistory */
+  histTrap = false;
+  await back();
+  syncHistory();
+});
 async function render(restore) {
   const e = NAV[NAV.length - 1]; if (!e) return;
   e.guard = null;
+  document.querySelectorAll('canvas.confetti').forEach(c => c.remove()); /* confetti belongs to the screen that started it */
+  syncHistory();
   /* A fresh element per screen, so event handlers from the previous screen go away with it */
   const fresh = document.createElement('div'); fresh.id = 'app'; fresh.className = 'screen screen-' + e.screen;
   root.replaceWith(fresh); root = fresh;
@@ -70,8 +87,8 @@ function sheet({ title, body = '', actions = [], dismiss = true, onMount, wide }
       <div class="grip"></div>${title ? `<h2 class="sheet-title">${esc(title)}</h2>` : ''}<div class="sheet-body">${body}</div>
       ${actions.length ? `<div class="sheet-actions">${actions.map(a => `<button class="btn ${a.kind || 'ghost'}" data-act="${esc(a.id)}">${a.icon ? icon(a.icon) : ''}${esc(a.label)}</button>`).join('')}</div>` : ''}
     </div></div>`);
-    const o = { dismiss, close(v) { if (o.done) return; o.done = true; overlays.splice(overlays.indexOf(o), 1); el.classList.add('out'); setTimeout(() => el.remove(), 220); resolve(v); } };
-    overlays.push(o);
+    const o = { dismiss, close(v) { if (o.done) return; o.done = true; overlays.splice(overlays.indexOf(o), 1); el.classList.add('out'); setTimeout(() => el.remove(), 220); syncHistory(); resolve(v); } };
+    overlays.push(o); syncHistory();
     el.addEventListener('click', ev => {
       const a = ev.target.closest('[data-act]'); if (a) return o.close(a.dataset.act);
       if (ev.target === el && dismiss) o.close(null);
@@ -129,7 +146,7 @@ function confetti() {
   (function step() {
     x.clearRect(0, 0, W, H);
     for (const p of ps) { p.vy += 0.55; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.a += 0.15; x.fillStyle = p.c; x.save(); x.translate(p.x, p.y); x.rotate(p.a); x.fillRect(-p.r, -p.r / 2, p.r * 2, p.r); x.restore(); }
-    if (++f < 110) requestAnimationFrame(step); else c.remove();
+    if (++f < 110 && c.isConnected) requestAnimationFrame(step); else c.remove();
   })();
 }
 
