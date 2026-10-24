@@ -1,0 +1,477 @@
+{
+ "format": 1,
+ "id": "dzi12-math-2019-05-v1",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Математика · 23 май 2019 · вариант 1",
+ "past": {
+  "exam": "dzi12",
+  "subj": "math",
+  "year": 2019,
+  "date": "2019-05-23",
+  "variant": 1,
+  "session": "май",
+  "pages": [
+   724,
+   732
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2019 · вариант 1",
+   "minutes": 240,
+   "parts": [
+    {
+     "title": "Модул 1",
+     "minutes": 90,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Ако $5\\%$ от $x$ е $x\\%$ от $y$, то $y$ е равно на:",
+       "options": [
+        "$5$",
+        "$20$",
+        "$25$",
+        "$100$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на израза $\\sqrt{\\left(2 - \\sqrt{5}\\right)^2} - \\sqrt[3]{\\left(1 - \\sqrt{5}\\right)^3}$ е:",
+       "options": [
+        "$3 - 2\\sqrt{5}$",
+        "$-1$",
+        "$1$",
+        "$2\\sqrt{5} - 3$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Множеството от НЕДОПУСТИМИТЕ стойности на израза $\\dfrac{x\\left(x^2 - x - 2\\right)}{\\left(x^2 - x\\right)^2 - 4}$ е:",
+       "options": [
+        "$\\varnothing$",
+        "$\\{-1, 2\\}$",
+        "$\\{-2, 1\\}$",
+        "$\\{-2, -1, 1, 2\\}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Кое от уравненията НЯМА отрицателни корени?",
+       "options": [
+        "$x^4 - 16 = 0$",
+        "$x^4 = x^2$",
+        "$x^3 - x^2 = 0$",
+        "$x^3 + 8 = 0$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Числената стойност на израза $\\dfrac{\\left(3^{-5}\\right)^4}{3^{-21}}$ е:",
+       "options": [
+        "$3$",
+        "$3^{-1}$",
+        "$3^{-30}$",
+        "$3^{-41}$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Системата $\\begin{cases} x = 2y \\\\ x^2 = 4(x - y)y \\end{cases}$:",
+       "options": [
+        "няма решение",
+        "има само едно решение",
+        "има две решения",
+        "има безброй много решения"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Сборът от корените на уравнението $\\left(x^2 - 4\\right)\\left(x^2 - 3x\\right) = 0$ е:",
+       "options": [
+        "$-3$",
+        "$-1$",
+        "$3$",
+        "$5$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на израза $\\sin(\\alpha - 15^\\circ)\\sin(2\\alpha + 15^\\circ)$ при $\\alpha = 30^\\circ$ е:",
+       "options": [
+        "$\\dfrac{1}{4}$",
+        "$\\dfrac{\\sqrt{3}}{4}$",
+        "$\\dfrac{1}{2}$",
+        "$1$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 2,
+       "prompt": "В $\\triangle ABC$ $CL$ е ъглополовяща, $AL = 5\\ \\text{cm}$ и $BL = 3\\ \\text{cm}$. Периметърът на $\\triangle ABC$ е $20\\ \\text{cm}$. Дължината на страната $AC$ е:",
+       "options": [
+        "$4{,}5\\ \\text{cm}$",
+        "$7{,}5\\ \\text{cm}$",
+        "$8\\ \\text{cm}$",
+        "$8{,}5\\ \\text{cm}$"
+       ],
+       "answer": 1,
+       "media": [
+        {
+         "type": "image",
+         "src": "9-bisector.svg",
+         "alt": "Триъгълник ABC с ъглополовящата CL; AL = 5 cm, LB = 3 cm"
+        }
+       ]
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Височината $CD$ в правоъгълния $\\triangle ABC$ разделя хипотенузата му на отсечки с дължини $AD = 8\\ \\text{cm}$ и $BD = 1\\ \\text{cm}$. Дължината на по-малкия катет на $\\triangle ABC$ е:",
+       "options": [
+        "$2\\sqrt{2}\\ \\text{cm}$",
+        "$3\\ \\text{cm}$",
+        "$6\\sqrt{2}\\ \\text{cm}$",
+        "$8{,}5\\ \\text{cm}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Графиката на функцията $f(x) = -x^2 + bx + c$ минава през точките $A(-2;0)$ и $B(0;6)$. Стойността на $b + c$ е:",
+       "options": [
+        "$11$",
+        "$8$",
+        "$7$",
+        "$4$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 3,
+       "prompt": "За числовите редици $a_n = (-1)^n 2n$, $n \\in \\mathbb{N}$ и $b_m = \\dfrac{1}{2^m}$, $m \\in \\mathbb{N}$ е вярно, че:",
+       "options": [
+        "и двете са растящи",
+        "и двете са намаляващи",
+        "само едната е растяща",
+        "само едната е намаляваща"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 3,
+       "prompt": "За коя стойност на $x$ числата $2, x + 1$ и $x^2 - 7$ в този ред образуват растяща геометрична прогресия?",
+       "options": [
+        "$-5$",
+        "$-3$",
+        "$3$",
+        "$5$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Множеството от стойностите на функцията $y = 2\\sin x\\cos x$ е:",
+       "options": [
+        "$[-1;1]$",
+        "$[-1;0]$",
+        "$[0;2]$",
+        "$[-2;2]$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 3,
+       "prompt": "За коя от посочените стойности на $x$ медианата на реда $x$, $5$, $6$, $10$, $10$ НЕ е равна на $6$?",
+       "options": [
+        "$x = 2$",
+        "$x = 4$",
+        "$x = 5$",
+        "$x = 9$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q16",
+       "type": "choice",
+       "points": 3,
+       "prompt": "В обедно меню се предлагат $3$ вида супи, $5$ вида основни ястия и $4$ вида десерти. По колко начина може да се направи избор за обяд, ако се избере супа и основно ястие, или супа и десерт, или основно ястие и десерт?",
+       "options": [
+        "$12$",
+        "$15$",
+        "$20$",
+        "$47$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q17",
+       "type": "choice",
+       "points": 3,
+       "prompt": "За $\\triangle ABC$ е дадено, че $\\sphericalangle ABC = 45^\\circ$, $BC = 3\\ \\text{cm}$ и $AB = 2\\sqrt{2}\\ \\text{cm}$. Дължината на $AC$ е:",
+       "options": [
+        "$\\sqrt{3}\\ \\text{cm}$",
+        "$\\sqrt{5}\\ \\text{cm}$",
+        "$2\\sqrt{5}\\ \\text{cm}$",
+        "$6\\sqrt{2}\\ \\text{cm}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q18",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Лицето на вписания в ромба $ABCD$ кръг е $\\dfrac{3\\pi}{4}\\ \\text{cm}^2$, а $\\sphericalangle BAD = 60^\\circ$. Лицето на $ABCD$ е:",
+       "options": [
+        "$3\\ \\text{cm}^2$",
+        "$2\\sqrt{3}\\ \\text{cm}^2$",
+        "$\\sqrt{3}\\ \\text{cm}^2$",
+        "$\\dfrac{\\sqrt{3}}{2}\\ \\text{cm}^2$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q19",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Лицето на равнобедрен трапец е $108\\ \\text{cm}^2$, а сборът от дължините на основите му е $18\\ \\text{cm}$. Сборът от дължините на диагоналите на трапеца е:",
+       "options": [
+        "$12\\ \\text{cm}$",
+        "$15\\ \\text{cm}$",
+        "$24\\ \\text{cm}$",
+        "$30\\ \\text{cm}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q20",
+       "type": "choice",
+       "points": 3,
+       "prompt": "На чертежа $\\triangle ABD$ е правоъгълен и равнобедрен, а $\\triangle ABC$ е равностранен. Окръжност с диаметър $AB$ пресича страната $AC$ в точка $E$. Ако $AB = 20\\ \\text{cm}$, то дължината на $DE$ е:",
+       "options": [
+        "$5\\left(\\sqrt{6} - \\sqrt{2}\\right)\\ \\text{cm}$",
+        "$10\\left(\\sqrt{3} - 1\\right)\\ \\text{cm}$",
+        "$10\\sqrt{2}\\ \\text{cm}$",
+        "$10\\sqrt{3}\\ \\text{cm}$"
+       ],
+       "answer": 0,
+       "media": [
+        {
+         "type": "image",
+         "src": "20-semicircle.svg",
+         "alt": "Равностранен триъгълник ABC, равнобедрен правоъгълен триъгълник ABD и полуокръжността с диаметър AB"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Модул 2",
+     "minutes": 150,
+     "tasks": [
+      {
+       "id": "q21",
+       "type": "number",
+       "points": 4,
+       "prompt": "Пресметнете стойността на израза $A = \\sqrt{\\log_{\\sqrt{2}} 4} + \\left(\\log_5 25\\right)^{\\log_2 6}$.",
+       "answer": 8
+      },
+      {
+       "id": "q22",
+       "type": "open",
+       "points": 4,
+       "prompt": "Намерете множеството от решенията на неравенството $\\dfrac{x^2 - 5x + 4}{x - x^2} \\geq 0$.",
+       "answer": "**Отговор:** $x \\in (0;1) \\cup (1;4]$",
+       "rubric": [
+        {
+         "text": "$x \\in (0;1) \\cup (1;4]$",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q23",
+       "type": "number",
+       "points": 4,
+       "prompt": "Дадена е крайна аритметична прогресия с първи член $a_1 = 2$ и разлика $d = 4$. Намерете броя на членовете на прогресията, ако е известно, че последният ѝ член е равен на сбора на първите $20$ члена на редицата с общ член $b_n = 3n - 1$, $n \\in \\mathbb{N}$.",
+       "answer": 153
+      },
+      {
+       "id": "q24",
+       "type": "number",
+       "points": 4,
+       "prompt": "На изпит $25\\%$ от явилите се ученици имат оценка „отличен $6{,}00$“, $40\\%$ – „много добър $5{,}00$“, $30\\%$ – „добър $4{,}00$“ и $5\\%$ – „среден $3{,}00$“. Намерете средния успех (с точност до стотните) на явилите се на този изпит ученици.",
+       "answer": 4.85,
+       "media": [
+        {
+         "type": "image",
+         "src": "24-grades.svg",
+         "alt": "Кръгова диаграма: много добър 5,00 – 40%; отличен 6,00 – 25%; среден 3,00 – 5%; добър 4,00 – 30%"
+        }
+       ]
+      },
+      {
+       "id": "q25",
+       "type": "number",
+       "points": 4,
+       "prompt": "В $\\triangle ABC$ със страни $AB = \\sqrt{22}\\ \\text{cm}$, $BC = 4\\ \\text{cm}$ и $AC = 6\\ \\text{cm}$ медианата $AM$ $(M \\in BC)$ и ъглополовящата $CL$ $(L \\in AB)$ се пресичат в точка $N$. Намерете разликата $AN - MN$ от дължините на отсечките $AN$ и $MN$.",
+       "answer": 2.5,
+       "explain": "$AN - MN = \\dfrac{5}{2}\\ \\text{cm} = 2{,}5\\ \\text{cm}$"
+      },
+      {
+       "id": "q26",
+       "type": "open",
+       "points": 10,
+       "prompt": "Решете уравнението $\\left(x^2 + 2x\\right)^2 - (x + 1)^2 = 55$.",
+       "answer": "**Отговор:** $x_1 = 2$, $x_2 = -4$\n\n**Решение:**\n\nВръзка между $x^2 + 2x + 1 = (x + 1)^2$ и $x^2 + 2x = (x + 1)^2 - 1$.\n\nПолагане $(x + 1)^2 = t$, $t \\geq 0$.\n\nРешаване на уравнението $t^2 - 3t - 54 = 0$.\n\nОпределяне $t_1 = 9$, $9 > 0$, $t_2 = -6$, $-6 < 0$.\n\nВръщане в полагането $(x + 1)^2 = 9$.\n\nРешаване на $x + 1 = 3$ и $x + 1 = -3$.\n\nНамиране на решенията $x_1 = 2$, $x_2 = -4$.",
+       "rubric": [
+        {
+         "text": "Връзка между $x^2 + 2x + 1 = (x + 1)^2$ и $x^2 + 2x = (x + 1)^2 - 1$",
+         "points": 1
+        },
+        {
+         "text": "Полагане $(x + 1)^2 = t$, $t \\geq 0$",
+         "points": 2
+        },
+        {
+         "text": "Решаване на уравнението $t^2 - 3t - 54 = 0$",
+         "points": 2
+        },
+        {
+         "text": "Определяне $t_1 = 9$, $9 > 0$, $t_2 = -6$, $-6 < 0$",
+         "points": 1
+        },
+        {
+         "text": "Връщане в полагането $(x + 1)^2 = 9$",
+         "points": 1
+        },
+        {
+         "text": "Решаване на $x + 1 = 3$ и $x + 1 = -3$",
+         "points": 2
+        },
+        {
+         "text": "Намиране на решенията $x_1 = 2$, $x_2 = -4$",
+         "points": 1
+        }
+       ]
+      },
+      {
+       "id": "q27",
+       "type": "open",
+       "points": 10,
+       "prompt": "Дадени са изразите $A = \\sin^6\\alpha + \\cos^6\\alpha - 1$, $B = \\sin^4\\alpha + \\cos^4\\alpha - 1$ и $C = \\cos^2\\left(\\dfrac{\\pi}{2} - \\alpha\\right) - \\sin\\left(\\dfrac{2\\pi}{3} - \\alpha\\right)\\sin\\left(\\alpha - \\dfrac{\\pi}{3}\\right)$.\n\nа) Докажете, че $A = \\dfrac{3}{2}B$ за всички допустими стойности на $\\alpha$.\n\nб) Докажете, че $C = \\dfrac{3}{4}$ за всички допустими стойности на $\\alpha$.",
+       "answer": "**Отговор:** а) доказателство; б) доказателство\n\n**Решение:**\n\nа) $A = \\sin^6\\alpha + \\cos^6\\alpha - 1 =$\n\n$= \\left(\\sin^2\\alpha\\right)^3 + \\left(\\cos^2\\alpha\\right)^3 - 1 = \\left(\\sin^2\\alpha + \\cos^2\\alpha\\right)\\left(\\sin^4\\alpha - \\sin^2\\alpha\\cos^2\\alpha + \\cos^4\\alpha\\right) - 1 =$\n\n$= 1 \\cdot \\left(\\sin^4\\alpha - \\sin^2\\alpha\\cos^2\\alpha + \\cos^4\\alpha\\right) - 1 = \\sin^4\\alpha + \\cos^4\\alpha - \\sin^2\\alpha\\cos^2\\alpha - 1 =$\n\n$= \\left(\\sin^2\\alpha + \\cos^2\\alpha\\right)^2 - 3\\sin^2\\alpha\\cos^2\\alpha - 1 = 1 - 3\\sin^2\\alpha\\cos^2\\alpha - 1 = -3\\sin^2\\alpha\\cos^2\\alpha$\n\n$B = \\sin^4\\alpha + \\cos^4\\alpha - 1 = \\left(\\sin^2\\alpha + \\cos^2\\alpha\\right)^2 - 2\\sin^2\\alpha\\cos^2\\alpha - 1 =$\n\n$= 1 - 2\\sin^2\\alpha\\cos^2\\alpha - 1 = -2\\sin^2\\alpha\\cos^2\\alpha$\n\n$A = -3\\sin^2\\alpha\\cos^2\\alpha$, $B = -2\\sin^2\\alpha\\cos^2\\alpha$\n\n$A - \\dfrac{3}{2}B = -3\\sin^2\\alpha\\cos^2\\alpha + \\dfrac{3}{2} \\cdot 2\\sin^2\\alpha\\cos^2\\alpha = 0 \\Rightarrow A = \\dfrac{3}{2}B$\n\nб) $C = \\cos^2\\left(\\dfrac{\\pi}{2} - \\alpha\\right) - \\sin\\left(\\dfrac{2\\pi}{3} - \\alpha\\right)\\sin\\left(\\alpha - \\dfrac{\\pi}{3}\\right) = \\sin^2\\alpha - \\dfrac{1}{2}\\left[\\cos(\\pi - 2\\alpha) - \\cos\\dfrac{\\pi}{3}\\right] =$\n\n$= \\sin^2\\alpha - \\dfrac{1}{2}\\left[-\\cos 2\\alpha - \\dfrac{1}{2}\\right] = \\sin^2\\alpha - \\dfrac{1}{2}\\left[\\sin^2\\alpha - \\cos^2\\alpha - \\dfrac{1}{2}\\right] = \\dfrac{1}{2}\\left(\\sin^2\\alpha + \\cos^2\\alpha\\right) + \\dfrac{1}{4} = \\dfrac{3}{4}$",
+       "rubric": [
+        {
+         "text": "За определяне на $A = -3\\sin^2\\alpha\\cos^2\\alpha$",
+         "points": 3
+        },
+        {
+         "text": "За определяне на $B = -2\\sin^2\\alpha\\cos^2\\alpha$",
+         "points": 2
+        },
+        {
+         "text": "За извод, че $A = \\frac{3}{2}B$",
+         "points": 1
+        },
+        {
+         "text": "За доказване, че $C = \\frac{3}{4}$",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q28",
+       "type": "open",
+       "points": 10,
+       "prompt": "Вписаната в тъпоъгълния $\\triangle ABC$ окръжност се допира до най-голямата му страна $AB$ в точка $P$ като $AP = 5$ и $BP = 9$. Ако радиусът на описаната окръжност около $\\triangle ABC$ е $R = \\dfrac{14\\sqrt{3}}{3}$, намерете дължините на страните $AC$ и $BC$ и на ъглополовящата на $\\sphericalangle ACB$ в $\\triangle ABC$.",
+       "answer": "**Отговор:** $AC = 6$, $BC = 10$, $CL = \\dfrac{15}{4}$\n\n**Решение:**\n\nПрилагаме синусова теорема за $\\triangle ABC$: $\\sin\\sphericalangle ACB = \\dfrac{AB}{2R} = \\dfrac{\\sqrt{3}}{2}$.\n\nТогава $\\sphericalangle ACB = 120^\\circ$ или $\\sphericalangle ACB = 60^\\circ$, но $\\triangle ABC$ е тъпоъгълен и $AB$ е най-голямата страна, то $\\sphericalangle ACB = 120^\\circ$.\n\nДа означим допирните точки на окръжността със страните $AC$ и $BC$ съответно с $T$ и $Q$. Намираме $AT = AP = 5$ и $BQ = BP = 9$. Нека $CQ = CT = x$, $x > 0$.\n\nПрилагаме косинусовата теорема за $\\triangle ABC$: $14^2 = (x + 5)^2 + (x + 9)^2 - 2(x + 5)(x + 9)\\cos 120^\\circ$\n\n$\\Leftrightarrow x^2 + 14x - 15 = 0$. Оттук $x = 1$ или $x = -15$. Намираме $AC = 6$, $BC = 10$.\n\nАко $CL$ е ъглополовящата на $\\sphericalangle ACB$, то $\\dfrac{AL}{BL} = \\dfrac{AC}{BC} = \\dfrac{3}{5}$.\n\nНека $AL = 3y$, $BL = 5y$ и $3y + 5y = 14 \\Leftrightarrow y = \\dfrac{7}{4}$. Тогава $AL = \\dfrac{21}{4}$ и $BL = \\dfrac{35}{4}$, а\n\n$CL^2 = AC \\cdot BC - AL \\cdot BL \\Rightarrow CL = \\sqrt{6 \\cdot 10 - \\dfrac{21}{4} \\cdot \\dfrac{35}{4}} = \\dfrac{15}{4}$.",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "28-incircle.svg",
+         "alt": "Триъгълник ABC с вписаната окръжност, допирните точки P, T, Q и ъглополовящата CL"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "За намиране на $\\sin\\sphericalangle ACB = \\frac{AB}{2R} = \\frac{\\sqrt{3}}{2}$",
+         "points": 1
+        },
+        {
+         "text": "За определяне на $\\sphericalangle ACB = 120^\\circ$",
+         "points": 1
+        },
+        {
+         "text": "За определяне на $AT = AP = 5$ и $BQ = BP = 9$",
+         "points": 1
+        },
+        {
+         "text": "За въвеждане на неизвестно $CQ = CT = x$, $x > 0$",
+         "points": 1
+        },
+        {
+         "text": "За прилагане на косинусова теорема за $\\triangle ABC$",
+         "points": 1
+        },
+        {
+         "text": "За достигане до уравнението $x^2 + 14x - 15 = 0$ и решаването му",
+         "points": 2
+        },
+        {
+         "text": "За определяне дължините на страните $AC$ и $BC$",
+         "points": 1
+        },
+        {
+         "text": "За изразяване на $AL \\cdot BL$ или намиране на дължините на $AL$ и $BL$",
+         "points": 1
+        },
+        {
+         "text": "За намиране на дължината на $CL = \\frac{15}{4}$",
+         "points": 1
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

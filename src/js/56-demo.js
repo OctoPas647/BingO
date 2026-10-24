@@ -54,3 +54,28 @@ function simulateClass(n = 28, seed = 'class') {
   }
   return out.sort((a, b) => a.t - b.t);
 }
+
+/* ---------- loading the demo learner without losing a real learner's progress ----------
+   The demo replaces the skill map and the answers. If there is real progress, ask first and keep
+   a copy under its own key, so "Върни моите отговори" in Settings can bring it back. */
+const DEMO_BACKUP_KEY = STORE_KEY + '.before-demo';
+const hasRealProgress = () => S.sessions > 0 || S.log.some(r => r.student_id !== 'demo');
+const demoBackupExists = () => { try { return !!localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return false; } };
+async function loadDemoLearner() {
+  if (hasRealProgress()) {
+    const ok = await confirmBox(L('Да заредим ли демо ученик?'), L('Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.'), L('Зареди демото'));
+    if (!ok) return false;
+    try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S)); }
+    catch (e) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
+  }
+  simulateLearner();
+  return true;
+}
+function restoreFromDemo() {
+  let raw = null; try { raw = localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { }
+  if (!raw) return false;
+  try { S = sanitizeState(JSON.parse(raw)); } catch (e) { return false; }
+  saveState(true);
+  try { localStorage.removeItem(DEMO_BACKUP_KEY); } catch (e) { }
+  return true;
+}

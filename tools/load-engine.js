@@ -5,7 +5,7 @@ module.exports = function load() {
   const store = {};
   const ctx = {
     console, Math, Date, JSON, Intl, Promise, setTimeout, clearTimeout, URL, Blob: class { },
-    localStorage: { getItem: k => store[k] ?? null, setItem: (k, v) => { store[k] = String(v); } },
+    localStorage: { getItem: k => store[k] ?? null, setItem: (k, v) => { store[k] = String(v); }, removeItem: k => { delete store[k]; } },
     navigator: { onLine: false, language: 'bg' }, document: { documentElement: { dataset: {} }, querySelector: () => null }, matchMedia: () => ({ matches: false, addEventListener() { } }),
     history: { pushState() { }, replaceState() { } }, fetch: async () => { throw new Error('no network in checks'); }
   };
@@ -17,8 +17,10 @@ module.exports = function load() {
     math: JSON.parse(fs.readFileSync(path.join(ROOT, 'content/shelly-modules/matura-math.json'), 'utf8')),
     bel: JSON.parse(fs.readFileSync(path.join(ROOT, 'content/shelly-modules/matura-bel.json'), 'utf8'))
   };
+  const pastDir = path.join(ROOT, 'content/past-exams');
+  ctx.window.PAST_EXAMS_JSON = fs.existsSync(pastDir) ? fs.readdirSync(pastDir).filter(f => f.endsWith('.json')).sort().map(f => JSON.parse(fs.readFileSync(path.join(pastDir, f), 'utf8'))) : [];
   for (const f of ['engine/js/00-util.js', 'engine/js/02-module-format.js', 'engine/js/03-scoring.js', 'engine/js/10-i18n.js',
-    'src/js/50-state.js', 'src/js/51-skills.js', 'src/js/52-math.js', 'src/js/53-bel.js', 'src/js/53b-bel-bank.js', 'src/js/54-ai.js', 'src/js/55-sync.js', 'src/js/56-demo.js', 'src/js/57-review.js', 'src/js/58-onboarding.js']) run(f);
+    'src/js/49-lang.js', 'src/js/50-state.js', 'src/js/51-skills.js', 'src/js/52-math.js', 'src/js/53-bel.js', 'src/js/53b-bel-bank.js', 'src/js/54-ai.js', 'src/js/55-sync.js', 'src/js/56-demo.js', 'src/js/57-review.js', 'src/js/58-onboarding.js', 'src/js/65-forecast.js', 'src/js/66-past.js']) run(f);
   vm.runInContext('buildBanks()', ctx);
   return ctx;
 };

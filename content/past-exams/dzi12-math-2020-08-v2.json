@@ -1,0 +1,495 @@
+{
+ "format": 1,
+ "id": "dzi12-math-2020-08-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Математика · 28 август 2020 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "math",
+  "year": 2020,
+  "date": "2020-08-28",
+  "variant": 2,
+  "session": "август",
+  "pages": [
+   658,
+   670
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "28 август 2020 · вариант 2",
+   "minutes": 240,
+   "parts": [
+    {
+     "title": "Модул 1",
+     "minutes": 90,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Дадени са числата: $a = \\sqrt[3]{-27}$, $b = \\left(\\dfrac{4}{9}\\right)^{-2}$, $c = 2 \\cdot 6^{\\frac{1}{2}}$. Вярното неравенство е:",
+       "options": [
+        "$a < b < c$",
+        "$b < c < a$",
+        "$a < c < b$",
+        "$c < a < b$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Числената стойност на израза $\\sqrt[3]{3^5} - 8 \\cdot \\left(\\dfrac{1}{3}\\right)^{-\\frac{5}{3}} + 6 \\cdot 3^{\\frac{5}{3}}$ е:",
+       "options": [
+        "$3^{\\frac{5}{3}}$",
+        "$\\left(\\dfrac{1}{3}\\right)^{\\frac{5}{3}}$",
+        "$-\\left(\\dfrac{1}{3}\\right)^{\\frac{5}{3}}$",
+        "$-3^{\\frac{5}{3}}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Множеството от недопустимите стойности на израза $\\dfrac{x - 1}{x^2 - x} + \\dfrac{x}{x^2 - 2}$ е:",
+       "options": [
+        "$\\{-1, 0,\\ 1,\\ 2\\}$",
+        "$\\{-2, 0,\\ 2\\}$",
+        "$\\left\\{-\\sqrt{2}, -1, 1,\\ \\sqrt{2}\\right\\}$",
+        "$\\left\\{-\\sqrt{2}, 0,\\ 1,\\ \\sqrt{2}\\right\\}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Интервалът $(2;5)$ е решението на неравенството:",
+       "options": [
+        "$x^2 - 7x + 10 > 0$",
+        "$-x^2 + 5x - 6 > 0$",
+        "$-x^2 + 7x - 10 > 0$",
+        "$x^2 + 5x + 6 > 0$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на израза $5^{2 - 2\\log_5\\sqrt{3}}$ е:",
+       "options": [
+        "$\\sqrt{\\dfrac{25}{3}}$",
+        "$\\dfrac{25}{3}$",
+        "$25\\sqrt{3}$",
+        "$75$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Ако $x_1$ и $x_2$ са корени на уравнението $2x^2 - 5x + 1 = 0$, то стойността на израза $-2x_1 + 6x_1x_2 - 2x_2$ е:",
+       "options": [
+        "$-4$",
+        "$-2$",
+        "$2$",
+        "$4$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Графиката на функцията $y = -x^2 + 4x - 3$ е показана на чертежа. Точките $A$ и $B$ са пресечните ѝ точки с абсцисната ос, а точката $C$ е върхът на параболата. Лицето на $\\triangle ABC$ е:",
+       "options": [
+        "$1$",
+        "$1{,}4$",
+        "$1{,}5$",
+        "$2$"
+       ],
+       "answer": 0,
+       "media": [
+        {
+         "type": "image",
+         "src": "7-parabola.svg",
+         "alt": "Параболата y = −x² + 4x − 3 и триъгълникът ABC"
+        }
+       ]
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Изразът $\\sin(30^\\circ - \\alpha) - \\sin(30^\\circ + \\alpha)$ е тъждествено равен на:",
+       "options": [
+        "$-\\sqrt{3}\\sin\\alpha$",
+        "$-2\\sin 2\\alpha$",
+        "$\\cos\\alpha$",
+        "$2\\sin 2\\alpha$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Вътрешната ъглополовяща на ъгъла при върха $A$ в $\\triangle ABC$ пресича страната $BC$ в точка $D$. Права през $D$, успоредна на $AB$, пресича страната $AC$ в точка $E$. Ако $AB = 10$ и $AC = 15$, намерете на дължината на $DE$.",
+       "options": [
+        "$5$",
+        "$6$",
+        "$7{,}5$",
+        "$9$"
+       ],
+       "answer": 1,
+       "media": [
+        {
+         "type": "image",
+         "src": "9-bisector.svg",
+         "alt": "Триъгълник ABC с ъглополовящата AD и DE ∥ AB"
+        }
+       ]
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 2,
+       "prompt": "В правоъгълния $\\triangle ABC$, $CH$ $(H \\in AB)$ е височината към хипотенузата. Ако $BC : AC = \\sqrt{2} : \\sqrt{3}$, то отношението $CH : AB$ е:",
+       "options": [
+        "$\\sqrt{6} : 5$",
+        "$2 : 3$",
+        "$4 : 9$",
+        "$6 : 25$"
+       ],
+       "answer": 0,
+       "media": [
+        {
+         "type": "image",
+         "src": "10-right.svg",
+         "alt": "Правоъгълен триъгълник ABC с височината CH"
+        }
+       ]
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Произведението на най-малкия и най-големия корен на уравнението $x^4 - 3x^2 + 2 = 0$ е:",
+       "options": [
+        "$2$",
+        "$\\sqrt{2}$",
+        "$-\\sqrt{2}$",
+        "$-2$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Първите два члена на числова редица са $a_1 = -1$ и $a_2 = 2$. Ако формулата за общия член е $a_n = n(a_{n-1} - a_{n-2})$ за всяко $n \\geq 3$, $n \\in \\mathbb{N}$, то $a_5$ е:",
+       "options": [
+        "$95$",
+        "$28$",
+        "$25$",
+        "$5$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 3,
+       "prompt": "За членовете на растяща геометрична прогресия са в сила равенствата $a_1 + a_3 = -5$ и $a_2 = -2$. Частното на прогресията е:",
+       "options": [
+        "$-2$",
+        "$-\\dfrac{1}{2}$",
+        "$\\dfrac{1}{2}$",
+        "$2$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Ако $\\operatorname{tg}\\alpha = -\\dfrac{1}{\\sqrt{2}}$, стойността на израза $\\sin\\alpha \\cdot \\cos\\alpha$ е:",
+       "options": [
+        "$\\dfrac{\\sqrt{6}}{3}$",
+        "$\\dfrac{\\sqrt{2}}{3}$",
+        "$-\\dfrac{\\sqrt{2}}{3}$",
+        "$-\\dfrac{\\sqrt{6}}{3}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 3,
+       "prompt": "В танцова група има $8$ момичета и $2$ момчета. По колко различни начини може да направим група от $3$ танцьори, в която има поне едно момче?",
+       "options": [
+        "$56$",
+        "$64$",
+        "$72$",
+        "$120$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q16",
+       "type": "choice",
+       "points": 3,
+       "prompt": "За средноаритметичната стойност $S$, модата $M$ и медианата $N$ на статистическия ред $1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5, 5, 6, 6$ вярната подредба във възходящ ред е:",
+       "options": [
+        "$N < M < S$",
+        "$S < N < M$",
+        "$S < M < N$",
+        "$M < S < N$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q17",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Радиусът на окръжността, описана около $\\triangle ABC$, е $10\\sqrt{3}$. Ако $\\sphericalangle BAC : \\sphericalangle ABC : \\sphericalangle BCA = 1 : 3 : 8$, дължината на най-голямата страна на $\\triangle ABC$ е:",
+       "options": [
+        "$15$",
+        "$30$",
+        "$40$",
+        "$60$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q18",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Даден е $\\triangle ABC$ с медицентър точка $G$ и медиани $AM = 9\\ \\text{cm}$ и $BN = 15\\ \\text{cm}$. Ако $\\sphericalangle AGB = 120^\\circ$, то дължината на страната $AB$ е:",
+       "options": [
+        "$7\\sqrt{2}\\ \\text{cm}$",
+        "$6\\sqrt{3}\\ \\text{cm}$",
+        "$12\\ \\text{cm}$",
+        "$14\\ \\text{cm}$"
+       ],
+       "answer": 3,
+       "media": [
+        {
+         "type": "image",
+         "src": "18-medians.svg",
+         "alt": "Триъгълник ABC с медианите AM и BN, пресичащи се в G под ъгъл 120°"
+        }
+       ]
+      },
+      {
+       "id": "q19",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Върху продълженията на диагоналите $AC$ и $BD$ на четириъгълника $ABCD$ са построени отсечки $CC_1$ и $DD_1$ съответно равни на диагоналите $AC$ и $BD$ (точка $C$ е между точка $A$ и точка $C_1$, точка $D$ е между $B$ и $D_1$). Ако лицето на $ABCD$ е $3\\ \\text{cm}^2$, то лицето на $ABC_1D_1$ е:",
+       "options": [
+        "$6\\ \\text{cm}^2$",
+        "$9\\ \\text{cm}^2$",
+        "$12\\ \\text{cm}^2$",
+        "$18\\ \\text{cm}^2$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q20",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Най-малката височина на $\\triangle ABC$ със страни $AB = 7\\ \\text{cm}$, $BC = 5\\ \\text{cm}$ и $AC = 3\\ \\text{cm}$ има дължина:",
+       "options": [
+        "$\\dfrac{15\\sqrt{3}}{14}\\ \\text{cm}$",
+        "$\\dfrac{3\\sqrt{3}}{2}\\ \\text{cm}$",
+        "$\\dfrac{5\\sqrt{3}}{2}\\ \\text{cm}$",
+        "$5\\sqrt{3}\\ \\text{cm}$"
+       ],
+       "answer": 0
+      }
+     ]
+    },
+    {
+     "title": "Модул 2",
+     "minutes": 150,
+     "tasks": [
+      {
+       "id": "q21",
+       "type": "open",
+       "points": 4,
+       "prompt": "Ако $\\dfrac{x}{y} = \\dfrac{3}{2}$, намерете стойността на израза $\\dfrac{x^3 + y^3}{2\\sqrt{x^4 - y^4}} \\cdot \\dfrac{3y(x - y)}{x^3 - x^2y + xy^2}$.",
+       "answer": "**Отговор:** $\\dfrac{\\sqrt{65}}{13} = \\dfrac{5}{\\sqrt{65}} = \\sqrt{\\dfrac{5}{13}}$",
+       "rubric": [
+        {
+         "text": "$\\frac{\\sqrt{65}}{13}$",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q22",
+       "type": "text",
+       "points": 4,
+       "prompt": "При стандартните означения за страните на $\\triangle ABC$ $(AC = b,\\ BC = a)$ е дадено, че $\\dfrac{a - b}{a + b} = \\dfrac{1}{11}$ и $\\sin\\sphericalangle BAC = \\dfrac{3}{5}$. Намерете градусната мярка на $\\sphericalangle ABC$.",
+       "answer": [
+        "30°",
+        "30",
+        "30 °",
+        "30 градуса"
+       ]
+      },
+      {
+       "id": "q23",
+       "type": "number",
+       "points": 4,
+       "prompt": "Намерете първия член на аритметичната прогресия $a_1, a_2, \\ldots, a_9, a_{10}$, сумата на членовете на която е $S_{10} = 2020$ и $(a_2 + a_4 + a_6 + a_8 + a_{10}) - (a_1 + a_3 + a_5 + a_7 + a_9) = 20$.",
+       "answer": 184
+      },
+      {
+       "id": "q24",
+       "type": "text",
+       "points": 4,
+       "prompt": "На диаграмата е посочен броят на учениците и съответната им оценка от проведен изпит. Намерете колко процента от явилите се ученици са получили оценка *„много добър“ (оценка* от $4{,}50$ до $5{,}49$).",
+       "answer": [
+        "28",
+        "28%",
+        "28 %"
+       ],
+       "media": [
+        {
+         "type": "image",
+         "src": "24-grades.svg",
+         "alt": "Диаграма: брой ученици по оценки – 2,00: 3; 3,00: 3; 3,25: 3; 3,50: 6; 3,75: 5; 4,00: 1; 4,25: 5; 4,50: 4; 5,00: 6; 5,25: 4; 5,50: 5; 6,00: 5"
+        }
+       ]
+      },
+      {
+       "id": "q25",
+       "type": "number",
+       "points": 4,
+       "prompt": "Ако за линейната функцията $f(x)$ е изпълнено $f(-3) = -16$ и $f(4) = 5$, то намерете $f(2)$.",
+       "answer": -1
+      },
+      {
+       "id": "q26",
+       "type": "open",
+       "points": 10,
+       "prompt": "Даден е изразът $A = \\sin^3\\alpha\\cos 3\\alpha + \\cos^3\\alpha\\sin 3\\alpha$.\n\nа) Докажете, че $A = \\dfrac{3}{4}\\sin 4\\alpha$.\n\nб) Пресметнете стойността на $A$, ако $\\operatorname{tg}4\\alpha = 2$ и $\\alpha \\in \\left(\\dfrac{\\pi}{8};\\ \\dfrac{3\\pi}{8}\\right)$.",
+       "answer": "**Отговор:** а) доказателство; б) $A = -\\dfrac{3\\sqrt{5}}{10}$\n\n**Решение:**\n\nа) $A = \\sin^3\\alpha\\cos 3\\alpha + \\cos^3\\alpha\\sin 3\\alpha = \\sin^2\\alpha(\\sin\\alpha\\cos 3\\alpha) + \\cos^2\\alpha(\\cos\\alpha\\sin 3\\alpha) =$\n\n$= \\dfrac{1 - \\cos 2\\alpha}{2} \\cdot \\dfrac{1}{2} \\cdot \\left[\\sin 4\\alpha + \\sin(-2\\alpha)\\right] + \\dfrac{1 + \\cos 2\\alpha}{2} \\cdot \\dfrac{1}{2} \\cdot \\left[\\sin 4\\alpha + \\sin 2\\alpha\\right] =$\n\n$= \\dfrac{1}{4}\\left(\\sin 4\\alpha - \\sin 4\\alpha\\cos 2\\alpha - \\sin 2\\alpha + \\sin 2\\alpha\\cos 2\\alpha + \\sin 4\\alpha + \\sin 4\\alpha\\cos 2\\alpha + \\sin 2\\alpha + \\sin 2\\alpha\\cos 2\\alpha\\right)$\n\n$= \\dfrac{1}{4}(2\\sin 4\\alpha + 2\\sin 2\\alpha\\cos 2\\alpha) = \\dfrac{1}{4}(2\\sin 4\\alpha + \\sin 4\\alpha) = \\dfrac{3}{4}\\sin 4\\alpha$\n\nб) От $\\alpha \\in \\left(\\dfrac{\\pi}{8};\\ \\dfrac{3\\pi}{8}\\right)$ следва, че $4\\alpha \\in \\left(\\dfrac{\\pi}{2};\\ \\dfrac{3\\pi}{2}\\right)$. Тъй като $\\operatorname{tg}4\\alpha = 2$, то $4\\alpha \\in \\left(\\pi;\\ \\dfrac{3\\pi}{2}\\right)$ и $\\sin 4\\alpha < 0$ и $\\cos 4\\alpha < 0$.\n\nОт $\\operatorname{tg}4\\alpha = 2$ следва, че $\\sin 4\\alpha = 2\\cos 4\\alpha$. Следователно $\\sin^2 4\\alpha + \\cos^2 4\\alpha = 1 \\Leftrightarrow 4\\cos^2 4\\alpha + \\cos^2 4\\alpha = 1 \\overset{\\cos 4\\alpha < 0}{\\Longleftrightarrow} \\cos 4\\alpha = -\\dfrac{\\sqrt{5}}{5}$ и $\\sin 4\\alpha = -\\dfrac{2\\sqrt{5}}{5}$.\n\nСледователно $A = \\dfrac{3}{4}\\sin 4\\alpha = -\\dfrac{3}{4} \\cdot \\dfrac{2\\sqrt{5}}{5} = -\\dfrac{3\\sqrt{5}}{10}$.",
+       "rubric": [
+        {
+         "text": "а) $A = \\frac{3}{4}\\sin 4\\alpha$",
+         "points": 6
+        },
+        {
+         "text": "б) $4\\alpha \\in \\left(\\pi;\\ \\frac{3\\pi}{2}\\right)$, $\\sin 4\\alpha < 0$ и $\\cos 4\\alpha < 0$",
+         "points": 1
+        },
+        {
+         "text": "б) $\\cos 4\\alpha = -\\frac{\\sqrt{5}}{5}$ и $\\sin 4\\alpha = -\\frac{2\\sqrt{5}}{5}$",
+         "points": 2
+        },
+        {
+         "text": "б) $A = -\\frac{3\\sqrt{5}}{10}$",
+         "points": 1
+        }
+       ]
+      },
+      {
+       "id": "q27",
+       "type": "open",
+       "points": 10,
+       "prompt": "Дадени са функциите $f(x) = \\sqrt{(x - 2)(x + 1)}$ и $g(x) = (x - 2)\\sqrt{x - 3}$.\n\nа) Определете дефиниционното множество на всяка от функциите.\n\nб) Решете уравнението $f(x) = g(x)$.",
+       "answer": "**Отговор:** а) $D_f: x \\in (-\\infty;\\ -1] \\cup [2;\\ \\infty)$, $D_g: x \\in [3;\\ \\infty)$; б) $5$\n\n**Решение:**\n\nа) Дефиниционните множества $D_f$ на $f(x)$ и $D_g$ на $g(x)$ се определят по следния начин:\n\n$D_f: (x - 2)(x + 1) \\geq 0 \\Leftrightarrow x \\leq -1$ или $x \\geq 2 \\Leftrightarrow x \\in (-\\infty;\\ -1] \\cup [2;\\ \\infty)$\n\n$D_g: x - 3 \\geq 0 \\Leftrightarrow x \\geq 3 \\Leftrightarrow x \\in [3;\\ \\infty)$\n\nб) Дефиниционното множество на уравнението е сечението на $D_f$ и $D_g$, т.е. $DM$: $x \\in [3;\\ \\infty)$.\n\nПри $x \\in [3;\\ \\infty)$ двете страни на уравнението $\\sqrt{(x - 2)(x + 1)} = (x - 2)\\sqrt{x - 3}$ приемат неотрицателни стойности и след повдигане в квадрат получаваме еквивалентното уравнение $(x - 2)(x + 1) = (x - 2)^2(x - 3) \\Leftrightarrow (x - 2)^2(x - 3) - (x - 2)(x + 1) = 0 \\Leftrightarrow$\n\n$\\Leftrightarrow (x - 2)\\left[(x - 2)(x - 3) - (x + 1)\\right] = 0 \\Leftrightarrow (x - 2)\\left(x^2 - 6x + 5\\right) = 0 \\Leftrightarrow x_1 = 2,\\ x_2 = 1,\\ x_3 = 5$,\n\nкато решение е само $x = 5$, тъй като $x_1 \\notin DM$, $x_2 \\notin DM$.",
+       "rubric": [
+        {
+         "text": "а) Определяне на дефиниционното множество $D_f: x \\in (-\\infty;\\ -1] \\cup [2;\\ \\infty)$",
+         "points": 1
+        },
+        {
+         "text": "а) Определяне на дефиниционното множество $D_g: x \\in [3;\\ \\infty)$",
+         "points": 1
+        },
+        {
+         "text": "б) $DM$: $x \\in [3;\\ \\infty)$",
+         "points": 1
+        },
+        {
+         "text": "б) Повдигане в квадрат и получаване на уравнението $(x - 2)(x + 1) = (x - 2)^2(x - 3)$",
+         "points": 1
+        },
+        {
+         "text": "б) Преобразуване до $(x - 2)\\left(x^2 - 6x + 5\\right) = 0$",
+         "points": 2
+        },
+        {
+         "text": "б) Намиране на корените $x_1 = 2$, $x_2 = 1$ и $x_3 = 5$",
+         "points": 2
+        },
+        {
+         "text": "б) Направен извод, че само $x = 5$ е корен",
+         "points": 2
+        }
+       ]
+      },
+      {
+       "id": "q28",
+       "type": "open",
+       "points": 10,
+       "prompt": "В успоредник $ABCD$ с $\\sphericalangle BAD = 60^\\circ$ описаната около $\\triangle ABD$ окръжност е с радиус $R = \\sqrt{21}\\ \\text{cm}$ и пресича страната $CD$ в точка $M$ така, че $DM = 2MC$. Намерете дължините на страните, дължините на диагоналите и лицето на успоредника.",
+       "answer": "**Отговор:** $AB = CD = 9\\ \\text{cm}$; $AD = BC = 3\\ \\text{cm}$; $BD = 3\\sqrt{7}\\ \\text{cm}$; $AC = 3\\sqrt{13}\\ \\text{cm}$; $S_{ABCD} = \\dfrac{27\\sqrt{3}}{2}\\ \\text{cm}^2$\n\n**Решение:** Означаваме $CM = x$.\n\nТогава $MD = 2x$ и $AB = 3x$.\n\nТъй като $\\sphericalangle BMC = 180^\\circ - \\sphericalangle DMB = \\sphericalangle BAD = 60^\\circ$, то тогава $\\triangle BMC$ е равностранен и $CM = BM = BC = AD = x$.\n\nВ $\\triangle ABD$ от косинусовата теорема намираме $BD^2 = AB^2 + AD^2 - 2AB \\cdot AD \\cdot \\cos 60^\\circ$;\n\n$BD^2 = 9x^2 + x^2 - 2 \\cdot 3x \\cdot x \\cdot \\dfrac{1}{2} = 7x^2$ и $BD = x\\sqrt{7}$, а от синусовата теорема получаваме $BD = 2R \\cdot \\sin 60^\\circ = 2\\sqrt{21} \\cdot \\dfrac{\\sqrt{3}}{2} = 3\\sqrt{7}\\ \\text{cm}$. Следователно $x = 3$, $AB = 3x = 9\\ \\text{cm}$, $AD = 3\\ \\text{cm}$, $BD = 3\\sqrt{7}\\ \\text{cm}$ и $S_{ABCD} = AB \\cdot AD \\cdot \\sin 60^\\circ = 9 \\cdot 3 \\cdot \\dfrac{\\sqrt{3}}{2} = \\dfrac{27\\sqrt{3}}{2}\\ \\text{cm}^2$.\n\nДиагоналът $AC$ намираме от равенството $AC^2 + BD^2 = 2AB^2 + 2AD^2$, $AC^2 = 2 \\cdot 81 + 2 \\cdot 9 - 63 = 9(18 + 2 - 7) = 9 \\cdot 13$ и $AC = 3\\sqrt{13}\\ \\text{cm}$.",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "28-parallelogram.svg",
+         "alt": "Успоредникът ABCD и описаната около триъгълник ABD окръжност k"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "Доказване, че $\\triangle BMC$ е равностранен",
+         "points": 1
+        },
+        {
+         "text": "Доказване, че $AD = BM$",
+         "points": 1
+        },
+        {
+         "text": "Получаване на $BD = x\\sqrt{7}$",
+         "points": 2
+        },
+        {
+         "text": "Намиране на $BD = 3\\sqrt{7}\\ \\text{cm}$",
+         "points": 1
+        },
+        {
+         "text": "Намиране на $AB = 9\\ \\text{cm}$",
+         "points": 1
+        },
+        {
+         "text": "Намиране на $AD = 3\\ \\text{cm}$",
+         "points": 1
+        },
+        {
+         "text": "Намиране на $S_{ABCD} = \\frac{27\\sqrt{3}}{2}\\ \\text{cm}^2$",
+         "points": 1
+        },
+        {
+         "text": "Намиране на $AC = 3\\sqrt{13}\\ \\text{cm}$",
+         "points": 2
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

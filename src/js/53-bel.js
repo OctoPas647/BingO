@@ -66,6 +66,56 @@ const BEL_BANK = [
     explain: 'Междинните посоки се пишат **слято**: *северозапад, югоизток*.' }
 ];
 
+/* ---------- литература: Дебелянов ----------
+   Shelly's module has only 3 tasks for this skill, so a session ran out and repeated them.
+   These use the same passage (the first stanza of „Да се завърнеш в бащината къща“). */
+Object.assign(MISC, {
+  'lit.text': 'Невнимателен прочит на текста',
+  'lit.term': 'Сбъркан литературен термин',
+  'lit.author': 'Факт за автора и творчеството му'
+});
+/* written with the right answer first; the order is mixed once per task (same order every time) */
+const mixOptions = t => { const o = shuffledIdx(t.options.length, t.id); return { ...t, options: o.map(i => t.options[i]), misc: o.map(i => t.misc[i]), answer: o.indexOf(t.answer) }; };
+BEL_BANK.push(...[
+  { id: 'b:lit1', skill: 'lit', level: 1, type: 'choice', passage: 'debelyanov', prompt: 'Кого „приласкава“ тихата нощ в строфата?',
+    options: ['скръбните и нещастните', 'децата в бащината къща', 'щастливите и спокойните', 'войниците на фронта'], answer: 0, misc: [null, 'lit.text', 'lit.text', 'lit.text'],
+    explain: 'Последният стих казва, че нощта идва, за да приласкае **скръбни и нещастни**. Утехата е за страдащия — като лирическия Аз.' },
+  { id: 'b:lit2', skill: 'lit', level: 1, type: 'choice', prompt: 'Къде е роден Димчо Дебелянов?',
+    options: ['в Копривщица', 'в Пловдив', 'във Велико Търново', 'в София'], answer: 0, misc: [null, 'lit.author', 'lit.author', 'lit.author'],
+    explain: 'Дебелянов е роден през 1887 г. в **Копривщица**. Родният град и бащината къща са важен образ в поезията му.' },
+  { id: 'b:lit3', skill: 'lit', level: 1, type: 'choice', prompt: 'Кое от тези стихотворения **не** е от Дебелянов?',
+    options: ['„Две хубави очи“', '„Черна песен“', '„Помниш ли, помниш ли тихия двор“', '„Аз искам да те помня все така“'], answer: 0, misc: [null, 'lit.author', 'lit.author', 'lit.author'],
+    explain: '„Две хубави очи“ е от **Пейо Яворов**. Останалите три са стихотворения на Дебелянов.' },
+  { id: 'b:lit4', skill: 'lit', level: 2, type: 'choice', prompt: 'Към кое литературно направление се отнася поезията на Дебелянов?',
+    options: ['символизъм', 'реализъм', 'класицизъм', 'футуризъм'], answer: 0, misc: [null, 'lit.term', 'lit.term', 'lit.term'],
+    explain: 'Дебелянов е поет на **символизма**: блянът, спомените, вътрешният свят и музикалността на стиха са по-важни от описанието на действителността.' },
+  { id: 'b:lit5', skill: 'lit', level: 2, type: 'choice', prompt: 'Как загива Дебелянов?',
+    options: ['като войник на фронта през Първата световна война', 'при пожар в родната си къща', 'от болест в чужбина', 'в Балканската война при Одрин'], answer: 0, misc: [null, 'lit.author', 'lit.author', 'lit.author'],
+    explain: 'Дебелянов загива през **1916 г.** на Южния фронт през **Първата световна война**. Стихотворенията му излизат в книга след смъртта му.' },
+  { id: 'b:lit6', skill: 'lit', level: 2, type: 'choice', passage: 'debelyanov', prompt: 'Каква е римата в строфата (къща – гасне – разгръща – нещастни)?',
+    options: ['кръстосана', 'съседна', 'обхватна', 'няма рима'], answer: 0, misc: [null, 'lit.term', 'lit.term', 'lit.term'],
+    explain: 'Римуват се 1. и 3. стих (*къща – разгръща*) и 2. и 4. стих (*гасне – нещастни*): схема **абаб**, т.е. **кръстосана** рима.' },
+  { id: 'b:lit7', skill: 'lit', level: 2, type: 'choice', passage: 'debelyanov', prompt: 'Коя дума в строфата е **епитет**?',
+    options: ['„тиха“ (нощ)', '„къща“', '„гасне“', '„разгръща“'], answer: 0, misc: [null, 'lit.term', 'lit.term', 'lit.term'],
+    explain: '**Епитетът** е художествено определение: „тиха нощ“, „тихи пазви“. „Къща“ е съществително, а „гасне“ и „разгръща“ са глаголи.' },
+  { id: 'b:lit8', skill: 'lit', level: 3, type: 'choice', passage: 'debelyanov', prompt: 'Какво внушава повторението **„тихи пазви тиха нощ“**?',
+    options: ['покой и утеха', 'тревога и опасност', 'празнично веселие', 'гняв и бунт'], answer: 0, misc: [null, 'lit.text', 'lit.text', 'lit.text'],
+    explain: 'Повторението на „тих“ подсилва усещането за **покой**, а „пазви“ и „да приласкае“ — за прегръдка и **утеха**.' },
+  { id: 'b:lit9', skill: 'lit', level: 3, type: 'choice', prompt: 'Кое е основното противопоставяне в „Да се завърнеш в бащината къща“?',
+    options: ['блянът за дома срещу самотата и умората на скитника', 'градът срещу селото', 'войната срещу мира', 'богатството срещу бедността'], answer: 0, misc: [null, 'lit.text', 'lit.text', 'lit.text'],
+    explain: 'Лирическият Аз е уморен скиталец. Завръщането в бащината къща е **блян** за покой и обич, противопоставен на **самотата** и разочарованието в настоящето.' }
+].map(mixOptions));
+
+/* Shelly tasks that show only the right answer get an explanation of *how* it is solved */
+const EXPLAIN_FIX = {
+  'math:q1': 'Търсим две числа със сбор $5$ и произведение $6$ (формули на Виет): това са $2$ и $3$. Проверка: $2^2-5\\cdot2+6=0$ и $3^2-5\\cdot3+6=0$.',
+  'math:p2': '$20\\%$ от $50$ е $50\\cdot0{,}2=10$ лв., затова новата цена е $50+10=60$ лв. Или направо: $50\\cdot1{,}2=60$ лв.',
+  'math:p5': 'Увеличение с $25\\%$: новото е $100\\%+25\\%=125\\%$ от старото, т.е. умножаваме по $1{,}25$. Намаление с $25\\%$: остават $100\\%-25\\%=75\\%$, т.е. умножаваме по $0{,}75$.',
+  'math:g4': 'Срещу ъгъла $\\alpha$ е катетът $a$, до него е катетът $b$, а $c$ е хипотенузата. $\\sin\\alpha=\\frac{a}{c}$ (срещулежащ катет : хипотенуза), $\\cos\\alpha=\\frac{b}{c}$ (прилежащ катет : хипотенуза), $\\operatorname{tg}\\alpha=\\frac{a}{b}$ (срещулежащ : прилежащ).',
+  'bel:c1': 'Подчиненото изречение „която ми подари“ е вмъкнато в главното („Книгата е много интересна“), затова се огражда със запетаи **от двете страни**: пред „която“ и след „подари“.',
+  'bel:d1': '„Да се завърнеш…“ изразява **желано** действие — копнеж. Лирическият Аз мечтае за дома, но не е сигурно, че завръщането ще се случи.'
+};
+
 /* lessons of Shelly's matura modules -> skills here */
 const LESSON_SKILL = { 'm-quad': 'quad', 'm-pct': 'pct', 'm-right': 'rtri', 'bel-article': 'art', 'bel-commas': 'comma', 'bel-debelyanov': 'lit' };
 
@@ -78,7 +128,7 @@ function buildBanks() {
     const m = prepareModule(json); SHELLY_MODS[subj] = m;
     for (const l of m.lessonList) {
       const skill = LESSON_SKILL[l.id]; if (!skill || !l.practice) continue;
-      for (const t of l.practice.tasks) if (t.type !== 'open') BANK[subj].push({ ...t, skill, level: 2, src: 'shelly', from: m.title + ' · ' + l.title });
+      for (const t of l.practice.tasks) if (t.type !== 'open') BANK[subj].push({ ...t, skill, level: 2, src: 'shelly', from: m.title + ' · ' + l.title, ...(!t.explain && EXPLAIN_FIX[subj + ':' + t.id] ? { explain: EXPLAIN_FIX[subj + ':' + t.id] } : {}) });
     }
   }
   for (const t of BEL_BANK) BANK.bel.push({ points: 1, media: [], ...t, src: 'bank' });
@@ -89,11 +139,17 @@ const fakeModule = subj => SHELLY_MODS[subj] || { id: 'bingo.' + subj, lang: 'bg
 /* Pick a task for a skill: math prefers a fresh generated variant; БЕЛ uses the bank (and AI when on).
    Recently seen bank tasks are avoided so the same question does not come back in the same week. */
 function seenRecently(id) { const cut = Date.now() - 5 * 24 * 3600 * 1000; return S.log.some(r => r.task_id === id && r.t > cut); }
+/* Generated tasks get a new id for every seed, but a small formula can give the same question again,
+   so a session tells tasks apart by their text */
+const taskKey = t => (t.src === 'gen' ? 'q:' + t.skill + ':' + t.prompt : t.id);
 function pickTask(subj, skill, level, seed, avoid = new Set()) {
   if (subj === 'math' && MATH_GEN[skill]) {
     const fromModule = BANK.math.filter(t => t.skill === skill && !avoid.has(t.id) && !seenRecently(t.id));
-    if (fromModule.length && seedRng(seed).chance(0.25)) return fromModule[0];
-    return genMathTask(skill, level, seed);
+    if (fromModule.length && seedRng(seed).chance(0.25)) return fromModule[Math.floor(seedRng(seed + ':m').f() * fromModule.length)];
+    /* the asked level first, then the neighbouring ones */
+    for (const lvl of [level, ...[1, 2, 3].filter(l => l !== level).sort((a, b) => Math.abs(a - level) - Math.abs(b - level))])
+      for (let k = 0; k < 24; k++) { const t = genMathTask(skill, lvl, k ? seed + ':' + k : seed); if (!avoid.has(taskKey(t))) return t; }
+    return fromModule[0] || null;
   }
   const pool = BANK[subj].filter(t => t.skill === skill && !avoid.has(t.id));
   if (!pool.length) return null;

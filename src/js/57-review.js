@@ -43,5 +43,5 @@ planSession = function (subj, size = 8) {
 function reviewLabel(key, lastSeen, now = Date.now()) {
   const r = S.review && S.review[key], due = r ? r.due : lastSeen + CHECK_AFTER;
   const days = Math.ceil((due - now) / DAY_MS);
-  return days <= 0 ? 'проверка днес' : days === 1 ? 'проверка утре' : `проверка след ${days} дни`;
+  return days <= 0 ? L('проверка днес') : days === 1 ? L('проверка утре') : L('проверка след {d} дни', { d: days });
 }

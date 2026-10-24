@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 360" width="440" height="360" font-family="Times New Roman, serif" font-style="italic" font-size="20">
+  <rect width="440" height="360" fill="#fff"/>
+  <polygon points="40,215 160,330 300,130" fill="#000" fill-opacity=".08"/>
+  <g stroke="#000" stroke-width="2" fill="none" stroke-linejoin="round">
+    <path d="M195 30 L40 215 L160 330 L400 225 Z"/>
+    <path d="M195 30 L160 330"/>
+    <path d="M160 330 L300 130"/>
+    <path d="M195 30 L100 272"/>
+  </g>
+  <g stroke="#000" stroke-width="1.6" fill="none" stroke-dasharray="6 5">
+    <path d="M40 215 L400 225"/>
+    <path d="M40 215 L300 130"/>
+    <path d="M100 272 L400 225"/>
+    <path d="M100 272 L300 130"/>
+    <path d="M195 30 L200 257"/>
+  </g>
+  <g stroke="#000" stroke-width="1.4" fill="none">
+    <path d="M200 245 L212 243 L212 255"/>
+    <path d="M110 265 L117 276 L107 283"/>
+  </g>
+  <g fill="#000">
+    <circle cx="300" cy="130" r="3"/><circle cx="100" cy="272" r="3"/><circle cx="200" cy="257" r="3"/>
+    <text x="188" y="22">D</text><text x="16" y="220">A</text><text x="150" y="354">B</text><text x="408" y="232">C</text>
+    <text x="306" y="122">M</text><text x="76" y="294">K</text><text x="206" y="280">H</text><text x="352" y="166">x</text>
+  </g>
+</svg>

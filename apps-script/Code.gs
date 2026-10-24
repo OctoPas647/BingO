@@ -12,9 +12,30 @@
  *  3. In BingO: Settings → "Google Sheets → Looker Studio" → paste the URL.
  *  4. Looker Studio → Create → Data source → Google Sheets → this Sheet, tab "answers".
  *
+ * After changing this file: Deploy → Manage deployments → Edit → New version.
+ *
  * The URL only lets someone ADD rows; it cannot read the Sheet. Treat it like a class password anyway.
+ * The app resends rows when it did not get a confirmation, so rows already in the last 2000 are skipped (same time, student and task).
  */
 const SHEET_NAME = 'answers';
+const KEY_COLS = ['timestamp', 'student_id', 'task_id'];
+const DEDUPE_WINDOW = 2000;
+
+function rowKey(vals) {
+  const t = vals[0] instanceof Date ? vals[0].getTime() : Date.parse(vals[0]);
+  const ts = isNaN(t) ? String(vals[0]) : String(Math.floor(t / 1000));
+  return [ts, String(vals[1]), String(vals[2])].join('|');
+}
+
+function loadSeen(sh) {
+  const seen = new Set(), last = sh.getLastRow(), width = sh.getLastColumn();
+  if (last < 2 || !width) return seen;
+  const header = sh.getRange(1, 1, 1, width).getValues()[0], idx = KEY_COLS.map(c => header.indexOf(c));
+  if (idx.some(i => i < 0)) return seen;
+  const n = Math.min(DEDUPE_WINDOW, last - 1);
+  sh.getRange(last - n + 1, 1, n, width).getValues().forEach(r => seen.add(rowKey(idx.map(i => r[i]))));
+  return seen;
+}
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -26,14 +47,24 @@ function doPost(e) {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
     if (sh.getLastRow() === 0) { sh.appendRow(columns); sh.setFrozenRows(1); }
-    const clean = rows.map(r => columns.map((_, i) => {
-      const v = r[i];
-      if (typeof v === 'number') return v;
-      const s = String(v == null ? '' : v).slice(0, 300);
-      return /^[=+\-@]/.test(s) ? "'" + s : s; // never let a cell become a formula
-    }));
+    const keyIdx = KEY_COLS.map(c => columns.indexOf(c)), canDedupe = keyIdx.every(i => i >= 0);
+    const seen = canDedupe ? loadSeen(sh) : new Set();
+    const clean = []; let skipped = 0;
+    rows.forEach(r => {
+      if (canDedupe) {
+        const k = rowKey(keyIdx.map(i => r[i]));
+        if (seen.has(k)) { skipped++; return; }
+        seen.add(k);
+      }
+      clean.push(columns.map((_, i) => {
+        const v = r[i];
+        if (typeof v === 'number') return v;
+        const s = String(v == null ? '' : v).slice(0, 300);
+        return /^[=+\-@]/.test(s) ? "'" + s : s; // never let a cell become a formula
+      }));
+    });
     if (clean.length) sh.getRange(sh.getLastRow() + 1, 1, clean.length, columns.length).setValues(clean);
-    return out({ ok: true, added: clean.length });
+    return out({ ok: true, added: clean.length, skipped: skipped });
   } catch (err) {
     return out({ ok: false, error: String(err) });
   } finally {

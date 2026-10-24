@@ -1,0 +1,337 @@
+{
+ "format": 1,
+ "id": "nvo10-math-2022",
+ "version": "1",
+ "lang": "bg",
+ "title": "НВО 10. клас · Математика · 16 юни 2022",
+ "past": {
+  "exam": "nvo10",
+  "subj": "math",
+  "year": 2022,
+  "date": "2022-06-16",
+  "variant": null,
+  "session": "юни",
+  "pages": [
+   332,
+   339
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "16 юни 2022",
+   "minutes": 90,
+   "parts": [
+    {
+     "title": "Част 1",
+     "minutes": null,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Най-голямото от числата $5\\sqrt{5}$, $3\\sqrt{14}$, $11$ и $2\\sqrt{31}$ е:",
+       "options": [
+        "$11$",
+        "$3\\sqrt{14}$",
+        "$5\\sqrt{5}$",
+        "$2\\sqrt{31}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Ако $x_1$ и $x_2$ са корените на уравнението $7x^2 - 21x - 2 = 0$, то стойността на израза $x_1x_2(x_1 + x_2)$ е:",
+       "options": [
+        "$-42$",
+        "$-\\dfrac{21}{2}$",
+        "$-\\dfrac{6}{7}$",
+        "$\\dfrac{6}{7}$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Броят на корените на уравнението $\\dfrac{(x - 1)\\left(x^2 - 3x + 2\\right)}{x^2 - 1} = 0$ е:",
+       "options": [
+        "$0$",
+        "$1$",
+        "$2$",
+        "$3$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Броят на целите числа, които са решения на системата $\\begin{cases} 3 - 2x \\geq 0 \\\\ 4x + 3 \\geq 0 \\end{cases}$, е:",
+       "options": [
+        "$0$",
+        "$1$",
+        "$2$",
+        "$3$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Графиката на коя линейна функция е изобразена на чертежа?",
+       "options": [
+        "$y = x + 2$",
+        "$y = 2x - 2$",
+        "$y = -2x$",
+        "$y = -2x + 2$"
+       ],
+       "answer": 0,
+       "media": [
+        {
+         "type": "image",
+         "src": "5-line.svg",
+         "alt": "Права, която пресича оста x в −2 и оста y в 2"
+        }
+       ]
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Ако двойката $(x;\\ y)$ е решение на системата $\\begin{cases} 3x + 2y = 6 \\\\ 5x + 4y = 8 \\end{cases}$, то стойността на $x + y$ е:",
+       "options": [
+        "$-2$",
+        "$-1$",
+        "$1$",
+        "$2$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Стойността на израза $\\dfrac{\\operatorname{cotg} 45^\\circ + 2\\sin 30^\\circ}{\\sqrt{3}\\operatorname{tg} 30^\\circ} - 1$ е равна на:",
+       "options": [
+        "$-1$",
+        "$-\\dfrac{1}{3}$",
+        "$1$",
+        "$2$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 4,
+       "prompt": "В цветарски магазин разполагат с $25$ рози и с $18$ карамфила. По колко начина може да се направи букет от $5$ рози и $2$ карамфила?",
+       "options": [
+        "$V_{25}^5 V_{18}^2$",
+        "$C_{25}^5 C_{18}^2$",
+        "$V_{25}^5 + V_{18}^2$",
+        "$C_{25}^5 + C_{18}^2$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 4,
+       "prompt": "На чертежа $\\sphericalangle ACB$ е вписан в окръжност и е с $36^\\circ$ по-малък от централния $\\sphericalangle AOB$. Мярката на $\\sphericalangle ACB$ е:",
+       "options": [
+        "$9^\\circ$",
+        "$18^\\circ$",
+        "$30^\\circ$",
+        "$36^\\circ$"
+       ],
+       "answer": 3,
+       "media": [
+        {
+         "type": "image",
+         "src": "9-circle.svg",
+         "alt": "Окръжност с център O, вписаният ъгъл ACB и централният ъгъл AOB"
+        }
+       ]
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Страните на триъгълник с периметър $30$ cm образуват аритметична прогресия. Дължината на средната по големина страна на триъгълника е:",
+       "options": [
+        "$9$ cm",
+        "$10$ cm",
+        "$11$ cm",
+        "$12$ cm"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 4,
+       "prompt": "На чертежа в правоъгълния $\\triangle ABC$ отсечката $CH = 6\\ \\text{cm}$ е височина към хипотенузата $AB$ и я дели в отношение $AH : HB = 1 : 9$. Дължината на $AB$ е:",
+       "options": [
+        "$9$ cm",
+        "$10$ cm",
+        "$18$ cm",
+        "$20$ cm"
+       ],
+       "answer": 3,
+       "media": [
+        {
+         "type": "image",
+         "src": "11-right.svg",
+         "alt": "Правоъгълен триъгълник ABC с височината CH = 6"
+        }
+       ]
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Диагоналите на трапеца $ABCD$ $(AB \\parallel CD)$ се пресичат в точка $O$. Ако $AO = 6\\ \\text{cm}$, $OC = 2\\ \\text{cm}$ и $CD = 3\\ \\text{cm}$, дължината на средната основа на трапеца е:",
+       "options": [
+        "$3$ cm",
+        "$4$ cm",
+        "$6$ cm",
+        "$9$ cm"
+       ],
+       "answer": 2,
+       "media": [
+        {
+         "type": "image",
+         "src": "12-trapezoid.svg",
+         "alt": "Трапецът ABCD с пресечната точка O на диагоналите; CD = 3, OC = 2, AO = 6"
+        }
+       ]
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Страните на $\\triangle ABC$ са $AB = 2\\ \\text{cm}$, $AC = 2\\sqrt{2}\\ \\text{cm}$, $BC = 2\\sqrt{5}\\ \\text{cm}$. Мярката на $\\sphericalangle BAC$ е:",
+       "options": [
+        "$45^\\circ$",
+        "$90^\\circ$",
+        "$120^\\circ$",
+        "$135^\\circ$"
+       ],
+       "answer": 3,
+       "media": [
+        {
+         "type": "image",
+         "src": "13-triangle.svg",
+         "alt": "Триъгълник ABC: AB = 2, AC = 2√2, BC = 2√5"
+        }
+       ]
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Разпределението на учениците, които получават стипендии в един клас, е както следва:\n\n| Брой ученици | $5$ | $3$ | $2$ | $2$ |\n|---|---|---|---|---|\n| Стипендия (в лева) | $25$ | $30$ | $35$ | $40$ |\n\nМодата на данните от таблицата е:",
+       "options": [
+        "$25$",
+        "$30$",
+        "$35$",
+        "$40$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 4,
+       "prompt": "Прав кръгов цилиндър с образуваща $5$ cm има осно сечение, което е правоъгълник с диагонал $7$ cm. Обемът на цилиндъра е:",
+       "options": [
+        "$30\\pi\\ \\text{cm}^3$",
+        "$35\\pi\\ \\text{cm}^3$",
+        "$42\\pi\\ \\text{cm}^3$",
+        "$60\\pi\\ \\text{cm}^3$"
+       ],
+       "answer": 0,
+       "media": [
+        {
+         "type": "image",
+         "src": "15-cylinder.svg",
+         "alt": "Прав кръгов цилиндър с образуваща 5 и диагонал на осното сечение 7"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Част 2",
+     "minutes": null,
+     "tasks": [
+      {
+       "id": "q16",
+       "type": "open",
+       "points": 20,
+       "prompt": "А) Решете уравнението $\\sqrt{3x + 1} - \\sqrt{x - 1} = 2$.\n\nБ) Решете неравенството $\\dfrac{x^2 - 36}{4x} \\geq 0$ и представете решенията графично.\n\nВ) Намерете координатите на пресечните точки на графиката на функцията $f(x) = -6x + 7$ с координатните оси.",
+       "answer": "**Отговор:** А) $x_1 = 1$, $x_2 = 5$; Б) $x \\in [-6;0) \\cup [6;+\\infty)$; В) $(0;7)$ и $\\left(\\dfrac{7}{6};0\\right)$\n\n**Примерно решение:**\n\nА) $\\sqrt{3x + 1} - \\sqrt{x - 1} = 2 \\qquad \\text{ДМ}: x \\in [1;+\\infty)$\n\n$\\sqrt{3x + 1} = 2 + \\sqrt{x - 1}$\n\n$3x + 1 = 4 + 4\\sqrt{x - 1} + x - 1$\n\n$2x - 2 = 4\\sqrt{x - 1}$\n\n$2\\sqrt{x - 1} = x - 1$\n\n$4(x - 1) = (x - 1)^2$\n\n$(x - 1)(x - 5) = 0$\n\n$x_1 = 1$, $x_2 = 5$\n\nС проверка установяваме, че и двата корена са решение на уравнението.\n\nБ) $\\dfrac{x^2 - 36}{4x} \\geq 0 \\Leftrightarrow \\dfrac{(x - 6)(x + 6)}{4x} \\geq 0 \\Leftrightarrow \\begin{cases} x \\neq 0 \\\\ x(x - 6)(x + 6) \\geq 0 \\end{cases}$.\n\nПо метод на интервалите получаваме $x \\in [-6;0) \\cup [6;+\\infty)$ (виж схемата).\n\nВ) Заместваме с $x = 0$ и получаваме $y = f(0) = -6 \\cdot 0 + 7 = 7$.\n\nКоординатите на пресечната точка на графиката на функцията с ординатната ос са $(0;7)$.\n\nПри $y = 0$ получаваме $0 = -6x + 7 \\Leftrightarrow 6x = 7 \\Leftrightarrow x = \\dfrac{7}{6}$\n\nКоординатите на пресечната точка на графиката на функцията с абсцисната ос са $\\left(\\dfrac{7}{6};0\\right)$\n\n*Предложените решения на задачи с номера 16. и 17. са примерни. Всяко друго вярно и пълно решение се оценява с максимален брой точки. При оценяване на непълно решение, различно от предложените, се присъждат точки според получените междинни резултати.*",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "16-signs.svg",
+         "alt": "Метод на интервалите: − до −6, + от −6 до 0, − от 0 до 6, + след 6"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "А) $x_1 = 1$, $x_2 = 5$",
+         "points": 8
+        },
+        {
+         "text": "Б) $x \\in [-6;0) \\cup [6;+\\infty)$ и графичното представяне",
+         "points": 8
+        },
+        {
+         "text": "В) $(0;7)$ и $\\left(\\frac{7}{6};0\\right)$ (по 2 точки за всяка от пресечните точки)",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q17",
+       "type": "open",
+       "points": 20,
+       "prompt": "За остроъгълния $\\triangle ABC$ е дадено, че $AC = 13\\ \\text{cm}$ и $BC = 15\\ \\text{cm}$. Ако $CD$ $(D \\in AB)$ е височина и $AD = 5\\ \\text{cm}$, намерете:\n\nА) периметъра на $\\triangle ABC$;\n\nБ) лицето на $\\triangle ABC$;\n\nВ) радиуса на описаната около $\\triangle ABC$ окръжност;\n\nГ) радиуса на вписаната в $\\triangle ABC$ окръжност.",
+       "answer": "**Отговор:** А) $P_{\\triangle ABC} = 42\\ \\text{cm}$; Б) $S_{\\triangle ABC} = 84\\ \\text{cm}^2$; В) $R = 8\\dfrac{1}{8}\\ \\text{cm}$ или $\\dfrac{65}{8}\\ \\text{cm}$; Г) $r = 4\\ \\text{cm}$\n\n**Примерно решение:**\n\nА) **I начин:**\n\n(1) Прилагаме Питагоровата теорема за $\\triangle ADC$.\n\n$AC^2 = AD^2 + CD^2 \\Rightarrow 13^2 = 5^2 + CD^2 \\Rightarrow CD^2 = 144 \\Rightarrow CD = 12\\ \\text{cm}$\n\n(2) Прилагаме Питагоровата теорема за $\\triangle BDC$.\n\n$BC^2 = BD^2 + CD^2 \\Rightarrow 15^2 = 12^2 + BD^2 \\Rightarrow BD^2 = 81 \\Rightarrow BD = 9\\ \\text{cm}$\n\n(3) $AB = AD + BD = 5 + 9 = 14\\ \\text{cm}$\n\n(4) $P_{\\triangle ABC} = AB + AC + BC = 14 + 13 + 15 = 42\\ \\text{cm}$\n\n**II начин:** (1) $\\triangle ADC$: $\\cos\\sphericalangle CAD = \\dfrac{5}{13}$\n\n(2) Прилагаме Косинусовата теорема за $\\triangle ABC$.\n\n$BC^2 = AB^2 + AC^2 - 2AB \\cdot AC \\cdot \\cos\\sphericalangle CAB$\n\n$15^2 = AB^2 + 13^2 - 2AB \\cdot 13 \\cdot \\dfrac{5}{13}$\n\n$AB^2 - 10AB - 56 = 0$, $AB > 0$\n\n$AB = 14\\ \\text{cm}$\n\n$P_{\\triangle ABC} = AB + AC + BC = 14 + 13 + 15 = 42\\ \\text{cm}$\n\nБ) **I начин:** $S_{\\triangle ABC} = \\dfrac{AB \\cdot CD}{2} = \\dfrac{14 \\cdot 12}{2} = 84\\ \\text{cm}^2$\n\n**II начин:** $S_{\\triangle ABC} = \\sqrt{21 \\cdot 6 \\cdot 8 \\cdot 7} = 84\\ \\text{cm}^2$ (Хероновата формула)\n\nВ) **I начин:**\n\n(1) $\\triangle ADC$: $\\sin\\sphericalangle CAD = \\dfrac{12}{13}$\n\n(2) Прилагаме Синусовата теорема за $\\triangle ABC$.\n\n$\\dfrac{BC}{\\sin\\sphericalangle CAD} = 2R \\Rightarrow 2R = 15 : \\dfrac{12}{13} \\Rightarrow R = \\dfrac{65}{8} = 8\\dfrac{1}{8}\\ \\text{cm}$\n\n**II начин:** $S_{\\triangle ABC} = \\dfrac{abc}{4R} \\Rightarrow \\dfrac{15 \\cdot 13 \\cdot 14}{4R} = 84\\ \\text{cm}^2 \\Rightarrow R = \\dfrac{65}{8} = 8\\dfrac{1}{8}\\ \\text{cm}$\n\nГ) $S_{\\triangle ABC} = pr \\Rightarrow 84 = 21r \\Rightarrow r = \\dfrac{84}{21} \\Rightarrow r = 4\\ \\text{cm}$\n\n*Предложените решения на задачи с номера 16. и 17. са примерни. Всяко друго вярно и пълно решение се оценява с максимален брой точки. При оценяване на непълно решение, различно от предложените, се присъждат точки според получените междинни резултати.*",
+       "media": [
+        {
+         "type": "image",
+         "src": "17-triangle.svg",
+         "alt": "Триъгълник ABC с височината CD; AC = 13, BC = 15, AD = 5"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "А) $P_{\\triangle ABC} = 42\\ \\text{cm}$",
+         "points": 8
+        },
+        {
+         "text": "Б) $S_{\\triangle ABC} = 84\\ \\text{cm}^2$",
+         "points": 4
+        },
+        {
+         "text": "В) $R = 8\\frac{1}{8}\\ \\text{cm}$ или $\\frac{65}{8}\\ \\text{cm}$",
+         "points": 4
+        },
+        {
+         "text": "Г) $r = 4\\ \\text{cm}$",
+         "points": 4
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

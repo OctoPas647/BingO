@@ -1,0 +1,519 @@
+{
+ "format": 1,
+ "id": "dzi12-math-2019-08-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Математика · 29 август 2019 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "math",
+  "year": 2019,
+  "date": "2019-08-29",
+  "variant": 2,
+  "session": "август",
+  "pages": [
+   710,
+   723
+  ]
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "29 август 2019 · вариант 2",
+   "minutes": 240,
+   "parts": [
+    {
+     "title": "Модул 1",
+     "minutes": 90,
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Кое от посочените числа е най-голямо?",
+       "options": [
+        "$\\left(-\\dfrac{1}{8}\\right)^{\\frac{1}{3}}$",
+        "$\\sqrt[4]{\\dfrac{1}{16}}$",
+        "$\\left(\\dfrac{1}{4}\\right)^0$",
+        "$\\log_{\\frac{1}{3}}\\left(\\dfrac{1}{9}\\right)$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на числовия израз $\\sqrt[3]{\\left(\\sqrt{2} - 3\\right)^3} + \\sqrt{\\left(\\sqrt{2} - 2\\right)^2}$ е равна на:",
+       "options": [
+        "$2\\sqrt{2} - 5$",
+        "$-1$",
+        "$1$",
+        "$5 - 2\\sqrt{2}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Броят на различните стойности на $x$, за които изразът $\\dfrac{x}{x^2 + 3x - 4} : \\dfrac{x + 4}{x}$ НЕ е дефиниран, е:",
+       "options": [
+        "$1$",
+        "$2$",
+        "$3$",
+        "$4$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Решенията на неравенството $\\dfrac{\\left(x^2 - 2x + 1\\right)(x - 3)}{x^2 - 1} \\leq 0$ са:",
+       "options": [
+        "$(-\\infty;-1) \\cup (1;3)$",
+        "$(-1;1) \\cup (3;+\\infty)$",
+        "$(-\\infty;-1) \\cup (1;3]$",
+        "$(-\\infty;-1] \\cup [1;3]$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Ако $20\\%$ от $A$ е равно на $\\dfrac{3}{10}$ от $B$ $(B \\neq 0)$, то отношението $A : B$ е:",
+       "options": [
+        "$2 : 3$",
+        "$3 : 2$",
+        "$20 : 3$",
+        "$2 : 30$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Броят на реалните корени на уравнението $\\dfrac{\\left(x^2 + 2\\right)^2}{x^2} = 9$ е:",
+       "options": [
+        "$4$",
+        "$3$",
+        "$2$",
+        "$1$"
+       ],
+       "answer": 0
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Кое от посочените квадратни уравнения има различни реални корени, чието произведение е равно на $6$?",
+       "options": [
+        "$x^2 - 4x + 6 = 0$",
+        "$x^2 - 6x + 4 = 0$",
+        "$2x^2 - 12x + 11 = 0$",
+        "$2x^2 - 11x + 12 = 0$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 2,
+       "prompt": "Стойността на $\\sin\\left(30^\\circ + 13 \\cdot 90^\\circ\\right)$ е:",
+       "options": [
+        "$-\\dfrac{\\sqrt{3}}{2}$",
+        "$-\\dfrac{1}{2}$",
+        "$\\dfrac{1}{2}$",
+        "$\\dfrac{\\sqrt{3}}{2}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 2,
+       "prompt": "През медицентъра $G$ на $\\triangle ABC$ е построена права, успоредна на страната $AB$, която пресича страните $AC$ и $BC$ съответно в точките $M$ и $N$. Ако $CM = 24\\ \\text{cm}$ и сборът от бедрата на трапеца $ABNM$ е $22\\ \\text{cm}$, то дължината на страната $BC$ е:",
+       "options": [
+        "$12\\ \\text{cm}$",
+        "$20\\ \\text{cm}$",
+        "$30\\ \\text{cm}$",
+        "$36\\ \\text{cm}$"
+       ],
+       "answer": 2,
+       "media": [
+        {
+         "type": "image",
+         "src": "9-centroid.svg",
+         "alt": "Триъгълник ABC и правата MN през медицентъра G, успоредна на AB; CM = 24 cm"
+        }
+       ]
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 2,
+       "prompt": "В остроъгълен $\\triangle ABC$ $\\sphericalangle ACB = 30^\\circ$, а $AA_1$ и $BB_1$ са височините съответно към страните $BC$ и $AC$ $(A_1 \\in BC, B_1 \\in AC)$. Отношението $\\dfrac{A_1B_1}{AB}$ е:",
+       "options": [
+        "$\\dfrac{1}{2}$",
+        "$\\dfrac{\\sqrt{2}}{2}$",
+        "$\\dfrac{\\sqrt{3}}{2}$",
+        "$2$"
+       ],
+       "answer": 2
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Графиката на коя квадратна функция е показана на чертежа?",
+       "options": [
+        "$y = x^2 + x - 2$",
+        "$y = x^2 + 2x - 3$",
+        "$y = -x^2 - 2x + 3$",
+        "$y = x^2 - 2x - 3$"
+       ],
+       "answer": 1,
+       "media": [
+        {
+         "type": "image",
+         "src": "11-parabola.svg",
+         "alt": "Парабола с нули −3 и 1, която пресича оста y в точката −3"
+        }
+       ]
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Коя от посочените редици с общ член $a_n$ $(n \\in \\mathbb{N})$ е растяща?",
+       "options": [
+        "$a_n = (-1)^n(n + 1)$",
+        "$a_n = (-1)^{n+1}(n - 1)$",
+        "$a_n = 2^{-n}(n + 2)$",
+        "$a_n = \\dfrac{2n^2 + 1}{n}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Осмият член на $15$-членна геометрична прогресия е $\\sqrt{2}$. Произведението на всички членове на прогресията е равно на:",
+       "options": [
+        "$128$",
+        "$128\\sqrt{2}$",
+        "$256$",
+        "$256\\sqrt{2}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Изразът $\\sin\\alpha \\cdot \\cos(-\\alpha) - \\sin(-\\alpha) \\cdot \\cos\\alpha$ е тъждествено равен на:",
+       "options": [
+        "$0$",
+        "$1$",
+        "$\\cos 2\\alpha$",
+        "$\\sin 2\\alpha$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 3,
+       "prompt": "На диаграмата е показан броят на служителите в четири отдела на една фирма. Броят на заетите в първия отдел е $26\\%$ от броя на всички служители. Какъв е броят на служителите от този отдел?",
+       "options": [
+        "$11$",
+        "$13$",
+        "$15$",
+        "$17$"
+       ],
+       "answer": 1,
+       "media": [
+        {
+         "type": "image",
+         "src": "15-staff.svg",
+         "alt": "Диаграма: брой служители по отдели – първи: x, втори: 11, трети: 2, четвърти: 24"
+        }
+       ]
+      },
+      {
+       "id": "q16",
+       "type": "choice",
+       "points": 3,
+       "prompt": "В една ваза има $3$ червени и $4$ бели рози. По случаен начин са извадени три рози. Каква е вероятността и трите да са червени?",
+       "options": [
+        "$\\dfrac{4}{35}$",
+        "$\\dfrac{3}{35}$",
+        "$\\dfrac{1}{20}$",
+        "$\\dfrac{1}{35}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q17",
+       "type": "choice",
+       "points": 3,
+       "prompt": "В ромба $ABCD$ $BD = 10\\ \\text{cm}$, а $\\sphericalangle BAD = 60^\\circ$. Дължината на радиуса на описаната около $\\triangle ABC$ окръжност е:",
+       "options": [
+        "$5\\ \\text{cm}$",
+        "$10\\ \\text{cm}$",
+        "$10\\dfrac{\\sqrt{3}}{6}\\ \\text{cm}$",
+        "$10\\dfrac{\\sqrt{3}}{3}\\ \\text{cm}$"
+       ],
+       "answer": 1
+      },
+      {
+       "id": "q18",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Дължините на страните на $\\triangle ABC$ са $AB = 7\\ \\text{cm}$, $BC = 5\\ \\text{cm}$ и $AC = 6\\ \\text{cm}$. Дължината на средната по големина медиана е:",
+       "options": [
+        "$\\dfrac{1}{2}\\sqrt{146}\\ \\text{cm}$",
+        "$\\dfrac{1}{2}\\sqrt{73}\\ \\text{cm}$",
+        "$3\\sqrt{3}\\ \\text{cm}$",
+        "$2\\sqrt{7}\\ \\text{cm}$"
+       ],
+       "answer": 3
+      },
+      {
+       "id": "q19",
+       "type": "choice",
+       "points": 3,
+       "prompt": "На чертежа $ABCD$ е успоредник, $\\sphericalangle ABD = 40^\\circ$, $\\sphericalangle ACD = 20^\\circ$, $\\sphericalangle ACM = 90^\\circ$ и $CM = BD$. Намерете лицето на успоредника, ако лицето на $\\triangle AMC$ е $12\\ \\text{cm}^2$.",
+       "options": [
+        "$6\\sqrt{3}\\ \\text{cm}^2$",
+        "$12\\ \\text{cm}^2$",
+        "$15\\ \\text{cm}^2$",
+        "$12\\sqrt{3}\\ \\text{cm}^2$"
+       ],
+       "answer": 0,
+       "media": [
+        {
+         "type": "image",
+         "src": "19-parallelogram.svg",
+         "alt": "Успоредникът ABCD и точката M, CM ⊥ AC"
+        }
+       ]
+      },
+      {
+       "id": "q20",
+       "type": "choice",
+       "points": 3,
+       "prompt": "Трапец $ABCD$ с основа $AB = 12\\ \\text{cm}$ е вписан в окръжност $k$. Ако $\\overset{\\frown}{AB} : \\overset{\\frown}{BC} : \\overset{\\frown}{CD} = 4 : 3 : 2$, то дължината на радиуса на окръжността $k$ е:",
+       "options": [
+        "$6\\ \\text{cm}$",
+        "$4\\sqrt{2}\\ \\text{cm}$",
+        "$4\\sqrt{3}\\ \\text{cm}$",
+        "$6\\sqrt{2}\\ \\text{cm}$"
+       ],
+       "answer": 2,
+       "media": [
+        {
+         "type": "image",
+         "src": "20-trapezoid.svg",
+         "alt": "Трапецът ABCD, вписан в окръжността k; AB = 12"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Модул 2",
+     "minutes": 150,
+     "tasks": [
+      {
+       "id": "q21",
+       "type": "open",
+       "points": 4,
+       "prompt": "Пресметнете стойността на израза $\\left(\\dfrac{1 + 3^{\\frac{1}{2}}}{1 + 3^{-\\frac{1}{2}}}\\right)^{-\\frac{2}{3}} \\cdot \\left(\\dfrac{1}{3}\\right)^{-\\frac{5}{6}}$.",
+       "answer": "**Отговор:** $3^{\\frac{1}{2}}$ или $\\sqrt{3}$",
+       "rubric": [
+        {
+         "text": "$3^{\\frac{1}{2}}$ или $\\sqrt{3}$",
+         "points": 4
+        }
+       ]
+      },
+      {
+       "id": "q22",
+       "type": "number",
+       "points": 4,
+       "prompt": "Пресметнете $\\log_{0{,}08} m$, ако $m = \\log_2 4\\sqrt{2} + \\log_{\\sqrt{3}} 243$.",
+       "answer": -1
+      },
+      {
+       "id": "q23",
+       "type": "number",
+       "points": 4,
+       "prompt": "Намерете сбора на целите отрицателни числа, които са решения на неравенството $\\dfrac{x^2 - 19x - 42}{x + 2} \\leq 5x$.",
+       "answer": -13
+      },
+      {
+       "id": "q24",
+       "type": "number",
+       "points": 4,
+       "prompt": "Намерете сбора на първите $15$ члена на аритметична прогресия, за която $2a_3 + 5a_{10} = 105$.",
+       "answer": 225
+      },
+      {
+       "id": "q25",
+       "type": "text",
+       "points": 4,
+       "prompt": "В $\\triangle ABC$ $AC = 7\\ \\text{cm}$, $BC = 5\\ \\text{cm}$ и $\\cos\\sphericalangle ACB = 0{,}6$. Намерете градусната мярка на $\\sphericalangle BAC$.",
+       "answer": [
+        "45°",
+        "45",
+        "45 °",
+        "45 градуса"
+       ]
+      },
+      {
+       "id": "q26",
+       "type": "open",
+       "points": 10,
+       "prompt": "Решете уравнението $12x^2 + \\sqrt{12x^2 - 11x} = 2 + 11x$.",
+       "answer": "**Отговор:** $x_1 = 1$ и $x_2 = -\\dfrac{1}{12}$\n\n**Решение:**\n\nПолагане $t = \\sqrt{12x^2 - 11x}$, $t \\geq 0$.\n\nПолучаване на уравнението $t^2 + t - 2 = 0$.\n\nРешаване на квадратното уравнение и получаване на корените $t_1 = 1$ и $t_2 = -2$.\n\nИзвод, че $\\sqrt{12x^2 - 11x} = -2$ няма реални корени.\n\nРешаване на $\\sqrt{12x^2 - 11x} = 1 \\Leftrightarrow 12x^2 - 11x - 1 = 0$ и получаване на корените $x_1 = 1$ и $x_2 = -\\dfrac{1}{12}$.\n\nИзвод, че $x_1 = 1$ и $x_2 = -\\dfrac{1}{12}$ са решения на уравнението.",
+       "rubric": [
+        {
+         "text": "Полагане $t = \\sqrt{12x^2 - 11x}$, $t \\geq 0$",
+         "points": 2
+        },
+        {
+         "text": "Получаване на уравнението $t^2 + t - 2 = 0$",
+         "points": 1
+        },
+        {
+         "text": "Решаване на квадратното уравнение и получаване на корените $t_1 = 1$ и $t_2 = -2$",
+         "points": 2
+        },
+        {
+         "text": "Извод, че $\\sqrt{12x^2 - 11x} = -2$ няма реални корени",
+         "points": 1
+        },
+        {
+         "text": "Решаване на $\\sqrt{12x^2 - 11x} = 1 \\Leftrightarrow 12x^2 - 11x - 1 = 0$ и получаване на корените $x_1 = 1$ и $x_2 = -\\frac{1}{12}$",
+         "points": 3
+        },
+        {
+         "text": "Извод, че $x_1 = 1$ и $x_2 = -\\frac{1}{12}$ са решения на уравнението",
+         "points": 1
+        }
+       ]
+      },
+      {
+       "id": "q27",
+       "type": "open",
+       "points": 10,
+       "prompt": "Решете системата $\\begin{cases} \\dfrac{x + 2y}{x - 2y} + \\dfrac{x - 2y}{x + 2y} = \\dfrac{5}{2} \\\\ x^2 + 4y^2 = 20 \\end{cases}$.",
+       "answer": "**Отговор:** $\\left(3\\sqrt{2};\\dfrac{\\sqrt{2}}{2}\\right)$, $\\left(-3\\sqrt{2};-\\dfrac{\\sqrt{2}}{2}\\right)$, $\\left(-3\\sqrt{2};\\dfrac{\\sqrt{2}}{2}\\right)$ и $\\left(3\\sqrt{2};-\\dfrac{\\sqrt{2}}{2}\\right)$\n\n**Решение:**\n\n*Първи начин:*\n\nОпределяне $\\text{ДС}: x \\neq \\pm 2y$.\n\nПолагане $t = \\dfrac{x + 2y}{x - 2y}$.\n\nДостигане до уравнението $2t^2 - 5t + 2 = 0$, решаване на уравнението и определяне на корените $2$ и $\\dfrac{1}{2}$.\n\nПри $\\dfrac{x + 2y}{x - 2y} = 2 \\Rightarrow x = 6y$.\n\nЗаместване във второто уравнение и получаване $36y^2 + 4y^2 = 20$ и $y_{1,2} = \\pm\\dfrac{\\sqrt{2}}{2}$.\n\nПолучаване наредените двойки $\\left(3\\sqrt{2};\\dfrac{\\sqrt{2}}{2}\\right)$ и $\\left(-3\\sqrt{2};-\\dfrac{\\sqrt{2}}{2}\\right)$, които са от $\\text{ДС}$.\n\nПри $\\dfrac{x + 2y}{x - 2y} = \\dfrac{1}{2} \\Rightarrow x = -6y$.\n\nЗаместване във второто уравнение и получаване $36y^2 + 4y^2 = 20$ и $y_{1,2} = \\pm\\dfrac{\\sqrt{2}}{2}$.\n\nПолучаване наредените двойки $\\left(-3\\sqrt{2};\\dfrac{\\sqrt{2}}{2}\\right)$ и $\\left(3\\sqrt{2};-\\dfrac{\\sqrt{2}}{2}\\right)$, които са от $\\text{ДС}$.\n\nЗаписване на всички наредени двойки, които са решение.\n\n*Втори начин:*\n\nОпределяне $\\text{ДС}: x \\neq \\pm 2y$.\n\nЗа освобождаване от знаменателя $\\dfrac{x + 2y}{x - 2y} + \\dfrac{x - 2y}{x + 2y} = \\dfrac{5}{2} \\Leftrightarrow 2(x + 2y)^2 + 2(x - 2y)^2 = 5\\left(x^2 - 4y^2\\right)$.\n\nОпростяване до $x^2 = 36y^2 \\Leftrightarrow x = 6y$ или $x = -6y$.\n\nЗаместване във второто уравнение и получаване $36y^2 + 4y^2 = 20$ и $y_{1,2} = \\pm\\dfrac{\\sqrt{2}}{2}$.\n\nПолучаване наредените двойки $\\left(3\\sqrt{2},\\dfrac{\\sqrt{2}}{2}\\right)$ и $\\left(-3\\sqrt{2},-\\dfrac{\\sqrt{2}}{2}\\right)$, които са от $\\text{ДС}$.\n\nПолучаване и на наредените двойки $\\left(-3\\sqrt{2},\\dfrac{\\sqrt{2}}{2}\\right)$ и $\\left(3\\sqrt{2},-\\dfrac{\\sqrt{2}}{2}\\right)$, които са от $\\text{ДС}$.\n\nЗаписване на всички наредени двойки, които са решение.",
+       "rubric": [
+        {
+         "text": "Определяне $\\text{ДС}: x \\neq \\pm 2y$",
+         "points": 1
+        },
+        {
+         "text": "Полагане $t = \\frac{x + 2y}{x - 2y}$",
+         "points": 1
+        },
+        {
+         "text": "Достигане до уравнението $2t^2 - 5t + 2 = 0$, решаване на уравнението и определяне на корените $2$ и $\\frac{1}{2}$",
+         "points": 2
+        },
+        {
+         "text": "При $\\frac{x + 2y}{x - 2y} = 2 \\Rightarrow x = 6y$",
+         "points": 1
+        },
+        {
+         "text": "Заместване във второто уравнение и получаване $y_{1,2} = \\pm\\frac{\\sqrt{2}}{2}$",
+         "points": 0.5
+        },
+        {
+         "text": "Получаване наредените двойки $\\left(3\\sqrt{2};\\frac{\\sqrt{2}}{2}\\right)$ и $\\left(-3\\sqrt{2};-\\frac{\\sqrt{2}}{2}\\right)$ (по 0,5 точки за всяка)",
+         "points": 1
+        },
+        {
+         "text": "При $\\frac{x + 2y}{x - 2y} = \\frac{1}{2} \\Rightarrow x = -6y$",
+         "points": 1
+        },
+        {
+         "text": "Заместване във второто уравнение и получаване $y_{1,2} = \\pm\\frac{\\sqrt{2}}{2}$",
+         "points": 0.5
+        },
+        {
+         "text": "Получаване наредените двойки $\\left(-3\\sqrt{2};\\frac{\\sqrt{2}}{2}\\right)$ и $\\left(3\\sqrt{2};-\\frac{\\sqrt{2}}{2}\\right)$ (по 0,5 точки за всяка)",
+         "points": 1
+        },
+        {
+         "text": "Записване на всички наредени двойки, които са решение",
+         "points": 1
+        }
+       ]
+      },
+      {
+       "id": "q28",
+       "type": "open",
+       "points": 10,
+       "prompt": "Даден е $\\triangle ABC$, за който $AC = 4\\ \\text{cm}$, $BC = 12\\ \\text{cm}$ и дължината на ъглополовящата $CL$ $(L \\in AB)$ на $\\sphericalangle ACB$ е $3\\ \\text{cm}$. Втората пресечна точка на правата $CL$ с описаната около $\\triangle ABC$ окръжност е означена с $K$. Намерете дължината на страната $AB$, мярката на $\\sphericalangle ACB$ и лицето на четириъгълника $AKBC$.",
+       "answer": "**Отговор:** $AB = 4\\sqrt{13}\\ \\text{cm}$, $\\sphericalangle ACB = 120^\\circ$, $S_{AKBC} = 64\\sqrt{3}\\ \\text{cm}^2$\n\n**Решение:**\n\nОт свойството на ъглополовящата $\\dfrac{AL}{BL} = \\dfrac{AC}{BC} = \\dfrac{1}{3}$.\n\nАко $AL = x$, то $BL = 3x$. Прилагаме формулата за ъглополовящата $CL^2 = AC \\cdot BC - AL \\cdot BL$.\n\nПолучаваме $3^2 = 4 \\cdot 12 - x \\cdot 3x \\Rightarrow x^2 = 13$. Оттук $x = \\sqrt{13}\\ \\text{cm}$ и $AB = 4\\sqrt{13}\\ \\text{cm}$.\n\nПрилагаме косинусова теорема за $\\triangle ABC$: $\\cos\\sphericalangle ACB = \\dfrac{4^2 + 12^2 - 16 \\cdot 13}{2 \\cdot 4 \\cdot 12} = -\\dfrac{1}{2}$. Оттук намираме $\\sphericalangle ACB = 120^\\circ$.\n\nНамираме $\\sphericalangle AKB = 180^\\circ - 120^\\circ = 60^\\circ$. Точка $K$ е среда на дъгата $AB$, т.е. $AK = BK$. Следователно $\\triangle ABK$ е равнобедрен и $\\sphericalangle AKB = 60^\\circ$, т.е. $\\triangle ABK$ е равностранен.\n\n$S_{\\triangle ABK} = \\dfrac{\\sqrt{3}}{4}AB^2 = \\dfrac{\\sqrt{3}}{4} \\cdot 16 \\cdot 13 = 52\\sqrt{3}\\ \\text{cm}^2$, $S_{\\triangle ABC} = \\dfrac{1}{2}AC \\cdot BC \\cdot \\sin 120^\\circ = \\dfrac{\\sqrt{3}}{4} \\cdot 4 \\cdot 12 = 12\\sqrt{3}\\ \\text{cm}^2$\n\nи $S_{AKBC} = 12\\sqrt{3} + 52\\sqrt{3} = 64\\sqrt{3}\\ \\text{cm}^2$.\n\nАко е намерена мярката на $\\sphericalangle ACB = 120^\\circ$ по друг начин и оттам дължината на $AB$, то общият брой точки за намиране на двата елемента е пак 5 точки. По-нататък оценяването е за намерените елементи.",
+       "solutionMedia": [
+        {
+         "type": "image",
+         "src": "28-circle.svg",
+         "alt": "Триъгълник ABC, описаната окръжност, ъглополовящата CL и точката K"
+        }
+       ],
+       "rubric": [
+        {
+         "text": "За построен триъгълник с описана окръжност, ъглополовяща и точка $K$ – среда на $AB$",
+         "points": 1
+        },
+        {
+         "text": "За намиране на $\\frac{AL}{BL} = \\frac{AC}{BC} = \\frac{1}{3}$",
+         "points": 1
+        },
+        {
+         "text": "За въвеждане на неизвестно $AL = x$, $BL = 3x$",
+         "points": 1
+        },
+        {
+         "text": "За намиране на $x = \\sqrt{13}\\ \\text{cm}$ и $AB = 4\\sqrt{13}\\ \\text{cm}$",
+         "points": 1
+        },
+        {
+         "text": "За намиране $\\cos\\sphericalangle ACB = -\\frac{1}{2}$",
+         "points": 1
+        },
+        {
+         "text": "За намиране на $\\sphericalangle ACB = 120^\\circ$",
+         "points": 1
+        },
+        {
+         "text": "За доказване, че $\\triangle ABK$ е равностранен",
+         "points": 1
+        },
+        {
+         "text": "За намиране на $S_{\\triangle ABK} = 52\\sqrt{3}\\ \\text{cm}^2$",
+         "points": 1
+        },
+        {
+         "text": "За намиране на $S_{\\triangle ABC} = 12\\sqrt{3}\\ \\text{cm}^2$",
+         "points": 1
+        },
+        {
+         "text": "За намиране на $S_{AKBC} = 64\\sqrt{3}\\ \\text{cm}^2$",
+         "points": 1
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
