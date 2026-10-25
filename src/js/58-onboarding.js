@@ -5,13 +5,15 @@
    resumes. People who already have data are marked done, so an update never shows it to them. */
 const ONBOARD = {
   steps: [
-    { id: 'welcome', title: 'Добре дошъл в BingO', text: 'Няколко кратки въпроса и приложението е готово. Всичко може да се промени по-късно в Профил и Настройки.', fields: [] },
+    { id: 'welcome', title: 'Добре дошъл в BingO', text: 'Няколко кратки въпроса и приложението е готово. Всичко може да се промени по-късно в Профил и Настройки.', fields: [
+      { key: 'lang', path: 'settings.lang', type: 'choice', options: LANGS, native: true, validate: v => (['bg', 'en'].includes(v) ? '' : 'Избери език') }
+    ] },
     { id: 'profile', title: 'Кой си ти?', text: 'Името и класът са по желание. Учителят ги вижда само ако свържеш Google Sheets.', skippable: true, fields: [
       { key: 'name', path: 'profile.name', type: 'text', label: 'Име', ph: 'напр. Мария П.', validate: v => (v.length > 40 ? 'Най-много 40 знака' : '') },
       { key: 'cls', path: 'profile.cls', type: 'text', label: 'Клас', ph: 'напр. 12а', validate: v => (v.length > 10 ? 'Най-много 10 знака' : '') }
     ] },
     { id: 'subject', title: 'Коя матура първо?', text: 'Можеш да сменяш предмета по всяко време от началния екран.', fields: [
-      { key: 'subject', path: 'subject', type: 'choice', required: true, options: () => Object.values(SUBJECTS).map(s => [s.id, s.icon + ' ' + s.title]), validate: v => (SUBJECTS[v] ? '' : 'Избери матура') }
+      { key: 'subject', path: 'subject', type: 'choice', required: true, options: () => Object.values(SUBJECTS).map(s => [s.id, s.icon + ' ' + L(s.title)]), validate: v => (SUBJECTS[v] ? '' : 'Избери матура') }
     ] },
     { id: 'theme', title: 'Как да изглежда?', text: '„Системна“ следва светлата или тъмната тема на телефона.', fields: [
       { key: 'theme', path: 'settings.theme', type: 'choice', required: true, options: [['auto', 'Системна'], ['light', 'Светла'], ['dark', 'Тъмна'], ['amoled', 'AMOLED']], validate: v => (['auto', 'light', 'dark', 'amoled'].includes(v) ? '' : 'Избери тема') }
@@ -61,8 +63,12 @@ function obValidate(step, d) {
   return errors;
 }
 function obApply(step, d) {
-  for (const f of step.fields) if (obVisible(f, d)) obSet(f.path, String(d[f.key] == null ? '' : d[f.key]).trim());
+  for (const f of step.fields) {
+    const v = String(d[f.key] == null ? '' : d[f.key]).trim();
+    if (obVisible(f, d) && !(f.type === 'choice' && !v)) obSet(f.path, v);
+  }
   if (step.id === 'theme') { APP.settings.theme = S.settings.theme; applySettings(); }
+  if (step.id === 'welcome') { APP.settings.lang = S.settings.lang; applySettings(); }
 }
 function obMove(dir) {
   const o = obState(); o.step = clamp(o.step + dir, 0, ONBOARD.steps.length - 1); saveState(true);
@@ -109,21 +115,21 @@ SCREENS.onboarding = async el => {
   let errors = {};
   const fieldHtml = f => {
     if (!obVisible(f, d)) return '';
-    const err = errors[f.key] ? `<small class="ob-err">${esc(errors[f.key])}</small>` : '';
+    const err = errors[f.key] ? `<small class="ob-err">${esc(L(errors[f.key]))}</small>` : '';
     if (f.type === 'choice') {
       const opts = typeof f.options === 'function' ? f.options() : f.options;
-      return `<div class="seg" data-key="${f.key}">${opts.map(([v, label]) => `<button data-v="${esc(v)}" class="${d[f.key] === v ? 'on' : ''}">${esc(label)}</button>`).join('')}</div>${err}`;
+      return `<div class="seg" data-key="${f.key}">${opts.map(([v, label]) => `<button data-v="${esc(v)}" class="${d[f.key] === v ? 'on' : ''}">${esc(f.native ? label : L(label))}</button>`).join('')}</div>${err}`;
     }
-    return `<label class="fld"><span>${esc(f.label)}</span><input class="field" data-k="${f.key}" type="${f.type}" value="${esc(d[f.key])}" placeholder="${esc(f.ph || '')}" autocomplete="off" spellcheck="false"></label>${err}`;
+    return `<label class="fld"><span>${esc(L(f.label))}</span><input class="field" data-k="${f.key}" type="${f.type}" value="${esc(d[f.key])}" placeholder="${esc(L(f.ph || ''))}" autocomplete="off" spellcheck="false"></label>${err}`;
   };
   const draw = () => {
     el.innerHTML = `<div class="pad onboarding">
-      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="Назад">${icon('back')}</button>` : '<span class="tb-gap"></span>'}<span class="ob-count">${o.step + 1}/${n}</span></header>
+      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="${L('Назад')}">${icon('back')}</button>` : '<span class="tb-gap"></span>'}<span class="ob-count">${o.step + 1}/${n}</span></header>
       ${o.step === 0 || isLast ? '<div class="brand bingo ob-brand">Bing<span>O</span></div>' : ''}
-      <h1 class="ob-title">${esc(step.title)}</h1><p class="muted ob-text">${esc(step.text)}</p>
+      <h1 class="ob-title">${esc(L(step.title))}</h1><p class="muted ob-text">${esc(L(step.text))}</p>
       ${step.fields.length ? `<section class="card ob-card">${step.fields.map(fieldHtml).join('')}</section>` : ''}
-      <div class="ob-actions"><button class="btn accent big block" data-ob="next">${isLast ? 'Към BingO' : 'Напред'}</button>
-      ${step.skippable ? '<button class="btn ghost block" data-ob="skip">Пропусни</button>' : ''}</div></div>`;
+      <div class="ob-actions"><button class="btn accent big block" data-ob="next">${isLast ? L('Към BingO') : L('Напред')}</button>
+      ${step.skippable ? `<button class="btn ghost block" data-ob="skip">${L('Пропусни')}</button>` : ''}</div></div>`;
     el.querySelector('[data-k]')?.focus({ preventScroll: true });
   };
   draw();
@@ -132,6 +138,7 @@ SCREENS.onboarding = async el => {
     if (b) {
       const key = b.parentNode.dataset.key; d[key] = b.dataset.v;
       if (key === 'theme') { S.settings.theme = d.theme; APP.settings.theme = d.theme; applySettings(); }
+      if (key === 'lang') { S.settings.lang = d.lang; APP.settings.lang = d.lang; applySettings(); saveState(); }
       return draw();
     }
     const a = e.target.closest('[data-ob]'); if (!a) return;

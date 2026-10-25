@@ -4,8 +4,8 @@
    (one scale for DZI and NVO since 2022). Honest limit: the app only sees its own skills, not the whole exam. */
 
 const GRADES = [[84, 'Отличен 6'], [62.5, 'Мн. добър 5'], [41, 'Добър 4'], [30, 'Среден 3'], [0, 'Слаб 2']];
-const gradeOf = pts => GRADES.find(g => pts >= g[0]);
-const nextGrade = pts => [...GRADES].reverse().find(g => g[0] > pts) || null;
+const gradeOf = pts => { const g = GRADES.find(x => pts >= x[0]); return [g[0], L(g[1])]; };
+const nextGrade = pts => { const g = [...GRADES].reverse().find(x => x[0] > pts); return g ? [g[0], L(g[1])] : null; };
 const r0 = x => Math.round(x);
 const CONF_LABEL = { low: 'Малко данни — диапазонът е широк, оценка още не показваме', mid: 'Средна сигурност', high: 'Добра сигурност' };
 
@@ -21,7 +21,7 @@ function forecast(subj) {
     .sort((a, b) => b.gain - a.gain).slice(0, 3);
   return { sm, n, pts, lo: clamp(pts - margin, 0, 100), hi: clamp(pts + margin, 0, 100), conf, gains, measured: sm.list.filter(x => x.st.n >= 1).length };
 }
-const gradeText = f => { if (f.conf === 'low') return 'Оценка — след още няколко отговора'; const a = gradeOf(f.lo)[1], b = gradeOf(f.hi)[1]; return a === b ? a : a + ' – ' + b; };
+const gradeText = f => { if (f.conf === 'low') return L('Оценка — след още няколко отговора'); const a = gradeOf(f.lo)[1], b = gradeOf(f.hi)[1]; return a === b ? a : a + ' – ' + b; };
 
 function fcScale(f) {
   const ticks = [[30, '3'], [41, '4'], [62.5, '5'], [84, '6']];
@@ -31,28 +31,28 @@ function fcScale(f) {
 
 function fcCard(subj) {
   const sub = SUBJECTS[subj], f = forecast(subj);
-  if (!f) return `<div class="card forecast empty"><span class="kicker">Прогнозен резултат · ${esc(sub.title)}</span><p class="muted">Направи диагностика и ще видиш колко точки очакваш на матурата.</p></div>`;
+  if (!f) return `<div class="card forecast empty"><span class="kicker">${L('Прогнозен резултат · {s}', { s: esc(L(sub.title)) })}</span><p class="muted">${L('Направи диагностика и ще видиш колко точки очакваш на матурата.')}</p></div>`;
   return `<button class="card forecast" data-forecast="${subj}">
-    <span class="kicker">Прогнозен резултат · ${esc(sub.title)}</span>
-    <div class="fc-score"><b>≈ ${r0(f.pts)}</b><span>от 100 т.</span></div>
+    <span class="kicker">${L('Прогнозен резултат · {s}', { s: esc(L(sub.title)) })}</span>
+    <div class="fc-score"><b>≈ ${r0(f.pts)}</b><span>${L('от 100 т.')}</span></div>
     <div class="fc-grade">${esc(gradeText(f))}</div>
     ${fcScale(f)}
-    <small class="muted">Диапазон ${r0(f.lo)}–${r0(f.hi)} т. · ${CONF_LABEL[f.conf]} · натисни за подробности</small></button>`;
+    <small class="muted">${L('Диапазон {a}–{b} т. · {c} · натисни за подробности', { a: r0(f.lo), b: r0(f.hi), c: L(CONF_LABEL[f.conf]) })}</small></button>`;
 }
 
 function fcSheet(subj) {
   const sub = SUBJECTS[subj], f = forecast(subj); if (!f) return;
   const nx = nextGrade(f.pts);
-  const scaleRows = [['Слаб 2', 'под 30 т.'], ['Среден 3', 'от 30 т.'], ['Добър 4', 'от 41 т.'], ['Мн. добър 5', 'от 62,5 т.'], ['Отличен 6', 'от 84 т.']];
+  const scaleRows = [['Слаб 2', L('под 30 т.')], ['Среден 3', L('от {n} т.', { n: 30 })], ['Добър 4', L('от {n} т.', { n: 41 })], ['Мн. добър 5', L('от {n} т.', { n: fmtNum(62.5, appLang(), 1) })], ['Отличен 6', L('от {n} т.', { n: 84 })]].map(([a, b]) => [L(a), b]);
   sheet({
-    title: 'Прогноза · ' + sub.title,
+    title: L('Прогноза · {s}', { s: L(sub.title) }),
     body: `<div class="fc-detail">
-      <p class="fc-big"><b>≈ ${r0(f.pts)} т.</b> от 100 <span class="muted">(най-вероятно между ${r0(f.lo)} и ${r0(f.hi)})</span></p>
-      ${f.conf === 'low' ? `<p class="muted">Още е рано за оценка: имаш ${f.sm.answered} отговора в ${f.n} теми. След още няколко тренировки прогнозата ще покаже и оценка.</p>` : `<p><span class="stchip s-mid">${esc(gradeOf(f.pts)[1])}</span> ${nx ? `До <b>${esc(nx[1])}</b> ти трябват още ≈ <b>${Math.max(1, Math.ceil(nx[0] - f.pts))} т.</b>` : 'Това е най-високата оценка.'}</p>`}
-      ${f.gains.length ? `<h3>Къде се печелят най-бързо точки</h3><ul class="misclist gains">${f.gains.map(g => `<li><span>${esc(g.name)}</span><b>+${fmt1(g.gain)} т.</b></li>`).join('')}</ul><p class="muted small">Ако темата стане силна (≥ 90%).</p>` : ''}
-      <h3>Скала за оценяване (МОН)</h3>
+      <p class="fc-big">${L('<b>≈ {n} т.</b> от 100 <span class="muted">(най-вероятно между {a} и {b})</span>', { n: r0(f.pts), a: r0(f.lo), b: r0(f.hi) })}</p>
+      ${f.conf === 'low' ? `<p class="muted">${L('Още е рано за оценка: имаш {a} отговора в {b} теми. След още няколко тренировки прогнозата ще покаже и оценка.', { a: f.sm.answered, b: f.n })}</p>` : `<p><span class="stchip s-mid">${esc(gradeOf(f.pts)[1])}</span> ${nx ? L('До <b>{g}</b> ти трябват още ≈ <b>{n} т.</b>', { g: esc(nx[1]), n: Math.max(1, Math.ceil(nx[0] - f.pts)) }) : L('Това е най-високата оценка.')}</p>`}
+      ${f.gains.length ? `<h3>${L('Къде се печелят най-бързо точки')}</h3><ul class="misclist gains">${f.gains.map(g => `<li><span>${esc(L(g.name))}</span><b>+${ptsL(fmt1(g.gain))}</b></li>`).join('')}</ul><p class="muted small">${L('Ако темата стане силна (≥ 90%).')}</p>` : ''}
+      <h3>${L('Скала за оценяване (МОН)')}</h3>
       <ul class="misclist scale">${scaleRows.map(([a, b]) => `<li><span>${a}</span><b>${b}</b></li>`).join('')}</ul>
-      <p class="muted small">Прогнозата е ориентировъчна. Тя се смята от владеенето на ${f.n} теми в приложението (${f.measured} вече са измерени) и не вижда останалата част от изпита, напр. писането на есе или съчинение. Повече отговори дават по-тесен диапазон. Тежестите на темите са приблизителни.</p></div>`,
+      <p class="muted small">${L('Прогнозата е ориентировъчна. Тя се смята от владеенето на {n} теми в приложението ({m} вече са измерени) и не вижда останалата част от изпита, напр. писането на есе или съчинение. Повече отговори дават по-тесен диапазон. Тежестите на темите са приблизителни.', { n: f.n, m: f.measured })}</p></div>`,
     actions: [{ id: 'x', label: 'Затвори' }, { id: 'go', label: 'Тренирай слабото', kind: 'primary', icon: 'target' }]
   }).then(v => { if (v === 'go') go('session', { subj, mode: 'focus' }); });
 }
@@ -75,7 +75,7 @@ SCREENS.stats = async (el, ...rest) => {
   const ids = Object.keys(SUBJECTS);
   el.querySelectorAll('.statcard').forEach((c, i) => {
     const f = ids[i] && forecast(ids[i]), head = c.querySelector('.stat-head');
-    if (f && head) head.insertAdjacentHTML('afterend', `<button class="fcrow" data-forecast="${ids[i]}"><span>Прогноза</span><b>≈ ${r0(f.pts)} т.</b><em>${esc(gradeText(f))}</em></button>`);
+    if (f && head) head.insertAdjacentHTML('afterend', `<button class="fcrow" data-forecast="${ids[i]}"><span>${L('Прогноза')}</span><b>≈ ${ptsL(r0(f.pts))}</b><em>${esc(gradeText(f))}</em></button>`);
   });
   bindForecast(el);
 };
