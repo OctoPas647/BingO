@@ -2,6 +2,8 @@
 # With the BINGO_SIGNING secret set (see README.md, "Signing"), each build is signed with your key
 # and published as a GitHub Release with the APK and the module files. Without it, the build still
 # runs and a test APK can be downloaded from the run's Artifacts, but nothing is published.
+# With the FTP_HOST / FTP_USER / FTP_PASSWORD secrets set (see README.md, "Website"), the web page is also
+# uploaded to the website, e.g. https://preotkrivanegk.com/bingo/.
 name: Build
 
 on:
@@ -95,6 +97,25 @@ jobs:
           else
             gh release create "$TAG" $FILES --title "BingO $VER" --notes-file notes.md --target "$GITHUB_SHA"
           fi
+
+      - name: Put the web page on the website
+        if: github.ref == 'refs/heads/main'
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_DIR: ${{ secrets.FTP_DIR }}
+        run: |
+          if [ -z "$FTP_HOST" ] || [ -z "$FTP_USER" ] || [ -z "$FTP_PASSWORD" ]; then
+            echo "::notice::No FTP_HOST / FTP_USER / FTP_PASSWORD secrets: the web page is not uploaded to the website."
+            exit 0
+          fi
+          DIR="${FTP_DIR#/}"; DIR="${DIR%/}"
+          URL="ftp://$FTP_HOST/${DIR:+$DIR/}index.html"
+          # FTPS (encrypted); the folder is created if it doesn't exist yet
+          curl --fail --silent --show-error --ssl-reqd --ftp-create-dirs --retry 3 \
+            --user "$FTP_USER:$FTP_PASSWORD" -T dist/web/index.html "$URL"
+          echo "Uploaded BingO ${{ steps.ver.outputs.version }} to $FTP_HOST/${DIR:+$DIR/}index.html"
 
       - name: Remove signing key
         if: always()

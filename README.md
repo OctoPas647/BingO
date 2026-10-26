@@ -87,6 +87,12 @@ tests/         play.py (играе приложението в браузър), 
 
 **Подписване на APK:** първият build създава ключ в `platforms/android/signing/`. Пази го и не го качвай в GitHub — всяко обновяване трябва да е подписано със същия ключ. За автоматичен build в GitHub: zip-ни `bingo.keystore` + `signing.json` в `signing.zip` и запиши base64 текста му като secret `BINGO_SIGNING`.
 
+**Уебсайт (автоматично):** при всеки push в `main` GitHub качва новата уеб версия на сайта (напр. https://preotkrivanegk.com/bingo/).
+1. cPanel → **FTP Accounts** → нов акаунт, Directory: `public_html/bingo` (така акаунтът вижда само папката на BingO).
+2. GitHub → Settings → Secrets and variables → Actions → добави `FTP_HOST` (напр. `ftp.preotkrivanegk.com`), `FTP_USER` (целият потребител, напр. `bingo@preotkrivanegk.com`) и `FTP_PASSWORD`.
+3. `FTP_DIR` е по желание — само ако FTP акаунтът започва от друга папка (напр. `public_html/bingo`).
+Без тези secrets build-ът работи както преди, просто не качва нищо.
+
 ## Честно за alpha-та
 - Тежестите на уменията (колко точки от ДЗИ зависят от всяко) са **приблизителни** и трябва да се сверят със спецификацията на МОН.
 - Математиката има 7 умения × 3 нива генератори; БЕЛ има ръчна банка (≈580 задачи: правопис, членуване, запетая) + задачите от Shelly + Gemini. Литературата засега идва от Shelly и Gemini.
