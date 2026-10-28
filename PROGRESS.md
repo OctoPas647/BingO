@@ -1,6 +1,13 @@
 # Progress
 
 ## Done
+- Added Firebase foundation (feature/firebase-auth-roles):
+  - Firebase Auth and Firestore configuration (`firebase.json`).
+  - Firestore Security Rules with default deny, student/teacher/admin roles, private attempts/answers, and server-only writes for scores and final results.
+  - Firestore indexes for attempts and results.
+  - Callable Cloud Functions: `registerProfile` (creates a student profile) and `setUserRole` (admin-only role changes using custom claims).
+  - Firebase setup and testing documentation in `docs/firebase.md`.
+  - `.gitignore` now excludes Firebase build/cache files, service-account JSON files and `.env` files.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +21,10 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- Firebase is added alongside the existing Cloud Run Gemini service; `server/` is unchanged in this PR.
+- Roles use Firebase custom claims (`role`), mirrored into `users/{uid}.role`; clients cannot set their own role.
+- Students can create only their own profile and only as `student`.
+- Answers, scores and final results are intended to be written by future server-side grading functions, not directly by clients.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -24,14 +35,16 @@
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 
 ## Left
+- Connect the web app and Android app to Firebase Auth.
+- Add callable functions for `startAttempt`, `submitAnswer` and `finishAttempt`, with server-side timing and grading.
+- Add teacher class/test management UI and Firestore queries.
+- Deploy Firebase rules/functions to a real project and test with emulator plus live project.
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
-- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
+- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
 - Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in its file.
 - past.pages in the new files is the PDF page range, not the book page numbers used in the 2017+ files.
-
-## Left
 - Add the 25 drawing questions with their images (cropped from the PDFs).
 - Check the flagged formulas against the original PDFs.
 - Add НВО 4. клас БЕЛ 2007-2016 (separate PR).

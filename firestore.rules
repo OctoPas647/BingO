@@ -1,0 +1,89 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isSelf(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function hasRole(role) {
+      return signedIn()
+        && request.auth.token.role == role;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function isTeacher() {
+      return hasRole('teacher');
+    }
+
+    // A student profile can be created by its owner on first sign-in.
+    // Role is controlled by custom claims / admin callable, not by clients.
+    match /users/{userId} {
+      allow read: if isSelf(userId) || isTeacher() || isAdmin();
+      allow create: if isSelf(userId)
+        && request.resource.data.role == 'student'
+        && request.resource.data.uid == userId;
+      allow update: if isSelf(userId)
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.uid == resource.data.uid;
+      allow delete: if isAdmin();
+    }
+
+    // Classes are managed by teachers/admins.
+    match /classes/{classId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isTeacher() || isAdmin();
+    }
+
+    // Question banks are readable by signed-in users, but writable only by staff.
+    match /questions/{questionId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isTeacher() || isAdmin();
+    }
+
+    // Attempts belong to one student. Students can create their own attempt
+    // and update only timing/event metadata; scores and results are server-managed.
+    match /attempts/{attemptId} {
+      allow read: if isSelf(resource.data.studentId)
+        || isTeacher()
+        || isAdmin();
+      allow create: if isSelf(request.resource.data.studentId)
+        && request.resource.data.score == null
+        && request.resource.data.status == 'in_progress';
+      allow update: if isSelf(resource.data.studentId)
+        && request.resource.data.studentId == resource.data.studentId
+        && request.resource.data.score == resource.data.score
+        && request.resource.data.status in ['in_progress', 'abandoned'];
+      allow delete: if isAdmin();
+    }
+
+    // Individual answers are private to the student; grading writes are server-only.
+    match /attempts/{attemptId}/answers/{answerId} {
+      allow read: if isSelf(get(/databases/$(database)/documents/attempts/$(attemptId)).data.studentId)
+        || isTeacher()
+        || isAdmin();
+      allow create, update, delete: if false;
+    }
+
+    // Final results are readable by the student and their teachers.
+    match /results/{resultId} {
+      allow read: if isSelf(resource.data.studentId)
+        || isTeacher()
+        || isAdmin();
+      allow write: if false;
+    }
+
+    // Default deny.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
