@@ -12,10 +12,11 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
   const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
-  /* The task queue is initialized once and never changes length during a session.
-     AI tasks and twins may fill or retarget existing slots, but cannot add slots. */
-  const Q = planned.plan.slice(0, 8).map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
-  if (!Q.length) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
+  /* The task queue and its displayed total are fixed at initialization. AI tasks and
+     twins may fill or retarget existing slots, but cannot change the session size. */
+  const Q = planned.plan.slice(0, 8).map(p => ({ ...p })), TOTAL = Q.length;
+  const P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
+  if (!TOTAL) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
 
   /* Gemini: prepare one new task for the weakest skill in the background. It fills an
      existing upcoming focus slot; it never inserts a new queue item. */
@@ -36,7 +37,11 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const main = el.querySelector('.playmain'), foot = el.querySelector('.checkbar'), btn = foot.querySelector('[data-main]'), verdict = foot.querySelector('.verdict');
   nav.guard = async () => P.done || !P.touched || confirmBox(L('Да спрем ли?'), L('Отговорите досега вече са записани в картата на уменията.'), L('Спри'), true);
   let view = null, task = null, shownAt = 0, aiHints = 0, checkedAt = 0;
-  const paintCount = () => { el.querySelector('.pcount').textContent = `${Math.min(P.i + 1, Q.length)} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
+  const paintCount = () => {
+    const current = Math.min(P.i + 1, TOTAL);
+    el.querySelector('.pcount').textContent = `${current} / ${TOTAL}`;
+    el.querySelector('.pbar i').style.width = (P.i / TOTAL * 100) + '%';
+  };
 
   /* The same question never comes twice in one session (P.used holds ids and, for generated
      tasks, the question text). A slot with no unseen task is skipped, not removed. */
@@ -49,8 +54,8 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   }
 
   function showTask() {
-    while (P.i < Q.length && !(task = nextTask())) P.i++;
-    if (P.i >= Q.length) return P.answers.length ? finish() : (toast('Няма нови задачи по тази тема'), back());
+    while (P.i < TOTAL && !(task = nextTask())) P.i++;
+    if (P.i >= TOTAL) return P.answers.length ? finish() : (toast('Няма нови задачи по тази тема'), back());
     const item = Q[P.i]; P.phase = 'answer'; aiHints = 0; shownAt = Date.now();
     view = taskView(task, m, { mode: 'practice', seed: sessionId, onChange: upd });
     const sk = skillDef(subj, task.skill);
@@ -97,7 +102,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       /* Diagnostic already has one slot per skill; do not append another. */
       if (mode === 'diag') P.extraDiag.add(task.skill);
     }
-    btn.textContent = P.i === Q.length - 1 ? L('Виж резултата') : L('Напред');
+    btn.textContent = P.i === TOTAL - 1 ? L('Виж резултата') : L('Напред');
     setTimeout(() => fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
   }
 
@@ -105,7 +110,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     if (P.phase === 'answer') return check();
     /* a quick second tap on "Провери" must not skip the feedback the first tap just opened */
     if (Date.now() - checkedAt < 450) return;
-    if (++P.i < Q.length) showTask(); else finish();
+    if (++P.i < TOTAL) showTask(); else finish();
   });
   main.addEventListener('submit-answer', () => { if (P.phase === 'answer' && !btn.disabled) check(); });
   main.addEventListener('click', async e => {
