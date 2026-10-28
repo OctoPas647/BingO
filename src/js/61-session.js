@@ -5,18 +5,19 @@
    - after a wrong answer, an existing later focus slot may become a "twin"
    - every answer updates the skill map and goes to the log (Google Sheets / Looker Studio) */
 
-const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема' };
+const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренирай слабото', skill: 'Една тема' };
 
 SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const sub = SUBJECTS[subj], m = fakeModule(subj), sessionId = uid();
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
   const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
-  /* The task queue and its displayed total are fixed at initialization. AI tasks and
-     twins may fill or retarget existing slots, but cannot change the session size. */
+  /* The task queue, its header title, and its displayed total are fixed at initialization.
+     AI tasks and twins may fill or retarget existing slots, but cannot change the size. */
   const Q = planned.plan.slice(0, 8).map(p => ({ ...p })), TOTAL = Q.length;
   const P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
   if (!TOTAL) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
+  const sessionTitle = `${L(MODE_TITLE[mode])} · ${TOTAL} ${L('задачи')}`;
 
   /* Gemini: prepare one new task for the weakest skill in the background. It fills an
      existing upcoming focus slot; it never inserts a new queue item. */
@@ -31,7 +32,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       .catch(err => console.warn('AI task', err));
   }
 
-  el.innerHTML = `<header class="playbar"><button class="iconbtn" data-back aria-label="${L('Затвори')}">${icon('close')}</button>${bar(0, 'pbar')}<span class="pcount"></span></header>
+  el.innerHTML = `<header class="playbar"><button class="iconbtn" data-back aria-label="${L('Затвори')}">${icon('close')}</button><span class="ptitle">${esc(sessionTitle)}</span>${bar(0, 'pbar')}<span class="pcount"></span></header>
     <main class="playmain"></main>
     <footer class="checkbar"><div class="verdict"></div><button class="btn accent big" data-main></button></footer>`;
   const main = el.querySelector('.playmain'), foot = el.querySelector('.checkbar'), btn = foot.querySelector('[data-main]'), verdict = foot.querySelector('.verdict');
@@ -142,7 +143,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const newlyStrong = rows.filter(r => r.x.status === 'strong' && before[r.x.sk.id] < BKT.strong);
     if (right / P.answers.length >= 0.7) { sound('done'); confetti(); }
     nav.onLeave = () => $$('canvas.confetti').forEach(c => c.remove()); /* confetti must not fall on the next screen */
-    el.querySelector('.playbar').outerHTML = topbar(esc(L(MODE_TITLE[mode])), { closeIcon: true });
+    el.querySelector('.playbar').outerHTML = topbar(esc(sessionTitle), { closeIcon: true });
     foot.remove();
     main.innerHTML = `<div class="result pad">
       <div class="res-hero">${ring(right / P.answers.length, right + '/' + P.answers.length, 'big')}
