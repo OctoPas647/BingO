@@ -93,7 +93,8 @@ const EN_UI = {
   'До <b>{g}</b> ти трябват още ≈ <b>{n} т.</b>': 'You need ≈ <b>{n} more pts</b> for <b>{g}</b>', 'Това е най-високата оценка.': 'This is the highest grade.',
   'Къде се печелят най-бързо точки': 'Where points are won fastest', 'Ако темата стане силна (≥ 90%).': 'If the topic becomes strong (≥ 90%).',
   'Скала за оценяване (МОН)': 'Grading scale (Ministry of Education)', 'под 30 т.': 'below 30 pts', 'от {n} т.': 'from {n} pts',
-  'Прогнозата е ориентировъчна. Тя се смята от владеенето на {n} теми в приложението ({m} вече са измерени) и не вижда останалата част от изпита, напр. писането на есе или съчинение. Повече отговори дават по-тесен диапазон. Тежестите на темите са приблизителни.': 'The forecast is a rough guide. It comes from your mastery of {n} topics in the app ({m} measured so far) and cannot see the rest of the exam, e.g. writing an essay. More answers give a narrower range. The topic weights are approximate.',
+  '{a}–100 т.': '{a}–100 pts', '{a}–{b} т.': '{a}–{b} pts',
+  'Официалната скала на МОН за ДЗИ преобразува точките в оценка на стъпки от 0,25 т. Прогнозата е ориентировъчна: тя се смята от владеенето на {n} теми в приложението ({m} вече са измерени) и не вижда останалата част от изпита, напр. писането на есе или съчинение. Повече отговори дават по-тесен диапазон. Тежестите на темите са приблизителни.': 'The official Ministry of Education scale for the matura converts points into a grade in 0.25-point steps. The forecast is a rough guide: it comes from your mastery of {n} topics in the app ({m} measured so far) and cannot see the rest of the exam, e.g. writing an essay. More answers give a narrower range. The topic weights are approximate.',
 
   /* mistakes and data */
   'Типичните ти грешки · {s}': 'Your typical mistakes · {s}',
