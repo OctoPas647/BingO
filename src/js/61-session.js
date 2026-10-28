@@ -100,7 +100,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
-      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>${L('✦ Подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
+      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${esc(L('Подсказка'))}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
@@ -118,7 +118,11 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   });
 
   function finish() {
-    P.done = true; S.sessions++; saveState(true); flushToSheet();
+    P.done = true; S.sessions++;
+    /* A day counts toward the streak only after a diagnostic, focus, or single-skill session finishes. */
+    const day = window.localDate();
+    if (!S.sessionDays.includes(day)) S.sessionDays.push(day);
+    saveState(true); flushToSheet();
     const endMap = subjectSummary(subj), touched = [...new Set(P.answers.map(a => a.skill))];
     const right = P.answers.filter(a => a.correct).length, gained = startMap.lost - endMap.lost;
     const rows = touched.map(id => { const x = endMap.list.find(y => y.sk.id === id), was = skillStatus({ ...x.st, p: before[id] }); return { x, was }; });
