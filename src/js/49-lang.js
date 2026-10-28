@@ -39,6 +39,7 @@ const EN_UI = {
   'Тренирай слабото · 8 задачи': 'Train weak spots · 8 tasks', 'Започваме от <b>{s}</b> — там губиш най-много.': 'We start with <b>{s}</b> — that is where you lose the most.',
   'Всички теми са силни. Направи пробна матура в Shelly!': 'All topics are strong. Try a practice matura in Shelly!',
   'Започни диагностика': 'Start the diagnostic', 'Покажи с демо ученик': 'Show with a demo learner', 'Карта на уменията': 'Skill map', 'Нова диагностика': 'New diagnostic',
+  'Демо ученикът е примерен ученик с генерирани отговори — показва как работи картата на уменията.': 'A demo learner is an example learner with generated answers — it shows how the skill map works.',
   '✦ Gemini е включен': '✦ Gemini is on', 'Без ИИ · включи Gemini в настройките': 'No AI · turn on Gemini in Settings',
   'данните отиват в Google Sheets': 'data goes to Google Sheets', 'данните остават на устройството': 'data stays on this device',
   'Зареден е демо ученик с история от 6 дни': 'Demo learner loaded with 6 days of history',
@@ -133,6 +134,9 @@ const EN_UI = {
   'Невалидна стойност': 'Invalid value', 'Задължително поле': 'Required field', 'Невалидната стойност не е запазена': 'The invalid value was not saved',
 
   /* demo and saved data */
+  'Какво е демо ученик?': 'What is a demo learner?',
+  'Демо ученикът е примерен ученик с предварително генерирани отговори. Той показва как BingO открива слабите теми и попълва картата на уменията. Това не са твоите отговори.': 'A demo learner is an example learner with pre-generated answers. It shows how BingO finds weak topics and fills in the skill map. These are not your answers.',
+  'Демото ще замени текущите ти данни; ще запазим копие, което можеш да върнеш от Настройки → „Върни моите отговори“.': 'The demo will replace your current data; we will keep a copy that you can restore from Settings → "Bring back my answers".',
   'Да заредим ли демо ученик?': 'Load a demo learner?',
   'Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.': 'The demo replaces your skill map and answers. We keep a copy of your data, and you can bring it back from Settings → "Bring back my answers".',
   'Зареди демото': 'Load the demo', 'Няма място за копие на данните ти — демото не е заредено.': 'No room for a copy of your data — the demo was not loaded.',

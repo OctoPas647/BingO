@@ -19,7 +19,7 @@ const plainMisc = code => miscLabel(code).replace(/\$([^$]*)\$/g, '$1').replace(
 
 SCREENS.home = async el => {
   const subj = S.subject, sm = subjectSummary(subj), sub = SUBJECTS[subj];
-  el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color));
+  el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(SUBJECTS[subj].color));
   const list = sm.list.slice().sort((a, b) => (a.status === 'strong') - (b.status === 'strong') || b.lost - a.lost);
   const kept = 1 - sm.lost / sm.total, started = sm.answered > 0;
   const weakest = list.find(x => x.status !== 'strong');
@@ -44,7 +44,8 @@ SCREENS.home = async el => {
       ${started ? `<button class="btn accent big block" data-start="focus">${icon('target')}${L('Тренирай слабото · 8 задачи')}</button>
         ${weakest ? `<p class="muted small center">${L('Започваме от <b>{s}</b> — там губиш най-много.', { s: esc(L(weakest.sk.name)) })}</p>` : `<p class="muted small center">${L('Всички теми са силни. Направи пробна матура в Shelly!')}</p>`}`
         : `<button class="btn accent big block" data-start="diag">${icon('play')}${L('Започни диагностика')}</button>
-           <button class="btn ghost block demo-btn" data-demo>${icon('eye')}${L('Покажи с демо ученик')}</button>`}
+           <button class="btn ghost block demo-btn" data-demo>${icon('eye')}${L('Покажи с демо ученик')}</button>
+           <p class="muted small center">${L('Демо ученикът е примерен ученик с генерирани отговори — показва как работи картата на уменията.')}</p>`}
       <h2 class="sec-title">${L('Карта на уменията')}</h2>
       <div class="sklist">${list.map(x => skillRow(subj, x)).join('')}</div>
       ${started ? `<button class="btn ghost block" data-start="diag">${icon('reset')}${L('Нова диагностика')}</button>` : ''}
