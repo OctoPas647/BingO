@@ -16,6 +16,7 @@ const DEFAULT_STATE = () => ({
   log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
   queue: [],             /* rows not yet sent to the Sheet */
   sessions: 0,
+  sessionDays: [],       /* local YYYY-MM-DD days on which the learner completed a session */
   review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
   onboarding: null,      /* first-run setup progress (58-onboarding.js) */
   aiFlags: [],           /* AI-made tasks a learner reported as wrong */
@@ -64,6 +65,7 @@ function sanitizeState(v) {
   out.log = Array.isArray(v.log) ? v.log.filter(r => isObj(r) && isStr(r.task_id || '') && isStr(r.subject || '')).slice(-3000) : [];
   out.queue = Array.isArray(v.queue) ? v.queue.filter(isObj).slice(-3000) : [];
   out.sessions = isNum(v.sessions) && v.sessions >= 0 ? Math.floor(v.sessions) : 0;
+  out.sessionDays = Array.isArray(v.sessionDays) ? v.sessionDays.filter(isStr) : [];
   out.review = {};
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
@@ -71,6 +73,12 @@ function sanitizeState(v) {
   return out;
 }
 const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
+
+/* Local calendar day in YYYY-MM-DD form, using the browser's timezone */
+window.localDate = (t = Date.now()) => {
+  const d = new Date(t);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+};
 
 /* A save that cannot be read is copied to its own key before anything can overwrite it */
 function backupRaw(raw) {
@@ -122,6 +130,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
   });
 }
