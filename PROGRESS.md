@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- Removed the Gemini AI/API configuration screen from first-run onboarding (feature/remove-ai-api-onboarding). The `ai` step in src/js/58-onboarding.js no longer asks for an AI mode, Gemini API key, or Vertex AI server URL. AI settings remain available later in Settings.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +15,7 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- Onboarding no longer includes AI/API setup; users who want AI can configure it from Settings.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -27,8 +29,8 @@
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
-- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
-- Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in its file.
+- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
+- Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in the file.
 - past.pages in the new files is the PDF page range, not the book page numbers used in the 2017+ files.
 
 ## Left
