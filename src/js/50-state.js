@@ -12,23 +12,19 @@ const DEFAULT_STATE = () => ({
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
   settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true, lang: 'bg' },
   subject: 'math',
-  skills: {},            /* "math.quad" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] } */
-  log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
-  queue: [],             /* rows not yet sent to the Sheet */
+  skills: {},
+  log: [],
+  queue: [],
   sessions: 0,
-  review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
-  onboarding: null,      /* first-run setup progress (58-onboarding.js) */
-  aiFlags: [],           /* AI-made tasks a learner reported as wrong */
-  pastResults: {}        /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  review: {},
+  onboarding: null,
+  aiFlags: [],
+  pastResults: {}
 });
 
 let S = DEFAULT_STATE();
-/* What went wrong while loading, shown once after start (99-boot.js): null | { backup: key } */
 let STATE_NOTICE = null;
 
-/* Saved data can be broken (a half-written save) or from an older version with other shapes.
-   Every field is checked and anything that does not fit falls back to its default, so one bad
-   value never stops the app from opening. */
 const isNum = x => typeof x === 'number' && Number.isFinite(x);
 const isStr = x => typeof x === 'string';
 const SETTING_OK = {
@@ -50,6 +46,10 @@ function cleanSkill(st) {
     hist: Array.isArray(st.hist) ? st.hist.filter(h => Array.isArray(h) && isNum(h[0]) && isNum(h[1])).slice(-60) : []
   };
 }
+function cleanPastResult(r) {
+  if (!isObj(r) || !isNum(r.pts) || !isNum(r.max) || !isNum(r.at) || r.max <= 0) return null;
+  return { pts: r.pts, max: r.max, at: r.at };
+}
 function sanitizeState(v) {
   const d = DEFAULT_STATE();
   if (!isObj(v)) return d;
@@ -68,11 +68,12 @@ function sanitizeState(v) {
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
+  out.pastResults = {};
+  if (isObj(v.pastResults)) for (const [k, r] of Object.entries(v.pastResults)) { const c = cleanPastResult(r); if (c) out.pastResults[k] = c; }
   return out;
 }
-const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
+const BKT_PRIOR = 0.3;
 
-/* A save that cannot be read is copied to its own key before anything can overwrite it */
 function backupRaw(raw) {
   const key = STORE_KEY + '.broken-' + new Date().toISOString().replace(/[:.]/g, '-');
   try { localStorage.setItem(key, raw); return key; } catch (e) { return null; }
@@ -97,11 +98,7 @@ function resetState(keepSettings) {
   S = { ...DEFAULT_STATE(), ...keep }; saveState(true);
 }
 
-/* AMOLED theme: the dark theme with true-black surfaces (OLED pixels switch off).
-   Shelly's applySettings() only knows auto/light/dark, so BingO wraps it. */
 const _applyBase = applySettings;
-/* "Системна": the phone's own setting. In the Android app the WebView reports the app theme, not the
-   phone's, so the app asks Android directly (AndroidUI.night); in a browser prefers-color-scheme works. */
 function systemDark() {
   try { if (window.AndroidUI && typeof window.AndroidUI.night === 'function') return !!window.AndroidUI.night(); } catch (e) { }
   return matchMedia('(prefers-color-scheme: dark)').matches;
@@ -117,11 +114,10 @@ applySettings = function () {
   if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
 };
 
-/* Shelly's media loader, reading the few pictures that the build embeds (window.SHELLY_MEDIA: "module id\npath" -> data URL) */
 function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
   });
 }
