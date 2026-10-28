@@ -100,7 +100,7 @@ const MATH_GEN = {
       return mcTask(r, {
         prompt: `Цената на стока първо се увеличава с $${a}\\%$, а след това новата цена се намалява с $${a}\\%$. Как се е променила цената спрямо началната?`,
         right: `\\text{намалява с } ${N(drop)}\\%`,
-        wrong: [{ t: '\\text{не се променя}', misc: 'pct.add_pcts' }, { t: `\\text{увеличава се с } ${N(drop)}\\%`, misc: 'pct.direction' }, { t: `\\text{намалява с } ${a}\\%`, misc: 'calc' }],
+        wrong: [{ t: '\\text{не се променя}', misc: 'pct.add_pcts' }, { t: `\\text{увеличава се с } ${N(drop)}\\%`, misc: 'pct.direction' }, { t: `\\text{намалява се с } ${a}\\%`, misc: 'calc' }],
         explain: `Ако началната цена е $100$: след увеличението е $${100 + a}$, а $${a}\\%$ от $${100 + a}$ е $${N((100 + a) * a / 100)}$. Остава $${N((100 + a) * (100 - a) / 100)}$, т.е. с $${N(drop)}\\%$ по-малко. Процентите се смятат от различни основи, затова не се „унищожават“.`
       });
     }
@@ -233,8 +233,20 @@ const MATH_GEN = {
   }
 };
 
-function genMathTask(skill, level, seed) {
-  const r = seedRng(skill + ':' + level + ':' + seed);
+/* НВО 4/7/10 use the same generators for now, but with grade-aware difficulty:
+   НВО 4 never receives level-3 tasks, while НВО 7 and НВО 10 can use all levels.
+   The grade is also part of the seed, so the same skill and level produce different
+   variants in Matura and NVO practice. */
+const NVO_TASK_CAPS = { '4': 2, '7': 3, '10': 3 };
+function nvoTaskLevel(level, grade) {
+  if (!grade) return level;
+  const cap = NVO_TASK_CAPS[String(grade)];
+  return cap ? Math.min(level, cap) : level;
+}
+
+function genMathTask(skill, level, seed, grade) {
+  level = nvoTaskLevel(level, grade);
+  const r = seedRng(skill + ':' + level + ':' + (grade ? 'nvo' + grade + ':' : '') + seed);
   const t = MATH_GEN[skill](r, level);
-  return { id: `g:${skill}:${level}:${seed}`, points: 1, media: [], ...t, skill, level, src: 'gen' };
+  return { id: `g:${skill}:${level}:${grade || 'matura'}:${seed}`, points: 1, media: [], ...t, skill, level, src: 'gen' };
 }
