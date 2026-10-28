@@ -7,6 +7,11 @@ function subjectTabs(cur) {
   return `<label class="subj-pick"><span class="kicker">${L('Предмет за матура')}</span><span class="selwrap"><select class="field subj-select" id="subjSelect" aria-label="${L('Избери предмет за матура')}">${Object.values(SUBJECTS).map(s => `<option value="${s.id}"${s.id === cur ? ' selected' : ''}>${s.icon} ${esc(L(s.title))}</option>`).join('')}</select></span></label>`;
 }
 
+/* НВО 4/7/10 selection: shown for Math, because it currently has NVO profiles. */
+function nvoGradeTabs(cur) {
+  return `<label class="subj-pick"><span class="kicker">${L('НВО')}</span><span class="selwrap"><select class="field nvo-select" id="nvoSelect" aria-label="${L('Избери НВО')}">${['4', '7', '10'].map(g => `<option value="${g}"${g === cur ? ' selected' : ''}>НВО ${g}</option>`).join('')}</select></span></label>`;
+}
+
 function skillRow(subj, x) {
   const top = Object.entries(x.st.misc).sort((a, b) => b[1] - a[1])[0];
   return `<button class="skrow st-${x.status}" data-skill="${x.sk.id}">
@@ -18,7 +23,9 @@ function skillRow(subj, x) {
 const plainMisc = code => miscLabel(code).replace(/\$([^$]*)\$/g, '$1').replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '$1/$2').replace(/\\/g, '');
 
 SCREENS.home = async el => {
-  const subj = S.subject, sm = subjectSummary(subj), sub = SUBJECTS[subj];
+  const subj = S.subject, nvoGrade = S.nvoGrade || '7';
+  const isNvo = subj === 'math' && !!getNvoProfile(subj, nvoGrade);
+  const sm = isNvo ? nvoSummary(subj, nvoGrade) : subjectSummary(subj), sub = SUBJECTS[subj];
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color));
   const list = sm.list.slice().sort((a, b) => (a.status === 'strong') - (b.status === 'strong') || b.lost - a.lost);
   const kept = 1 - sm.lost / sm.total, started = sm.answered > 0;
@@ -34,9 +41,10 @@ SCREENS.home = async el => {
     </header>
     <section class="pad">
       ${subjectTabs(subj)}
+      ${isNvo ? nvoGradeTabs(nvoGrade) : ''}
       <div class="card losscard">
         ${ring(started ? kept : 0, started ? '−' + fmt1(sm.lost) : '?', 'big')}
-        <div><span class="kicker">${L('Матура · {s}', { s: esc(L(sub.title)) })}</span>
+        <div><span class="kicker">${isNvo ? esc(L(sm.profile.title)) : L('Матура · {s}', { s: esc(L(sub.title)) })}</span>
           ${started ? `<h1>${L('Губиш ≈ {a} от {b} т.', { a: fmt1(sm.lost), b: sm.total })}</h1><p class="muted">${L('в тези теми на ДЗИ. Тренираме само там, където губиш най-много — силното не го повтаряме.')}</p>`
             : `<h1>${L('Къде губиш точки?')}</h1><p class="muted">${L('Кратка диагностика (≈5 мин): по една задача за всяка тема. После тренираш само слабото.')}</p>`}
         </div>
@@ -52,17 +60,18 @@ SCREENS.home = async el => {
     </section>`;
   el.onchange = e => {
     const s = e.target.closest('#subjSelect'); if (s && SUBJECTS[s.value]) { S.subject = s.value; saveState(); return refresh(); }
+    const n = e.target.closest('#nvoSelect'); if (n) { S.nvoGrade = n.value; saveState(); return refresh(); }
   };
   el.addEventListener('click', async e => {
     const g = e.target.closest('[data-go]'); if (g) return go(g.dataset.go);
-    const st = e.target.closest('[data-start]'); if (st) return go('session', { subj, mode: st.dataset.start });
+    const st = e.target.closest('[data-start]'); if (st) return go('session', { subj, mode: st.dataset.start, grade: isNvo ? nvoGrade : undefined });
     if (e.target.closest('[data-demo]')) { if (await loadDemoLearner()) { toast('Зареден е демо ученик с история от 6 дни'); refresh(); } return; }
-    const k = e.target.closest('[data-skill]'); if (k) return skillSheet(subj, k.dataset.skill);
+    const k = e.target.closest('[data-skill]'); if (k) return skillSheet(subj, k.dataset.skill, isNvo ? nvoGrade : undefined);
   });
 };
 
 /* A skill in detail: how sure we are, the mistakes, and a button to train only it */
-function skillSheet(subj, id) {
+function skillSheet(subj, id, grade) {
   const sk = skillDef(subj, id), st = skillState(subj, id), status = skillStatus(st);
   const miscs = Object.entries(st.misc).sort((a, b) => b[1] - a[1]);
   const spark = st.hist.length > 1 ? sparkline(st.hist.map(h => h[1])) : '';
@@ -73,7 +82,7 @@ function skillSheet(subj, id) {
       ${miscs.length ? `<h3>${L('Твоите типични грешки')}</h3><ul class="misclist">${miscs.map(([k, n]) => `<li><span class="rt">${richInline(miscLabel(k))}</span><b>×${n}</b></li>`).join('')}</ul>` : (st.n > st.ok ? `<p class="muted">${L(st.n - st.ok === 1 ? '{k} грешен отговор, но без разпозната типична грешка — виж обясненията след задачите.' : '{k} грешни отговора, но без разпозната типична грешка — виж обясненията след задачите.', { k: st.n - st.ok })}</p>` : `<p class="muted">${st.n ? L('Още няма грешки в тази тема.') : L('Още няма отговори в тази тема.')}</p>`)}
       <p class="muted small">${L('„Овладяно“ е вероятността да решиш вярно нова задача от темата (Bayesian Knowledge Tracing). Тежестта {w} т. е приблизителна оценка за демото.', { w: sk.weight })}</p></div>`,
     actions: [{ id: 'x', label: 'Затвори' }, { id: 'go', label: 'Тренирай само това', kind: 'primary', icon: 'target' }]
-  }).then(v => { if (v === 'go') go('session', { subj, mode: 'skill', skill: id }); });
+  }).then(v => { if (v === 'go') go('session', { subj, mode: 'skill', skill: id, grade }); });
 }
 function sparkline(vals) {
   const w = 280, hgt = 54, n = vals.length, x = i => 4 + i * (w - 8) / Math.max(1, n - 1), y = v => hgt - 4 - v * (hgt - 8);
