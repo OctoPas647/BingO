@@ -51,4 +51,5 @@
 - Build and test the Android APK after this wrapper cleanup: open the app, switch System/Light/Dark/AMOLED themes, import a module, export CSV, and test Android Back.
 
 ## Bugs
+- Fixed: the twin badge wording is subject-aware — Math keeps `Близнак: същото, нови числа`, while БЕЛ and other subjects show `Близнак: същата тема, нова задача`.
 - The fast-tap history edge case is addressed by 67-history-sync.js, but still needs a manual test on web and APK.
