@@ -51,3 +51,6 @@
 
 ## Bugs
 - The fast-tap history edge case is addressed by 67-history-sync.js, but still needs a manual test on web and APK.
+- Два грешни отговора с една и съща стойност (генератор по математика): fixed.
+  - Cause: `mcTask()` in `src/js/52-math.js` compared option text as raw strings, so mathematically equivalent values written differently (for example `0,5` and `\frac{1}{2}`) could both appear as choices.
+  - Fix: added `normalize()` and used it before duplicate checks in `mcTask()`, so LaTeX fractions, numbers with `{,}` decimal commas, and whitespace differences are compared by their canonical value.
