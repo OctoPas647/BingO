@@ -42,3 +42,5 @@
 
 ## Bugs
 - None known. Edge case: tapping very fast while a history rewind is running was not tested.
+- Feedback item 404c582c... (untitled, Low, 2026-10-25): no title or details, nothing to fix. Needs more info from you.
+- Feedback item 406c582c... "Да си тровиш живота (^ー^)" (Low, General, 2026-10-27): no details, needs your decision.
