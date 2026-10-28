@@ -5,6 +5,7 @@
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
   - Tests (diagnostic, focus, one topic): same look, but static. `.playbar .bar.pbar` has transitions and animations switched off in src/css/bingo.css. src/js/61-session.js is not changed.
+- Added НВО 4. клас Math past exams 2007-2016 (content/past-exams/nvo4-math-2007.json ... nvo4-math-2016.json): 170 questions. Official answer keys used for every year except 2013 (no key published, answers calculated and marked with a note).
 - 0.3.2 release prepared: version 0.3.1 -> 0.3.2, androidVersionCode 4 -> 5, CHANGELOG entry.
 - Fix: confetti no longer falls on the next screen. The result screen now removes the confetti canvas when you leave it (nav.onLeave in src/js/61-session.js).
 - Fix: the same question no longer repeats in one session. nextTask() remembers what was shown (prompt, options, answer), retries other seeds, then neighbouring levels, and only repeats if nothing new exists.
@@ -25,6 +26,15 @@
 ## Left
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
+- Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
+- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
+- Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in its file.
+- past.pages in the new files is the PDF page range, not the book page numbers used in the 2017+ files.
+
+## Left
+- Add the 25 drawing questions with their images (cropped from the PDFs).
+- Check the flagged formulas against the original PDFs.
+- Add НВО 4. клас БЕЛ 2007-2016 (separate PR).
 - After merge to main, check that the release has the new APK.
 - Manual test on web and APK.
 - Maybe add more variants to the small math generators.
