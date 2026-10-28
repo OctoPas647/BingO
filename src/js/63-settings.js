@@ -28,7 +28,7 @@ SCREENS.settings = async el => {
     <section class="card"><h3>${icon('info')}${L('За BingO')}</h3><p class="small"><b>BingO</b> ${L('alpha · подготовка за матура без зубрене: работа върху слабите места, не повтаряне на силните.')}</p>
       <p class="muted small">${L('Построено върху Shelly (задачи, точкуване, модули) и идеи от BrainBurst, BandUp и SQL Practice. EduHack Plovdiv 2026.')}</p></section>
   </div>
-  <div class="fb-overlay" data-fb-overlay hidden style="position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:1000">
+  <div class="fb-overlay" data-fb-overlay style="position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:1000">
     <div class="fb-modal card" style="width:100%;max-width:420px;padding:16px">
       <h3>${icon('chat')}${L('Обратна връзка')}</h3>
       <label class="fld"><span>${L('Какво искаш да кажеш?')}</span>
@@ -43,15 +43,14 @@ SCREENS.settings = async el => {
   const feedbackEndpoint = () => st.proxyUrl ? st.proxyUrl.replace(/\/+$/, '') + '/api/feedback' : '';
   const openFeedback = () => {
     const overlay = el.querySelector('[data-fb-overlay]');
-    overlay.hidden = false;
+    overlay.style.display = 'flex';
     el.querySelector('[data-fb-text]').focus();
   };
   const closeFeedback = () => {
-    el.querySelector('[data-fb-overlay]').hidden = true;
+    el.querySelector('[data-fb-overlay]').style.display = 'none';
     el.querySelector('[data-fb-status]').textContent = '';
   };
   const sendFeedback = async () => {
-    const overlay = el.querySelector('[data-fb-overlay]');
     const button = el.querySelector('[data-fb-send]');
     const status = el.querySelector('[data-fb-status]');
     const text = el.querySelector('[data-fb-text]').value.trim();

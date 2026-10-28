@@ -56,7 +56,7 @@ const EN_UI = {
   'Всички теми са силни — няма какво да тренираме': 'All topics are strong — nothing to train', 'Няма нови задачи по тази тема': 'No new tasks for this topic',
   'Да спрем ли?': 'Stop here?', 'Отговорите досега вече са записани в картата на уменията.': 'Your answers so far are already saved in the skill map.', 'Спри': 'Stop',
   'Проверка на силно умение': 'Check of a strong skill', 'Близнак: същото, нови числа': 'Twin: same thing, new numbers', 'Ниво {n}': 'Level {n}',
-  'Задачата е създадена от ИИ и може да има грешка.': 'This task was made by AI and may contain a mistake.', 'Докладвай грешка': 'Report a mistake',
+  'Задачата е създадена от ИИ и може да има грешка.': 'This task was made by AI and may have a mistake.', 'Докладвай грешка': 'Report a mistake',
   'Подсказка от Gemini': 'Hint from Gemini', 'без отговора': 'without the answer', 'Провери': 'Check', 'Напред': 'Next', 'Виж резултата': 'See the result',
   'Вярно!': 'Correct!', 'Не съвсем': 'Not quite', 'Типична грешка': 'Typical mistake', 'Грешка': 'Mistake', 'Виж решението по-долу.': 'See the solution below.',
   '✦ Защо сгреших? Обясни Gemini': '✦ Why was I wrong? Ask Gemini', '✦ Подсказка': '✦ Hint', 'Какво се обърка': 'What went wrong', 'Провери се:': 'Check yourself:',
@@ -131,6 +131,14 @@ const EN_UI = {
   'Ключът не може да съдържа интервали': 'The key cannot contain spaces', 'Само латински букви, цифри, точка и тире (напр. gemini-3.8-flash)': 'Only Latin letters, digits, dot and dash (e.g. gemini-3.8-flash)',
   'Адресът трябва да започва с https://': 'The address must start with https://', 'Адресът трябва да започва с https://script.google.com/': 'The address must start with https://script.google.com/',
   'Невалидна стойност': 'Invalid value', 'Задължително поле': 'Required field', 'Невалидната стойност не е запазена': 'The invalid value was not saved',
+  'Обратна връзка': 'Feedback', 'Изпрати обратна връзка': 'Send feedback',
+  'Ако си офлайн, съобщението се пази на устройството и се изпраща автоматично по-късно.': 'If you are offline, your message stays on this device and is sent automatically later.',
+  'Какво искаш да кажеш?': 'What would you like to say?', 'Какво ти помогна, какво не стана или какво липсва?': 'What helped, what did not work, or what is missing?',
+  'Отказ': 'Cancel', 'Изпрати': 'Send', 'Напиши съобщение първо.': 'Write a message first.',
+  'Първо задай адреса на Vertex AI сървъра.': 'First set the Vertex AI server address.', 'Изпращане…': 'Sending…',
+  'Съобщението не може да се запази.': 'The message cannot be saved.',
+  'Благодаря! Обратната връзка е изпратена.': 'Thank you! Your feedback has been sent.',
+  'Запазено е офлайн. Ще се изпрати автоматично.': 'Saved offline. It will be sent automatically.',
 
   /* demo and saved data */
   'Да заредим ли демо ученик?': 'Load a demo learner?',
