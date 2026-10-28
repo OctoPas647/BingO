@@ -149,3 +149,96 @@ function planDiagnostic(subj) { return SUBJECTS[subj].skills.map(sk => ({ skill:
 
 /* level 1..3 follows how well the skill is known */
 const levelFor = p => (p < 0.35 ? 1 : p < 0.7 ? 2 : 3);
+
+/* ---------- NVO profiles ----------
+   НВО 4/7/10 must not reuse the Matura skill map directly: each grade has its own
+   priorities and its own idea of an easy, medium and hard task. These profiles select
+   which existing skills matter for each grade and how quickly their difficulty rises.
+   The NVO-specific task generators and topics are expanded in 52-math.js. */
+const NVO_PROFILES = {
+  math: {
+    '4': {
+      title: 'НВО 4. клас',
+      skills: [
+        { id: 'pct', name: 'Проценти', weight: 14 },
+        { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 },
+        { id: 'prob', name: 'Вероятности', weight: 10 }
+      ]
+    },
+    '7': {
+      title: 'НВО 7. клас',
+      skills: [
+        { id: 'quad', name: 'Квадратни уравнения', weight: 12 },
+        { id: 'pct', name: 'Проценти', weight: 10 },
+        { id: 'pow', name: 'Степени и корени', weight: 10 },
+        { id: 'lin', name: 'Линейни неравенства', weight: 10 },
+        { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 },
+        { id: 'prog', name: 'Аритметична прогресия', weight: 8 },
+        { id: 'prob', name: 'Вероятности', weight: 8 }
+      ]
+    },
+    '10': {
+      title: 'НВО 10. клас',
+      skills: [
+        { id: 'quad', name: 'Квадратни уравнения', weight: 14 },
+        { id: 'pow', name: 'Степени и корени', weight: 12 },
+        { id: 'lin', name: 'Линейни неравенства', weight: 12 },
+        { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 },
+        { id: 'prog', name: 'Аритметична прогресия', weight: 10 },
+        { id: 'prob', name: 'Вероятности', weight: 10 }
+      ]
+    }
+  }
+};
+
+function getNvoProfile(subj, grade) {
+  const profiles = NVO_PROFILES[subj] || {};
+  return profiles[String(grade)] || null;
+}
+
+/* Each NVO grade reaches higher levels at a different point: grade 4 stays easier
+   for longer, while grade 10 moves to harder tasks sooner. */
+const NVO_LEVELS = {
+  '4': { weak: 0.5, mid: 0.8 },
+  '7': { weak: 0.4, mid: 0.7 },
+  '10': { weak: 0.35, mid: 0.65 }
+};
+function levelForNvo(p, grade) {
+  const t = NVO_LEVELS[String(grade)] || NVO_LEVELS['7'];
+  return p < t.weak ? 1 : p < t.mid ? 2 : 3;
+}
+
+function nvoSummary(subj, grade) {
+  const profile = getNvoProfile(subj, grade);
+  if (!profile) return null;
+  const list = profile.skills.map(sk => {
+    const st = skillState(subj, sk.id);
+    return { sk, st, status: skillStatus(st), lost: pointsLost(sk, st) };
+  });
+  const total = sum(list.map(x => x.sk.weight)), lost = sum(list.map(x => x.lost)), answered = sum(list.map(x => x.st.n));
+  return { profile, grade: String(grade), list, total, lost, answered, diagnosed: list.every(x => x.st.n >= 1) };
+}
+
+/* NVO training: same weak-first idea as the Matura plan, but weighted and levelled
+   for the selected НВО 4/7/10 profile. */
+function planSessionNvo(subj, grade, size = 8) {
+  const sum_ = nvoSummary(subj, grade);
+  if (!sum_) return { plan: [], focus: [], check: null };
+  const open = sum_.list.filter(x => x.status !== 'strong').map(x => ({ ...x, prio: x.lost * (x.st.n < 2 ? 1.3 : 1) })).sort((a, b) => b.prio - a.prio);
+  const focus = open.slice(0, Math.min(open.length, open.length > 3 ? 3 : open.length));
+  const plan = [];
+  if (focus.length) {
+    const shares = focus.length === 1 ? [size] : focus.length === 2 ? [Math.ceil(size * 0.6), Math.floor(size * 0.4)] : [Math.ceil(size * 0.5), Math.round(size * 0.3), 0];
+    shares[shares.length - 1] = size - sum(shares.slice(0, -1));
+    const queues = focus.map((f, i) => Array.from({ length: shares[i] }, () => f.sk.id));
+    while (queues.some(q => q.length)) queues.forEach(q => { if (q.length) plan.push({ skill: q.shift(), why: 'focus' }); });
+  }
+  const due = sum_.list.filter(x => x.status === 'strong' && Date.now() - x.st.last > CHECK_AFTER).sort((a, b) => a.st.last - b.st.last)[0];
+  if (due) plan.splice(Math.min(3, plan.length), 0, { skill: due.sk.id, why: 'check' });
+  return { plan, focus: focus.map(f => f.sk.id), check: due ? due.sk.id : null };
+}
+
+function planDiagnosticNvo(subj, grade) {
+  const profile = getNvoProfile(subj, grade);
+  return profile ? profile.skills.map(sk => ({ skill: sk.id, why: 'diag' })) : [];
+}
