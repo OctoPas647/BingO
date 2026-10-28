@@ -136,6 +136,13 @@ with sync_playwright() as pw:
     bad = p.evaluate("Array.from({length: 300}, (_, i) => genMathTask('quad', 1, i).explain).filter(e => /\\d--\\d/.test(e)).length")
     ok('quad explanation: no double minus', bad == 0, str(bad))
     ctx.close()
+
+    # 11. past exam results survive a restart; broken entries are dropped
+    saved = {**DONE, 'pastResults': {'dzi12-math-2020-06-02-v2': {'pts': 82.5, 'max': 100, 'at': 1760000000000}, 'bad': {'pts': 'x', 'max': 100, 'at': 1}}}
+    ctx, p = fresh(b, state=saved)
+    ok('past results: kept after restart', p.evaluate("S.pastResults['dzi12-math-2020-06-02-v2']?.pts") == 82.5)
+    ok('past results: bad entry dropped', p.evaluate("S.pastResults.bad") is None)
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')
