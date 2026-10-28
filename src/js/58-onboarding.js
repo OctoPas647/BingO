@@ -101,7 +101,8 @@ const obActive = step => !step.when || step.when();
 
 /* ---------- state helpers ---------- */
 const obState = () => {
-  const o = S.onboarding || (S.onboarding = { done: false, step: 0 });
+  const o = S.onboarding || (S.onboarding = { done: false, step: 0, displayStep: 1 });
+  if (!o.displayStep) o.displayStep = 1;
   o.step = clamp(o.step | 0, 0, ONBOARD.steps.length - 1);
   return o;
 };
@@ -109,12 +110,19 @@ const obStep = () => ONBOARD.steps[obState().step];
 const obGet = path => path.split('.').reduce((o, k) => (o == null ? o : o[k]), S);
 function obSet(path, val) { const p = path.split('.'), k = p.pop(); p.reduce((o, x) => o[x], S)[k] = val; }
 const obVisible = (f, d) => !f.showIf || f.showIf(d);
+/* The counter follows the screens the learner actually sees. Conditional steps can be skipped,
+   but they must not make the displayed number jump by more than one. */
+function obRouteLength() {
+  let n = 0;
+  for (const step of ONBOARD.steps) if (obActive(step)) n++;
+  return n;
+}
 
 /* ---------- logic ---------- */
 function onboardingNeeded() {
   if (S.onboarding) return !S.onboarding.done;
   if (S.log.length || S.sessions || (S.profile && S.profile.name)) {
-    S.onboarding = { done: true, step: 0, existing: true }; saveState(true); return false;
+    S.onboarding = { done: true, step: 0, displayStep: 1, existing: true }; saveState(true); return false;
   }
   return true;
 }
@@ -148,7 +156,9 @@ function obMove(dir) {
   const o = obState(), last = ONBOARD.steps.length - 1;
   let i = clamp(o.step + dir, 0, last);
   while (i > 0 && i < last && !obActive(ONBOARD.steps[i])) i += dir;   /* steps that don't apply are passed over */
-  o.step = i; saveState(true);
+  o.step = i;
+  o.displayStep = clamp((o.displayStep || 1) + dir, 1, ONBOARD.steps.length);
+  saveState(true);
   return { ok: true, done: false, step: o.step };
 }
 
@@ -167,11 +177,11 @@ function onboardingSkip() {
   return obMove(1);
 }
 function onboardingFinish() {
-  const o = obState(); o.done = true; o.finishedAt = Date.now(); saveState(true);
+  const o = obState(); o.done = true; o.finishedAt = Date.now(); o.displayStep = obRouteLength(); saveState(true);
   return { ok: true, done: true };
 }
 let _obShown = 0;   /* last drawn bar fraction, so the intro bar animates from there to the new step */
-function onboardingRestart() { S.onboarding = { done: false, step: 0 }; _obShown = 0; saveState(true); }
+function onboardingRestart() { S.onboarding = { done: false, step: 0, displayStep: 1 }; _obShown = 0; saveState(true); }
 
 /* "Clear my answers" keeps the profile and settings, so it must keep the setup state too */
 const _resetStateBase = resetState;
@@ -193,7 +203,7 @@ window.__back = () => {
 SCREENS.onboarding = async el => {
   el.style.setProperty('--accent', SUBJECTS[S.subject].color); el.style.setProperty('--accent-ink', inkOn(SUBJECTS[S.subject].color));
   const o = obState(), step = obStep(), isLast = o.step >= ONBOARD.steps.length - 1;
-  const shown = ONBOARD.steps.filter(obActive), n = shown.length, pos = shown.indexOf(step) + 1;
+  const n = obRouteLength(), pos = clamp(o.displayStep || 1, 1, n);
   const d = {}; step.fields.forEach(f => { const v = obGet(f.path); d[f.key] = v == null ? '' : v; });
   let errors = {};
   const fieldHtml = f => {
