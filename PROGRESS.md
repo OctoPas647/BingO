@@ -1,7 +1,11 @@
 # Progress
 
 ## Done
-- Fix: strict text answers that contain a whole sentence no longer fail only because of capitalization, final punctuation, outer quotation marks, or dash/quote variants. `engine/js/03-scoring.js` now uses sentence-aware normalization for strict `text` and `gaps` answers when either the response or accepted answer is a full sentence. Internal punctuation and word order still matter.
+- Fix: strict text answers that contain a whole sentence no longer fail only because of capitalization, final punctuation, outer quotation marks, or dash/quote variants. `engine/js/03-scoring.js` now uses sentence-aware normalization for strict standalone `text` answers when either the response or accepted answer is a full sentence. Internal punctuation and word order still matter; `gaps` keep their previous strict behavior.
+- Removed the AI/API onboarding screen: the `ai` step in src/js/58-onboarding.js no longer appears during first-run setup. AI configuration is no longer shown at startup, but remains fully accessible via the Settings menu.
+- Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
+  - Cause: `syncHistory()` removed the history trap with `history.back()`, but the sheet callback called `go()` before that back was processed. `render()` then pushed a new trap, which the queued back removed; browser Back could then leave the app.
+  - Fix: `src/js/67-history-sync.js` delays history syncing while `histSkip > 0` and applies the pending sync after the queued `popstate`.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -17,9 +21,12 @@
 
 ## Decisions
 - Strict full-sentence checking is deliberately not semantic: it accepts casing, final punctuation, outer quotes, and dash/quote variants, but still requires the same words and internal punctuation.
-- Single-word strict answers remain exactly matched after whitespace trimming, preserving the existing strict behavior.
+- Single-word strict answers and gap blanks remain exactly matched after whitespace trimming, preserving the existing strict behavior.
+- The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
+- The sheet history fix lives in BingO's own src/ (67-history-sync.js), not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
+- The old fix/browser-back branch and src/js/66-history.js are not reused: they assume one history entry per screen, while the current engine keeps one trap entry.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
-- Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
+- Progress bar uses var(--good) so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
 - Release and APK are built by the Build workflow (.github/workflows/build.yml) after merge to main.
@@ -45,4 +52,4 @@
 - Build and test the Android APK after this wrapper cleanup: open the app, switch System/Light/Dark/AMOLED themes, import a module, export CSV, and test Android Back.
 
 ## Bugs
-- None known. Edge case: tapping very fast while a history rewind is running was not tested.
+- The fast-tap history edge case is addressed by 67-history-sync.js, but still needs a manual test on web and APK.
