@@ -15,11 +15,11 @@ const ICONS = {
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.6v.4"/>', clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   flag: '<path d="M5 21V4M5 4h12l-2.5 4 2.5 4H5"/>', grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',
   play: '<path d="M8 5l11 7-11 7z" fill="currentColor"/>', pause: '<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor" stroke="none"/>',
-  book: '<path d="M4 19V6a2 2 0 0 1 2-2h14v13H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h14"/>', layers: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+  book: '<path d="M4 19V6a2 2 0 0 1 2-2h14v13H6a1 1 0 0 0-2 0zm0 0a2 2 0 0 0 2 2h14"/>', layers: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
   trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8M10 17h4v3h-4z"/>',
   bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.8 10.6c.6.5.8 1.3.8 2.4h6c0-1.1.2-1.9.8-2.4A6 6 0 0 0 12 3z"/>', pen: '<path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"/>',
   text: '<path d="M5 6h14M5 10h14M5 14h9M5 18h11"/>', eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
-  file: '<path d="M6 3h8l4 4v14H6zM14 3v4h4"/>', image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>',
+  file: '<path d="M6 3h8l4 4v14H6zM14 3v4h4"/>', image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><circle cx="12" cy="12" r="3"/>',
   sound: '<path d="M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>', target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/>',
   globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>', moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/>'
 };
@@ -32,11 +32,27 @@ const icon = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-h
    screen) means in-app back buttons and home() can never leave stale entries behind, which made the
    browser's back button seem stuck and then suddenly leave the app. */
 const SCREENS = {}, NAV = [];
-let root, histTrap = false, histSkip = 0;
+let root, histTrap = false, histSkip = 0, trapBackPending = false, trapBackToken = 0;
 const needTrap = () => NAV.length > 1 || overlays.length > 0;
 function syncHistory() {
+  /* A trap removal is still running: do not push or remove another entry until its popstate arrives. */
+  if (trapBackPending) return;
   if (needTrap() && !histTrap) { history.pushState({ trap: 1 }, ''); histTrap = true; }
-  else if (!needTrap() && histTrap) { histTrap = false; histSkip++; history.back(); }
+  else if (!needTrap() && histTrap) {
+    trapBackPending = true;
+    const token = ++trapBackToken;
+    histSkip++;
+    history.back();
+    /* Safety net: if the popstate never arrives, stop waiting instead of leaving histSkip stuck. */
+    setTimeout(() => {
+      if (trapBackPending && trapBackToken === token) {
+        trapBackPending = false;
+        if (histSkip > 0) histSkip--;
+        histTrap = false;
+        syncHistory();
+      }
+    }, 1000);
+  }
 }
 function go(screen, params = {}, opt = {}) {
   const cur = NAV[NAV.length - 1];
@@ -59,7 +75,12 @@ function home() { while (NAV.length > 1) leave(NAV.pop()); render(); }
 /* Android's back button: 'h' means the app handled it; '' lets Android close the app */
 window.__back = () => { if (!overlays.length && NAV.length <= 1) return ''; back(); return 'h'; };
 window.addEventListener('popstate', async () => {
-  if (histSkip) { histSkip--; return; } /* our own history.back() from syncHistory */
+  if (histSkip > 0) {
+    histSkip--;
+    /* This popstate is our own trap removal, not a user Back: resync without popping NAV. */
+    if (trapBackPending) { trapBackPending = false; histTrap = false; syncHistory(); }
+    return;
+  }
   histTrap = false;
   await back();
   syncHistory();
@@ -120,7 +141,6 @@ function moduleLook(el, m) { el.style.setProperty('--accent', m.color); el.style
 function inkOn(hex) { const n = parseInt(hex.slice(1), 16), r = (n >> 16) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255; return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.6 ? '#1B1A22' : '#FFFFFF'; }
 
 /* ---------- sound (tiny synth, no files) ---------- */
-let actx = null;
 function sound(kind) {
   if (!APP.settings.sound) return;
   try {
@@ -130,7 +150,8 @@ function sound(kind) {
       const o = actx.createOscillator(), g = actx.createGain(), t0 = actx.currentTime + at;
       o.type = kind === 'wrong' ? 'triangle' : 'sine'; o.frequency.value = f;
       g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.18, t0 + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.22);
-      o.connect(g).connect(actx.destination); o.start(t0); o.stop(t0 + 0.25);
+      o.connect(g).connect(actx.destination);
+      o.start(t0); o.stop(t0 + 0.25);
     }
   } catch (e) { }
 }

@@ -7,6 +7,7 @@ Also includes everything from 0.4.1 (past math exams in English), which was neve
 - **НВО 4. клас Математика 2007–2016**: 10 more past exams (170 questions) with the official keys
 - **ДЗИ Математика 02.06.2020, вариант 2**: 28 tasks, 100 points, with 5 redrawn figures and the official solutions for tasks 26–28
 - **Past math exams in English** (from 0.4.1): with the app in English, all 16 ДЗИ papers (2019–2026) and НВО 10 from 2021–2024 open in English; exams without a translation are marked **BG**
+- **Bottom menu + browser Back**: tapping Начало and then Статистики/Профил very quickly no longer confuses the browser history, so Back returns to Начало instead of closing the app
 
 ## 0.4.1
 - **Past math exams in English**: with the app in English, 20 math exams open in English — all 16 ДЗИ papers (2019–2026) and НВО 10 from 2021–2024. Answers are checked against the same official key; your results are shared between the two languages
