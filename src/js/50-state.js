@@ -50,12 +50,24 @@ function cleanSkill(st) {
     hist: Array.isArray(st.hist) ? st.hist.filter(h => Array.isArray(h) && isNum(h[0]) && isNum(h[1])).slice(-60) : []
   };
 }
+function cleanProfile(p, d) {
+  const text = (v, max) => isStr(v) ? v.slice(0, max) : '';
+  return {
+    name: text(p.name, 40),
+    cls: text(p.cls, 10),
+    age: text(p.age, 3),
+    exam: ['nvo4', 'nvo7', 'nvo10', 'dzi12'].includes(p.exam) ? p.exam : '',
+    track: text(p.track, 40),
+    extra: text(p.extra, 40),
+    id: isStr(p.id) && p.id ? p.id : d.profile.id
+  };
+}
 function sanitizeState(v) {
   const d = DEFAULT_STATE();
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  out.profile = cleanProfile(prof, d);
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
@@ -68,6 +80,10 @@ function sanitizeState(v) {
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
+  out.pastResults = {};
+  if (isObj(v.pastResults)) for (const [id, r] of Object.entries(v.pastResults)) {
+    if (isStr(id) && isObj(r) && isNum(r.pts) && isNum(r.max) && r.max > 0 && isNum(r.at)) out.pastResults[id] = { pts: r.pts, max: r.max, at: r.at };
+  }
   return out;
 }
 const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
@@ -122,6 +138,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
   });
 }

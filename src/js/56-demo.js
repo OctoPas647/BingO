@@ -45,7 +45,7 @@ function simulateLearner({ truth = DEMO_TRUE, name = 'Демо ученик', cl
 
 /* A class of 28 learners with different strengths, for the teacher's Looker Studio dashboard */
 function simulateClass(n = 28, seed = 'class') {
-  const r = seedRng(seed), names = ['Мария', 'Георги', 'Иван', 'Елена', 'Никола', 'Виктория', 'Александър', 'Йоана', 'Мартин', 'Габриела', 'Даниел', 'Симона', 'Петър', 'Десислава', 'Калоян', 'Рая', 'Стефан', 'Божидара', 'Христо', 'Теодора', 'Борис', 'Ивета', 'Кристиян', 'Николета', 'Радослав', 'Цветелина', 'Васил', 'Михаела'];
+  const r = seedRng(seed), names = ['Мария', 'Георги', 'Иван', 'Елена', 'Никола', 'Виктория', 'Александър', 'Йоана', 'Мартин', 'Габриела', 'Даниел', 'Симона', 'Петър', 'Десислава', 'Калоян', 'Рая', 'Стефан', 'Божидара', 'Христос', 'Теодора', 'Борис', 'Ивета', 'Кристиан', 'Николета', 'Радослав', 'Цветелина', 'Васил', 'Михаела'];
   const out = [];
   for (let i = 0; i < n; i++) {
     const truth = {};
@@ -56,26 +56,36 @@ function simulateClass(n = 28, seed = 'class') {
 }
 
 /* ---------- loading the demo learner without losing a real learner's progress ----------
-   The demo replaces the skill map and the answers. If there is real progress, ask first and keep
-   a copy under its own key, so "Върни моите отговори" in Settings can bring it back. */
+   The demo replaces the skill map and the answers. A real learner's state is always backed up
+   first; a demo state is never allowed to replace that backup. */
 const DEMO_BACKUP_KEY = STORE_KEY + '.before-demo';
-const hasRealProgress = () => S.sessions > 0 || S.log.some(r => r.student_id !== 'demo');
+const DEMO_BACKUP_REAL_KEY = STORE_KEY + '.before-demo.real';
+const stateIsDemo = () => S.profile.id === 'demo' || (S.log.length > 0 && S.log.every(r => r.student_id === 'demo'));
 const demoBackupExists = () => { try { return !!localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return false; } };
+const demoBackupIsReal = () => { try { return localStorage.getItem(DEMO_BACKUP_REAL_KEY) === '1'; } catch (e) { return false; } };
+function backupRealState() {
+  if (stateIsDemo()) return true;
+  try {
+    localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S));
+    localStorage.setItem(DEMO_BACKUP_REAL_KEY, '1');
+    return true;
+  } catch (e) { return false; }
+}
 async function loadDemoLearner() {
-  if (hasRealProgress()) {
+  if (!stateIsDemo()) {
     const ok = await confirmBox(L('Да заредим ли демо ученик?'), L('Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.'), L('Зареди демото'));
     if (!ok) return false;
-    try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S)); }
-    catch (e) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
+    if (!backupRealState()) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
   }
   simulateLearner();
   return true;
 }
 function restoreFromDemo() {
+  if (!demoBackupExists() || !demoBackupIsReal()) return false;
   let raw = null; try { raw = localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { }
   if (!raw) return false;
   try { S = sanitizeState(JSON.parse(raw)); } catch (e) { return false; }
   saveState(true);
-  try { localStorage.removeItem(DEMO_BACKUP_KEY); } catch (e) { }
+  try { localStorage.removeItem(DEMO_BACKUP_KEY); localStorage.removeItem(DEMO_BACKUP_REAL_KEY); } catch (e) { }
   return true;
 }

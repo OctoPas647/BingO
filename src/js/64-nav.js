@@ -14,8 +14,8 @@ const tabBar = cur => `<nav class="tabbar" aria-label="${L('Основно ме�
 
 function goTab(from, to) {
   if (to === from) return;
-  if (to === 'home') return home();
-  go(to, {}, from === 'home' ? {} : { replace: true });
+  if (to === 'home') return backTo('home');
+  go(to, {}, { replace: from !== 'home' });
 }
 
 /* ---------- numbers shared by Stats and Profile ---------- */

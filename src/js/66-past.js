@@ -57,6 +57,14 @@ function pastSheet(subj) {
   }).then(v => { if (v && v !== 'x' && pastById(v)) go('pastexam', { id: v }); });
 }
 
+/* A clear fallback rubric for a 30-point essay / ЛИС when the exam file does not provide one. */
+const ESSAY_RUBRIC_30 = [
+  { text: 'Съдържание и аргументация: отговаря на темата, има ясна позиция и подкрепящи примери.', points: 10 },
+  { text: 'Структура и свързаност: въведение, развитие и заключение; логични връзки между частите.', points: 7 },
+  { text: 'Езикова грамотност: правопис, пунктуация, словообразуване и подходящ речников запас.', points: 7 },
+  { text: 'Формат и изисквания: обем, стил и съответствие с поставената задача.', points: 6 }
+];
+
 SCREENS.pastexam = async (el, { id }, nav) => {
   const m = pastById(id); if (!m) return back();
   const sub = SUBJECTS[m.past.subj], x = m.exams[0], Q = pastTasks(m);
@@ -69,7 +77,12 @@ SCREENS.pastexam = async (el, { id }, nav) => {
   nav.guard = async () => P.done || !P.touched || confirmBox(L('Да спрем ли?'), L('Резултатът от този изпит няма да се запази.'), L('Спри'), true);
   let view = null, task = null, rubric = null;
   const paintCount = () => { el.querySelector('.pcount').textContent = `${P.i + 1} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
-  const upd = () => { if (P.phase === 'answer') btn.disabled = !(view.ready() || task.type === 'order' || task.type === 'open'); P.touched = P.touched || view.ready(); };
+  const upd = () => {
+    if (P.phase !== 'answer') return;
+    if (task.type === 'open') btn.disabled = !String(view.get().text || '').trim();
+    else btn.disabled = !(view.ready() || task.type === 'order');
+    P.touched = P.touched || !btn.disabled;
+  };
 
   function showTask() {
     const { task: t, part } = Q[P.i]; task = t; P.phase = 'answer'; rubric = null;
@@ -83,9 +96,12 @@ SCREENS.pastexam = async (el, { id }, nav) => {
   }
 
   function check() {
-    P.phase = 'next'; P.touched = true;
     const fb = view.el.querySelector('.fb');
     if (task.type === 'open') {
+      const answer = view.get();
+      if (!String(answer.text || '').trim()) { toast(L('Напиши отговор, преди да се оцениш.'), 'bad'); return; }
+      if (task.points >= 30 && (!Array.isArray(task.rubric) || !task.rubric.length)) task.rubric = ESSAY_RUBRIC_30;
+      P.phase = 'next'; P.touched = true;
       view.show({ status: 'ungraded' });
       /* pictures that belong to the official solution (a drawing in the key), shown only after the answer */
       if (task.solutionMedia && task.solutionMedia.length) { fb.insertAdjacentHTML('beforeend', `<div class="task-media">${blocksHTML(task.solutionMedia)}</div>`); hydrateMedia(fb, m.id); }
@@ -93,6 +109,7 @@ SCREENS.pastexam = async (el, { id }, nav) => {
       fb.hidden = false; fb.appendChild(rubric.el);
       verdict.innerHTML = `${icon('info')}<span><b>${L('Оцени се сам')}</b><small>${L('по официалния отговор и критериите')}</small></span>`;
     } else {
+      P.phase = 'next'; P.touched = true;
       const res = scoreTask(task, view.get(), m.lang || 'bg'), right = res.status === 'right';
       P.got[P.i] = res.points;
       view.show(res); sound(right ? 'right' : 'wrong');
