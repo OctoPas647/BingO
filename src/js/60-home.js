@@ -4,7 +4,13 @@ const pctTxt = p => Math.round(p * 100) + '%';
 const SRC_LABEL = { gen: 'Нов вариант', shelly: 'От Shelly', bank: 'Банка задачи', ai: 'Създадена от ИИ' };
 
 function subjectTabs(cur) {
-  return `<label class="subj-pick"><span class="kicker">${L('Предмет за матура')}</span><span class="selwrap"><select class="field subj-select" id="subjSelect" aria-label="${L('Избери предмет за матура')}">${Object.values(SUBJECTS).map(s => `<option value="${s.id}"${s.id === cur ? ' selected' : ''}>${s.icon} ${esc(L(s.title))}</option>`).join('')}</select></span></label>`;
+  /* show the matura the learner plans to take; keep the current one visible even if it has no tasks yet */
+  const planned = myMatura().filter(m => m.ready || m.id === cur);
+  const opts = planned.map(m => {
+    const s = SUBJECTS[m.id];
+    return `<option value="${s.id}"${s.id === cur ? ' selected' : ''}>${s.icon} ${esc(L(s.title))}</option>`;
+  }).join('');
+  return `<label class="subj-pick"><span class="kicker">${L('Предмет за матура')}</span><span class="selwrap"><select class="field subj-select" id="subjSelect" aria-label="${L('Избери предмет за матура')}">${opts}</select></span></label>`;
 }
 
 function skillRow(subj, x) {

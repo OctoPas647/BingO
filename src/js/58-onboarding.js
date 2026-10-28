@@ -95,6 +95,30 @@ function subjectOptions(track, extra) {
 const EXTRA_MATH = 'maths';
 const extraOptions = track => [[EXTRA_MATH, '📐 ' + L('Математика')], ...Object.entries(TRACKS).filter(([id]) => id !== track && id !== 'prof').map(([id, t]) => [id, t.icon + ' ' + L(t.title)])];
 const extraText = extra => (extra === EXTRA_MATH ? 'математика' : TRACKS[extra] ? TRACKS[extra].title.toLowerCase() + ' (профилиращ предмет)' : '');
+
+/* The matura the learner plans to take: БЕЛ, the profile's second one and the optional extra one.
+   `ready` is true only for subjects that already have tasks in the app (БЕЛ and mathematics);
+   the others are shown as "скоро" instead of being hidden. Used by Home and Stats. */
+function myMatura() {
+  const list = [{ id: 'bel', label: SUBJECTS.bel.title, ready: true }];
+  const add = (id, label, ready) => { if (label && !list.some(x => x.label === label)) list.push({ id, label, ready }); };
+  const t = TRACKS[S.profile.track];
+  if (S.profile.exam === 'dzi12' && t) {
+    if (trackHasMath(S.profile.track)) add('math', SUBJECTS.math.title, true);
+    else add('', t.title, false);
+  } else {
+    add('math', SUBJECTS.math.title, true);
+  }
+  const extra = S.profile.extra;
+  if (S.profile.exam === 'dzi12' && extra) {
+    if (extra === EXTRA_MATH) add('math', SUBJECTS.math.title, true);
+    else if (TRACKS[extra] && extra !== S.profile.track) {
+      const et = TRACKS[extra];
+      add(trackHasMath(extra) ? 'math' : '', et.title, trackHasMath(extra));
+    }
+  }
+  return list;
+}
 const obText = v => (typeof v === 'function' ? v() : v);
 const obTitle = step => obText(step.title);
 const obActive = step => !step.when || step.when();

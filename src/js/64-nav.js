@@ -6,7 +6,7 @@
 Object.assign(ICONS, {
   home: '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/>',
   chart: '<path d="M5 20V10M12 20V4M19 20v-7"/>',
-  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0 8 8 0 0 1-16 0z"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/>'
 });
 
 const TABS = [['home', 'home', 'Начало'], ['stats', 'chart', 'Статистики'], ['profile', 'user', 'Профил']];
@@ -36,11 +36,18 @@ function activity() {
 const accOf = rows => rows.length ? rows.filter(r => r.correct).length / rows.length : 0;
 function setAccent(el) { const sub = SUBJECTS[S.subject]; el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); }
 
-/* ---------- Статистики: one card per matura ---------- */
+/* ---------- Статистики: one card per matura the learner plans to take ---------- */
 SCREENS.stats = async el => {
   setAccent(el);
   const act = activity(), total = S.log.length, max = Math.max(1, ...act.week.map(w => w.n));
-  const cards = Object.values(SUBJECTS).map(sub => {
+  const cards = myMatura().map(m => {
+    if (!m.ready) {
+      return `<article class="card statcard" style="--accent:#6B7280;--accent-ink:#FFFFFF">
+        <div class="stat-head"><div><span class="kicker">${L('Матура')}</span><h3>${esc(L(m.label))}</h3>
+          <p class="muted small">${L('Още няма задачи за тази матура.')}</p></div></div>
+        <button class="btn ghost block" disabled>${L('Скоро')}</button></article>`;
+    }
+    const sub = SUBJECTS[m.id];
     const sm = subjectSummary(sub.id), rows = S.log.filter(r => r.subject === sub.title), started = sm.answered > 0, kept = sm.total - sm.lost;
     const cnt = { strong: 0, mid: 0, weak: 0, new: 0 }; sm.list.forEach(x => cnt[x.status]++);
     const worst = sm.list.filter(x => x.status !== 'strong').sort((a, b) => b.lost - a.lost).slice(0, 3);

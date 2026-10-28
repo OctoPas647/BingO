@@ -55,7 +55,16 @@ function sanitizeState(v) {
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  /* keep the planned matura too: exam, track and extra decide which cards the learner sees */
+  out.profile = {
+    name: isStr(prof.name) ? prof.name.slice(0, 40) : '',
+    cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '',
+    id: isStr(prof.id) && prof.id ? prof.id : d.profile.id,
+    age: isStr(prof.age) && /^\d{1,2}$/.test(prof.age) ? prof.age : '',
+    exam: isStr(prof.exam) && /^(nvo4|nvo7|nvo10|dzi12)$/.test(prof.exam) ? prof.exam : '',
+    track: isStr(prof.track) && /^[a-z]{3,20}$/.test(prof.track) ? prof.track : '',
+    extra: isStr(prof.extra) && /^[a-z]{3,20}$/.test(prof.extra) ? prof.extra : ''
+  };
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
@@ -122,6 +131,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
   });
 }
