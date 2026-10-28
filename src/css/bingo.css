@@ -110,3 +110,24 @@
 .ob-card .seg button:disabled { opacity: .55; }
 .ob-err { color: var(--bad); font-weight: 700; margin: -2px 2px 6px; }
 .ob-actions { display: grid; margin-top: 8px; }
+
+/* Duolingo-style progress bar */
+.duo, .playbar .bar.pbar { flex: 1; height: 16px; border-radius: 99px; background: var(--surface-3); overflow: hidden; position: relative; }
+.duo > i, .playbar .bar.pbar > i { display: block; height: 100%; min-width: 16px; border-radius: 99px; background: var(--good); position: relative; }
+.duo > i::after, .playbar .bar.pbar > i::after { content: ''; position: absolute; left: 8px; right: 8px; top: 4px; height: 4px; border-radius: 99px; background: rgba(255,255,255,.35); }
+
+/* intro only: animated */
+.duo.anim > i { transition: width .7s cubic-bezier(.34, 1.56, .64, 1); overflow: hidden; }
+.duo.anim > i::before { content: ''; position: absolute; inset: 0; width: 40%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent); animation: duo-shimmer 2.2s ease-in-out infinite; }
+.duo.full { animation: duo-pop .5s var(--ease) 1; }
+@keyframes duo-shimmer { from { transform: translateX(-120%); } to { transform: translateX(320%); } }
+@keyframes duo-pop { 50% { transform: scaleY(1.35); } }
+
+/* tests: no animation at all */
+.playbar .bar.pbar, .playbar .bar.pbar > i { transition: none !important; animation: none !important; }
+.playbar .bar.pbar > i::before { content: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .duo.anim > i { transition: none; }
+  .duo.anim > i::before, .duo.full { animation: none; }
+}
