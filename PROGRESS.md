@@ -1,6 +1,9 @@
 # Progress
 
 ## Done
+- Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
+  - Cause: `syncHistory()` removed the history trap with `history.back()`, but the sheet callback called `go()` before that back was processed. `render()` then pushed a new trap, which the queued back removed; browser Back could then leave the app.
+  - Fix: `src/js/67-history-sync.js` delays history syncing while `histSkip > 0` and applies the pending sync after the queued `popstate`.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,8 +17,10 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- The sheet history fix lives in BingO's own src/ (67-history-sync.js), not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
+- The old fix/browser-back branch and src/js/66-history.js are not reused: they assume one history entry per screen, while the current engine keeps one trap entry.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
-- Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
+- Progress bar uses var(--good) so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
 - Release and APK are built by the Build workflow (.github/workflows/build.yml) after merge to main.
@@ -41,4 +46,4 @@
 - Check the other 2020-2021 files (БЕЛ 01.06.2020, 27.08.2020, 19.05.2021, math 28.08.2020) against the repo; they look already added.
 
 ## Bugs
-- None known. Edge case: tapping very fast while a history rewind is running was not tested.
+- The fast-tap history edge case is addressed by 67-history-sync.js, but still needs a manual test on web and APK.
