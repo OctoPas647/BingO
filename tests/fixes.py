@@ -136,6 +136,16 @@ with sync_playwright() as pw:
     bad = p.evaluate("Array.from({length: 300}, (_, i) => genMathTask('quad', 1, i).explain).filter(e => /\\d--\\d/.test(e)).length")
     ok('quad explanation: no double minus', bad == 0, str(bad))
     ctx.close()
+
+    # 11. profile, past results and sync state survive a restart
+    state = {**DONE, 'profile': {**DONE['profile'], 'age': '17', 'exam': 'dzi12', 'track': 'soft', 'extra': 'maths'}, 'pastResults': {'x': {'pts': 80, 'max': 100, 'at': 1}}, 'sync': {'fails': 2, 'lastError': 'x', 'lastOk': 1, 'unverified': True}}
+    ctx, p = fresh(b, state=state)
+    p.reload(); p.wait_for_timeout(300)
+    prof = p.evaluate("S.profile")
+    ok('restart: profile kept', prof['age'] == '17' and prof['exam'] == 'dzi12' and prof['track'] == 'soft' and prof['extra'] == 'maths', str(prof))
+    ok('restart: past result kept', p.evaluate("S.pastResults.x.pts") == 80)
+    ok('restart: sync state kept', p.evaluate("S.sync.fails") == 2)
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')

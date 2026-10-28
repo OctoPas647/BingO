@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- Fix: student profile survives a restart. `sanitizeState()` in `src/js/50-state.js` now keeps and checks `profile.age`, `profile.exam`, `profile.track` and `profile.extra`, plus `pastResults` and the Sheets `sync` state. Regression check 11 added in `tests/fixes.py`.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).

@@ -41,6 +41,10 @@ const SETTING_OK = {
   sound: v => typeof v === 'boolean',
   lang: v => ['bg', 'en'].includes(v)
 };
+/* The exam/track/extra ids live in 58-onboarding.js, which loads after this file; keep the check
+   small here so a bad saved value cannot break startup. */
+const EXAM_OK = v => ['nvo4', 'nvo7', 'nvo10', 'dzi12'].includes(v);
+const ID_OK = v => isStr(v) && /^[a-z]{1,20}$/.test(v);
 function cleanSkill(st) {
   if (!isObj(st)) return null;
   const n = isNum(st.n) && st.n >= 0 ? Math.floor(st.n) : 0;
@@ -55,7 +59,13 @@ function sanitizeState(v) {
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  out.profile = {
+    name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '',
+    age: isStr(prof.age) && /^\d{1,2}$/.test(prof.age) ? prof.age : '',
+    exam: EXAM_OK(prof.exam) ? prof.exam : '',
+    track: ID_OK(prof.track) ? prof.track : '', extra: ID_OK(prof.extra) ? prof.extra : '',
+    id: isStr(prof.id) && prof.id ? prof.id : d.profile.id
+  };
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
@@ -68,6 +78,9 @@ function sanitizeState(v) {
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
+  out.pastResults = {};
+  if (isObj(v.pastResults)) for (const [id, r] of Object.entries(v.pastResults)) if (isObj(r) && isNum(r.pts) && isNum(r.max) && isNum(r.at)) out.pastResults[id] = { pts: r.pts, max: r.max, at: r.at };
+  if (isObj(v.sync)) out.sync = { fails: isNum(v.sync.fails) ? Math.max(0, Math.floor(v.sync.fails)) : 0, lastError: isStr(v.sync.lastError) ? v.sync.lastError.slice(0, 200) : '', lastOk: isNum(v.sync.lastOk) ? v.sync.lastOk : 0, unverified: !!v.sync.unverified };
   return out;
 }
 const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
