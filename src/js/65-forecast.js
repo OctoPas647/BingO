@@ -38,7 +38,9 @@ function forecast(subj) {
 const gradeText = f => { if (f.conf === 'low') return L('Оценка — след още няколко отговора'); const a = gradeOf(f.lo)[1], b = gradeOf(f.hi)[1]; return a === b ? a : a + ' – ' + b; };
 
 function fcScale(f) {
-  const ticks = MON_SCALE.map(b => [b.min, b.label]).filter(([v], i, a) => a.findIndex(x => x[0] === v) === i);
+  /* one tick per grade label, so Мн. добър 5 is shown once at 62.5, not again at 84 */
+  const ticks = [];
+  for (const b of MON_SCALE) if (!ticks.some(t => t[1] === b.label)) ticks.push([b.min, b.label]);
   const stops = MON_SCALE.map((b, i) => {
     const color = i < 1 ? 'var(--bad-bg)' : b.min < 95 ? 'var(--meh-bg)' : 'var(--good-bg)';
     const start = i ? MON_SCALE[i - 1].max + 0.25 : 0;
