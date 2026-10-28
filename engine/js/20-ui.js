@@ -5,7 +5,7 @@ function h(html) { const t = document.createElement('template'); t.innerHTML = h
 
 const ICONS = {
   back: '<path d="M15 18l-6-6 6-6"/>', next: '<path d="M9 18l6-6-6-6"/>', close: '<path d="M18 6L6 18M6 6l12 12"/>',
-  copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>', up: '<path d="M18 15l-6-6-6 6"/>', down: '<path d="M6 9l6 6 6-6"/>', plus: '<path d="M12 5v14M5 12h14"/>', check: '<path d="M20 6L9 17l-5-5"/>',
+  copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>', up: '<path d="M18 15l-6-6 6-6"/>', down: '<path d="M6 9l6 6 6-6"/>', plus: '<path d="M12 5v14M5 12h14"/>', check: '<path d="M20 6L9 17l-5-5"/>',
   more: '<circle cx="5" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.7" fill="currentColor" stroke="none"/>',
   settings: '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/>',
   flame: '<path d="M12 21a6 6 0 0 0 6-6c0-4-3-6-4-10-2 2-3 4-3 6-1-1-2-2-2-3-2 2-3 4-3 7a6 6 0 0 0 6 6z"/><path d="M12 21a2.5 2.5 0 0 1-2.5-2.5c0-1.5 1-2.5 2.5-4 1.5 1.5 2.5 2.5 2.5 4A2.5 2.5 0 0 1 12 21z"/>',
@@ -32,11 +32,24 @@ const icon = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-h
    screen) means in-app back buttons and home() can never leave stale entries behind, which made the
    browser's back button seem stuck and then suddenly leave the app. */
 const SCREENS = {}, NAV = [];
-let root, histTrap = false, histSkip = 0;
+let root, histTrap = false, trapBack = 0, syncTimer = 0;
 const needTrap = () => NAV.length > 1 || overlays.length > 0;
+/* Closing a sheet and opening a screen can happen in the same tick (for example
+   "Тренирай само това" in a skill sheet). Deferring the history update to the next
+   tick lets both actions settle, so an existing trap is kept instead of being removed
+   and pushed again. That race left browser history out of sync: Back could get stuck
+   or leave the app. history.back() runs only when the current entry really is the
+   app's own trap, and a time-limited guard replaces the old histSkip counter so a
+   missed popstate cannot swallow later Back presses forever. */
 function syncHistory() {
-  if (needTrap() && !histTrap) { history.pushState({ trap: 1 }, ''); histTrap = true; }
-  else if (!needTrap() && histTrap) { histTrap = false; histSkip++; history.back(); }
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => {
+    syncTimer = 0;
+    const want = needTrap(), isTrap = !!(history.state && history.state.trap);
+    if (want && !histTrap) { history.pushState({ trap: 1 }, ''); histTrap = true; }
+    else if (!want && histTrap && isTrap) { histTrap = false; trapBack = Date.now(); history.back(); }
+    else if (!want && histTrap) histTrap = false; /* the current entry is not ours; leave it alone */
+  }, 0);
 }
 function go(screen, params = {}, opt = {}) {
   const cur = NAV[NAV.length - 1];
@@ -59,7 +72,8 @@ function home() { while (NAV.length > 1) leave(NAV.pop()); render(); }
 /* Android's back button: 'h' means the app handled it; '' lets Android close the app */
 window.__back = () => { if (!overlays.length && NAV.length <= 1) return ''; back(); return 'h'; };
 window.addEventListener('popstate', async () => {
-  if (histSkip) { histSkip--; return; } /* our own history.back() from syncHistory */
+  if (trapBack && Date.now() - trapBack < 1000) { trapBack = 0; return; } /* our own history.back() removing the trap */
+  trapBack = 0;
   histTrap = false;
   await back();
   syncHistory();
@@ -117,7 +131,7 @@ function applySettings() {
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (APP.settings.theme === 'auto') applySettings(); });
 /* Module screens take the module's colour and language (so Cyrillic gets the right letter shapes) */
 function moduleLook(el, m) { el.style.setProperty('--accent', m.color); el.style.setProperty('--accent-ink', inkOn(m.color)); }
-function inkOn(hex) { const n = parseInt(hex.slice(1), 16), r = (n >> 16) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255; return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.6 ? '#1B1A22' : '#FFFFFF'; }
+function inkOn(hex) { const n = parseInt(hex.slice(1), 16), r = (n >> 16) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255; return 0.2126 * r + 0.7152 * g + 0.0726 * b > 0.6 ? '#1B1A22' : '#FFFFFF'; }
 
 /* ---------- sound (tiny synth, no files) ---------- */
 let actx = null;
