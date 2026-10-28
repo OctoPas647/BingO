@@ -32,6 +32,17 @@ const pastById = id => pastView(PAST.find(m => m.id === id));
 const pastTasks = m => m.exams[0].parts.flatMap(p => p.tasks.map(t => ({ task: t, part: p })));
 /* the MON scale (65-forecast.js) is for 100 points and holds for НВО 7, НВО 10 and ДЗИ */
 const pastGrade = (m, pts, max) => (m.past.exam !== 'dzi12' || !max ? '' : gradeOf(pts / max * 100)[1]);
+/* English UI title for a Bulgarian-only exam: translated metadata, not translated questions. */
+const pastTitle = m => {
+  const x = m.exams[0];
+  if (appLang() !== 'en' || m.lang === 'en') return x.title;
+  const p = m.past, bits = [L(EXAMS[p.exam]), L(SUBJECTS[p.subj].title)];
+  if (p.date) bits.push(p.date.split('-').reverse().join('.'));
+  else if (p.year) bits.push(String(p.year));
+  if (p.session) bits.push(L(p.session));
+  if (p.variant) bits.push(L('Вариант {n}', { n: p.variant }));
+  return bits.join(' · ');
+};
 
 /* the button on Home, under the training buttons */
 const _homePastBase = SCREENS.home;
@@ -50,7 +61,7 @@ function pastSheet(subj) {
     body: `<p class="muted">${esc(L(EXAMS[myExam()]))} · ${esc(L(SUBJECTS[subj].title))}. ${esc(L('Задачите са както на изпита; отговорите се проверяват по официалния ключ.'))}${appLang() === 'en' && list.some(m => m.lang !== 'en') ? ' ' + esc(L('Изпитите без английски превод са на български.')) : ''}</p>
       <div class="sklist">${list.map(m => {
         const x = m.exams[0], r = res[m.id];
-        return `<button class="skrow" data-act="${esc(m.id)}"><div class="sk-main"><b>${esc(x.title)}</b>
+        return `<button class="skrow" data-act="${esc(m.id)}"><div class="sk-main"><b>${esc(pastTitle(m))}</b>
           <small>${L('{n} задачи · {p} т.', { n: x.count, p: fmtPts(x.max, appLang()) })}${r ? L(' · последно: {p} т.', { p: fmtPts(r.pts, appLang()) }) : ''}${appLang() === 'en' && m.lang !== 'en' ? ' · BG' : ''}</small></div></button>`;
       }).join('')}</div>`,
     actions: [{ id: 'x', label: L('Затвори') }]
@@ -75,7 +86,7 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     const { task: t, part } = Q[P.i]; task = t; P.phase = 'answer'; rubric = null;
     view = taskView(task, m, { mode: 'practice', seed: id, onChange: upd });
     const first = part.tasks[0] === task;   /* the part's instructions, as on the exam sheet, before its first task */
-    main.innerHTML = `<div class="taskhead"><div class="chips"><i class="score">${esc(x.title)}</i><i>${esc(part.title || '')}</i><i>${L('Задача {n} · {p} т.', { n: esc(task.id.replace(/^q/, '')), p: fmtPts(task.points, lg) })}</i></div></div>
+    main.innerHTML = `<div class="taskhead"><div class="chips"><i class="score">${esc(pastTitle(m))}</i><i>${esc(L(part.title || ''))}</i><i>${L('Задача {n} · {p} т.', { n: esc(task.id.replace(/^q/, '')), p: fmtPts(task.points, lg) })}</i></div></div>
       ${first && part.instructions ? `<p class="muted rt">${richInline(part.instructions)}</p>` : ''}`;
     main.appendChild(view.el);
     window.scrollTo(0, 0); paintCount();
@@ -116,12 +127,12 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     (S.pastResults || (S.pastResults = {}))[id] = { pts, max, at: Date.now() }; saveState(true);
     const wrong = Q.map((q, i) => (q.task.type !== 'open' && (P.got[i] || 0) < q.task.points ? i + 1 : 0)).filter(Boolean);
     if (pts / max >= 0.7) { sound('done'); confetti(); }
-    el.querySelector('.playbar').outerHTML = topbar(esc(x.title), { closeIcon: true });
+    el.querySelector('.playbar').outerHTML = topbar(esc(pastTitle(m)), { closeIcon: true });
     foot.remove();
     main.innerHTML = `<div class="result pad">
       <div class="res-hero">${ring(pts / max, Math.round(pts / max * 100) + '%', 'big')}
         <h1>${L('{a} от {b} т.', { a: fmtPts(pts, lg), b: fmtPts(max, lg) })}</h1>
-        <p class="res-main">${grade ? `${L('По скалата на МОН:')} <b>${esc(grade)}</b>` : esc(x.title)}</p></div>
+        <p class="res-main">${grade ? `${L('По скалата на МОН:')} <b>${esc(grade)}</b>` : esc(pastTitle(m))}</p></div>
       ${wrong.length ? `<div class="card strongnote">${icon('target')}<div><b>${L('Сгрешени задачи с избор:')}</b><br><span class="muted">${wrong.join(', ')}</span></div></div>` : ''}
       <div class="res-actions"><button class="btn ghost" data-out>${L('Към картата')}</button><button class="btn accent" data-again>${icon('reset')}${L('Отначало')}</button></div></div>`;
     main.querySelector('[data-out]').onclick = () => home();

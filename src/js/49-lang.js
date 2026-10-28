@@ -36,7 +36,7 @@ const EN_UI = {
   'в тези теми на ДЗИ. Тренираме само там, където губиш най-много — силното не го повтаряме.': 'on these matura topics. We train only where you lose the most — what you know well is not repeated.',
   'Къде губиш точки?': 'Where do you lose points?',
   'Кратка диагностика (≈5 мин): по една задача за всяка тема. После тренираш само слабото.': 'A short diagnostic (≈5 min): one task per topic. Then you train only your weak spots.',
-  'Тренирай слабото · 8 задачи': 'Train weak spots · 8 tasks', 'Започваме от <b>{s}</b> — там губиш най-много.': 'We start with <b>{s}</b> — that is where you lose the most.',
+  'Тренирай слабото · 8 задачи': 'Train weak spots · 8 tasks', 'Започваме от <b>{s}</b> — там губиш най-много.': 'We start with <b>{s}</b> — there is where you lose the most.',
   'Всички теми са силни. Направи пробна матура в Shelly!': 'All topics are strong. Try a practice matura in Shelly!',
   'Започни диагностика': 'Start the diagnostic', 'Покажи с демо ученик': 'Show with a demo learner', 'Карта на уменията': 'Skill map', 'Нова диагностика': 'New diagnostic',
   '✦ Gemini е включен': '✦ Gemini is on', 'Без ИИ · включи Gemini в настройките': 'No AI · turn on Gemini in Settings',
@@ -143,8 +143,8 @@ const EN_UI = {
 
   /* first-run setup */
   'Добре дошъл в BingO': 'Welcome to BingO',
-  'Няколко кратки въпроса и приложението е готово. Всичко може да се промени по-късно в Профил и Настройки.': 'A few short questions and the app is ready. Everything can be changed later in Profile and Settings.',
-  'Кой си ти?': 'Who are you?', 'Името и класът са по желание. Учителят ги вижда само ако свържеш Google Sheets.': 'Name and class are optional. The teacher sees them only if you connect Google Sheets.',
+  'Няколко кратки въпроса и приложението е готово. Всичко може да се променя по-късно в Профил и Настройки.': 'A few short questions and the app is ready. Everything can be changed later in Profile and Settings.',
+  'Кой си ти?': 'Who are you?', 'Името и класът са по желание. Учителят ги вижда само ако свързаш Google Sheets.': 'Name and class are optional. The teacher sees them only if you connect Google Sheets.',
   'Най-много 40 знака': 'At most 40 characters', 'Адресът трябва да е от script.google.com': 'The address must be on script.google.com', 'Най-много 10 знака': 'At most 10 characters',
   /* past exams (66-past.js) */
   'Изпити от минали години': 'Past exams', 'Задачите са както на изпита; отговорите се проверяват по официалния ключ.': 'The tasks are as they were on the exam; answers are checked against the official key.',
@@ -152,8 +152,10 @@ const EN_UI = {
   '{n} задачи · {p} т.': '{n} tasks · {p} pts', ' · последно: {p} т.': ' · last: {p} pts', 'Резултатът от този изпит няма да се запази.': 'The result of this exam will not be saved.',
   'Задача {n} · {p} т.': 'Task {n} · {p} pts', 'Виж отговора': 'See the answer', 'Оцени се сам': 'Mark it yourself', 'по официалния отговор и критериите': 'using the official answer and criteria',
   'Отчасти': 'Partly', '{a} от {b} т.': '{a} of {b} pts', 'По скалата на МОН:': 'On the Ministry of Education scale:', 'Сгрешени задачи с избор:': 'Wrong multiple-choice tasks:', 'Отначало': 'Start over',
+  'Вариант {n}': 'Variant {n}', 'май': 'May', 'юни': 'June', 'август': 'August', 'септември': 'September',
+  'Тест': 'Test', 'Част 1': 'Part 1', 'Част 2': 'Part 2',
   /* setup: age, exam, high-school profile, extra matura */
-  'Името и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connect Google Sheets.',
+  'Името и годините са по желание. Учителят вижда името само ако си свързал Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connected Google Sheets.',
   'Име и фамилия': 'Full name', 'напр. Мария Петрова': 'e.g. Maria Petrova', 'Години': 'Age', 'напр. 17': 'e.g. 17', 'Въведи години от 7 до 99': 'Enter an age from 7 to 99',
   'Значи за {e}, нали?': 'So it is {e}, right?', 'За кой изпит се готвиш?': 'Which exam are you preparing for?', 'Ако не е така, избери своя клас.': 'If not, choose your grade.', 'Избери изпит': 'Choose an exam',
   'НВО 4-ти клас': 'NVO, 4th grade', 'НВО 7-ми клас': 'NVO, 7th grade', 'НВО 10-ти клас': 'NVO, 10th grade', 'ДЗИ 12-ти клас': 'Matura (DZI), 12th grade',
