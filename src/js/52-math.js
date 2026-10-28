@@ -35,6 +35,9 @@ function mcTask(r, { prompt, right, wrong, explain, fill }) {
   for (const w of wrong) if (w && !opts.some(o => o.t === w.t)) opts.push(w);
   const extra = (fill || []).slice();
   while (opts.length < 4 && extra.length) { const t = extra.shift(); if (!opts.some(o => o.t === t)) opts.push({ t, misc: 'calc' }); }
+  /* Guarantee four options: when a generator gives fewer usable distractors, add
+     deterministic near misses by changing one number in the right answer. */
+  if (opts.length < 4) for (const t of nearMisses(right, 4 - opts.length)) if (!opts.some(o => o.t === t)) opts.push({ t, misc: 'calc' });
   const pick = opts.slice(0, 4), order = shuffledIdx(pick.length, String(r.f()));
   const o = order.map(i => pick[i]);
   return {
@@ -46,6 +49,27 @@ function mcTask(r, { prompt, right, wrong, explain, fill }) {
 }
 /* A typed-number task; known wrong values map to mistakes */
 const numTask = ({ prompt, answer, explain, wrongs, unit }) => ({ type: 'number', prompt, answer, explain, unit, numMisc: (wrongs || []).filter(w => Number.isFinite(w.v) && Math.abs(w.v - answer) > 0.011) });
+
+/* Near-miss distractors: replace one number in the right answer with a nearby value.
+   They are only a fallback, so normal tasks keep their mistake-based distractors. */
+const NUM_RE = /-?\d+(?:\{,\}\d+)?/g;
+function bumpNum(s, m, d) {
+  const raw = m[0];
+  const v = parseFloat(raw.replace('{,}', '.'));
+  const nv = roundTo(v + d, 4);
+  const rep = (nv < 0 ? '-' : '') + String(Math.abs(nv)).replace('.', '{,}');
+  return s.slice(0, m.index) + rep + s.slice(m.index + raw.length);
+}
+function nearMisses(right, need) {
+  const out = [];
+  const ms = [...right.matchAll(NUM_RE)];
+  for (const m of ms) for (const d of [1, -1, 2, -2, 10, -10]) {
+    if (out.length >= need) return out;
+    const t = bumpNum(right, m, d);
+    if (t !== right && !out.includes(t)) out.push(t);
+  }
+  return out;
+}
 
 const MATH_GEN = {
   quad(r, lvl) {
