@@ -2,7 +2,8 @@
    Built on Shelly's practice screen and task views. What is new:
    - tasks come from the weakest skills (planSession), at a level that follows the learner
    - a wrong answer names the typical mistake, and Gemini can explain it for *this* answer
-   - after a wrong answer comes a short extra task for the same skill, while the queue cap allows it
+   - after a wrong answer, the next planned task becomes a short extra task for the same skill,
+     so a focus session keeps the same total number of tasks
    - every answer updates the skill map and goes to the log (Google Sheets / Looker Studio) */
 
 const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема' };
@@ -91,8 +92,14 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       const inlineWhy = task.type === 'choice' && task.why && task.why[resp];
       if (misc || !inlineWhy) fb.insertAdjacentHTML('afterbegin', `<div class="mistake">${icon('target')}<div><b>${misc ? L('Типична грешка') : L('Грешка')}</b><span class="rt">${misc ? richInline(miscLabel(misc)) : L('Виж решението по-долу.')}</span></div></div>`);
       if (aiOn()) fb.insertAdjacentHTML('beforeend', `<button class="btn ghost block aiexplain" data-aiexplain>${L('✦ Защо сгреших? Обясни Gemini')}</button><div class="aibox" hidden></div>`);
-      /* a short extra task right away, but only while the session still has a free slot */
-      if (item.why !== 'twin' && mode !== 'diag' && canAddTask()) Q.splice(P.i + 1, 0, { skill: task.skill, why: 'twin', level: task.level });
+      /* Turn the next planned task into an extra task for the same skill. This gives immediate
+         remediation without making an 8-task focus session longer. */
+      if (item.why !== 'twin' && mode !== 'diag') {
+        const next = Q[P.i + 1];
+        const twin = { skill: task.skill, why: 'twin', level: task.level };
+        if (next && next.why !== 'twin' && next.why !== 'check') Q.splice(P.i + 1, 1, twin);
+        else if (!next && canAddTask()) Q.splice(P.i + 1, 0, twin);
+      }
       if (mode === 'diag' && !P.extraDiag.has(task.skill) && canAddTask()) { P.extraDiag.add(task.skill); Q.push({ skill: task.skill, why: 'diag' }); }
     }
     btn.textContent = P.i === Q.length - 1 ? L('Виж резултата') : L('Напред');
