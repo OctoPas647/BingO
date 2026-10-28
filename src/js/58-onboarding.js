@@ -5,7 +5,7 @@
    resumes. People who already have data are marked done, so an update never shows it to them. */
 const ONBOARD = {
   steps: [
-    { id: 'welcome', title: 'Добре дошъл в BingO', text: 'Няколко кратки въпроса и приложението е готово. Всичко може да се промени по-късно в Профил и Настройки.', fields: [
+    { id: 'welcome', title: 'Добре дошъл в BingO', text: 'Няколко кратки въпроса и приложението е готово. Всичко може да се променя по-късно в Профил и Настройки.', fields: [
       { key: 'lang', path: 'settings.lang', type: 'choice', options: LANGS, native: true, validate: v => (['bg', 'en'].includes(v) ? '' : 'Избери език') }
     ] },
     { id: 'profile', title: 'Кой си ти?', text: 'Името и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.', skippable: true, fields: [
@@ -33,7 +33,7 @@ const ONBOARD = {
       { key: 'proxyUrl', path: 'settings.proxyUrl', type: 'text', label: 'Адрес на сървъра (Cloud Run)', ph: 'https://bingo-ai-xxxx.run.app', showIf: d => d.aiMode === 'proxy', required: d => d.aiMode === 'proxy', validate: v => (/^https:\/\//.test(v) ? '' : 'Адресът трябва да започва с https://') }
     ] },
     { id: 'sheets', title: 'Свързване с учител (по желание)', text: 'Ако учителят ти е дал адрес на Apps Script, постави го тук. Иначе пропусни.', skippable: true, fields: [
-      { key: 'sheetUrl', path: 'settings.sheetUrl', type: 'text', label: 'Адрес на Apps Script (Web app)', ph: 'https://script.google.com/macros/s/…/exec', validate: v => (/^https:\/\/script\.google\.com\//.test(v) ? '' : 'Адресът трябва да е от script.google.com') }
+      { key: 'sheetUrl', path: 'settings.sheetUrl', type: 'text', label: 'Адрес на Apps Script (Web app)', ph: 'https://script.google.com/macros/s/…/exec', validate: v => (/^https:\/\//.test(v) ? '' : 'Адресът трябва да е от script.google.com') }
     ] },
     { id: 'done', title: 'Готово!', text: 'Започни с кратка диагностика, за да видим къде губиш най-много точки.', fields: [] }
   ]

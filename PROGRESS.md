@@ -13,6 +13,7 @@
   - Cause: `go()` pushes a history entry per screen, but in-app back, Android back, `home()` and `backTo()` only popped `NAV`. The history kept stale entries.
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 - Past exams: in English mode, Bulgarian-only exams now show an English UI title built from exam, subject, date/year, session and variant. Part titles such as “Тест”, “Част 1” and “Част 2” are localized too. Questions, instructions, answers and rubrics remain in their original language.
+- Fix: aligned the welcome/profile onboarding strings with their English UI keys (the profile text now uses “свържеш” consistently), so `tools/build.py check` passes again.
 
 ## Decisions
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
