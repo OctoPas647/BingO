@@ -6,7 +6,7 @@
 Object.assign(ICONS, {
   home: '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/>',
   chart: '<path d="M5 20V10M12 20V4M19 20v-7"/>',
-  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0a8 8 0 0 1-16 0z"/><path d="M12 12v8"/>'
 });
 
 const TABS = [['home', 'home', 'Начало'], ['stats', 'chart', 'Статистики'], ['profile', 'user', 'Профил']];
@@ -23,9 +23,11 @@ const rowTime = r => r.t || Date.parse(r.timestamp) || 0;
 const dayKey = t => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
 function activity() {
   const days = new Set(S.log.map(r => dayKey(rowTime(r))));
+  /* The streak is based on finished sessions, so old answers alone cannot keep it alive. */
+  const sessionDays = new Set(S.sessionDays || []);
   let streak = 0; const d = new Date();
-  if (!days.has(dayKey(d))) d.setDate(d.getDate() - 1);
-  while (days.has(dayKey(d))) { streak++; d.setDate(d.getDate() - 1); }
+  if (!sessionDays.has(dayKey(d))) d.setDate(d.getDate() - 1);
+  while (sessionDays.has(dayKey(d))) { streak++; d.setDate(d.getDate() - 1); }
   const names = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
   const week = Array.from({ length: 7 }, (_, i) => {
     const x = new Date(); x.setDate(x.getDate() - (6 - i)); const k = dayKey(x);

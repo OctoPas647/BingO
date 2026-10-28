@@ -16,6 +16,7 @@ const DEFAULT_STATE = () => ({
   log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
   queue: [],             /* rows not yet sent to the Sheet */
   sessions: 0,
+  sessionDays: [],       /* local YYYY-MM-DD days on which the learner finished a session */
   review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
   onboarding: null,      /* first-run setup progress (58-onboarding.js) */
   aiFlags: [],           /* AI-made tasks a learner reported as wrong */
@@ -64,6 +65,7 @@ function sanitizeState(v) {
   out.log = Array.isArray(v.log) ? v.log.filter(r => isObj(r) && isStr(r.task_id || '') && isStr(r.subject || '')).slice(-3000) : [];
   out.queue = Array.isArray(v.queue) ? v.queue.filter(isObj).slice(-3000) : [];
   out.sessions = isNum(v.sessions) && v.sessions >= 0 ? Math.floor(v.sessions) : 0;
+  out.sessionDays = Array.isArray(v.sessionDays) ? [...new Set(v.sessionDays.filter(isStr).map(x => x.slice(0, 10)))].sort().slice(-400) : [];
   out.review = {};
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
@@ -71,6 +73,9 @@ function sanitizeState(v) {
   return out;
 }
 const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
+
+/* Local calendar day, used for the completed-session streak */
+const localDayKey = (t = Date.now()) => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
 
 /* A save that cannot be read is copied to its own key before anything can overwrite it */
 function backupRaw(raw) {
@@ -98,30 +103,11 @@ function resetState(keepSettings) {
 }
 
 /* AMOLED theme: the dark theme with true-black surfaces (OLED pixels switch off).
-   Shelly's applySettings() only knows auto/light/dark, so BingO wraps it. */
-const _applyBase = applySettings;
-/* "Системна": the phone's own setting. In the Android app the WebView reports the app theme, not the
-   phone's, so the app asks Android directly (AndroidUI.night); in a browser prefers-color-scheme works. */
-function systemDark() {
-  try { if (window.AndroidUI && typeof window.AndroidUI.night === 'function') return !!window.AndroidUI.night(); } catch (e) { }
-  return matchMedia('(prefers-color-scheme: dark)').matches;
-}
-window.__systemTheme = () => { if (S.settings.theme === 'auto') applySettings(); };
-document.addEventListener && document.addEventListener('visibilitychange', () => { if (!document.hidden) window.__systemTheme(); });
-applySettings = function () {
-  _applyBase();
-  const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
-  if (S.settings.theme === 'auto') rootEl.dataset.theme = systemDark() ? 'dark' : 'light';
-  if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
-};
-
-/* Shelly's media loader, reading the few pictures that the build embeds (window.SHELLY_MEDIA: "module id\npath" -> data URL) */
+   Shelly's media loader, reading the few pictures that the build embeds (window.SHELLY_MEDIA: "module id\npath" -> data URL) */
 function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
   });
 }
