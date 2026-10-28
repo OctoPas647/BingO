@@ -5,11 +5,13 @@
 .fc-score b { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
 .fc-score span { color: var(--ink-2); font-weight: 650; }
 .fc-grade { font-weight: 850; color: var(--accent); font-size: 1.05rem; }
-.fctrack { position: relative; height: 12px; border-radius: 99px; margin: 16px 0 4px; background: linear-gradient(90deg, var(--bad-bg) 30%, var(--meh-bg) 30% 62.5%, var(--good-bg) 62.5%); }
+/* The grade bands are drawn by 65-forecast.js from MON_SCALE, so the colours always match the official thresholds. */
+.fctrack { position: relative; height: 12px; border-radius: 99px; margin: 16px 0 4px; background: var(--surface-3); }
 .fcband { position: absolute; top: -3px; bottom: -3px; border-radius: 99px; background: color-mix(in srgb, var(--accent) 28%, transparent); border: 2px solid var(--accent); }
 .fcdot { position: absolute; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--surface); }
 .fcticks { position: relative; height: 18px; margin-bottom: 6px; }
 .fcticks span { position: absolute; transform: translateX(-50%); font-size: .74rem; font-weight: 800; color: var(--ink-3); }
+.fcticks span:first-child { transform: none; }
 .forecast small { display: block; line-height: 1.35; }
 
 .fcrow { display: flex; align-items: center; gap: 10px; width: 100%; margin: 12px 0 0; padding: 10px 12px; border-radius: 12px; text-align: left; background: color-mix(in srgb, var(--accent) 10%, var(--surface-2)); }

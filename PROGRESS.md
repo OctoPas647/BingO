@@ -1,6 +1,12 @@
 # Progress
 
 ## Done
+- ISSUE 1: Скала на МОН в прогнозата - по-ясна и точна
+  - Replaced the rounded forecast grade thresholds (30 / 41 / 62.5 / 84) with the official MON DZI bands: до 29,75; 30–40,5; 40,75–62,25; 62,5–83,75; 84–94,75; 95–100.
+  - Added a single MON_SCALE table in src/js/65-forecast.js. gradeOf, nextGrade, the scale bar and the detailed scale list now use the same boundaries.
+  - The forecast scale now shows the 2–6 grade ticks and colours the bands at the real MON boundaries instead of the old 30% / 62.5% stops.
+  - The detailed sheet now shows exact point ranges for every grade and explains that MON converts points in 0.25-point steps.
+  - Files: src/js/65-forecast.js, src/css/forecast.css, PROGRESS.md.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +20,8 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- MON scale: 95–100 is still Отличен 6; the official table shows it as a separate band, but no separate grade label was published in the sources checked.
+- The forecast scale colours are generated from MON_SCALE in JavaScript, so the CSS no longer hard-codes the old 30% / 62.5% boundaries.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -25,6 +33,7 @@
 
 ## Left
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
+- Manual test of the forecast scale on web and APK: check the 2–6 ticks, the band colours, and the detailed MON scale list.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
 - 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
