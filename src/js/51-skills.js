@@ -44,7 +44,7 @@ const MISC = {
   'pct.only_part': 'Сметнато е само увеличението, без началната цена',
   'pct.direction': 'Увеличение и намаление са разменени',
   'pct.add_pcts': 'Последователни проценти не се събират',
-  'pct.reverse': 'Обратният процент: делим на $(1+p)$, не умножаваме по $(1-p)$',
+  'pct.reverse': 'Обратният процент: делим на $(1+p)$, не умножаваме на $(1-p)$',
   'pow.mult_exp': 'При умножение показателите се събират, не се умножават',
   'pow.sign': 'Знак на показателя',
   'pow.root_square': 'Изнесено е числото, а не коренът му',
@@ -54,7 +54,7 @@ const MISC = {
   'pow.neg_ignored': 'Отрицателният показател обръща дробта',
   'lin.flip': 'При деление на отрицателно число знакът на неравенството се обръща',
   'lin.move_sign': 'Знак при пренасяне от едната страна на другата',
-  'lin.divide': 'Делене вместо изваждане (или обратно)',
+  'lin.divide': 'Деление вместо изваждане (или обратно)',
   'rtri.add_legs': 'Хипотенузата не е сбор от катетите',
   'rtri.no_root': 'Забравен корен квадратен накрая',
   'rtri.hyp_as_leg': 'За катет се изважда: $b^2=c^2-a^2$',
@@ -95,7 +95,7 @@ const BKT = { prior: 0.3, learn: 0.1, slip: 0.12, strong: 0.9, weak: 0.6 };
 const guessOf = task => (task.type === 'choice' ? 1 / task.options.length : task.type === 'gaps' && task.gaps.every(g => g.options) ? Math.pow(0.5, task.gaps.length) : 0.05);
 
 function skillState(subj, id) {
-  const k = subj + '.' + id;
+  const k = subj + '.' + id + '@' + currentExamKey();
   return S.skills[k] || (S.skills[k] = { p: BKT.prior, n: 0, ok: 0, last: 0, misc: {}, hist: [] });
 }
 function bktUpdate(p, correct, guess) {

@@ -12,17 +12,31 @@ const DEFAULT_STATE = () => ({
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
   settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true, lang: 'bg' },
   subject: 'math',
-  skills: {},            /* "math.quad" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] } */
+  skills: {},            /* "math.quad@nvo7" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] } */
   log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
   queue: [],             /* rows not yet sent to the Sheet */
   sessions: 0,
-  review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
+  review: {},            /* "math.quad@nvo7" -> { box, due }: when a strong skill is checked again (57-review.js) */
   onboarding: null,      /* first-run setup progress (58-onboarding.js) */
   aiFlags: [],           /* AI-made tasks a learner reported as wrong */
   pastResults: {}        /* past exam id -> { pts, max, at }: the last result (66-past.js) */
 });
 
 let S = DEFAULT_STATE();
+
+/* Skill progress belongs to one exam. Changing between НВО 4, НВО 7, НВО 10 and ДЗИ 12
+   therefore starts the new exam with fresh mastery and point estimates, while the progress
+   made for the previous exam stays saved for when the learner switches back. */
+function currentExamKey() { return (S.profile && S.profile.exam) || 'none'; }
+function migrateSkillKeys() {
+  const ex = currentExamKey(), out = {};
+  for (const [k, v] of Object.entries(S.skills)) {
+    if (/^\w+\.\w+@[\w-]+$/.test(k)) out[k] = v;
+    else out[k + '@' + ex] = v;
+  }
+  S.skills = out;
+}
+
 /* What went wrong while loading, shown once after start (99-boot.js): null | { backup: key } */
 let STATE_NOTICE = null;
 
@@ -60,7 +74,7 @@ function sanitizeState(v) {
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
   out.skills = {};
-  if (isObj(v.skills)) for (const [k, st] of Object.entries(v.skills)) { const c = cleanSkill(st); if (c && /^\w+\.\w+$/.test(k)) out.skills[k] = c; }
+  if (isObj(v.skills)) for (const [k, st] of Object.entries(v.skills)) { const c = cleanSkill(st); if (c && /^\w+\.\w+(@[\w-]+)?$/.test(k)) out.skills[k] = c; }
   out.log = Array.isArray(v.log) ? v.log.filter(r => isObj(r) && isStr(r.task_id || '') && isStr(r.subject || '')).slice(-3000) : [];
   out.queue = Array.isArray(v.queue) ? v.queue.filter(isObj).slice(-3000) : [];
   out.sessions = isNum(v.sessions) && v.sessions >= 0 ? Math.floor(v.sessions) : 0;
@@ -84,6 +98,7 @@ function loadState() {
     try { S = sanitizeState(JSON.parse(raw)); }
     catch (e) { console.warn('state not loaded', e); S = DEFAULT_STATE(); STATE_NOTICE = { backup: backupRaw(raw) }; }
   }
+  migrateSkillKeys();
   APP.settings.theme = S.settings.theme; APP.settings.sound = S.settings.sound !== false; APP.settings.lang = S.settings.lang;
 }
 let saveTimer = 0;
@@ -122,6 +137,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
   });
 }

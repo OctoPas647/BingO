@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- Fix: skill progress is now scoped to the selected exam. Skill keys use `subject.skill@exam` (for example `math.quad@nvo7`), so switching between НВО 4, НВО 7, НВО 10 and ДЗИ 12 gives the new exam fresh mastery and estimated points lost. Existing unscoped progress is migrated once to the currently selected exam; progress for other exams remains saved.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +15,7 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- Skill progress uses an exam suffix (`@nvo4`, `@nvo7`, `@nvo10`, `@dzi12`) instead of deleting old progress when the learner changes exam. This preserves earlier work and lets a learner return to a previous exam.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -24,6 +26,7 @@
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 
 ## Left
+- Manual test on web and APK: complete a few tasks, change the exam in first-run setup, confirm that the new exam starts with fresh points/mastery and that switching back restores the earlier exam progress.
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
