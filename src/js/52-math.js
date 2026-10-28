@@ -62,7 +62,12 @@ const MATH_GEN = {
       });
     }
     if (lvl === 2) {
-      const a = r.pick([2, 3, 4, 5]), b = r.nz(-9, 9), c = r.nz(-9, 9);
+      let a, b, c;
+      do {
+        a = r.pick([2, 3, 4, 5]);
+        b = r.nz(-9, 9);
+        c = r.nz(-9, 9);
+      } while (b * b - 4 * a * c < 0);
       const askSum = r.chance(0.6);
       return mcTask(r, askSum ? {
         prompt: `Ако $x_1$ и $x_2$ са корените на $${poly([a, 'x^2'], [b, 'x'], [c, ''])}=0$, то $x_1+x_2$ е:`,
@@ -221,7 +226,7 @@ const MATH_GEN = {
       return mcTask(r, {
         prompt: `Хвърляме два зара. Каква е вероятността сборът от точките да е $${s}$?`,
         right: Fr(ways, 36), wrong: [{ t: Fr(1, 11), misc: 'prob.not_equal' }, { t: Fr(ways, 12), misc: 'prob.space' }, { t: Fr(36 - ways, 36), misc: 'prob.complement' }],
-        explain: `Изходите са $6\\cdot6=36$ равновъзможни подредени двойки. Сбор $${s}$ дават $${ways}$ от тях, затова $P=${Fr(ways, 36)}$. Сборовете от 2 до 12 не са равновероятни.`
+        explain: `Изходите са $6\\cdot6=36$ равновероятни подредени двойки. Сбор $${s}$ дават $${ways}$ от тях, затова $P=${Fr(ways, 36)}$. Сборовете от 2 до 12 не са равновероятни.`
       });
     }
     const n = r.pick([2, 3, 4]);
