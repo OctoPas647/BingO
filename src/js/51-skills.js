@@ -20,7 +20,7 @@ const SUBJECTS = {
     ]
   },
   bel: {
-    id: 'bel', title: 'БЕЛ', short: 'БЕЛ', icon: '📖', color: '#B4532A', lang: 'bg',
+    id: 'bel', title: 'БЕЛ', short: 'БЕЛ', icon: '📖', color: '#B4502A', lang: 'bg',
     skills: [
       { id: 'art', name: 'Пълен и кратък член', weight: 6 },
       { id: 'comma', name: 'Запетая', weight: 8 },
@@ -53,7 +53,7 @@ const MISC = {
   'pow.neg_sign': 'Отрицателният показател не прави числото отрицателно',
   'pow.neg_ignored': 'Отрицателният показател обръща дробта',
   'lin.flip': 'При деление на отрицателно число знакът на неравенството се обръща',
-  'lin.move_sign': 'Знак при пренасяне от едната страна на другата',
+  'lin.move_sign': 'Знак при пренасяне от една страна на друга',
   'lin.divide': 'Делене вместо изваждане (или обратно)',
   'rtri.add_legs': 'Хипотенузата не е сбор от катетите',
   'rtri.no_root': 'Забравен корен квадратен накрая',
@@ -101,7 +101,10 @@ function skillState(subj, id) {
 function bktUpdate(p, correct, guess) {
   const s = BKT.slip, g = clamp(guess, 0.01, 0.5);
   const post = correct ? p * (1 - s) / (p * (1 - s) + (1 - p) * g) : p * s / (p * s + (1 - p) * (1 - g));
-  return clamp(post + (1 - post) * BKT.learn, 0.01, 0.995);
+  const next = clamp(post + (1 - post) * BKT.learn, 0.01, 0.995);
+  /* A wrong answer may reduce mastery, but must never raise it: without this cap, the
+     learning bonus could make a very weak skill look better after a wrong answer. */
+  return correct ? next : Math.min(p, next);
 }
 function recordAnswer(subj, task, correct, misc) {
   const st = skillState(subj, task.skill), before = st.p;
