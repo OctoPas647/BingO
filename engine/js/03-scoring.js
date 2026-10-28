@@ -89,3 +89,15 @@ function applyScale(scale, points, max, lang) {
   const text = (scale.show || (band ? '{band} {value}' : '{value}')).replace(/\{(\w+)\}/g, (m, k) => vals[k] ?? m).trim();
   return { value, pct, band, text, pass: scale.pass != null ? value >= scale.pass : null };
 }
+
+/* Smooths a topic mastery estimate so one practice result cannot move it too sharply. */
+const MASTERY_DEFAULTS = { lr: 0.2, maxDelta: 15 };
+
+function updateMastery(prev, newPct, opts = {}) {
+  const lr = Number.isFinite(opts.lr) ? opts.lr : MASTERY_DEFAULTS.lr;
+  const maxDelta = Number.isFinite(opts.maxDelta) ? opts.maxDelta : MASTERY_DEFAULTS.maxDelta;
+  const previous = clamp(Number(prev) || 0, 0, 100);
+  const latest = clamp(Number(newPct) || 0, 0, 100);
+  const target = previous + (latest - previous) * lr;
+  return clamp(target, previous - maxDelta, previous + maxDelta);
+}
