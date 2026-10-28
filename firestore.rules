@@ -49,28 +49,20 @@ service cloud.firestore {
       allow create, update, delete: if isTeacher() || isAdmin();
     }
 
-    // Attempts belong to one student. Students can create their own attempt
-    // and update only timing/event metadata; scores and results are server-managed.
+    // Attempts and answers are created and graded only by callable Functions.
+    // Students and teachers can read according to the rules below.
     match /attempts/{attemptId} {
       allow read: if isSelf(resource.data.studentId)
         || isTeacher()
         || isAdmin();
-      allow create: if isSelf(request.resource.data.studentId)
-        && request.resource.data.score == null
-        && request.resource.data.status == 'in_progress';
-      allow update: if isSelf(resource.data.studentId)
-        && request.resource.data.studentId == resource.data.studentId
-        && request.resource.data.score == resource.data.score
-        && request.resource.data.status in ['in_progress', 'abandoned'];
-      allow delete: if isAdmin();
-    }
-
-    // Individual answers are private to the student; grading writes are server-only.
-    match /attempts/{attemptId}/answers/{answerId} {
-      allow read: if isSelf(get(/databases/$(database)/documents/attempts/$(attemptId)).data.studentId)
-        || isTeacher()
-        || isAdmin();
       allow create, update, delete: if false;
+
+      match /answers/{answerId} {
+        allow read: if isSelf(get(/databases/$(database)/documents/attempts/$(attemptId)).data.studentId)
+          || isTeacher()
+          || isAdmin();
+        allow create, update, delete: if false;
+      }
     }
 
     // Final results are readable by the student and their teachers.

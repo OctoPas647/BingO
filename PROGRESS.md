@@ -1,6 +1,11 @@
 # Progress
 
 ## Done
+- Added server-side test timing and grading (feature/server-side-test-grading):
+  - `startAttempt`: creates a student attempt from `tests/{testId}`, stores the question list and server-calculated expiry time.
+  - `submitAnswer`: validates ownership, active status, expiry time and question membership; grades against `questions/{questionId}.correctAnswer`; writes one answer document per question.
+  - `finishAttempt`: calculates the score from stored answers, marks the attempt completed and writes a `results/{attemptId}` document.
+  - Firestore rules now make attempts, answers and results server-written only; clients can read according to their role.
 - Added Firebase foundation (feature/firebase-auth-roles):
   - Firebase Auth and Firestore configuration (`firebase.json`).
   - Firestore Security Rules with default deny, student/teacher/admin roles, private attempts/answers, and server-only writes for scores and final results.
@@ -21,10 +26,12 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
-- Firebase is added alongside the existing Cloud Run Gemini service; `server/` is unchanged in this PR.
+- Firebase is added alongside the existing Cloud Run Gemini service; `server/` is unchanged.
 - Roles use Firebase custom claims (`role`), mirrored into `users/{uid}.role`; clients cannot set their own role.
-- Students can create only their own profile and only as `student`.
-- Answers, scores and final results are intended to be written by future server-side grading functions, not directly by clients.
+- Test timing is server-side: `startAttempt` writes `expiresAt`, and `submitAnswer` rejects answers after that time.
+- Correct answers stay on the server; `submitAnswer` returns only whether the submitted answer was correct.
+- Duplicate answers are rejected, so a student cannot retry a question after seeing that it was wrong.
+- Attempts, answers and final results are written only by callable Functions, not directly by clients.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -35,9 +42,10 @@
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 
 ## Left
-- Connect the web app and Android app to Firebase Auth.
-- Add callable functions for `startAttempt`, `submitAnswer` and `finishAttempt`, with server-side timing and grading.
+- Connect the web app and Android app to Firebase Auth and the new callable functions.
 - Add teacher class/test management UI and Firestore queries.
+- Add event logging for focus loss, tab switches and suspicious timing; use it for teacher review, not automatic punishment.
+- Add randomized question order and numeric variants for math re-checks.
 - Deploy Firebase rules/functions to a real project and test with emulator plus live project.
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
