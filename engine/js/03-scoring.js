@@ -17,14 +17,30 @@ function normText(s, lang, strict, cyr) {
   if (cyr) s = s.replace(/[acepoxyk]/g, ch => LOOKALIKE[ch]);
   return s;
 }
+/* Strict checking must still be fair for whole-sentence answers: capitalization, final punctuation,
+   outer quotation marks and dash/quote variants should not make a correct sentence wrong. Internal
+   punctuation and word order remain important. */
+function normSentence(s, lang, cyr) {
+  s = String(s ?? '').normalize('NFC').replace(/\s+/g, ' ').trim();
+  s = s.toLocaleLowerCase(lang || undefined).replace(/[’‘`´]/g, "'").replace(/[“”„«»]/g, '"').replace(/[‐-―−]/g, '-');
+  s = s.replace(/^["'(\[]+/, '').replace(/["')\]]+$/, '').replace(/[\s.,;:!?…]+$/u, '').trim();
+  if (cyr) s = s.replace(/[acepoxyk]/g, ch => LOOKALIKE[ch]);
+  return s;
+}
+const isSentence = s => /\s/.test(String(s ?? '').trim());
 function textMatches(given, accepted, lang, strict) {
-  const list = arr(accepted), cyr = list.some(hasCyr), g = normText(given, lang, strict, cyr);
+  const list = arr(accepted), cyr = list.some(hasCyr);
+  if (strict && (isSentence(given) || list.some(isSentence))) {
+    const g = normSentence(given, lang, cyr);
+    return g !== '' && list.some(a => normSentence(a, lang, cyr) === g);
+  }
+  const g = normText(given, lang, strict, cyr);
   return g !== '' && list.some(a => normText(a, lang, strict, cyr) === g);
 }
 
 /* "3,5", "3.5", "7/2", "−1,25", "1 000" -> number (or NaN) */
 function parseNumber(s) {
-  s = String(s ?? '').trim().replace(/[\s  ]/g, '').replace(/[−–]/g, '-');
+  s = String(s ?? '').trim().replace(/[\s  ]/g, '').replace(/[−–]/g, '-');
   if (!s) return NaN;
   const frac = s.match(/^(-?)(\d+(?:[.,]\d+)?)\/(\d+(?:[.,]\d+)?)$/);
   if (frac) { const d = +frac[3].replace(',', '.'); return d ? (frac[1] ? -1 : 1) * (+frac[2].replace(',', '.')) / d : NaN; }
