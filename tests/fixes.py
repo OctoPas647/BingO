@@ -136,6 +136,14 @@ with sync_playwright() as pw:
     bad = p.evaluate("Array.from({length: 300}, (_, i) => genMathTask('quad', 1, i).explain).filter(e => /\\d--\\d/.test(e)).length")
     ok('quad explanation: no double minus', bad == 0, str(bad))
     ctx.close()
+
+    # 11. profile exam/track/extra survive a reload
+    profile = {'name': 'Тест', 'cls': '12а', 'age': '17', 'exam': 'dzi12', 'track': 'math', 'extra': 'maths', 'id': 'u1'}
+    ctx, p = fresh(b, state={**DONE, 'profile': profile})
+    p.reload(); p.wait_for_timeout(300)
+    kept = p.evaluate("({age: S.profile.age, exam: S.profile.exam, track: S.profile.track, extra: S.profile.extra})")
+    ok('profile: exam/track/extra survive reload', kept == {'age': '17', 'exam': 'dzi12', 'track': 'math', 'extra': 'maths'}, str(kept))
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')

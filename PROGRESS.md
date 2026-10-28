@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- Fix: the learner profile now keeps age, exam, track and extra after a restart. `sanitizeState()` in `src/js/50-state.js` dropped them on load; they are now validated and kept. Regression test added in `tests/fixes.py`.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +15,7 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- Profile persistence: invalid profile values still fall back to empty strings, so a broken save cannot stop the app. `EXAMS`, `TRACKS` and `EXTRA_MATH` are checked with `typeof` guards because they are defined in `58-onboarding.js`.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -41,4 +43,5 @@
 - Check the other 2020-2021 files (БЕЛ 01.06.2020, 27.08.2020, 19.05.2021, math 28.08.2020) against the repo; they look already added.
 
 ## Bugs
+- Fixed: profile exam/track/extra were lost on restart because `sanitizeState()` kept only name, cls and id.
 - None known. Edge case: tapping very fast while a history rewind is running was not tested.
