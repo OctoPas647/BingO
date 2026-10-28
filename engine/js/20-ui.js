@@ -5,7 +5,7 @@ function h(html) { const t = document.createElement('template'); t.innerHTML = h
 
 const ICONS = {
   back: '<path d="M15 18l-6-6 6-6"/>', next: '<path d="M9 18l6-6-6-6"/>', close: '<path d="M18 6L6 18M6 6l12 12"/>',
-  copy: '<rect x="9" y="9" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>', up: '<path d="M18 15l-6-6-6 6"/>', down: '<path d="M6 9l6 6-6-6"/>', plus: '<path d="M12 5v14M5 12h14"/>', check: '<path d="M20 6L9 17l-5-5"/>',
+  copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>', up: '<path d="M18 15l-6-6-6 6"/>', down: '<path d="M6 9l6 6-6-6"/>', plus: '<path d="M12 5v14M5 12h14"/>', check: '<path d="M20 6L9 17l-5-5"/>',
   more: '<circle cx="5" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.7" fill="currentColor" stroke="none"/>',
   settings: '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/>',
   flame: '<path d="M12 21a6 6 0 0 0 6-6c0-4-3-6-4-10-2 2-3 4-3 6-1-1-2-2-2-3-2 2-3 4-3 7a6 6 0 0 0 6 6z"/><path d="M12 21a2.5 2.5 0 0 1-2.5-2.5c0-1.5 1-2.5 2.5-4 1.5 1.5 2.5 2.5 4A1.5 1.5 0 0 1 12 21z"/>',
@@ -15,7 +15,7 @@ const ICONS = {
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.6v.4"/>', clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   flag: '<path d="M5 21V4M5 4h12l-2.5 4 2.5 4H5"/>', grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',
   play: '<path d="M8 5l11 7-11 7z" fill="currentColor"/>', pause: '<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor" stroke="none"/>',
-  book: '<path d="M4 19V6a2 2 0 0 1 2-2h14v13H6a1 1 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h14"/>', layers: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+  book: '<path d="M4 19V6a2 2 0 0 1 2-2h14v13H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h14"/>', layers: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
   trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8M10 17h4v4-4z"/>',
   bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.8 10.6c.6.5.8 1.3.8 2.4h6c0-1.1.2-1.9.8-2.4A6 6 0 0 0 12 3z"/>', pen: '<path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"/>',
   text: '<path d="M5 6h14M5 10h14M5 14h9M5 18h11"/>', eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-10 7S2 12 2 12z"/><circle cx="12" cy="10" r="3"/>',
@@ -34,7 +34,7 @@ const icon = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-h
 
    Bottom-menu fix: removing a trap runs history.back() asynchronously. The old code could push a new
    trap before that pop arrived, so the queued back removed the NEW trap and history drifted. Now a
-   removal is waited for, and trap entries are recognised from history.state instead of a counter. */
+   removal is waited for, and the popstate handler recognises our own removal instead of a counter. */
 const SCREENS = {}, NAV = [];
 let root, histTrap = false, trapBusy = false;
 const needTrap = () => NAV.length > 1 || overlays.length > 0;
@@ -126,7 +126,7 @@ function applySettings() {
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (APP.settings.theme === 'auto') applySettings(); });
 /* Module screens take the module's colour and language (so Cyrillic gets the right letter shapes) */
 function moduleLook(el, m) { el.style.setProperty('--accent', m.color); el.style.setProperty('--accent-ink', inkOn(m.color)); }
-function inkOn(hex) { const n = parseInt(hex.slice(1), 16), r = (n >> 16) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255; return 0.2126 * r + 0.7152 * g + 0.07152 * b > 0.6 ? '#1B1A22' : '#FFFFFF'; }
+function inkOn(hex) { const n = parseInt(hex.slice(1), 16), r = (n >> 16) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255; return 0.2126 * r + 0.7152 * g + 0.072 * b > 0.6 ? '#1B1A22' : '#FFFFFF'; }
 
 /* ---------- sound (tiny synth, no files) ---------- */
 let actx = null;
