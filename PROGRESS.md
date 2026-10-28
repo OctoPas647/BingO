@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- ISSUE 1 — Оценката на усвояването се мени прекалено рязко: mastery updates in `src/js/51-skills.js` now use less learning gain while there is little evidence and cap how far one answer can move mastery. Early answers can change mastery by at most 8 percentage points; the cap grows gradually as the learner answers more tasks.
 - Merged latest main into feature/feedback-20261028-1627-s18; kept both the main history fixes and the feedback/demo-restore fixes in PROGRESS.md.
 - Removed the AI/API onboarding screen: the `ai` step in src/js/58-onboarding.js no longer appears during first-run setup. AI configuration is no longer shown at startup, but remains fully accessible via the Settings menu.
 - Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
@@ -32,6 +33,7 @@
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
 
 ## Decisions
+- Mastery smoothing: BKT still reacts to correct and wrong answers, but the first answers have reduced learning gain and a hard per-answer movement cap. This avoids sharp jumps from a single lucky guess or careless mistake while still allowing enough evidence to move a skill toward weak or strong.
 - Demo restore: the demo flag is part of the saved state, so a reload cannot confuse demo data with real progress. The backup is written only once, before the first demo load.
 - The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
 - The sheet history fix lives in BingO's own src/ (67-history-sync.js), not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).

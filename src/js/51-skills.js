@@ -91,8 +91,8 @@ const miscLabel = code => MISC[code] || MISC[code && code.split('.').pop()] || '
 /* ---------- Bayesian Knowledge Tracing ----------
    p = chance the skill is mastered. Each answer updates it with Bayes' rule, allowing for
    lucky guesses (guess) and careless slips (slip); then a little learning happens (learn).
-   Early answers move the estimate less, so one lucky or unlucky answer cannot make the
-   mastery score jump too sharply. */
+   Early answers move the estimate less, and every answer has a maximum possible jump.
+   This stops one lucky or unlucky answer from making the mastery score change too sharply. */
 const BKT = { prior: 0.3, learn: 0.1, slip: 0.12, strong: 0.9, weak: 0.6 };
 const guessOf = task => (task.type === 'choice' ? 1 / task.options.length : task.type === 'gaps' && task.gaps.every(g => g.options) ? Math.pow(0.5, task.gaps.length) : 0.05);
 
@@ -100,16 +100,19 @@ function skillState(subj, id) {
   const k = subj + '.' + id;
   return S.skills[k] || (S.skills[k] = { p: BKT.prior, n: 0, ok: 0, last: 0, misc: {}, hist: [] });
 }
-function bktUpdate(p, correct, guess, learn = BKT.learn) {
+function bktUpdate(p, correct, guess, learn, maxJump) {
   const s = BKT.slip, g = clamp(guess, 0.01, 0.5);
   const post = correct ? p * (1 - s) / (p * (1 - s) + (1 - p) * g) : p * s / (p * s + (1 - p) * (1 - g));
-  return clamp(post + (1 - post) * learn, 0.01, 0.995);
+  const next = clamp(post + (1 - post) * learn, 0.01, 0.995);
+  /* A single answer may move mastery only by maxJump; later answers may move it more. */
+  return clamp(next, p - maxJump, p + maxJump);
 }
 function recordAnswer(subj, task, correct, misc) {
   const st = skillState(subj, task.skill), before = st.p;
-  /* With little evidence, apply only part of the normal learning gain. */
-  const learn = BKT.learn * (st.n < 3 ? 0.4 : st.n < 6 ? 0.7 : 1);
-  st.p = bktUpdate(st.p, correct, guessOf(task), learn); st.n++; if (correct) st.ok++; st.last = Date.now();
+  /* With little evidence, apply less learning and allow only a small change per answer. */
+  const learn = BKT.learn * (st.n < 3 ? 0.35 : st.n < 6 ? 0.65 : 1);
+  const maxJump = st.n < 2 ? 0.08 : st.n < 4 ? 0.12 : st.n < 7 ? 0.16 : 0.22;
+  st.p = bktUpdate(st.p, correct, guessOf(task), learn, maxJump); st.n++; if (correct) st.ok++; st.last = Date.now();
   if (!correct && misc) st.misc[misc] = (st.misc[misc] || 0) + 1;
   st.hist.push([Date.now(), roundTo(st.p, 3)]); if (st.hist.length > 60) st.hist.shift();
   saveState();
