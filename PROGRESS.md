@@ -1,6 +1,12 @@
 # Progress
 
 ## Done
+- Fix: "Върни моите отговори" could restore demo data instead of the learner's real answers.
+  - `S.demo` now marks that the demo learner is active (`src/js/50-state.js`, `src/js/56-demo.js`).
+  - Loading the demo while it is already active no longer overwrites the real learner's backup.
+  - A backup is created only when there is real progress and the demo is not active; a stale backup is removed otherwise.
+  - Restoring clears the demo flag and keeps the backup only after the restored state is saved.
+  - `sanitizeState` now keeps `pastResults` and the profile fields `age`, `exam`, `track` and `extra`, so restoring does not lose them.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +20,7 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- Demo restore: the demo flag is part of the saved state, so a reload cannot confuse demo data with real progress. The backup is written only once, before the first demo load.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
