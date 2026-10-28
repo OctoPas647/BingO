@@ -19,6 +19,8 @@ module.exports = function load() {
   };
   const pastDir = path.join(ROOT, 'content/past-exams');
   ctx.window.PAST_EXAMS_JSON = fs.existsSync(pastDir) ? fs.readdirSync(pastDir).filter(f => f.endsWith('.json')).sort().map(f => JSON.parse(fs.readFileSync(path.join(pastDir, f), 'utf8'))) : [];
+  const pastEnDir = path.join(ROOT, 'content/past-exams-en');
+  ctx.window.PAST_EXAMS_EN_JSON = fs.existsSync(pastEnDir) ? fs.readdirSync(pastEnDir).filter(f => f.endsWith('.json')).sort().map(f => JSON.parse(fs.readFileSync(path.join(pastEnDir, f), 'utf8'))) : [];
   for (const f of ['engine/js/00-util.js', 'engine/js/02-module-format.js', 'engine/js/03-scoring.js', 'engine/js/10-i18n.js',
     'src/js/49-lang.js', 'src/js/50-state.js', 'src/js/51-skills.js', 'src/js/52-math.js', 'src/js/53-bel.js', 'src/js/53b-bel-bank.js', 'src/js/54-ai.js', 'src/js/55-sync.js', 'src/js/56-demo.js', 'src/js/57-review.js', 'src/js/58-onboarding.js', 'src/js/65-forecast.js', 'src/js/66-past.js']) run(f);
   vm.runInContext('buildBanks()', ctx);

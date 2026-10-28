@@ -146,6 +146,12 @@ const EN_UI = {
   'Няколко кратки въпроса и приложението е готово. Всичко може да се промени по-късно в Профил и Настройки.': 'A few short questions and the app is ready. Everything can be changed later in Profile and Settings.',
   'Кой си ти?': 'Who are you?', 'Името и класът са по желание. Учителят ги вижда само ако свържеш Google Sheets.': 'Name and class are optional. The teacher sees them only if you connect Google Sheets.',
   'Най-много 40 знака': 'At most 40 characters', 'Адресът трябва да е от script.google.com': 'The address must be on script.google.com', 'Най-много 10 знака': 'At most 10 characters',
+  /* past exams (66-past.js) */
+  'Изпити от минали години': 'Past exams', 'Задачите са както на изпита; отговорите се проверяват по официалния ключ.': 'The tasks are as they were on the exam; answers are checked against the official key.',
+  'Изпитите без английски превод са на български.': 'Exams marked BG have no English translation yet.',
+  '{n} задачи · {p} т.': '{n} tasks · {p} pts', ' · последно: {p} т.': ' · last: {p} pts', 'Резултатът от този изпит няма да се запази.': 'The result of this exam will not be saved.',
+  'Задача {n} · {p} т.': 'Task {n} · {p} pts', 'Виж отговора': 'See the answer', 'Оцени се сам': 'Mark it yourself', 'по официалния отговор и критериите': 'using the official answer and criteria',
+  'Отчасти': 'Partly', '{a} от {b} т.': '{a} of {b} pts', 'По скалата на МОН:': 'On the Ministry of Education scale:', 'Сгрешени задачи с избор:': 'Wrong multiple-choice tasks:', 'Отначало': 'Start over',
   /* setup: age, exam, high-school profile, extra matura */
   'Името и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connect Google Sheets.',
   'Име и фамилия': 'Full name', 'напр. Мария Петрова': 'e.g. Maria Petrova', 'Години': 'Age', 'напр. 17': 'e.g. 17', 'Въведи години от 7 до 99': 'Enter an age from 7 to 99',

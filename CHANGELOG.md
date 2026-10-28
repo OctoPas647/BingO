@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.2
+Also includes everything from 0.4.1 (past math exams in English), which was never released on its own.
+
+- **Duolingo-style progress bar**: a green pill bar in the first-run setup that fills with a small bounce, shimmers and pops on the last step; tests use the same look but stay still. Follows the theme and turns off its animation when the phone asks for reduced motion
+- **НВО 4. клас Математика 2007–2016**: 10 more past exams (170 questions) with the official keys
+- **ДЗИ Математика 02.06.2020, вариант 2**: 28 tasks, 100 points, with 5 redrawn figures and the official solutions for tasks 26–28
+- **Past math exams in English** (from 0.4.1): with the app in English, all 16 ДЗИ papers (2019–2026) and НВО 10 from 2021–2024 open in English; exams without a translation are marked **BG**
+
+## 0.4.1
+- **Past math exams in English**: with the app in English, 20 math exams open in English — all 16 ДЗИ papers (2019–2026) and НВО 10 from 2021–2024. Answers are checked against the same official key; your results are shared between the two languages
+- The past-exam screens (list, task, check, result) are now translated too; an exam that has no English version yet is marked **BG** and stays in Bulgarian
+- ДЗИ август 2021, task 24: "3 процента" counts again as a right answer in the English version (it had been changed to "3 procenta")
+- `python tools/build.py check` now compares every English exam with its Bulgarian original: same tasks, points, pictures and key, and every Bulgarian text answer still accepted
+
 ## 0.4.0
 Everything from the open branches in one version.
 

@@ -86,6 +86,39 @@ const sm = E("subjectSummary('math')"); console.log('demo learner loses ≈', sm
   }
   if (raw.length && !E(`pastFor(${JSON.stringify(raw[0].past.subj)}, ${JSON.stringify(raw[0].past.exam)}).length`)) fail('past exams: pastFor finds nothing');
   console.log(`${raw.length} past exams checked`);
+  /* English versions (content/past-exams-en): same exam, same key; only the text is translated */
+  const rawEn = E('PAST_EXAMS_EN_JSON'), loadedEn = E('Object.keys(PAST_EN)');
+  for (const j of rawEn) {
+    const at = 'past (en) ' + j.id, bg = raw.find(b => b.id === j.id);
+    if (!bg) { fail(at + ': no Bulgarian exam with this id'); continue; }
+    if (!loadedEn.includes(j.id)) { fail(at + ' not loaded', E(`checkModule(${JSON.stringify(j)}).errors`)); continue; }
+    if (j.lang !== 'en') fail(at + ': lang should be "en"');
+    if (JSON.stringify(j.past.exam + j.past.subj + j.past.year) !== JSON.stringify(bg.past.exam + bg.past.subj + bg.past.year)) fail(at + ': exam, subject or year differ from the Bulgarian one');
+    const pe = j.exams[0].parts, pb = bg.exams[0].parts;
+    if (pe.length !== pb.length) { fail(at + ': different number of parts'); continue; }
+    const texts = [...Object.values(j.passages || {}).map(p => p.text)];
+    pe.forEach((part, pi) => {
+      texts.push(part.instructions);
+      if (part.tasks.length !== pb[pi].tasks.length) return fail(`${at} part ${pi + 1}: different number of tasks`);
+      part.tasks.forEach((t, ti) => {
+        const b = pb[pi].tasks[ti];
+        texts.push(t.prompt, t.explain, ...(t.options || []), typeof t.answer === 'string' ? t.answer : '', ...(t.rubric || []).map(r => r.text));
+        if (t.id !== b.id || t.type !== b.type || t.points !== b.points) return fail(`${at} ${b.id}: id, type or points differ`);
+        if ((t.options || []).length !== (b.options || []).length) fail(`${at} ${t.id}: different number of options`);
+        if (['choice', 'multi', 'number', 'order', 'match'].includes(t.type) && JSON.stringify(t.answer) !== JSON.stringify(b.answer)) fail(`${at} ${t.id}: the key differs from the Bulgarian exam`);
+        /* text answers may add English spellings, but every Bulgarian one must still count */
+        if (t.type === 'text') [].concat(b.answer).forEach(a => { if (E(`scoreTask(${JSON.stringify(t)}, ${JSON.stringify(a)}, 'en').status`) !== 'right') fail(`${at} ${t.id}: "${a}" is no longer accepted`); });
+        if (JSON.stringify((t.media || []).map(m => m.src)) !== JSON.stringify((b.media || []).map(m => m.src))) fail(`${at} ${t.id}: pictures differ`);
+      });
+    });
+    for (const x of texts) { const bad = mathOk(x); if (bad) fail(`${at} katex ${bad}`); }
+  }
+  E("S.settings.lang = 'en'");
+  if (rawEn.length && E(`pastById(${JSON.stringify(rawEn[0].id)}).lang`) !== 'en') fail('past exams: English is not shown in English');
+  E("S.settings.lang = 'bg'");
+  if (rawEn.length && E(`pastById(${JSON.stringify(rawEn[0].id)}).lang`) !== 'bg') fail('past exams: Bulgarian changed');
+  console.log(`${rawEn.length} English past exams checked`);
+
 }
 
 /* 4. first-run setup (58-onboarding.js): steps, validation, resume */

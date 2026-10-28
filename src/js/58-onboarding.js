@@ -170,7 +170,8 @@ function onboardingFinish() {
   const o = obState(); o.done = true; o.finishedAt = Date.now(); saveState(true);
   return { ok: true, done: true };
 }
-function onboardingRestart() { S.onboarding = { done: false, step: 0 }; saveState(true); }
+let _obShown = 0;   /* last drawn bar fraction, so the intro bar animates from there to the new step */
+function onboardingRestart() { S.onboarding = { done: false, step: 0 }; _obShown = 0; saveState(true); }
 
 /* "Clear my answers" keeps the profile and settings, so it must keep the setup state too */
 const _resetStateBase = resetState;
@@ -206,13 +207,16 @@ SCREENS.onboarding = async el => {
   };
   const draw = () => {
     el.innerHTML = `<div class="pad onboarding">
-      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="${L('Назад')}">${icon('back')}</button>` : '<span class="tb-gap"></span>'}<span class="ob-count">${pos}/${n}</span></header>
+      <header class="ob-top">${o.step > 0 ? `<button class="iconbtn" data-ob="back" aria-label="${L('Назад')}">${icon('back')}</button>` : '<span class="tb-gap"></span>'}<div class="duo anim" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${pos}"><i style="width:${_obShown * 100}%"></i></div><span class="ob-count">${pos}/${n}</span></header>
       ${o.step === 0 || isLast ? '<div class="brand bingo ob-brand">Bing<span>O</span></div>' : ''}
       <h1 class="ob-title">${esc(L(obTitle(step)))}</h1><p class="muted ob-text">${esc(L(obText(step.text)))}</p>
       ${step.fields.length ? `<section class="card ob-card">${step.fields.map(fieldHtml).join('')}</section>` : ''}
       <div class="ob-actions"><button class="btn accent big block" data-ob="next">${isLast ? L('Към BingO') : L('Напред')}</button>
       ${step.skippable ? `<button class="btn ghost block" data-ob="skip">${L('Пропусни')}</button>` : ''}</div></div>`;
     el.querySelector('[data-k]')?.focus({ preventScroll: true });
+    const duo = el.querySelector('.duo'), fill = duo.firstElementChild, to = pos / n;
+    requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = (to * 100) + '%'; duo.classList.toggle('full', to === 1); }));
+    _obShown = to;
   };
   draw();
   el.addEventListener('click', e => {
