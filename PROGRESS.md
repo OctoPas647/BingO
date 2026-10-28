@@ -6,6 +6,7 @@
   - Added a single MON_SCALE table in src/js/65-forecast.js. gradeOf, nextGrade, the scale bar and the detailed scale list now use the same boundaries.
   - Corrected the top bands: 84–94,75 is Много добър 5 and 95–100 is Отличен 6.
   - The forecast scale now shows one tick per grade: 2 at 0, 3 at 30, 4 at 40,75, 5 at 62,5 and 6 at 95. This avoids two "5" ticks.
+  - Kept a GRADES alias (threshold + grade pairs) because tools/check.js reads it for the English-UI translation check. This fixes the `GRADES is not defined` failure in `python tools/build.py check`.
   - The detailed sheet now shows exact point ranges for every grade and explains that MON converts points in 0.25-point steps.
   - Added Playwright check 11 in tests/fixes.py: it checks gradeOf at every MON boundary and that the scale renders the 2–6 ticks and the exact band colours.
   - Files: src/js/65-forecast.js, src/css/forecast.css, tests/fixes.py, PROGRESS.md.
@@ -25,6 +26,7 @@
 - MON scale: 84–94,75 is Много добър 5; 95–100 is Отличен 6.
 - The forecast scale colours are generated from MON_SCALE in JavaScript, so the CSS no longer hard-codes the old 30% / 62.5% boundaries.
 - The scale shows one tick per grade label, not one per MON band.
+- GRADES stays as a derived alias of MON_SCALE for compatibility with tools/check.js.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -35,6 +37,7 @@
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 
 ## Left
+- Run `python tools/build.py check` again after this fix; it should no longer fail with `GRADES is not defined`.
 - Run `python tools/build.py web`, then `python tests/fixes.py` (needs Playwright) to run the new MON scale check.
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the forecast scale on web and APK: check the 2–6 ticks, the band colours, and the detailed MON scale list.

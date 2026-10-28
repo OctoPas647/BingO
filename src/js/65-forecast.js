@@ -13,6 +13,8 @@ const MON_SCALE = [
   { min: 84, max: 94.75, grade: 'Мн. добър 5', label: '5' },
   { min: 95, max: 100, grade: 'Отличен 6', label: '6' }
 ];
+/* tools/check.js reads GRADES for the English-UI translation check. */
+const GRADES = MON_SCALE.map(b => [b.min, b.grade]);
 const gradeOf = pts => { const b = MON_SCALE.find(x => pts >= x.min && pts <= x.max); return [b.min, L(b.grade)]; };
 const nextGrade = pts => {
   const bands = [];
