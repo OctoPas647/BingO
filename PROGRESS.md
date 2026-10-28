@@ -12,6 +12,10 @@
 - Fix: browser Back button "gets stuck", then suddenly leaves the app.
   - Cause: `go()` pushes a history entry per screen, but in-app back, Android back, `home()` and `backTo()` only popped `NAV`. The history kept stale entries.
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
+- Fix: “Сгрешени задачи с избор“ съдържа и задачи със свободен отговор.
+  - The past-exam result list previously included every non-`open` task with fewer than full points.
+  - It now includes only `choice` tasks, so free-response and ordering tasks no longer appear under the multiple-choice label.
+  - Changed `src/js/66-past.js`.
 
 ## Decisions
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
@@ -22,6 +26,7 @@
 - Cause of the repeats: generated math tasks get a new id per seed, so the old id check could not see identical questions; some generators have only 3-12 variants.
 - New exam id is dzi12-math-2020-06-02-v2 (not ...-06-v2: that one is 03.06.2020). past.date is 2020-06-02. The PDF is named "3dzi" (third ДЗИ); I kept it under dzi12 math.
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
+- The “Сгрешени задачи с избор” list is restricted to `choice` tasks; other task types remain scored normally but are not listed as multiple-choice mistakes.
 
 ## Left
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
@@ -39,6 +44,7 @@
 - Manual test on web and APK.
 - Maybe add more variants to the small math generators.
 - Check the other 2020-2021 files (БЕЛ 01.06.2020, 27.08.2020, 19.05.2021, math 28.08.2020) against the repo; they look already added.
+- Test a past exam containing choice, ordering, and open tasks: confirm only incorrect choice tasks appear in “Сгрешени задачи с избор”.
 
 ## Bugs
 - None known. Edge case: tapping very fast while a history rewind is running was not tested.
