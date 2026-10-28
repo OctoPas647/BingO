@@ -17,7 +17,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const Q = planned.plan.slice(0, 8).map(p => ({ ...p })), TOTAL = Q.length;
   const P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
   if (!TOTAL) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
-  const sessionTitle = `${L(MODE_TITLE[mode])} · ${TOTAL} ${L('задачи')}`;
+  const sessionTitle = `${L(MODE_TITLE[mode])} · ${tn('n.tasks', TOTAL)}`;
 
   /* Gemini: prepare one new task for the weakest skill in the background. It fills an
      existing upcoming focus slot; it never inserts a new queue item. */
@@ -118,7 +118,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
-      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${esc(L('Подсказка'))}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
+      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${esc(t('task.hint'))}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }

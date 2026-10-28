@@ -59,7 +59,7 @@ with sync_playwright() as pw:
             ok('order task: Провери disabled before any move', p.locator('[data-main]').is_disabled())
             p.locator('[data-mv="1"]').first.click()
         if p.locator('.opt').count(): p.locator('.opt').first.click()
-        elif p.locator('input.field').count() and not p.input_value('input.field'): p.fill('input.field', '1')
+        elif p.locator('input.field').count() and p.locator('input.field').first.is_editable(): p.fill('input.field', '1')
         if p.locator('[data-main]').is_disabled(): break
         before = p.locator('.pcount').inner_text()
         p.locator('[data-main]').dblclick(); p.wait_for_timeout(150)
@@ -146,8 +146,8 @@ with sync_playwright() as pw:
     for i in range(5):
         if p.locator('.result').count(): break
         if p.locator('.opt').count(): p.locator('.opt').first.click()
-        elif p.locator('input.field').count(): p.fill('input.field', '1')
-        elif p.locator('.gap-in').count(): p.locator('.gap-in').first.fill('1')
+        elif p.locator('input.field').count() and p.locator('input.field').first.is_editable(): p.fill('input.field', '1')
+        elif p.locator('.gap-in').count() and p.locator('.gap-in').first.is_editable(): p.locator('.gap-in').first.fill('1')
         if p.locator('[data-main]').is_disabled(): break
         p.locator('[data-main]').click(); p.wait_for_timeout(150)
         p.locator('[data-main]').click(); p.wait_for_timeout(250)
