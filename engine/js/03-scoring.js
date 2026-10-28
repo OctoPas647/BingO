@@ -17,9 +17,9 @@ function normText(s, lang, strict, cyr) {
   if (cyr) s = s.replace(/[acepoxyk]/g, ch => LOOKALIKE[ch]);
   return s;
 }
-/* Strict checking must still be fair for whole-sentence answers: capitalization, final punctuation,
+/* Strict checking must still be fair for whole-sentence *text* answers: capitalization, final punctuation,
    outer quotation marks and dash/quote variants should not make a correct sentence wrong. Internal
-   punctuation and word order remain important. */
+   punctuation and word order remain important. Gap blanks keep their previous strict behavior. */
 function normSentence(s, lang, cyr) {
   s = String(s ?? '').normalize('NFC').replace(/\s+/g, ' ').trim();
   s = s.toLocaleLowerCase(lang || undefined).replace(/[’‘`´]/g, "'").replace(/[“”„«»]/g, '"').replace(/[‐-―−]/g, '-');
@@ -28,9 +28,9 @@ function normSentence(s, lang, cyr) {
   return s;
 }
 const isSentence = s => /\s/.test(String(s ?? '').trim());
-function textMatches(given, accepted, lang, strict) {
+function textMatches(given, accepted, lang, strict, allowSentence = true) {
   const list = arr(accepted), cyr = list.some(hasCyr);
-  if (strict && (isSentence(given) || list.some(isSentence))) {
+  if (strict && allowSentence && (isSentence(given) || list.some(isSentence))) {
     const g = normSentence(given, lang, cyr);
     return g !== '' && list.some(a => normSentence(a, lang, cyr) === g);
   }
@@ -62,7 +62,7 @@ function scoreTask(t, r, lang) {
     case 'text': return out(textMatches(r, t.answer, lang, t.strict) ? 1 : 0);
     case 'number': { const v = parseNumber(r); return out(Number.isFinite(v) && Math.abs(v - t.answer) <= (t.tolerance || 1e-9) ? 1 : 0); }
     case 'gaps': {
-      const marks = t.gaps.map((g, i) => (g.options ? r[i] === g.answer : textMatches(r[i], g.answer, lang, g.strict ?? t.strict)));
+      const marks = t.gaps.map((g, i) => (g.options ? r[i] === g.answer : textMatches(r[i], g.answer, lang, g.strict ?? t.strict, false)));
       return out(marks.filter(Boolean).length / marks.length, null, marks);
     }
     case 'order': {
