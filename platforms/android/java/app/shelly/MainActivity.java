@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(false);
         s.setAllowContentAccess(false);
         s.setMediaPlaybackRequiresUserGesture(true);
-        /* Do not force textZoom to 100: Android's system font size must scale the app text. */
+        applyFontScale();
         s.setUserAgentString(s.getUserAgentString() + " ShellyApp/1.0");
 
         web.addJavascriptInterface(new UiBridge(), "AndroidUI");
@@ -141,6 +141,14 @@ public class MainActivity extends Activity {
 
         pendingIncoming = incomingUri(getIntent());
         if (state != null) web.restoreState(state); else web.loadUrl(START);
+    }
+
+    /* Use Android's accessibility font size. A scale of 1.0 means the normal size; larger
+       system font settings proportionally increase the text in the WebView. */
+    void applyFontScale() {
+        float scale = getResources().getConfiguration().fontScale;
+        if (scale <= 0) scale = 1.0f;
+        web.getSettings().setTextZoom(Math.round(scale * 100));
     }
 
     /* Hide the system navigation bar while the app is open. Swiping from the bottom edge shows it for a moment, then it hides again.
@@ -284,6 +292,7 @@ public class MainActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration c) {
         super.onConfigurationChanged(c);
+        applyFontScale();
         js("window.__systemTheme && __systemTheme()");
     }
 

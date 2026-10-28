@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- ISSUE 3 — Системният размер на шрифта се игнорира (достъпност): the Android WebView now applies the system font scale on startup and reapplies it when the system configuration changes. The old hardcoded `setTextZoom(100)` no longer prevents Android accessibility text sizing from working.
 - ISSUE 2 — „Тренирай слабото · 8 задачи“ води до 11–16 задачи; общият брой расте по време на сесията: a wrong answer now converts the next planned focus task into an immediate extra task for the same skill. This preserves immediate remediation while an eight-task focus session remains eight tasks; the queue can no longer grow during the session.
 - ISSUE 1 — Оценката на усвояването се мени прекалено рязко: mastery updates in `src/js/51-skills.js` now use less learning gain while there is little evidence and cap how far one answer can move mastery. Early answers can change mastery by at most 8 percentage points; the cap grows gradually as the learner answers more tasks.
 - Merged latest main into feature/feedback-20261028-1627-s18; kept both the main history fixes and the feedback/demo-restore fixes in PROGRESS.md.
@@ -34,6 +35,7 @@
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
 
 ## Decisions
+- Android font scale: `applyFontScale()` converts Android's `fontScale` to WebView text zoom. It runs at startup and in `onConfigurationChanged`, so changing the phone font size while BingO is open updates the text too.
 - Session length: in focus mode, remediation replaces the next ordinary planned task instead of appending to the queue. Diagnostic mode may add one retry per weak skill, but still respects the eight-task cap.
 - Mastery smoothing: BKT still reacts to correct and wrong answers, but the first answers have reduced learning gain and a hard per-answer movement cap. This avoids sharp jumps from a single lucky guess or careless mistake while still allowing enough evidence to move a skill toward weak or strong.
 - Demo restore: the demo flag is part of the saved state, so a reload cannot confuse demo data with real progress. The backup is written only once, before the first demo load.
