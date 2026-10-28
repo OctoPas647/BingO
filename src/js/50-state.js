@@ -16,6 +16,7 @@ const DEFAULT_STATE = () => ({
   log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
   queue: [],             /* rows not yet sent to the Sheet */
   sessions: 0,
+  demo: false,           /* true while the simulated demo learner is loaded */
   review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
   onboarding: null,      /* first-run setup progress (58-onboarding.js) */
   aiFlags: [],           /* AI-made tasks a learner reported as wrong */
@@ -55,7 +56,15 @@ function sanitizeState(v) {
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  out.profile = {
+    name: isStr(prof.name) ? prof.name.slice(0, 40) : '',
+    cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '',
+    age: isStr(prof.age) ? prof.age.slice(0, 10) : '',
+    exam: isStr(prof.exam) ? prof.exam.slice(0, 40) : '',
+    track: isStr(prof.track) ? prof.track.slice(0, 40) : '',
+    extra: isStr(prof.extra) ? prof.extra.slice(0, 200) : '',
+    id: isStr(prof.id) && prof.id ? prof.id : d.profile.id
+  };
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
@@ -64,10 +73,13 @@ function sanitizeState(v) {
   out.log = Array.isArray(v.log) ? v.log.filter(r => isObj(r) && isStr(r.task_id || '') && isStr(r.subject || '')).slice(-3000) : [];
   out.queue = Array.isArray(v.queue) ? v.queue.filter(isObj).slice(-3000) : [];
   out.sessions = isNum(v.sessions) && v.sessions >= 0 ? Math.floor(v.sessions) : 0;
+  out.demo = !!v.demo;
   out.review = {};
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
+  out.pastResults = {};
+  if (isObj(v.pastResults)) for (const [k, r] of Object.entries(v.pastResults)) if (isObj(r) && isNum(r.pts) && isNum(r.max)) out.pastResults[k] = { pts: r.pts, max: r.max, at: isNum(r.at) ? r.at : 0 };
   return out;
 }
 const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
@@ -90,7 +102,7 @@ let saveTimer = 0;
 function saveState(now) {
   clearTimeout(saveTimer);
   const put = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { console.warn('state not saved', e); } };
-  if (now) put(); else saveTimer = setTimeout(put, 120);
+  if (now) put() else saveTimer = setTimeout(put, 120);
 }
 function resetState(keepSettings) {
   const keep = keepSettings ? { settings: S.settings, profile: S.profile } : {};
@@ -112,7 +124,7 @@ applySettings = function () {
   _applyBase();
   const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
   if (S.settings.theme === 'auto') rootEl.dataset.theme = systemDark() ? 'dark' : 'light';
-  if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
+  if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete S.dataset.amoled;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
 };
@@ -122,6 +134,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
   });
 }

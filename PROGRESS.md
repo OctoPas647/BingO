@@ -1,6 +1,10 @@
 # Progress
 
 ## Done
+- Fix: "Върни моите отговори" could restore demo data instead of the real learner's answers.
+  - Cause: after loading the demo, `S.sessions` stayed above 0, so `hasRealProgress()` still treated the demo as real progress. Loading the demo again then overwrote the real-data backup in localStorage.
+  - Fix in `src/js/56-demo.js`: the demo state is now marked with `S.demo = true`, `S.sessions` is reset to 0, and an existing demo backup is never overwritten. Restoring clears the demo flag.
+  - Fix in `src/js/50-state.js`: `sanitizeState()` now keeps the full profile (`age`, `exam`, `track`, `extra`), past-exam results and the demo flag, so restoring a backup does not lose data.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +18,8 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- Demo restore: the real-data backup is written only once, while the current state is real. A second tap on "Зареди демо ученик" must not replace it with demo data.
+- The demo flag lives in BingO's own state (`S.demo`), not in the engine.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -24,6 +30,7 @@
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 
 ## Left
+- Manual test of the demo restore fix on web and APK: real answers -> load demo -> load demo again -> "Върни моите отговори" must bring back the real answers.
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
