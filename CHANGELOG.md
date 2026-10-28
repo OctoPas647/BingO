@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1
+- **Past math exams in English**: with the app in English, 20 math exams open in English — all 16 ДЗИ papers (2019–2026) and НВО 10 from 2021–2024. Answers are checked against the same official key; your results are shared between the two languages
+- The past-exam screens (list, task, check, result) are now translated too; an exam that has no English version yet is marked **BG** and stays in Bulgarian
+- ДЗИ август 2021, task 24: "3 процента" counts again as a right answer in the English version (it had been changed to "3 procenta")
+- `python tools/build.py check` now compares every English exam with its Bulgarian original: same tasks, points, pictures and key, and every Bulgarian text answer still accepted
+
 ## 0.4.0
 Everything from the open branches in one version.
 

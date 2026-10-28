@@ -42,7 +42,10 @@ def content_js():
     for f in sorted((ROOT / 'content/past-exams').glob('*.json')):
         j = json.loads(read(f)); past.append(j)
         embed_media(media, j['id'], ROOT / 'content/past-exams/media' / f.stem)
+    # English versions of past exams: same id and file name, same pictures (media/ of the Bulgarian original)
+    past_en = [json.loads(read(f)) for f in sorted((ROOT / 'content/past-exams-en').glob('*.json'))]
     return (f'window.SHELLY_MODULE_JSON = {json.dumps(mods, ensure_ascii=False)};\nwindow.PAST_EXAMS_JSON = {json.dumps(past, ensure_ascii=False)};\n'
+            f'window.PAST_EXAMS_EN_JSON = {json.dumps(past_en, ensure_ascii=False)};\n'
             f'window.SHELLY_MEDIA = {json.dumps(media)};\n')
 
 def js_bundle():
