@@ -215,10 +215,21 @@ const TASK_BUILDERS = {
     let text = resp && resp.text || '', marks = resp && resp.marks || null, area;
     const wc = () => { const n = wordCount(text), el2 = area.querySelector('.wc'); el2.textContent = tn('n.words', n) + (task.minWords ? ' · ' + t('task.minWords', { n: task.minWords }) : '') + (task.maxWords ? ' · ' + t('task.maxWords', { n: task.maxWords }) : ''); el2.classList.toggle('short', !!task.minWords && n < task.minWords); };
     return {
-      html: `<textarea class="essay" rows="${task.points >= 10 ? 14 : 6}" spellcheck="true" placeholder="${esc(t('task.write'))}"></textarea><div class="wc" lang="${UI_LANG}"></div>`,
-      mount(a) { area = a; const ta = a.querySelector('textarea'); ta.value = text; wc(); ta.addEventListener('input', () => { text = ta.value; wc(); changed(); }); },
+      html: `<textarea class="essay" rows="${task.points >= 10 ? 14 : 6}" spellcheck="true" placeholder="${esc(t('task.write'))}"></textarea><div class="wc" lang="${UI_LANG}"></div><div class="rubric-preview"></div>`,
+      mount(a) {
+        area = a;
+        const ta = a.querySelector('textarea');
+        ta.value = text;
+        wc();
+        ta.addEventListener('input', () => { text = ta.value; wc(); changed(); });
+        if (task.rubric) {
+          const rv = rubricView(task, marks, (v) => { marks = v; changed(); });
+          a.querySelector('.rubric-preview').appendChild(rv.el);
+        }
+      },
       get: () => ({ text, marks }),
       setMarks(v) { marks = v; },
+      ready: () => !!String(text).trim(),
       show() { return task.answer ? `<div class="model"><b lang="${UI_LANG}">${esc(t('task.model'))}</b><div class="rt">${rich(task.answer)}</div></div>` : ''; }
     };
   }
