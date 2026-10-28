@@ -96,6 +96,12 @@ const guessOf = task => (task.type === 'choice' ? 1 / task.options.length : task
 
 function skillState(subj, id) {
   const k = subj + '.' + id + '@' + currentExamKey();
+  /* Older saves, the demo learner and imported data may still use `subject.skill`.
+     Move such an entry to the currently selected exam the first time it is needed. */
+  if (!S.skills[k]) {
+    const legacyKey = subj + '.' + id, legacy = S.skills[legacyKey];
+    if (legacy) { S.skills[k] = legacy; delete S.skills[legacyKey]; }
+  }
   return S.skills[k] || (S.skills[k] = { p: BKT.prior, n: 0, ok: 0, last: 0, misc: {}, hist: [] });
 }
 function bktUpdate(p, correct, guess) {
