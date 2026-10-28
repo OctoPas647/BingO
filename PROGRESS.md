@@ -4,6 +4,7 @@
 - ISSUE 1: Скала на МОН в прогнозата - по-ясна и точна
   - Replaced the rounded forecast grade thresholds (30 / 41 / 62.5 / 84) with the official MON DZI bands: до 29,75; 30–40,5; 40,75–62,25; 62,5–83,75; 84–94,75; 95–100.
   - Added a single MON_SCALE table in src/js/65-forecast.js. gradeOf, nextGrade, the scale bar and the detailed scale list now use the same boundaries.
+  - Corrected the top bands: 84–94,75 is Много добър 5 and 95–100 is Отличен 6.
   - The forecast scale now shows the 2–6 grade ticks and colours the bands at the real MON boundaries instead of the old 30% / 62.5% stops.
   - The detailed sheet now shows exact point ranges for every grade and explains that MON converts points in 0.25-point steps.
   - Added Playwright check 11 in tests/fixes.py: it checks gradeOf at every MON boundary and that the scale renders the 2–6 ticks and the exact band colours.
@@ -21,7 +22,7 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
-- MON scale: 95–100 is still Отличен 6; the official table shows it as a separate band, but no separate grade label was published in the sources checked.
+- MON scale: 84–94,75 is Много добър 5; 95–100 is Отличен 6.
 - The forecast scale colours are generated from MON_SCALE in JavaScript, so the CSS no longer hard-codes the old 30% / 62.5% boundaries.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.

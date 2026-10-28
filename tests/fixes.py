@@ -140,7 +140,7 @@ with sync_playwright() as pw:
     # 11. MON forecast scale uses the official boundaries
     ctx, p = fresh(b, state=DONE)
     grades = p.evaluate("[29.75, 30, 40.5, 40.75, 62.25, 62.5, 83.75, 84, 94.75, 95].map(p => gradeOf(p)[1])")
-    ok('MON scale: boundary grades', grades == ['Слаб 2', 'Среден 3', 'Среден 3', 'Добър 4', 'Добър 4', 'Мн. добър 5', 'Мн. добър 5', 'Отличен 6', 'Отличен 6', 'Отличен 6'], str(grades))
+    ok('MON scale: boundary grades', grades == ['Слаб 2', 'Среден 3', 'Среден 3', 'Добър 4', 'Добър 4', 'Мн. добър 5', 'Мн. добър 5', 'Мн. добър 5', 'Мн. добър 5', 'Отличен 6'], str(grades))
     scale = p.evaluate("fcScale({ lo: 10, hi: 90, pts: 50 })")
     ok('MON scale: ticks 2-6', all(f'>{g}</span>' in scale for g in ['2', '3', '4', '5', '6']), scale)
     ok('MON scale: band colours from MON_SCALE', 'linear-gradient' in scale and '40.75%' in scale, scale)

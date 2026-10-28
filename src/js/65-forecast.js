@@ -10,7 +10,7 @@ const MON_SCALE = [
   { min: 30, max: 40.5, grade: 'Среден 3', label: '3' },
   { min: 40.75, max: 62.25, grade: 'Добър 4', label: '4' },
   { min: 62.5, max: 83.75, grade: 'Мн. добър 5', label: '5' },
-  { min: 84, max: 94.75, grade: 'Отличен 6', label: '6' },
+  { min: 84, max: 94.75, grade: 'Мн. добър 5', label: '5' },
   { min: 95, max: 100, grade: 'Отличен 6', label: '6' }
 ];
 const gradeOf = pts => { const b = MON_SCALE.find(x => pts >= x.min && pts <= x.max); return [b.min, L(b.grade)]; };
@@ -40,7 +40,7 @@ const gradeText = f => { if (f.conf === 'low') return L('Оценка — сле
 function fcScale(f) {
   const ticks = MON_SCALE.map(b => [b.min, b.label]).filter(([v], i, a) => a.findIndex(x => x[0] === v) === i);
   const stops = MON_SCALE.map((b, i) => {
-    const color = i < 1 ? 'var(--bad-bg)' : b.min < 62.5 ? 'var(--meh-bg)' : 'var(--good-bg)';
+    const color = i < 1 ? 'var(--bad-bg)' : b.min < 95 ? 'var(--meh-bg)' : 'var(--good-bg)';
     const start = i ? MON_SCALE[i - 1].max + 0.25 : 0;
     return `${color} ${start}% ${b.max}%`;
   }).join(', ');
