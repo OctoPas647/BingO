@@ -102,7 +102,7 @@ let saveTimer = 0;
 function saveState(now) {
   clearTimeout(saveTimer);
   const put = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { console.warn('state not saved', e); } };
-  if (now) put() else saveTimer = setTimeout(put, 120);
+  if (now) put(); else saveTimer = setTimeout(put, 120);
 }
 function resetState(keepSettings) {
   const keep = keepSettings ? { settings: S.settings, profile: S.profile } : {};
@@ -124,7 +124,7 @@ applySettings = function () {
   _applyBase();
   const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
   if (S.settings.theme === 'auto') rootEl.dataset.theme = systemDark() ? 'dark' : 'light';
-  if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete S.dataset.amoled;
+  if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
 };
@@ -134,6 +134,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
   });
 }
