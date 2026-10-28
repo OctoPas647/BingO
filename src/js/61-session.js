@@ -2,7 +2,7 @@
    Built on Shelly's practice screen and task views. What is new:
    - tasks come from the weakest skills (planSession), at a level that follows the learner
    - a wrong answer names the typical mistake, and Gemini can explain it for *this* answer
-   - after a wrong answer comes a "twin": the same skill, new numbers, to fix it right away
+   - after a wrong answer, an existing later focus slot may become a "twin"
    - every answer updates the skill map and goes to the log (Google Sheets / Looker Studio) */
 
 const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема' };
@@ -12,17 +12,21 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
   const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
-  /* The weak-practice queue is fixed at start: at most 8 slots, with no duplicate
-     generated task admitted later. Runtime twins are handled separately. */
+  /* The task queue is initialized once and never changes length during a session.
+     AI tasks and twins may fill or retarget existing slots, but cannot add slots. */
   const Q = planned.plan.slice(0, 8).map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
   if (!Q.length) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
 
-  /* Gemini: prepare one new task for the weakest skill in the background, and slot it in
-     only if the queue still has room and the exact task has not already been used. */
+  /* Gemini: prepare one new task for the weakest skill in the background. It fills an
+     existing upcoming focus slot; it never inserts a new queue item. */
   if (aiOn() && mode !== 'diag') {
     const target = planned.focus ? planned.focus[0] : skill;
     if (target) aiNewTask(subj, target, levelFor(skillState(subj, target).p), sessionId)
-      .then(t => { if (!P.done && Q.length < 8 && t && !P.used.has(taskKey(t))) { Q.splice(Math.min(Q.length, P.i + 2), 0, { skill: target, why: 'focus', task: t }); paintCount(); } })
+      .then(t => {
+        if (P.done || !t || P.used.has(taskKey(t))) return;
+        const slot = Q.find((item, index) => index >= P.i && item.why === 'focus' && !item.task);
+        if (slot) { slot.task = t; paintCount(); }
+      })
       .catch(err => console.warn('AI task', err));
   }
 
@@ -35,7 +39,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const paintCount = () => { el.querySelector('.pcount').textContent = `${Math.min(P.i + 1, Q.length)} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
 
   /* The same question never comes twice in one session (P.used holds ids and, for generated
-     tasks, the question text). If a skill has no unseen task left, its place is dropped. */
+     tasks, the question text). A slot with no unseen task is skipped, not removed. */
   function nextTask() {
     const item = Q[P.i], st = skillState(subj, item.skill), lvl = item.level || levelFor(st.p);
     const t = item.task && !P.used.has(taskKey(item.task)) ? item.task : pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used);
@@ -45,7 +49,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   }
 
   function showTask() {
-    while (P.i < Q.length && !(task = nextTask())) Q.splice(P.i, 1);
+    while (P.i < Q.length && !(task = nextTask())) P.i++;
     if (P.i >= Q.length) return P.answers.length ? finish() : (toast('Няма нови задачи по тази тема'), back());
     const item = Q[P.i]; P.phase = 'answer'; aiHints = 0; shownAt = Date.now();
     view = taskView(task, m, { mode: 'practice', seed: sessionId, onChange: upd });
@@ -84,9 +88,14 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       const inlineWhy = task.type === 'choice' && task.why && task.why[resp];
       if (misc || !inlineWhy) fb.insertAdjacentHTML('afterbegin', `<div class="mistake">${icon('target')}<div><b>${misc ? L('Типична грешка') : L('Грешка')}</b><span class="rt">${misc ? richInline(miscLabel(misc)) : L('Виж решението по-долу.')}</span></div></div>`);
       if (aiOn()) fb.insertAdjacentHTML('beforeend', `<button class="btn ghost block aiexplain" data-aiexplain>${L('✦ Защо сгреших? Обясни Gemini')}</button><div class="aibox" hidden></div>`);
-      /* a twin right away (once per original task), but never beyond the fixed session size */
-      if (item.why !== 'twin' && mode !== 'diag' && Q.length < 8) Q.splice(P.i + 1, 0, { skill: task.skill, why: 'twin', level: task.level });
-      if (mode === 'diag' && !P.extraDiag.has(task.skill)) { P.extraDiag.add(task.skill); Q.push({ skill: task.skill, why: 'diag' }); }
+      /* Turn one existing later focus slot into a twin. This keeps the remediation
+         immediately after the mistake without changing the queue length. */
+      if (item.why !== 'twin' && mode !== 'diag') {
+        const twin = Q.find((x, index) => index > P.i && x.why === 'focus');
+        if (twin) { twin.why = 'twin'; twin.level = task.level; }
+      }
+      /* Diagnostic already has one slot per skill; do not append another. */
+      if (mode === 'diag') P.extraDiag.add(task.skill);
     }
     btn.textContent = P.i === Q.length - 1 ? L('Виж резултата') : L('Напред');
     setTimeout(() => fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
