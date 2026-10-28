@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- Fix: AI-generated multiple-choice tasks must now have exactly 4 unique, non-empty options. `aiNewTask()` in src/js/54-ai.js rejects responses with 2 or 3 options and retries up to 3 times, appending “Върни точно 4 различни опции, не по-малко и не по-повече.” to the prompt after a failed attempt. Manual testing should confirm that AI-generated tasks consistently show 4 options on web and APK.
 - Removed the AI/API onboarding screen: the `ai` step in src/js/58-onboarding.js no longer appears during first-run setup. AI configuration is no longer shown at startup, but remains fully accessible via the Settings menu.
 - Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
   - Cause: `syncHistory()` removed the history trap with `history.back()`, but the sheet callback called `go()` before that back was processed. `render()` then pushed a new trap, which the queued back removed; browser Back could then leave the app.
