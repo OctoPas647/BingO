@@ -56,19 +56,16 @@ function simulateClass(n = 28, seed = 'class') {
 }
 
 /* ---------- loading the demo learner without losing a real learner's progress ----------
-   The demo replaces the skill map and the answers. Explain what it is before loading it, even for
-   a brand-new user. If there is real progress, keep a copy under its own key, so "Върни моите
-   отговори" in Settings can bring it back. */
+   The demo replaces the skill map and the answers. A new user gets a non-blocking explanation on
+   Home, so loading the demo stays one tap. If there is real progress, ask first and keep a copy
+   under its own key, so "Върни моите отговори" in Settings can bring it back. */
 const DEMO_BACKUP_KEY = STORE_KEY + '.before-demo';
 const hasRealProgress = () => S.sessions > 0 || S.log.some(r => r.student_id !== 'demo');
 const demoBackupExists = () => { try { return !!localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return false; } };
 async function loadDemoLearner() {
-  const real = hasRealProgress();
-  const text = L('Демо ученикът е примерен ученик с предварително генерирани отговори. Той показва как BingO открива слабите теми и попълва картата на уменията. Това не са твоите отговори.') +
-    (real ? ' ' + L('Демото ще замени текущите ти данни; ще запазим копие, което можеш да върнеш от Настройки → „Върни моите отговори“.') : '');
-  const ok = await confirmBox(L('Какво е демо ученик?'), text, L('Зареди демото'));
-  if (!ok) return false;
-  if (real) {
+  if (hasRealProgress()) {
+    const ok = await confirmBox(L('Да заредим ли демо ученик?'), L('Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.'), L('Зареди демото'));
+    if (!ok) return false;
     try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S)); }
     catch (e) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
   }

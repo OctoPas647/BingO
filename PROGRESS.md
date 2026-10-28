@@ -1,7 +1,7 @@
 # Progress
 
 ## Done
-- Feedback fix: explained what the demo learner is before loading it. The Home screen now has a short explanation under “Покажи с демо ученик”, and `loadDemoLearner()` always shows an explanatory confirmation. If real progress exists, it still explains that the demo replaces current data and that a restorable backup is saved. Files: `src/js/60-home.js`, `src/js/56-demo.js`, `src/js/49-lang.js`.
+- Feedback fix: explained what the demo learner is before loading it. The Home screen now has a short explanation under “Покажи с демо ученик”. For a new user, loading stays one tap; only users with real progress see the existing confirmation and backup warning. Files: `src/js/60-home.js`, `src/js/56-demo.js`, `src/js/49-lang.js`.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -15,7 +15,7 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
-- Demo learner: always ask before loading it, including for a new user. The dialog explains that it is simulated data and what it demonstrates; the data-backup warning appears only when real progress exists.
+- Demo learner: explain it directly on Home for new users, without adding a blocking dialog. This keeps the browser test flow unchanged; the existing confirmation and backup flow remains for real progress.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
