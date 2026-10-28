@@ -7,18 +7,25 @@
 
 const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема' };
 
-SCREENS.session = async (el, { subj, mode, skill }, nav) => {
+SCREENS.session = async (el, { subj, mode, skill, grade }, nav) => {
   const sub = SUBJECTS[subj], m = fakeModule(subj), sessionId = uid();
+  const isNvo = !!grade && !!getNvoProfile(subj, grade);
+  /* NVO sessions use their own difficulty ladder; НВО 4 is additionally capped at level 2. */
+  const levelOf = p => isNvo ? Math.min(levelForNvo(p, grade), NVO_TASK_CAPS[String(grade)] || 3) : levelFor(p);
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
-  const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
-  const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
+  const startMap = isNvo ? nvoSummary(subj, grade) : subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
+  const planned = mode === 'diag'
+    ? { plan: isNvo ? planDiagnosticNvo(subj, grade) : planDiagnostic(subj) }
+    : mode === 'skill'
+      ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) }
+      : isNvo ? planSessionNvo(subj, grade, 8) : planSession(subj, 8);
   const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
   if (!Q.length) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
 
   /* Gemini: prepare one new task for the weakest skill in the background, and slot it in when ready */
   if (aiOn() && mode !== 'diag') {
     const target = planned.focus ? planned.focus[0] : skill;
-    if (target) aiNewTask(subj, target, levelFor(skillState(subj, target).p), sessionId)
+    if (target) aiNewTask(subj, target, levelOf(skillState(subj, target).p), sessionId)
       .then(t => { if (!P.done) { Q.splice(Math.min(Q.length, P.i + 2), 0, { skill: target, why: 'focus', task: t }); paintCount(); } })
       .catch(err => console.warn('AI task', err));
   }
@@ -34,7 +41,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   /* The same question never comes twice in one session (P.used holds ids and, for generated
      tasks, the question text). If a skill has no unseen task left, its place is dropped. */
   function nextTask() {
-    const item = Q[P.i], st = skillState(subj, item.skill), lvl = item.level || levelFor(st.p);
+    const item = Q[P.i], st = skillState(subj, item.skill), lvl = item.level || levelOf(st.p);
     const t = item.task && !P.used.has(taskKey(item.task)) ? item.task : pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used);
     if (!t) return null;
     item.task = t; P.used.add(t.id); P.used.add(taskKey(t));
@@ -67,7 +74,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const item = Q[P.i], resp = view.get(), res = scoreTask(task, resp, 'bg'), correct = res.status === 'right';
     const misc = correct ? null : mistakeOf(resp), secs = (Date.now() - shownAt) / 1000, hints = view.hintsUsed() + aiHints;
     const ch = recordAnswer(subj, task, correct, misc);
-    logAnswer({ subj, task, correct, misc, secs, hints, before: ch.before, after: ch.after, mode: item.why === 'check' ? 'check' : mode, session: sessionId });
+    logAnswer({ subj, task, correct, misc, secs, hints, before: ch.before, after: ch.after, mode: item.why === 'check' ? 'check' : mode, session: sessionId, grade: isNvo ? grade : undefined });
     P.answers.push({ skill: task.skill, correct, misc, task, resp, res });
     view.show(res); P.phase = 'next'; P.touched = true; checkedAt = Date.now();
     sound(correct ? 'right' : 'wrong');
@@ -100,7 +107,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
-      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>${L('✦ Подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
+      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ Подсказка</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
@@ -119,13 +126,13 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
 
   function finish() {
     P.done = true; S.sessions++; saveState(true); flushToSheet();
-    const endMap = subjectSummary(subj), touched = [...new Set(P.answers.map(a => a.skill))];
+    const endMap = isNvo ? nvoSummary(subj, grade) : subjectSummary(subj), touched = [...new Set(P.answers.map(a => a.skill))];
     const right = P.answers.filter(a => a.correct).length, gained = startMap.lost - endMap.lost;
     const rows = touched.map(id => { const x = endMap.list.find(y => y.sk.id === id), was = skillStatus({ ...x.st, p: before[id] }); return { x, was }; });
     const newlyStrong = rows.filter(r => r.x.status === 'strong' && before[r.x.sk.id] < BKT.strong);
     if (right / P.answers.length >= 0.7) { sound('done'); confetti(); }
     nav.onLeave = () => $$('canvas.confetti').forEach(c => c.remove()); /* confetti must not fall on the next screen */
-    el.querySelector('.playbar').outerHTML = topbar(esc(L(MODE_TITLE[mode])), { closeIcon: true });
+    el.querySelector('.playbar').outerHTML = topbar(esc(L(isNvo ? getNvoProfile(subj, grade).title : MODE_TITLE[mode])), { closeIcon: true });
     foot.remove();
     main.innerHTML = `<div class="result pad">
       <div class="res-hero">${ring(right / P.answers.length, right + '/' + P.answers.length, 'big')}
@@ -136,7 +143,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       <div class="deltas">${rows.map(({ x }) => `<div class="delta"><b>${esc(L(x.sk.name))}</b><div class="dbar"><i class="was" style="width:${before[x.sk.id] * 100}%"></i><i class="now m-${x.status}" style="width:${x.st.p * 100}%"></i></div><small>${pctTxt(before[x.sk.id])} → <b>${pctTxt(x.st.p)}</b> · ${L(STATUS_LABEL[x.status])}</small></div>`).join('')}</div>
       <div class="res-actions"><button class="btn ghost" data-out>${L('Към картата')}</button><button class="btn accent" data-again>${icon('target')}${L('Още 8 задачи')}</button></div></div>`;
     main.querySelector('[data-out]').onclick = () => home();
-    main.querySelector('[data-again]').onclick = () => go('session', { subj, mode: 'focus' }, { replace: true });
+    main.querySelector('[data-again]').onclick = () => go('session', { subj, mode: 'focus', grade: isNvo ? grade : undefined }, { replace: true });
   }
   showTask();
 };
