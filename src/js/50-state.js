@@ -12,6 +12,7 @@ const DEFAULT_STATE = () => ({
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
   settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true, lang: 'bg' },
   subject: 'math',
+  isDemo: false,         /* true while the simulated demo learner is loaded */
   skills: {},            /* "math.quad" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] } */
   log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
   queue: [],             /* rows not yet sent to the Sheet */
@@ -55,10 +56,13 @@ function sanitizeState(v) {
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id,
+    age: isStr(prof.age) ? prof.age.slice(0, 3) : '', exam: isStr(prof.exam) ? prof.exam.slice(0, 20) : '',
+    track: isStr(prof.track) ? prof.track.slice(0, 20) : '', extra: isStr(prof.extra) ? prof.extra.slice(0, 20) : '' };
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
+  out.isDemo = !!v.isDemo;
   out.skills = {};
   if (isObj(v.skills)) for (const [k, st] of Object.entries(v.skills)) { const c = cleanSkill(st); if (c && /^\w+\.\w+$/.test(k)) out.skills[k] = c; }
   out.log = Array.isArray(v.log) ? v.log.filter(r => isObj(r) && isStr(r.task_id || '') && isStr(r.subject || '')).slice(-3000) : [];
@@ -68,9 +72,17 @@ function sanitizeState(v) {
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
+  out.pastResults = {};
+  if (isObj(v.pastResults)) for (const [k, r] of Object.entries(v.pastResults)) if (isObj(r) && isNum(r.pts) && isNum(r.max) && isNum(r.at)) out.pastResults[k] = { pts: r.pts, max: r.max, at: r.at };
   return out;
 }
 const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
+
+/* Real progress means the learner is not in the demo and has measured at least one skill or answer */
+function hasRealProgress() {
+  if (S.isDemo) return false;
+  return Object.keys(S.skills).length > 0 || S.log.length > 0;
+}
 
 /* A save that cannot be read is copied to its own key before anything can overwrite it */
 function backupRaw(raw) {
