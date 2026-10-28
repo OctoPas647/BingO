@@ -50,12 +50,23 @@ function cleanSkill(st) {
     hist: Array.isArray(st.hist) ? st.hist.filter(h => Array.isArray(h) && isNum(h[0]) && isNum(h[1])).slice(-60) : []
   };
 }
+/* The profile has fields beyond name/class/id: age, chosen exam, track and extra notes.
+   They must survive a reload, otherwise the learner's exam falls back to ДЗИ and the
+   onboarding choices disappear. */
+function cleanProfile(prof, fallback) {
+  const out = { ...fallback };
+  if (!isObj(prof)) return out;
+  for (const k of ['name', 'cls', 'age', 'track', 'extra']) if (isStr(prof[k])) out[k] = prof[k].slice(0, k === 'cls' ? 10 : 40);
+  if (isStr(prof.id) && prof.id) out.id = prof.id;
+  if (isStr(prof.exam) && (prof.exam === '' || EXAMS[prof.exam])) out.exam = prof.exam;
+  return out;
+}
 function sanitizeState(v) {
   const d = DEFAULT_STATE();
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  out.profile = cleanProfile(prof, d.profile);
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
