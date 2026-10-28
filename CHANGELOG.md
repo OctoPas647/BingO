@@ -3,6 +3,7 @@
 ## 0.4.2
 Also includes everything from 0.4.1 (past math exams in English), which was never released on its own.
 
+- **Send feedback**: Settings → "Обратна връзка" opens a small form. Messages are sent to the BingO server; if you are offline, they stay safely on the device and are retried automatically later (**redeploy the Cloud Run server with `FEEDBACK_SCRIPT_URL`**)
 - **Duolingo-style progress bar**: a green pill bar in the first-run setup that fills with a small bounce, shimmers and pops on the last step; tests use the same look but stay still. Follows the theme and turns off its animation when the phone asks for reduced motion
 - **НВО 4. клас Математика 2007–2016**: 10 more past exams (170 questions) with the official keys
 - **ДЗИ Математика 02.06.2020, вариант 2**: 28 tasks, 100 points, with 5 redrawn figures and the official solutions for tasks 26–28
@@ -48,7 +49,7 @@ Everything from the open branches in one version.
 
 ## 0.2.0
 - **Bottom menu**: Начало · Статистики · Профил. Back always returns to Начало
-- **Статистики**: answers, accuracy, streak, the last 7 days, and a card per matura with where you lose the most points
+- **Статистики**: answers, accuracy, streak, the last 7 days, a card per matura with where you lose the most points
 - **Профил**: name, class, streak, strong skills, progress per matura. Name and class moved here from Settings
 - **Прогнозиран резултат**: expected points out of 100, a range that narrows with every answer, and the grade on МОН's scale (30 / 41 / 62,5 / 84 points); tap it to see where points are won fastest
 - **Subject as a dropdown** on Начало and on Грешки и данни

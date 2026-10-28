@@ -13,6 +13,10 @@
   - Cause: `go()` pushes a history entry per screen, but in-app back, Android back, `home()` and `backTo()` only popped `NAV`. The history kept stale entries.
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
+- **ISSUE 3 completed: user feedback**
+  - Feedback State & Queue: `src/js/55-sync.js` adds `FeedbackPayload`, a localStorage queue, `enqueueFeedback()`, `flushFeedback()`, JSON delivery, and staged retries. Public API: `window.BingOFeedback`.
+  - Server Endpoint & Android Bridge: `server/index.js` adds validated `POST /api/feedback`, forwarding to the Apps Script database through `FEEDBACK_SCRIPT_URL`. `platforms/android/bridge.js` adds `window.AndroidBridge.submitFeedback(callback)`.
+  - UI Integration & Tracking: Settings has a "Send Feedback" button and modal. It disables while sending, shows loading/success/offline states, and uses the configured Vertex AI server's `/api/feedback` endpoint.
 
 ## Decisions
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
@@ -24,6 +28,8 @@
 - New exam id is dzi12-math-2020-06-02-v2 (not ...-06-v2: that one is 03.06.2020). past.date is 2020-06-02. The PDF is named "3dzi" (third ДЗИ); I kept it under dzi12 math.
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 - Android wrapper cleanup keeps `AndroidUI` and `AndroidFiles`: the web app uses `AndroidUI.night()`, `__systemTheme`, file import, and CSV export.
+- Feedback uses the configured Vertex AI server (`proxyUrl`) and its `/api/feedback` route; the Cloud Run deployment needs `FEEDBACK_SCRIPT_URL` set to the Apps Script Web App URL.
+- Feedback modal styles are inline in `src/js/63-settings.js` for this small feature, so no separate CSS file or broader UI refactor is needed.
 
 ## Left
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
@@ -40,6 +46,7 @@
 - Maybe add more variants to the small math generators.
 - Check the other 2020-2021 files (БЕЛ 01.06.2020, 27.08.2020, 19.05.2021, math 28.08.2020) against the repo; they look already added.
 - Build and test the Android APK after this wrapper cleanup: open the app, switch System/Light/Dark/AMOLED themes, import a module, export CSV, and test Android Back.
+- Deploy the server with `FEEDBACK_SCRIPT_URL`, then test feedback online, offline queuing, and automatic retry on web and APK.
 
 ## Bugs
 - None known. Edge case: tapping very fast while a history rewind is running was not tested.
