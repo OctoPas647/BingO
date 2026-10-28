@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(false);
         s.setAllowContentAccess(false);
         s.setMediaPlaybackRequiresUserGesture(true);
-        s.setTextZoom(100);
+        applySystemFontScale();
         s.setUserAgentString(s.getUserAgentString() + " ShellyApp/1.0");
 
         web.addJavascriptInterface(new UiBridge(), "AndroidUI");
@@ -119,6 +119,14 @@ public class MainActivity extends Activity {
 
         pendingIncoming = incomingUri(getIntent());
         if (state != null) web.restoreState(state); else web.loadUrl(START);
+    }
+
+    /* Keep WebView text at the user's chosen Android font size.
+       setTextZoom(100) previously forced 100% and ignored the system setting. */
+    void applySystemFontScale() {
+        float scale = getResources().getConfiguration().fontScale;
+        if (scale <= 0) scale = 1f;
+        web.getSettings().setTextZoom(Math.round(scale * 100f));
     }
 
     /* Hide the system navigation bar while the app is open. Swiping from the bottom edge shows it for a moment, then it hides again.
@@ -172,7 +180,7 @@ public class MainActivity extends Activity {
             Object extra = i.getParcelableExtra(Intent.EXTRA_STREAM);
             if (extra instanceof Uri) return (Uri) extra;
             ClipData c = i.getClipData();
-            if (c != null && c.getItemCount() > 0) return c.getItemAt(0).getUri();
+            if (c != null && c.getItemCount() > 0) c.getItemAt(0).getUri();
         }
         return null;
     }
@@ -261,6 +269,7 @@ public class MainActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration c) {
         super.onConfigurationChanged(c);
+        applySystemFontScale();
         js("window.__systemTheme && __systemTheme()");
     }
 
