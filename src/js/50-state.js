@@ -55,7 +55,19 @@ function sanitizeState(v) {
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  /* The whole profile must survive a restart: age, exam, track and extra are needed for the
+     exam plan and the subject options. Invalid values fall back to empty strings. */
+  const choiceOk = (val, allowed) => isStr(val) && (val === '' || (allowed && typeof allowed === 'object' && val in allowed));
+  const extraOk = val => isStr(val) && (val === '' || (typeof EXTRA_MATH === 'string' && val === EXTRA_MATH) || choiceOk(val, typeof TRACKS === 'object' ? TRACKS : null));
+  out.profile = {
+    name: isStr(prof.name) ? prof.name.slice(0, 40) : '',
+    cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '',
+    age: (isStr(prof.age) && /^\d{1,2}$/.test(prof.age)) || isNum(prof.age) ? String(prof.age) : '',
+    exam: choiceOk(prof.exam, typeof EXAMS === 'object' ? EXAMS : null) ? prof.exam : '',
+    track: choiceOk(prof.track, typeof TRACKS === 'object' ? TRACKS : null) ? prof.track : '',
+    extra: extraOk(prof.extra) ? prof.extra : '',
+    id: isStr(prof.id) && prof.id ? prof.id : d.profile.id
+  };
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
