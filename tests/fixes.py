@@ -136,6 +136,20 @@ with sync_playwright() as pw:
     bad = p.evaluate("Array.from({length: 300}, (_, i) => genMathTask('quad', 1, i).explain).filter(e => /\\d--\\d/.test(e)).length")
     ok('quad explanation: no double minus', bad == 0, str(bad))
     ctx.close()
+
+    # 11. profile and past-exam result survive a reload
+    FULL = {**DONE,
+      'profile': {'name': 'Тест', 'cls': '12а', 'age': '17', 'exam': 'dzi12',
+                  'track': 'math', 'extra': 'maths', 'id': 'u1'},
+      'pastResults': {'dzi12-math-2020-06-02-v2': {'pts': 88, 'max': 100, 'at': 1}}}
+    ctx, p = fresh(b, state=FULL)
+    p.reload(); p.wait_for_timeout(300)
+    ok('profile: age kept after reload', p.evaluate("S.profile.age") == '17')
+    ok('profile: exam kept after reload', p.evaluate("S.profile.exam") == 'dzi12')
+    ok('profile: track kept after reload', p.evaluate("S.profile.track") == 'math')
+    ok('profile: extra kept after reload', p.evaluate("S.profile.extra") == 'maths')
+    ok('past result kept after reload', p.evaluate("S.pastResults['dzi12-math-2020-06-02-v2'].pts") == 88)
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')
