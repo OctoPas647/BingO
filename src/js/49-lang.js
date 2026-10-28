@@ -67,6 +67,7 @@ const EN_UI = {
   'Спираме да го повтаряме — само кратки проверки, все по-рядко.': 'We stop repeating it — only short checks, less and less often.',
   'Спираме да ги повтаряме — само кратки проверки, все по-рядко.': 'We stop repeating them — only short checks, less and less often.',
   'Какво се промени': 'What changed', 'Към картата': 'To the map', 'Още 8 задачи': '8 more tasks',
+  'Допълнителна задача по същата тема': 'An extra task on the same topic',
 
   /* stats and profile */
   'Матура': 'Matura', '≈ {a} от {b} т. запазени': '≈ {a} of {b} pts kept', 'Още не е измерено — направи диагностика': 'Not measured yet — do the diagnostic',
@@ -160,6 +161,7 @@ const EN_UI = {
   'Какъв е профилът ти?': 'What is your school profile?', 'Избери профил': 'Choose a profile',
   'НВО в 10-ти клас е еднакво за всички, но профилът решава коя ще е втората ти матура в 12-ти клас.': 'The 10th-grade NVO is the same for everyone, but your profile decides your second matura in 12th grade.',
   'Профилът решава коя може да е втората ти матура.': 'Your profile decides what your second matura can be.',
+  'Профилът решава коя може да е втората ти матура в 12-ти клас.': 'Your profile decides what your second matura in 12th grade can be.',
   'Допълнителна матура?': 'An extra matura?', 'Освен двете задължителни можеш да се явиш и на допълнителна матура. Пропусни, ако нямаш.': 'Besides the two required ones you can also take an extra matura. Skip this if you don\'t have one.',
   ' (скоро)': ' (soon)',
   'Математически': 'Mathematics', 'Софтуерни и хардуерни науки': 'Software and hardware sciences', 'Природни науки': 'Natural sciences', 'Икономическо развитие': 'Economic development',
