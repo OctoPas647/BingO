@@ -7,6 +7,20 @@
 
 const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема' };
 
+/* Count backward from today (or yesterday, if no session finished today) through the days
+   on which a diagnostic, focus, or single-skill session was completed. */
+function sessionStreak() {
+  const days = new Set(Array.isArray(S.sessionDays) ? S.sessionDays : []);
+  let streak = 0;
+  const d = new Date();
+  if (!days.has(window.localDate(d.getTime()))) d.setDate(d.getDate() - 1);
+  while (days.has(window.localDate(d.getTime()))) {
+    streak++;
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
+}
+
 SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const sub = SUBJECTS[subj], m = fakeModule(subj), sessionId = uid();
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
