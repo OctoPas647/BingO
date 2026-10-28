@@ -19,7 +19,7 @@ SCREENS.settings = async el => {
       <div class="rows"><div class="row"><span>${icon('sound')}${L('Звуци')}</span><button class="switch${st.sound ? ' on' : ''}" data-sw="sound" role="switch"><i></i></button></div></div></section>
     <section class="card"><h3>${icon('eye')}${L('Демо')}</h3>
       <button class="btn ghost block" data-demo>${icon('play')}${L('Зареди демо ученик')}</button>
-      ${demoBackupExists() ? `<button class="btn ghost block" data-restore>${icon('reset')}${L('Върни моите отговори')}</button>` : ''}
+      ${demoBackupHasRealData() ? `<button class="btn ghost block" data-restore>${icon('reset')}${L('Върни моите отговори')}</button>` : ''}
       <button class="btn ghost block" data-setup>${icon('reset')}${L('Начална настройка отново')}</button>
       <button class="btn ghost danger-text block" data-wipe>${icon('trash')}${L('Изчисти всичките ми отговори')}</button></section>
     <section class="card"><h3>${icon('info')}${L('За BingO')}</h3><p class="small"><b>BingO</b> ${L('alpha · подготовка за матура без зубрене: работа върху слабите места, не повтаряне на силните.')}</p>

@@ -85,17 +85,27 @@ with sync_playwright() as pw:
     ok('lit session: no repeated question', len(prompts) == len(set(prompts)), f'{len(prompts)} tasks; dups: {[x for x in set(prompts) if prompts.count(x) > 1]}')
     ctx.close()
 
-    # 6. demo learner asks first when there is real progress; restore brings it back
-    ctx, p = fresh(b, state={**DONE, 'sessions': 2, 'log': [{'t': 1, 'timestamp': '2026-10-01T10:00:00Z', 'student_id': 'u1', 'subject': 'Математика', 'task_id': 'x', 'correct': 1}]})
+    # 6. demo learner asks first when there is real progress; restore brings it back,
+    #    and loading the demo twice cannot overwrite the real backup with demo data
+    real = {**DONE, 'sessions': 2, 'log': [{'t': 1, 'timestamp': '2026-10-01T10:00:00Z', 'student_id': 'u1', 'subject': 'Математика', 'task_id': 'x', 'correct': 1}]}
+    ctx, p = fresh(b, state=real)
     p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.wait_for_timeout(300)
     ok('demo: confirmation shown', p.locator('.sheet-title', has_text='демо').count() == 1)
     p.click('[data-act="no"]'); p.wait_for_timeout(300)
     ok('demo: cancel keeps real progress', p.evaluate("S.sessions") == 2 and p.evaluate("S.log.length") == 1)
     p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard')
     ok('demo: loaded after yes', p.evaluate("S.profile.name") == 'Демо ученик')
+    ok('demo: state is marked as demo', p.evaluate("S.demo") is True)
     p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-restore]')
     p.click('[data-restore]'); p.wait_for_selector('.losscard')
     ok('demo: restore brings real data back', p.evaluate("S.sessions") == 2 and p.evaluate("S.profile.name") == 'Тест')
+    ok('demo: restore clears the demo flag', p.evaluate("S.demo") is False)
+    # load the demo again: the backup must still be the real learner, not the demo one
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard')
+    ok('demo: second load keeps demo state', p.evaluate("S.demo") is True and p.evaluate("S.profile.name") == 'Демо ученик')
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-restore]')
+    p.click('[data-restore]'); p.wait_for_selector('.losscard')
+    ok('demo: second restore still brings real data back', p.evaluate("S.sessions") == 2 and p.evaluate("S.profile.name") == 'Тест' and p.evaluate("S.demo") is False)
     ctx.close()
 
     # 7. settings refuse invalid values
