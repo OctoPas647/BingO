@@ -55,7 +55,17 @@ function sanitizeState(v) {
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  /* Keep every profile field: the setup saves age, exam, track and extra, and the exam plan
+     needs them after a restart. Unknown ids are harmless because every use checks TRACKS. */
+  out.profile = {
+    name: isStr(prof.name) ? prof.name.slice(0, 40) : '',
+    cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '',
+    age: isStr(prof.age) && /^\d{1,2}$/.test(prof.age) ? prof.age : '',
+    exam: ['nvo4', 'nvo7', 'nvo10', 'dzi12'].includes(prof.exam) ? prof.exam : '',
+    track: isStr(prof.track) && /^\w{1,20}$/.test(prof.track) ? prof.track : '',
+    extra: isStr(prof.extra) && /^\w{1,20}$/.test(prof.extra) ? prof.extra : '',
+    id: isStr(prof.id) && prof.id ? prof.id : d.profile.id
+  };
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
@@ -68,6 +78,9 @@ function sanitizeState(v) {
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
+  out.pastResults = {};
+  if (isObj(v.pastResults)) for (const [k, r] of Object.entries(v.pastResults))
+    if (isObj(r) && isNum(r.pts) && isNum(r.max) && isNum(r.at)) out.pastResults[k] = { pts: r.pts, max: r.max, at: r.at };
   return out;
 }
 const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
@@ -122,6 +135,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (url) el.poster = url; el.removeAttribute('data-poster'); }
   });
 }

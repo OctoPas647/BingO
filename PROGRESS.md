@@ -1,6 +1,9 @@
 # Progress
 
 ## Done
+- Fix: the student profile no longer resets on every restart (fix/keep-student-profile).
+  - Cause: `sanitizeState()` in `src/js/50-state.js` rebuilt the profile with only `name`, `cls` and `id`, so `age`, `exam`, `track` and `extra` were dropped on load. It also did not copy `pastResults`.
+  - Fix: keep and validate the full profile and `pastResults`. Unknown exam/track/extra values fall back to empty, and every use already checks `TRACKS`.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +17,8 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- Profile persistence: fix lives in `src/js/50-state.js`, not in `engine/` (engine is a vendored copy of Shelly and would be overwritten on resync).
+- Profile persistence: `age` stays a string, because the setup and the profile screen treat it as text. `exam` is checked against the four known ids; `track` and `extra` use a short id check because `TRACKS` loads later.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -24,6 +29,7 @@
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 
 ## Left
+- Manual test of the profile fix on web and APK: finish setup, reload/reopen, check profile, exam plan and past-exam results.
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
