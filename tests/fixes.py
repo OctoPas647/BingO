@@ -45,6 +45,17 @@ with sync_playwright() as pw:
     ok('history has no stale entries', p.evaluate('history.state') is None or 'trap' not in (p.evaluate('history.state') or {}), str(p.evaluate('history.state')))
     ctx.close()
 
+    # 3b. bottom menu: fast tab switches keep browser history in sync
+    ctx, p = fresh(b, state=DONE)
+    p.click('[data-tab="stats"]'); p.wait_for_timeout(100)
+    p.click('[data-tab="profile"]'); p.wait_for_timeout(100)
+    p.click('[data-tab="home"]'); p.wait_for_timeout(300)
+    p.click('[data-tab="stats"]'); p.wait_for_timeout(300)
+    p.go_back(); p.wait_for_timeout(300)
+    ok('bottom menu: Back from Stats lands on Home', p.locator('.losscard').count() == 1)
+    ok('bottom menu: no stale trap on Home', not ((p.evaluate('history.state') or {}).get('trap')))
+    ctx.close()
+
     # 4. session: double tap on Провери keeps the feedback; order needs a move; ± works
     ctx, p = fresh(b, state=DONE)
     p.click('[data-start="diag"]'); p.wait_for_selector('.task')

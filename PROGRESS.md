@@ -1,6 +1,10 @@
 # Progress
 
 ## Done
+- Fix: bottom menu (Начало · Статистики · Профил) no longer confuses browser history or lets a browser Back close the app.
+  - Cause: `syncHistory()` removed the history "trap" with an asynchronous `history.back()`, but a new screen could push a new trap before that pop arrived. The queued back then removed the new trap, so history and the screen stack drifted; a later browser Back could exit the app.
+  - Fix in `engine/js/20-ui.js`: a trap removal is now waited for (`trapBusy`), and the popstate handler recognises our own removal instead of using a counter that could drift. A new trap is added after the removal only if the app still needs one.
+  - Tests: `tests/fixes.py` has a bottom-menu case: Начало → Статистики → Профил → Начало → Статистики → browser Back must land on Начало with no stale trap.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +18,8 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- Bottom-menu history fix lives in `engine/js/20-ui.js`, where the navigation and history trap already live. `src/js/64-nav.js` is unchanged: its `goTab()` logic was correct; the bug was in the shared history sync.
+- The engine copy now differs from upstream Shelly in the history-sync block. If Shelly is resynced, this block must be kept or re-applied.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -26,8 +32,9 @@
 ## Left
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
+- Manual test of the bottom-menu history fix on web and APK: fast tab switches, then browser/Android Back.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
-- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
+- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q13,14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q14,15; 2015 q13,14; 2016 q13,14,18.
 - Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in its file.
 - past.pages in the new files is the PDF page range, not the book page numbers used in the 2017+ files.
 
@@ -41,4 +48,4 @@
 - Check the other 2020-2021 files (БЕЛ 01.06.2020, 27.08.2020, 19.05.2021, math 28.08.2020) against the repo; they look already added.
 
 ## Bugs
-- None known. Edge case: tapping very fast while a history rewind is running was not tested.
+- None known. Edge case: tapping browser Back in the tiny window while a trap removal is still pending is not covered by an automated test.

@@ -3,6 +3,7 @@
 ## 0.4.2
 Also includes everything from 0.4.1 (past math exams in English), which was never released on its own.
 
+- **Bottom menu and browser history**: fast switches between Начало, Статистики and Профил no longer leave stale history entries; browser Back returns to Начало instead of suddenly closing the app
 - **Duolingo-style progress bar**: a green pill bar in the first-run setup that fills with a small bounce, shimmers and pops on the last step; tests use the same look but stay still. Follows the theme and turns off its animation when the phone asks for reduced motion
 - **НВО 4. клас Математика 2007–2016**: 10 more past exams (170 questions) with the official keys
 - **ДЗИ Математика 02.06.2020, вариант 2**: 28 tasks, 100 points, with 5 redrawn figures and the official solutions for tasks 26–28
