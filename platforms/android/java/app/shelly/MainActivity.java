@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(false);
         s.setAllowContentAccess(false);
         s.setMediaPlaybackRequiresUserGesture(true);
-        s.setTextZoom(100);
+        /* Do not force textZoom to 100: Android's system font size must scale the app text. */
         s.setUserAgentString(s.getUserAgentString() + " ShellyApp/1.0");
 
         web.addJavascriptInterface(new UiBridge(), "AndroidUI");

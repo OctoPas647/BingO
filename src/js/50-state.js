@@ -29,9 +29,11 @@ let STATE_NOTICE = null;
 
 /* Saved data can be broken (a half-written save) or from an older version with other shapes.
    Every field is checked and anything that does not fit falls back to its default, so one bad
-   value never stops the app from opening. */
+   value never stops the app from opening. Profile names and classes use generous storage limits,
+   so a valid long value is not silently shortened when the app restarts. */
 const isNum = x => typeof x === 'number' && Number.isFinite(x);
 const isStr = x => typeof x === 'string';
+const PROFILE_LIMITS = { name: 120, cls: 40, age: 10, exam: 40, track: 40, extra: 200 };
 const SETTING_OK = {
   aiMode: v => ['off', 'key', 'proxy'].includes(v),
   apiKey: v => isStr(v) && !/\s/.test(v) && v.length < 200,
@@ -56,12 +58,10 @@ function sanitizeState(v) {
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = {
-    name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '',
-    age: isStr(prof.age) ? prof.age.slice(0, 10) : '', exam: isStr(prof.exam) ? prof.exam.slice(0, 40) : '',
-    track: isStr(prof.track) ? prof.track.slice(0, 40) : '', extra: isStr(prof.extra) ? prof.extra.slice(0, 200) : '',
-    id: isStr(prof.id) && prof.id ? prof.id : d.profile.id
-  };
+  out.profile = Object.fromEntries([
+    ...Object.entries(PROFILE_LIMITS).map(([k, limit]) => [k, isStr(prof[k]) ? prof[k].slice(0, limit) : '']),
+    ['id', isStr(prof.id) && prof.id ? prof.id : d.profile.id]
+  ]);
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;

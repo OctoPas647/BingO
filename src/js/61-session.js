@@ -2,24 +2,33 @@
    Built on Shelly's practice screen and task views. What is new:
    - tasks come from the weakest skills (planSession), at a level that follows the learner
    - a wrong answer names the typical mistake, and Gemini can explain it for *this* answer
-   - after a wrong answer comes a "twin": the same skill, new numbers, to fix it right away
+   - after a wrong answer comes a short extra task for the same skill, while the queue cap allows it
    - every answer updates the skill map and goes to the log (Google Sheets / Looker Studio) */
 
 const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема' };
+const MAX_SESSION_TASKS = 8;
 
 SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const sub = SUBJECTS[subj], m = fakeModule(subj), sessionId = uid();
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
-  const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
+  const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, MAX_SESSION_TASKS);
   const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
   if (!Q.length) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
+  const canAddTask = () => Q.length < MAX_SESSION_TASKS;
 
-  /* Gemini: prepare one new task for the weakest skill in the background, and slot it in when ready */
+  /* Gemini: prepare one new task for the weakest skill in the background, and slot it in when ready.
+     It replaces the last planned task rather than making the session longer. */
   if (aiOn() && mode !== 'diag') {
     const target = planned.focus ? planned.focus[0] : skill;
     if (target) aiNewTask(subj, target, levelFor(skillState(subj, target).p), sessionId)
-      .then(t => { if (!P.done) { Q.splice(Math.min(Q.length, P.i + 2), 0, { skill: target, why: 'focus', task: t }); paintCount(); } })
+      .then(t => {
+        if (P.done) return;
+        const at = Math.min(Q.length, P.i + 2);
+        if (Q.length >= MAX_SESSION_TASKS) Q.splice(Math.max(P.i + 1, Q.length - 1), 1);
+        Q.splice(Math.min(at, Q.length), 0, { skill: target, why: 'focus', task: t });
+        paintCount();
+      })
       .catch(err => console.warn('AI task', err));
   }
 
@@ -47,7 +56,8 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const item = Q[P.i]; P.phase = 'answer'; aiHints = 0; shownAt = Date.now();
     view = taskView(task, m, { mode: 'practice', seed: sessionId, onChange: upd });
     const sk = skillDef(subj, task.skill);
-    const tag = item.why === 'check' ? `<i class="chk">${icon('check')}${L('Проверка на силно умение')}</i>` : item.why === 'twin' ? `<i class="twin">${icon('reset')}${L('Близнак: същото, нови числа')}</i>` : '';
+    const twinLabel = subj === 'math' ? L('Близнак: същото, нови числа') : L('Допълнителна задача по същата тема');
+    const tag = item.why === 'check' ? `<i class="chk">${icon('check')}${L('Проверка на силно умение')}</i>` : item.why === 'twin' ? `<i class="twin">${icon('reset')}${twinLabel}</i>` : '';
     main.innerHTML = `<div class="taskhead"><div class="chips"><i class="score">${esc(L(sk.name))}</i><i>${L('Ниво {n}', { n: task.level || 2 })}</i><i class="src-${task.src}">${esc(L(SRC_LABEL[task.src] || ''))}</i>${tag}</div></div>`;
     main.appendChild(view.el);
     if (task.src === 'ai') main.insertAdjacentHTML('beforeend', `<p class="aiwarn">${icon('info')}${L('Задачата е създадена от ИИ и може да има грешка.')} <button class="linkbtn" data-report>${L('Докладвай грешка')}</button></p>`);
@@ -81,9 +91,9 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       const inlineWhy = task.type === 'choice' && task.why && task.why[resp];
       if (misc || !inlineWhy) fb.insertAdjacentHTML('afterbegin', `<div class="mistake">${icon('target')}<div><b>${misc ? L('Типична грешка') : L('Грешка')}</b><span class="rt">${misc ? richInline(miscLabel(misc)) : L('Виж решението по-долу.')}</span></div></div>`);
       if (aiOn()) fb.insertAdjacentHTML('beforeend', `<button class="btn ghost block aiexplain" data-aiexplain>${L('✦ Защо сгреших? Обясни Gemini')}</button><div class="aibox" hidden></div>`);
-      /* a twin right away (once per original task), so the fix is practised while it is fresh */
-      if (item.why !== 'twin' && mode !== 'diag') Q.splice(P.i + 1, 0, { skill: task.skill, why: 'twin', level: task.level });
-      if (mode === 'diag' && !P.extraDiag.has(task.skill)) { P.extraDiag.add(task.skill); Q.push({ skill: task.skill, why: 'diag' }); }
+      /* a short extra task right away, but only while the session still has a free slot */
+      if (item.why !== 'twin' && mode !== 'diag' && canAddTask()) Q.splice(P.i + 1, 0, { skill: task.skill, why: 'twin', level: task.level });
+      if (mode === 'diag' && !P.extraDiag.has(task.skill) && canAddTask()) { P.extraDiag.add(task.skill); Q.push({ skill: task.skill, why: 'diag' }); }
     }
     btn.textContent = P.i === Q.length - 1 ? L('Виж резултата') : L('Напред');
     setTimeout(() => fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);

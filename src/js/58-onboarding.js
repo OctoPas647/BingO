@@ -9,13 +9,13 @@ const ONBOARD = {
       { key: 'lang', path: 'settings.lang', type: 'choice', options: LANGS, native: true, validate: v => (['bg', 'en'].includes(v) ? '' : 'Избери език') }
     ] },
     { id: 'profile', title: 'Кой си ти?', text: 'Името и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.', skippable: true, fields: [
-      { key: 'name', path: 'profile.name', type: 'text', label: 'Име и фамилия', ph: 'напр. Мария Петрова', validate: v => (v.length > 40 ? 'Най-много 40 знака' : '') },
+      { key: 'name', path: 'profile.name', type: 'text', label: 'Име и фамилия', ph: 'напр. Мария Петрова', maxlength: 120, validate: v => (v.length > 40 ? 'Най-много 40 знака' : '') },
       { key: 'age', path: 'profile.age', type: 'number', label: 'Години', ph: 'напр. 17', validate: v => (/^\d+$/.test(v) && +v >= 7 && +v <= 99 ? '' : 'Въведи години от 7 до 99') }
     ] },
     { id: 'exam', title: () => (examFromAge(S.profile.age) ? L('Значи за {e}, нали?', { e: L(EXAMS[examFromAge(S.profile.age)]) }) : L('За кой изпит се готвиш?')), text: 'Ако не е така, избери своя клас.', fields: [
       { key: 'exam', path: 'profile.exam', type: 'choice', required: true, options: () => Object.entries(EXAMS).map(([id, name]) => [id, L(name)]), validate: v => (EXAMS[v] ? '' : 'Избери изпит') }
     ] },
-    { id: 'track', title: 'Какъв е профилът ти?', when: () => needsTrack(S.profile.exam), text: () => (S.profile.exam === 'nvo10' ? L('НВО в 10-ти клас е еднакво за всички, но профилът решава коя ще е втората ти матура в 12-ти клас.') : L('Профилът решава коя може да е втората ти матура.')), fields: [
+    { id: 'track', title: 'Какъв е профилът ти?', when: () => needsTrack(S.profile.exam), text: () => (S.profile.exam === 'nvo10' ? L('НВО в 10-ти клас е еднакво за всички, но профилът решава коя ще е втората ти матура в 12-ти клас.') : L('Профилът решава коя може да е втората ти матура в 12-ти клас.')), fields: [
       { key: 'track', path: 'profile.track', type: 'choice', list: true, required: true, options: () => Object.entries(TRACKS).map(([id, t]) => [id, t.icon + ' ' + L(t.title)]), validate: v => (TRACKS[v] ? '' : 'Избери профил') }
     ] },
     { id: 'extra', title: 'Допълнителна матура?', when: () => needsTrack(S.profile.exam) && !!TRACKS[S.profile.track], skippable: true, text: 'Освен двете задължителни можеш да се явиш и на допълнителна матура. Пропусни, ако нямаш.', fields: [
@@ -59,7 +59,7 @@ const TRACKS = {
   ent: { icon: '🚀', title: 'Предприемачески', dzi: ['предприемачество', 'география и икономика', 'информационни технологии', 'чужд език'] },
   lang: { icon: '🌍', title: 'Чужди езици', dzi: ['чужд език'] },
   hum: { icon: '📜', title: 'Хуманитарни науки', dzi: ['български език и литература', 'история и цивилизации', 'чужд език', 'философия'] },
-  soc: { icon: '🏛️', title: 'Обществени науки', dzi: ['история и цивилизации', 'география и икономика', 'философия'] },
+  soc: { icon: '🏛️', title: 'Обществени науки', dzi: ['история и цивилизации', 'математика', 'чужд език', 'философия'] },
   art: { icon: '🎨', title: 'Изобразително изкуство', dzi: ['изобразително изкуство'] },
   music: { icon: '🎵', title: 'Музика', dzi: ['музика'] },
   sport: { icon: '⚽', title: 'Физическо възпитание и спорт', dzi: ['физическо възпитание и спорт', 'биология и здравно образование'] },
@@ -203,7 +203,7 @@ SCREENS.onboarding = async el => {
       const opts = typeof f.options === 'function' ? f.options() : f.options;
       return `<div class="seg${f.list ? ' list' : ''}" data-key="${f.key}">${opts.map(([v, label, off]) => `<button data-v="${esc(v)}" class="${!off && d[f.key] === v ? 'on' : ''}"${off ? ' disabled' : ''}>${esc(f.native ? label : L(label))}</button>`).join('')}</div>${err}`;
     }
-    return `<label class="fld"><span>${esc(L(f.label))}</span><input class="field" data-k="${f.key}" type="${f.type}" value="${esc(d[f.key])}" placeholder="${esc(L(f.ph || ''))}" autocomplete="off" spellcheck="false"></label>${err}`;
+    return `<label class="fld"><span>${esc(L(f.label))}</span><input class="field" data-k="${f.key}" type="${f.type}" value="${esc(d[f.key])}" placeholder="${esc(L(f.ph || ''))}"${f.maxlength ? ` maxlength="${f.maxlength}"` : ''} autocomplete="off" spellcheck="false"></label>${err}`;
   };
   const draw = () => {
     el.innerHTML = `<div class="pad onboarding">

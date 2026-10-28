@@ -1,6 +1,12 @@
 # Progress
 
 ## Done
+- Fixed five open feedback issues:
+  - Mastery now changes more smoothly after the first answers (`src/js/51-skills.js`).
+  - Focus sessions keep the promised maximum of 8 tasks; twins, diagnostic retries and AI tasks can no longer grow the queue beyond that limit (`src/js/51-skills.js`, `src/js/61-session.js`).
+  - Android now respects the system font size instead of forcing WebView text zoom to 100% (`platforms/android/java/app/shelly/MainActivity.java`).
+  - The twin-task label is neutral for БЕЛ instead of saying “нови числа” (`src/js/61-session.js`).
+  - Long saved names and classes are no longer silently cut to the old input limits on restart; the name field has a matching maxlength and still shows its validation message (`src/js/50-state.js`, `src/js/58-onboarding.js`).
 - Fix: "Върни моите отговори" could restore demo data instead of the learner's real answers.
   - `S.demo` now marks that the demo learner is active (`src/js/50-state.js`, `src/js/56-demo.js`).
   - Loading the demo while it is already active no longer overwrites the real learner's backup.
