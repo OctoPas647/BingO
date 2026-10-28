@@ -62,7 +62,12 @@ const MATH_GEN = {
       });
     }
     if (lvl === 2) {
-      const a = r.pick([2, 3, 4, 5]), b = r.nz(-9, 9), c = r.nz(-9, 9);
+      /* Pick two real roots first, then build the coefficients from them:
+         ax^2 + bx + c = a(x - p)(x - q), so b = -a(p + q) and c = a p q.
+         This keeps D = a^2 (p - q)^2 >= 0 for every generated equation. */
+      const a = r.pick([2, 3, 4, 5]);
+      let p = r.nz(-7, 8), q = r.nz(-7, 8); if (p === q) q = p + 1 || 2;
+      const b = -a * (p + q), c = a * p * q;
       const askSum = r.chance(0.6);
       return mcTask(r, askSum ? {
         prompt: `Ако $x_1$ и $x_2$ са корените на $${poly([a, 'x^2'], [b, 'x'], [c, ''])}=0$, то $x_1+x_2$ е:`,
