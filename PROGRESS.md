@@ -1,6 +1,11 @@
 # Progress
 
 ## Done
+- Added NVO 4/7/10 Math profiles so training no longer stays on the Matura skill map when an НВО grade is selected.
+  - `src/js/51-skills.js`: `NVO_PROFILES`, `getNvoProfile()`, `NVO_LEVELS`, `levelForNvo()`, `nvoSummary()`, `planSessionNvo()` and `planDiagnosticNvo()`.
+  - `src/js/52-math.js`: `genMathTask()` accepts an NVO grade; НВО 4 is capped at level 2, and the grade is part of the task seed/id.
+  - `src/js/60-home.js`: НВО 4/7/10 selector for Math; the skill map, weak-skill ordering and session links use the selected NVO profile.
+  - `src/js/61-session.js`: diagnostics, focused training and single-skill practice use the selected NVO profile, its difficulty ladder and its skill map.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +19,10 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- NVO profiles reuse the existing math generators for now. They change which skills are trained, how they are weighted, and how difficulty rises; grade-specific NVO task banks can be added later in `src/js/52-math.js`.
+- НВО 4 is limited to difficulty levels 1-2. НВО 7 and НВО 10 can use levels 1-3, but reach higher levels at different mastery thresholds.
+- The selected NVO grade is stored as `S.nvoGrade` and defaults to 7.
+- Matura behaviour is unchanged when no NVO grade is selected or when the subject has no NVO profile.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -39,6 +48,8 @@
 - Manual test on web and APK.
 - Maybe add more variants to the small math generators.
 - Check the other 2020-2021 files (БЕЛ 01.06.2020, 27.08.2020, 19.05.2021, math 28.08.2020) against the repo; they look already added.
+- Add grade-specific NVO task content and topics where the current math generators do not match the НВО 4/7/10 curriculum.
+- Test НВО 4/7/10 selection, diagnostics, focused training and single-skill practice on web and APK.
 
 ## Bugs
 - None known. Edge case: tapping very fast while a history rewind is running was not tested.
