@@ -68,6 +68,8 @@ function sanitizeState(v) {
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
+  out.pastResults = {};
+  if (isObj(v.pastResults)) for (const [id, r] of Object.entries(v.pastResults)) if (isStr(id) && isObj(r) && isNum(r.pts) && isNum(r.max) && r.max > 0 && isNum(r.at)) out.pastResults[id] = { pts: r.pts, max: r.max, at: r.at };
   return out;
 }
 const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */

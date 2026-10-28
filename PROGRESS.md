@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- Fix: past exam results no longer disappear after a restart. `sanitizeState` in src/js/50-state.js did not copy `pastResults` from the saved state, so every restart reset it to `{}` and the next save overwrote the stored result. Now valid past-exam results are kept and malformed entries are dropped.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +15,7 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- Past results: `sanitizeState` validates each entry (`pts`, `max > 0`, `at`) and keeps only well-formed ones, so one bad value cannot break loading. The fix stays in BingO's `src/`, not in the vendored `engine/`.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -30,6 +32,7 @@
 - 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
 - Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in its file.
 - past.pages in the new files is the PDF page range, not the book page numbers used in the 2017+ files.
+- Related, not fixed here: `sanitizeState` also drops `profile.exam`, `profile.track`, `profile.age` and `profile.extra`, which `66-past.js` reads through `S.profile.exam`. Needs its own small fix.
 
 ## Left
 - Add the 25 drawing questions with their images (cropped from the PDFs).
