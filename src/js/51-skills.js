@@ -53,7 +53,7 @@ const MISC = {
   'pow.neg_sign': 'Отрицателният показател не прави числото отрицателно',
   'pow.neg_ignored': 'Отрицателният показател обръща дробта',
   'lin.flip': 'При деление на отрицателно число знакът на неравенството се обръща',
-  'lin.move_sign': 'Знак при пренасяне от едната страна на другата',
+  'lin.move_sign': 'Знак при пренасяне от една страна на друга',
   'lin.divide': 'Делене вместо изваждане (или обратно)',
   'rtri.add_legs': 'Хипотенузата не е сбор от катетите',
   'rtri.no_root': 'Забравен корен квадратен накрая',
@@ -66,7 +66,7 @@ const MISC = {
   'prog.forgot_half': 'Забравено делене на 2 в сумата',
   'prog.sign': 'Знак на разликата $d$',
   'prob.part_whole': 'Делим на всички възможности, не на неблагоприятните',
-  'prob.complement': 'Сметната е вероятността на противоположното събитие',
+  'prob.complement': 'Сметнат е вероятността на противоположното събитие',
   'prob.space': 'Неправилно пространство от изходи',
   'prob.not_equal': 'Изходите не са равновероятни',
   'prob.exactly': '„Поне едно“ не е „точно едно“',
@@ -133,16 +133,31 @@ function planSession(subj, size = 8) {
   const open = sum_.list.filter(x => x.status !== 'strong').map(x => ({ ...x, prio: x.lost * (x.st.n < 2 ? 1.3 : 1) })).sort((a, b) => b.prio - a.prio);
   const focus = open.slice(0, Math.min(open.length, open.length > 3 ? 3 : open.length));
   const plan = [];
+  const seen = new Set();
+
+  /* Focus slots may repeat a weak skill deliberately, because one session trains it
+     several times. Review/check slots must never duplicate one another or exceed the
+     requested session size. */
+  const addSlot = slot => {
+    if (plan.length >= size) return;
+    const key = slot.skill + ':' + slot.why;
+    if (slot.why !== 'focus') {
+      if (seen.has(key)) return;
+      seen.add(key);
+    }
+    plan.push(slot);
+  };
+
   if (focus.length) {
     const shares = focus.length === 1 ? [size] : focus.length === 2 ? [Math.ceil(size * 0.6), Math.floor(size * 0.4)] : [Math.ceil(size * 0.5), Math.round(size * 0.3), 0];
     shares[shares.length - 1] = size - sum(shares.slice(0, -1));
     const queues = focus.map((f, i) => Array.from({ length: shares[i] }, () => f.sk.id));
     /* interleave the skills: mixing them makes you recognise *which* method to use */
-    while (queues.some(q => q.length)) queues.forEach(q => { if (q.length) plan.push({ skill: q.shift(), why: 'focus' }); });
+    while (queues.some(q => q.length)) queues.forEach(q => { if (q.length) addSlot({ skill: q.shift(), why: 'focus' }); });
   }
   const due = sum_.list.filter(x => x.status === 'strong' && Date.now() - x.st.last > CHECK_AFTER).sort((a, b) => a.st.last - b.st.last)[0];
-  if (due) plan.splice(Math.min(3, plan.length), 0, { skill: due.sk.id, why: 'check' });
-  return { plan, focus: focus.map(f => f.sk.id), check: due ? due.sk.id : null };
+  if (due) addSlot({ skill: due.sk.id, why: 'check' });
+  return { plan: plan.slice(0, size), focus: focus.map(f => f.sk.id), check: due ? due.sk.id : null };
 }
 /* Diagnostic: one task per skill, a second one only where the first was wrong */
 function planDiagnostic(subj) { return SUBJECTS[subj].skills.map(sk => ({ skill: sk.id, why: 'diag' })); }

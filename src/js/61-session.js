@@ -12,14 +12,17 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
   const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
-  const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
+  /* The weak-practice queue is fixed at start: at most 8 slots, with no duplicate
+     generated task admitted later. Runtime twins are handled separately. */
+  const Q = planned.plan.slice(0, 8).map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
   if (!Q.length) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
 
-  /* Gemini: prepare one new task for the weakest skill in the background, and slot it in when ready */
+  /* Gemini: prepare one new task for the weakest skill in the background, and slot it in
+     only if the queue still has room and the exact task has not already been used. */
   if (aiOn() && mode !== 'diag') {
     const target = planned.focus ? planned.focus[0] : skill;
     if (target) aiNewTask(subj, target, levelFor(skillState(subj, target).p), sessionId)
-      .then(t => { if (!P.done) { Q.splice(Math.min(Q.length, P.i + 2), 0, { skill: target, why: 'focus', task: t }); paintCount(); } })
+      .then(t => { if (!P.done && Q.length < 8 && t && !P.used.has(taskKey(t))) { Q.splice(Math.min(Q.length, P.i + 2), 0, { skill: target, why: 'focus', task: t }); paintCount(); } })
       .catch(err => console.warn('AI task', err));
   }
 
@@ -100,7 +103,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
-      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>${L('✦ Подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
+      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${esc(L('Подсказка'))}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
@@ -131,7 +134,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       <div class="res-hero">${ring(right / P.answers.length, right + '/' + P.answers.length, 'big')}
         <h1>${mode === 'diag' ? L('Картата е готова') : gained > 0.05 ? L('Върна си ≈ {n} т.', { n: fmt1(gained) }) : L('Добра работа')}</h1>
         <p class="res-main">${L('Сега губиш ≈ <b>{a}</b> от {b} т.', { a: fmt1(endMap.lost), b: endMap.total })} ${mode !== 'diag' ? L('(преди: {n})', { n: fmt1(startMap.lost) }) : ''}</p></div>
-      ${newlyStrong.length ? `<div class="card strongnote">${icon('trophy')}<div><b>${L(newlyStrong.length > 1 ? '{s} станаха силни.' : '{s} стана силно.', { s: esc(newlyStrong.map(r => L(r.x.sk.name)).join(', ')) })}</b><br><span class="muted">${L(newlyStrong.length > 1 ? 'Спираме да ги повтаряме — само кратки проверки, все по-рядко.' : 'Спираме да го повтаряме — само кратки проверки, все по-рядко.')}</span></div></div>` : ''}
+      ${newlyStrong.length ? `<div class="card strongnote">${icon('trophy')}<div><b>${L(newlyStrong.length > 1 ? '{s} станаха силни.' : '{s} стана силно.', { s: esc(newlyStrong.map(r => L(r.x.sk.name)).join(', ')) })}</b><br><span class="muted">${L('Спираме да ги повтаряме — само кратки проверки, все по-рядко.')}</span></div></div>` : ''}
       <h2 class="sec-title">${L('Какво се промени')}</h2>
       <div class="deltas">${rows.map(({ x }) => `<div class="delta"><b>${esc(L(x.sk.name))}</b><div class="dbar"><i class="was" style="width:${before[x.sk.id] * 100}%"></i><i class="now m-${x.status}" style="width:${x.st.p * 100}%"></i></div><small>${pctTxt(before[x.sk.id])} → <b>${pctTxt(x.st.p)}</b> · ${L(STATUS_LABEL[x.status])}</small></div>`).join('')}</div>
       <div class="res-actions"><button class="btn ghost" data-out>${L('Към картата')}</button><button class="btn accent" data-again>${icon('target')}${L('Още 8 задачи')}</button></div></div>`;
