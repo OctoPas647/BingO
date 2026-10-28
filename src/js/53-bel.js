@@ -13,7 +13,7 @@ const BEL_BANK = [
     explain: '„Победителя“ е допълнение (кого поздравихме?), затова е с **кратък член**.' },
   { id: 'b:art3', skill: 'art', level: 2, type: 'choice', prompt: 'В кое изречение членуването е **правилно**?',
     options: ['Той е най-добрия ученик в класа.', 'Той е най-добрият ученик в класа.', 'Най-добрия ученик в класа е той.'], answer: 1, misc: ['art.pred', null, 'art.pred'],
-    explain: '„Най-добрият ученик“ е **сказуемно определение** (след „е“), а то се членува с пълен член, както подлогът.' },
+    explain: '„Най-добрият ученик“ е **именната част на сказуемото** (след „е“), затова се членува с пълен член, както подлогът.' },
   { id: 'b:art4', skill: 'art', level: 2, type: 'choice', prompt: 'Изберете правилно написаното изречение.',
     options: ['Говорихме за филмът цяла вечер.', 'Говорихме за филма цяла вечер.'], answer: 1, misc: ['art.obj', null],
     explain: 'След предлог („за филма“) думата не е подлог, затова е с **кратък член**.' },
@@ -78,7 +78,7 @@ Object.assign(MISC, {
 const mixOptions = t => { const o = shuffledIdx(t.options.length, t.id); return { ...t, options: o.map(i => t.options[i]), misc: o.map(i => t.misc[i]), answer: o.indexOf(t.answer) }; };
 BEL_BANK.push(...[
   { id: 'b:lit1', skill: 'lit', level: 1, type: 'choice', passage: 'debelyanov', prompt: 'Кого „приласкава“ тихата нощ в строфата?',
-    options: ['скръбните и нещастните', 'децата в бащината къща', 'щастливите и спокойните', 'войниците на фронта'], answer: 0, misc: [null, 'lit.text', 'lit.text', 'lit.text'],
+    options: ['скръбни и нещастни', 'децата в бащината къща', 'щастливите и спокойните', 'войниците на фронта'], answer: 0, misc: [null, 'lit.text', 'lit.text', 'lit.text'],
     explain: 'Последният стих казва, че нощта идва, за да приласкае **скръбни и нещастни**. Утехата е за страдащия — като лирическия Аз.' },
   { id: 'b:lit2', skill: 'lit', level: 1, type: 'choice', prompt: 'Къде е роден Димчо Дебелянов?',
     options: ['в Копривщица', 'в Пловдив', 'във Велико Търново', 'в София'], answer: 0, misc: [null, 'lit.author', 'lit.author', 'lit.author'],
