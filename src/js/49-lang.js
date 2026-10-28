@@ -70,6 +70,7 @@ const EN_UI = {
 
   /* stats and profile */
   'Матура': 'Matura', '≈ {a} от {b} т. запазени': '≈ {a} of {b} pts kept', 'Още не е измерено — направи диагностика': 'Not measured yet — do the diagnostic',
+  'Още няма задачи за тази матура.': 'No tasks for this matura yet.', 'Скоро': 'Soon',
   'отговора': 'answers', 'верни': 'right', 'средно време': 'average time', '{n} с': '{n} s',
   '{n} силни': '{n} strong', '{n} почти': '{n} almost', '{n} слаби': '{n} weak', '{n} малко данни': '{n} little data',
   'Къде губиш най-много': 'Where you lose the most', 'Отвори картата · {s}': 'Open the map · {s}',
