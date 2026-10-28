@@ -84,8 +84,8 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       const inlineWhy = task.type === 'choice' && task.why && task.why[resp];
       if (misc || !inlineWhy) fb.insertAdjacentHTML('afterbegin', `<div class="mistake">${icon('target')}<div><b>${misc ? L('Типична грешка') : L('Грешка')}</b><span class="rt">${misc ? richInline(miscLabel(misc)) : L('Виж решението по-долу.')}</span></div></div>`);
       if (aiOn()) fb.insertAdjacentHTML('beforeend', `<button class="btn ghost block aiexplain" data-aiexplain>${L('✦ Защо сгреших? Обясни Gemini')}</button><div class="aibox" hidden></div>`);
-      /* a twin right away (once per original task), so the fix is practised while it is fresh */
-      if (item.why !== 'twin' && mode !== 'diag') Q.splice(P.i + 1, 0, { skill: task.skill, why: 'twin', level: task.level });
+      /* a twin right away (once per original task), but never beyond the fixed session size */
+      if (item.why !== 'twin' && mode !== 'diag' && Q.length < 8) Q.splice(P.i + 1, 0, { skill: task.skill, why: 'twin', level: task.level });
       if (mode === 'diag' && !P.extraDiag.has(task.skill)) { P.extraDiag.add(task.skill); Q.push({ skill: task.skill, why: 'diag' }); }
     }
     btn.textContent = P.i === Q.length - 1 ? L('Виж резултата') : L('Напред');
