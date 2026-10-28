@@ -1,6 +1,11 @@
 # Progress
 
 ## Done
+- Feedback fix: daily activity now counts only the signed-in learner's own answers (`myLog()`), not demo rows or other students' rows from the shared Google Sheet.
+  - `src/js/50-state.js`: added `myLog()`; `sanitizeState()` now keeps only rows whose `student_id` matches the profile id in `S.log` and `S.queue`.
+  - `src/js/55-sync.js`: only the current learner's rows are queued and flushed to Google Sheets; the personal CSV export defaults to `myLog()`.
+  - `src/js/60-home.js`: the "Отговори досега" counter uses `myLog()`.
+  - `src/js/62-insights.js`: mistake/answer counts and the personal CSV use `myLog()`.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
   - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
@@ -14,6 +19,8 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 
 ## Decisions
+- Daily activity is strictly per learner: `student_id === S.profile.id`. Demo data and other students' rows are never shown as the user's own activity.
+- The shared Google Sheet still receives rows from every student, because that is what the teacher's Looker Studio dashboard needs; the app just never mixes them into one learner's view.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.

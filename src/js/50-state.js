@@ -25,6 +25,8 @@ const DEFAULT_STATE = () => ({
 let S = DEFAULT_STATE();
 /* What went wrong while loading, shown once after start (99-boot.js): null | { backup: key } */
 let STATE_NOTICE = null;
+/* Only this learner's answers count as their activity; demo and other students' rows never do. */
+function myLog() { return S.log.filter(r => isObj(r) && r.student_id === S.profile.id); }
 
 /* Saved data can be broken (a half-written save) or from an older version with other shapes.
    Every field is checked and anything that does not fit falls back to its default, so one bad
@@ -61,8 +63,9 @@ function sanitizeState(v) {
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
   out.skills = {};
   if (isObj(v.skills)) for (const [k, st] of Object.entries(v.skills)) { const c = cleanSkill(st); if (c && /^\w+\.\w+$/.test(k)) out.skills[k] = c; }
-  out.log = Array.isArray(v.log) ? v.log.filter(r => isObj(r) && isStr(r.task_id || '') && isStr(r.subject || '')).slice(-3000) : [];
-  out.queue = Array.isArray(v.queue) ? v.queue.filter(isObj).slice(-3000) : [];
+  const own = r => isObj(r) && r.student_id === out.profile.id;
+  out.log = Array.isArray(v.log) ? v.log.filter(r => own(r) && isStr(r.task_id || '') && isStr(r.subject || '')).slice(-3000) : [];
+  out.queue = Array.isArray(v.queue) ? v.queue.filter(r => own(r)).slice(-3000) : [];
   out.sessions = isNum(v.sessions) && v.sessions >= 0 ? Math.floor(v.sessions) : 0;
   out.review = {};
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
@@ -122,6 +125,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
   });
 }

@@ -5,7 +5,7 @@ SCREENS.insights = async el => {
   const miscs = [];
   sm.list.forEach(x => Object.entries(x.st.misc).forEach(([k, n]) => miscs.push({ k, n, sk: x.sk })));
   miscs.sort((a, b) => b.n - a.n);
-  const mine = S.log.filter(r => r.subject === sub.title), acc = mine.length ? mine.filter(r => r.correct).length / mine.length : 0;
+  const mine = myLog().filter(r => r.subject === sub.title), acc = mine.length ? mine.filter(r => r.correct).length / mine.length : 0;
   el.innerHTML = `${topbar(L('Грешки и данни'))}<div class="pad settings">
     ${subjectTabs(subj)}
     <section class="card"><h3>${icon('target')}${L('Типичните ти грешки · {s}', { s: esc(L(sub.title)) })}</h3>
@@ -29,7 +29,7 @@ SCREENS.insights = async el => {
   el.onchange = e => { const s = e.target.closest('#subjSelect'); if (s && SUBJECTS[s.value]) { S.subject = s.value; saveState(); refresh(); } };
   el.addEventListener('click', async e => {
     if (e.target.closest('[data-go]')) return go('settings');
-    if (e.target.closest('[data-csv]')) return downloadText(`bingo-${slug(S.profile.name || 'uchenik')}-${todayKey()}.csv`, logCSV());
+    if (e.target.closest('[data-csv]')) return downloadText(`bingo-${slug(S.profile.name || 'uchenik')}-${todayKey()}.csv`, logCSV(myLog()));
     if (e.target.closest('[data-class]')) return downloadText('bingo-primeren-klas.csv', logCSV(simulateClass()));
     if (e.target.closest('[data-flags]')) return downloadText('bingo-ai-flags.json', JSON.stringify(S.aiFlags, null, 2), 'application/json');
     if (e.target.closest('[data-flush]')) { const ok = await flushToSheet(); toast(ok ? 'Изпратено към Google Sheets' : 'Няма връзка — ще опитаме пак'); return refresh(); }
