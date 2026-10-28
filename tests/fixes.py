@@ -46,30 +46,33 @@ with sync_playwright() as pw:
     ctx.close()
 
     # 4. session: double tap on Провери keeps the feedback; order needs a move; ± works
-    ctx, p = fresh(b, state=DONE)
-    p.click('[data-start="diag"]'); p.wait_for_selector('.task')
+    # The diagnostic picks random task variants, so retry until a number task appears.
     seen_number = False
-    for i in range(14):
-        if p.locator('input.field.num').count() and not seen_number:
-            seen_number = True
-            p.fill('input.field.num', '29'); p.click('.signbtn')
-            ok('± turns 29 into -29', p.input_value('input.field.num') == '-29')
-            p.click('.signbtn'); ok('± again gives 29', p.input_value('input.field.num') == '29')
-        if p.locator('.orderlist').count():
-            ok('order task: Провери disabled before any move', p.locator('[data-main]').is_disabled())
-            p.locator('[data-mv="1"]').first.click()
-        if p.locator('.opt').count(): p.locator('.opt').first.click()
-        elif p.locator('input.field').count() and not p.input_value('input.field'): p.fill('input.field', '1')
-        if p.locator('[data-main]').is_disabled(): break
-        before = p.locator('.pcount').inner_text()
-        p.locator('[data-main]').dblclick(); p.wait_for_timeout(150)
-        if i == 0:
-            ok('double tap: feedback still shown', p.locator('.checkbar.good, .checkbar.bad').count() == 1 and p.locator('.pcount').inner_text() == before, before)
-            p.screenshot(path=str(SHOTS / 'double-tap.png'))
-        p.wait_for_timeout(500); p.click('[data-main]'); p.wait_for_timeout(150)
-        if p.locator('.result').count(): break
+    for attempt in range(3):
+        ctx, p = fresh(b, state=DONE)
+        p.click('[data-start="diag"]'); p.wait_for_selector('.task')
+        for i in range(14):
+            if p.locator('input.field.num').count() and not seen_number:
+                seen_number = True
+                p.fill('input.field.num', '29'); p.click('.signbtn')
+                ok('± turns 29 into -29', p.input_value('input.field.num') == '-29')
+                p.click('.signbtn'); ok('± again gives 29', p.input_value('input.field.num') == '29')
+            if p.locator('.orderlist').count():
+                ok('order task: Провери disabled before any move', p.locator('[data-main]').is_disabled())
+                p.locator('[data-mv="1"]').first.click()
+            if p.locator('.opt').count(): p.locator('.opt').first.click()
+            elif p.locator('input.field').count() and not p.input_value('input.field'): p.fill('input.field', '1')
+            if p.locator('[data-main]').is_disabled(): break
+            before = p.locator('.pcount').inner_text()
+            p.locator('[data-main]').dblclick(); p.wait_for_timeout(150)
+            if i == 0 and attempt == 0:
+                ok('double tap: feedback still shown', p.locator('.checkbar.good, .checkbar.bad').count() == 1 and p.locator('.pcount').inner_text() == before, before)
+                p.screenshot(path=str(SHOTS / 'double-tap.png'))
+            p.wait_for_timeout(500); p.click('[data-main]'); p.wait_for_timeout(150)
+            if p.locator('.result').count(): break
+        ctx.close()
+        if seen_number: break
     ok('a number task was met', seen_number)
-    ctx.close()
 
     # 5. no repeated questions in a one-skill session (Дебелянов)
     ctx, p = fresh(b, state={**DONE, 'subject': 'bel'})
