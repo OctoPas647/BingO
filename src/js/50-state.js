@@ -25,7 +25,6 @@ const DEFAULT_STATE = () => ({
 let S = DEFAULT_STATE();
 /* What went wrong while loading, shown once after start (99-boot.js): null | { backup: key } */
 let STATE_NOTICE = null;
-
 /* Saved data can be broken (a half-written save) or from an older version with other shapes.
    Every field is checked and anything that does not fit falls back to its default, so one bad
    value never stops the app from opening. */
@@ -55,7 +54,17 @@ function sanitizeState(v) {
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  /* Keep the exam, profile and extra matura from the setup: Stats needs them to show every
+     matura the learner plans to take, even when the app has no tasks for it yet. */
+  out.profile = {
+    name: isStr(prof.name) ? prof.name.slice(0, 40) : '',
+    cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '',
+    age: isStr(prof.age) && /^\d+$/.test(prof.age) && +prof.age >= 7 && +prof.age <= 99 ? prof.age : '',
+    exam: EXAMS[prof.exam] ? prof.exam : '',
+    track: TRACKS[prof.track] ? prof.track : '',
+    extra: prof.extra === EXTRA_MATH || TRACKS[prof.extra] ? prof.extra : '',
+    id: isStr(prof.id) && prof.id ? prof.id : d.profile.id
+  };
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;

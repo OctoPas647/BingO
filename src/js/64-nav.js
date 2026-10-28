@@ -6,7 +6,7 @@
 Object.assign(ICONS, {
   home: '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/>',
   chart: '<path d="M5 20V10M12 20V4M19 20v-7"/>',
-  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0a8 8 0 0 1-16 0z"/><path d="M4 21a8 8 0 0 1 16 0"/>'
 });
 
 const TABS = [['home', 'home', 'Начало'], ['stats', 'chart', 'Статистики'], ['profile', 'user', 'Профил']];
@@ -54,12 +54,27 @@ SCREENS.stats = async el => {
       ${started && worst.length ? `<h4 class="stat-sub">${L('Къде губиш най-много')}</h4><ul class="worst">${worst.map(x => `<li><span>${esc(L(x.sk.name))}</span><b>−${ptsL(fmt1(x.lost))}</b></li>`).join('')}</ul>` : ''}
       <button class="btn accent block" data-open="${sub.id}">${icon('target')}${L('Отвори картата · {s}', { s: esc(L(sub.short)) })}</button></article>`;
   }).join('');
+  /* Матурите от профила и допълнителната матура също се показват. Засега те са "Скоро",
+     защото приложението още няма задачи и умения за тях; важно е изборът да не изчезва. */
+  const planned = [];
+  const addPlanned = (title, icon) => { if (title && !planned.some(p => p.title === title)) planned.push({ title, icon }); };
+  const track = TRACKS[S.profile.track];
+  if (track && S.profile.track !== 'prof' && !trackHasMath(S.profile.track)) addPlanned(track.title, track.icon);
+  if (S.profile.extra && S.profile.extra !== S.profile.track && S.profile.extra !== EXTRA_MATH) {
+    const extraTrack = TRACKS[S.profile.extra];
+    if (extraTrack && !trackHasMath(S.profile.extra)) addPlanned(extraTrack.title, extraTrack.icon);
+  }
+  const soonCards = planned.map(p => `<article class="card sooncard">
+      <div class="stat-head">${ring(0, '?')}
+        <div><span class="kicker">${L('Матура')}</span><h3>${p.icon} ${esc(L(p.title))}</h3>
+          <p class="muted small">${L('Избрана е, но задачите за тази матура още не са готови.')}</p></div></div>
+      <button class="btn ghost block" disabled>${L('Скоро')}</button></article>`).join('');
   el.innerHTML = `<header class="apphead"><div class="brand bingo">Bing<span>O</span></div></header>
     <section class="pad"><h1 class="screen-title">${L('Статистики')}</h1>
       <div class="card"><div class="minis four"><div><b>${total}</b><small>${L('отговора')}</small></div><div><b>${total ? pctTxt(accOf(S.log)) : '–'}</b><small>${L('верни')}</small></div><div><b>${act.streak}</b><small>${L('дни поредни')}</small></div><div><b>${act.days}</b><small>${L('активни дни')}</small></div></div>
         <h4 class="stat-sub">${L('Последните 7 дни')}</h4>
         <div class="weekbars">${act.week.map(w => `<div class="wk"><i style="height:${Math.max(4, w.n / max * 100)}%" title="${w.n}"></i><small>${w.label}</small></div>`).join('')}</div></div>
-      <h2 class="sec-title">${L('По матури')}</h2>${cards}</section>`;
+      <h2 class="sec-title">${L('По матури')}</h2>${cards}${soonCards}</section>`;
   el.addEventListener('click', e => {
     const o = e.target.closest('[data-open]'); if (o) { S.subject = o.dataset.open; saveState(); home(); }
   });
