@@ -16,6 +16,8 @@ SCREENS.settings = async el => {
       <p class="muted small">${L('Всеки отговор става ред в таблица на учителя. Как се прави — apps-script/Code.gs в проекта.')}</p></section>
     <section class="card"><h3>${icon('moon')}${L('Тема')}</h3>${seg('theme', [['auto', L('Системна')], ['light', L('Светла')], ['dark', L('Тъмна')], ['amoled', 'AMOLED']])}
       <p class="muted small">${L('„Системна“ следва светлата или тъмната тема на телефона.')}</p>
+      <div class="rows"><div class="row"><span>${icon('sparkles')}${L('Liquid glass')}</span><button class="switch${st.glass ? ' on' : ''}" data-sw="glass" role="switch"><i></i></button></div></div>
+      <p class="muted small">${L('Добавя полупрозрачни, размазани повърхности върху избраната тема. Оригиналният изглед остава наличен, когато опцията е изключена.')}</p>
       <div class="rows"><div class="row"><span>${icon('sound')}${L('Звуци')}</span><button class="switch${st.sound ? ' on' : ''}" data-sw="sound" role="switch"><i></i></button></div></div></section>
     <section class="card"><h3>${icon('eye')}${L('Демо')}</h3>
       <button class="btn ghost block" data-demo>${icon('play')}${L('Зареди демо ученик')}</button>
@@ -29,7 +31,7 @@ SCREENS.settings = async el => {
     const b = e.target.closest('.seg button');
     if (b) { st[b.parentNode.dataset.key] = b.dataset.v; APP.settings.theme = st.theme; APP.settings.lang = st.lang; saveState(); applySettings(); return refresh(); }
     const w = e.target.closest('[data-sw]');
-    if (w) { st.sound = !st.sound; APP.settings.sound = st.sound; saveState(); w.classList.toggle('on'); return; }
+    if (w) { const key = w.dataset.sw; st[key] = !st[key]; APP.settings[key] = st[key]; saveState(); w.classList.toggle('on'); if (key === 'glass') applySettings(); return; }
     if (e.target.closest('[data-setup]')) { onboardingRestart(); NAV.length = 0; NAV.push({ screen: 'onboarding', params: {} }); return render(); }
     if (e.target.closest('[data-demo]')) { if (await loadDemoLearner()) { toast('Зареден е демо ученик'); home(); } return; }
     if (e.target.closest('[data-restore]')) { if (restoreFromDemo()) { APP.settings.theme = S.settings.theme; APP.settings.lang = S.settings.lang; applySettings(); toast('Твоите отговори са върнати'); home(); } else toast('Копието не може да се прочете', 'bad'); return; }

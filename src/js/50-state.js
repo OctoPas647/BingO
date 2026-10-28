@@ -10,7 +10,7 @@ let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, sh
 const DEFAULT_STATE = () => ({
   v: 1,
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
-  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true, lang: 'bg' },
+  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', glass: false, sound: true, lang: 'bg' },
   subject: 'math',
   skills: {},            /* "math.quad" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] } */
   log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
@@ -38,6 +38,7 @@ const SETTING_OK = {
   proxyUrl: v => v === '' || (isStr(v) && /^https:\/\/[^\s]+$/.test(v)),
   sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/script\.google\.com\/[^\s]+$/.test(v)),
   theme: v => ['auto', 'light', 'dark', 'amoled'].includes(v),
+  glass: v => typeof v === 'boolean',
   sound: v => typeof v === 'boolean',
   lang: v => ['bg', 'en'].includes(v)
 };
@@ -84,7 +85,7 @@ function loadState() {
     try { S = sanitizeState(JSON.parse(raw)); }
     catch (e) { console.warn('state not loaded', e); S = DEFAULT_STATE(); STATE_NOTICE = { backup: backupRaw(raw) }; }
   }
-  APP.settings.theme = S.settings.theme; APP.settings.sound = S.settings.sound !== false; APP.settings.lang = S.settings.lang;
+  APP.settings.theme = S.settings.theme; APP.settings.glass = S.settings.glass; APP.settings.sound = S.settings.sound !== false; APP.settings.lang = S.settings.lang;
 }
 let saveTimer = 0;
 function saveState(now) {
@@ -113,6 +114,7 @@ applySettings = function () {
   const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
   if (S.settings.theme === 'auto') rootEl.dataset.theme = systemDark() ? 'dark' : 'light';
   if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
+  if (S.settings.glass) rootEl.dataset.glass = '1'; else delete rootEl.dataset.glass;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
 };

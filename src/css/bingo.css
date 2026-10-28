@@ -96,6 +96,37 @@
 }
 .settings .seg button { font-size: .92rem; }
 
+/* Liquid glass theme: an optional translucent overlay on the existing light or dark theme.
+   It changes surfaces, cards and the bottom navigation only; text and status colors stay readable. */
+:root[data-glass="1"] {
+  --surface: color-mix(in srgb, var(--surface) 72%, transparent);
+  --surface-2: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  --surface-3: color-mix(in srgb, var(--surface-3) 70%, transparent);
+  --line: color-mix(in srgb, var(--line) 65%, transparent);
+  --shadow: 0 8px 30px color-mix(in srgb, #000 18%, transparent);
+  --glass-blur: 18px;
+  --glass-saturate: 150%;
+}
+
+:root[data-glass="1"] .card,
+:root[data-glass="1"] .skrow,
+:root[data-glass="1"] .misclist li,
+:root[data-glass="1"] .worst li,
+:root[data-glass="1"] .minis > div,
+:root[data-glass="1"] .aibox,
+:root[data-glass="1"] .fcrow {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  box-shadow: var(--shadow);
+}
+
+:root[data-glass="1"] .subj-select {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
 /* first-run setup */
 .onboarding { display: grid; gap: 10px; padding-top: 10px; }
 .ob-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin-bottom: 8px; }
