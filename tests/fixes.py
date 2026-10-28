@@ -136,6 +136,24 @@ with sync_playwright() as pw:
     bad = p.evaluate("Array.from({length: 300}, (_, i) => genMathTask('quad', 1, i).explain).filter(e => /\\d--\\d/.test(e)).length")
     ok('quad explanation: no double minus', bad == 0, str(bad))
     ctx.close()
+
+    # 11. weak practice: fixed 8-task queue and stable counter after answers
+    ctx, p = fresh(b, state={**DONE, 'subject': 'math', 'skills': {'math.quad': {'p': 0.2, 'n': 3, 'ok': 1, 'last': 0, 'misc': {}, 'hist': []}, 'math.pct': {'p': 0.3, 'n': 3, 'ok': 1, 'last': 0, 'misc': {}, 'hist': []}, 'math.pow': {'p': 0.4, 'n': 3, 'ok': 1, 'last': 0, 'misc': {}, 'hist': []}}})
+    p.click('[data-start="focus"]'); p.wait_for_selector('.task')
+    ok('weak practice: header shows 8 tasks', '8 задачи' in p.locator('.ptitle').inner_text())
+    ok('weak practice: counter starts at 1 / 8', p.locator('.pcount').inner_text() == '1 / 8')
+    stable = True
+    for i in range(5):
+        if p.locator('.result').count(): break
+        if p.locator('.opt').count(): p.locator('.opt').first.click()
+        elif p.locator('input.field').count(): p.fill('input.field', '1')
+        elif p.locator('.gap-in').count(): p.locator('.gap-in').first.fill('1')
+        if p.locator('[data-main]').is_disabled(): break
+        p.locator('[data-main]').click(); p.wait_for_timeout(150)
+        p.locator('[data-main]').click(); p.wait_for_timeout(250)
+        if '/ 8' not in p.locator('.pcount').inner_text(): stable = False; break
+    ok('weak practice: counter remains / 8 after 5 answers', stable)
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')

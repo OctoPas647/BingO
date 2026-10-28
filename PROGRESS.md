@@ -1,6 +1,9 @@
 # Progress
 
 ## Done
+- Fix: „Тренирай слабото · 8 задачи“ no longer grows to 11–16 tasks during a session.
+  - Cause: runtime AI-task and wrong-answer twin insertions appended queue items, while unavailable slots were spliced out; the displayed total could therefore change during the session.
+  - Fix: `src/js/51-skills.js` caps and deduplicates the generated plan; `src/js/61-session.js` initializes an immutable 8-slot queue, fills or retargets existing slots for AI tasks and twins, skips unavailable slots without removing them, and binds the header and counter to a fixed `TOTAL`. `tests/fixes.py` adds a browser regression check.
 - Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
   - Cause: `syncHistory()` removed the history trap with `history.back()`, but the sheet callback called `go()` before that back was processed. `render()` then pushed a new trap, which the queued back removed; browser Back could then leave the app.
   - Fix: `src/js/67-history-sync.js` delays history syncing while `histSkip > 0` and applies the pending sync after the queued `popstate`.
@@ -15,7 +18,7 @@
 - Fix: browser Back button "gets stuck", then suddenly leaves the app.
   - Cause: `go()` pushes a history entry per screen, but in-app back, Android back, `home()` and `backTo()` only popped `NAV`. The history kept stale entries.
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
-- Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
+- Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
 
 ## Decisions
 - The sheet history fix lives in BingO's own src/ (67-history-sync.js), not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
@@ -34,7 +37,7 @@
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
-- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
+- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
 - Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in its file.
 - past.pages in the new files is the PDF page range, not the book page numbers used in the 2017+ files.
 - Add the 25 drawing questions with their images (cropped from the PDFs).
