@@ -1,6 +1,10 @@
 # Progress
 
 ## Done
+- Fix: the “Поредни дни” streak now tracks completed diagnostic, focus, and single-skill sessions instead of every answer in `S.log`. `S.sessionDays` stores the local `YYYY-MM-DD` day when a session finishes; `activity()` counts consecutive session days, while the 7-day chart and “активни дни” still use answer logs.
+  - Manual test: finish a diagnostic, focus, or single-skill session → “Поредни дни” becomes 1.
+  - Manual test: wait 24 hours without finishing another session → “Поредни дни” becomes 0.
+  - Manual test: finish sessions on consecutive days → “Поредни дни” increases by one each day.
 - Removed the AI/API onboarding screen: the `ai` step in src/js/58-onboarding.js no longer appears during first-run setup. AI configuration is no longer shown at startup, but remains fully accessible via the Settings menu.
 - Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
   - Cause: `syncHistory()` removed the history trap with `history.back()`, but the sheet callback called `go()` before that back was processed. `render()` then pushed a new trap, which the queued back removed; browser Back could then leave the app.
@@ -19,6 +23,7 @@
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
 
 ## Decisions
+- Session streak: `S.sessionDays` records only the local day of a successfully finished session. The streak is calculated from those days; answer logs remain the source for “активни дни” and the weekly chart.
 - The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
 - The sheet history fix lives in BingO's own src/ (67-history-sync.js), not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
 - The old fix/browser-back branch and src/js/66-history.js are not reused: they assume one history entry per screen, while the current engine keeps one trap entry.
