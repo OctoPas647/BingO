@@ -135,7 +135,7 @@ const MATH_GEN = {
     }
     const k = r.pick([10, 20, 25, 50]), O = r.pick([40, 60, 80, 120, 160, 200]), Nn = O * (1 + k / 100);
     return numTask({
-      prompt: `След поскъпване с $${k}\\%$ една стока струва $${N(Nn)}$ лв. Колко е струвала **преди** поскъпването (в лв.)?`,
+      prompt: `След поскъпване с $${k}\\%$ една стока вече струва $${N(Nn)}$ лв. Колко е струвала **преди** поскъпването (в лв.)?`,
       answer: O, unit: 'лв.',
       wrongs: [{ v: roundTo(Nn * (1 - k / 100), 2), misc: 'pct.reverse' }, { v: Nn - k, misc: 'pct.as_number' }],
       explain: `Новата цена е $${N(1 + k / 100)}$ пъти старата: $x\\cdot${N(1 + k / 100)}=${N(Nn)}$, затова $x=${N(Nn)}:${N(1 + k / 100)}=${O}$. Изваждането на $${k}\\%$ от новата цена дава грешен резултат, защото процентът е бил от старата.`
@@ -181,11 +181,11 @@ const MATH_GEN = {
     const A = neg ? -a : a, c = A * x0 + b; /* A x + b < c  ->  A x < c-b */
     const sign = neg ? '>' : '<', rhs = neg ? '<' : '>'; /* solution direction */
     return mcTask(r, {
-      prompt: `Решенията на неравенството $${poly([A, 'x'], [b, ''])}${sign === '<' ? '<' : '<'}${c}$ са:`,
+      prompt: `Решенията на неравенството $${poly([A, 'x'], [b, ''])}${sign}${c}$ са:`,
       right: `x${neg ? '>' : '<'}${N(x0)}`,
       wrong: [{ t: `x${neg ? '<' : '>'}${N(x0)}`, misc: neg ? 'lin.flip' : 'lin.move_sign' }, { t: `x${neg ? '>' : '<'}${N(-x0) === N(x0) ? N(x0 + 1) : N(-x0)}`, misc: 'lin.move_sign' }, { t: `x${neg ? '>' : '<'}${N((c + b) / A)}`, misc: 'lin.move_sign' }],
       fill: [`x${neg ? '>' : '<'}${N(x0 + 2)}`, `x${neg ? '<' : '>'}${N(x0 - 1)}`],
-      explain: `$${A}x<${c}${b > 0 ? '-' : '+'}${Math.abs(b)}$, т.е. $${A}x<${c - b}$. ${neg ? `Делим на $${A}$ — отрицателно число, затова знакът се обръща: $x>${N(x0)}$.` : `Делим на $${A}>0$ и знакът остава: $x<${N(x0)}$.`}`
+      explain: `$${A}x${sign}${c}${b > 0 ? '-' : '+'}${Math.abs(b)}$, т.е. $${A}x${sign}${c - b}$. ${neg ? `Делим на $${A}$ — отрицателно число, затова знакът се обръща: $x>${N(x0)}$.` : `Делим на $${A}>0$ и знакът остава: $x<${N(x0)}$.`}`
     });
   },
 
@@ -239,7 +239,7 @@ const MATH_GEN = {
     if (lvl === 1) {
       const red = r.int(2, 9), blue = r.int(2, 9);
       return mcTask(r, {
-        prompt: `В кутия има $${red}$ червени и $${blue}$ сини топки. Изваждаме една топка наслуки. Каква е вероятността тя да е червена?`,
+        prompt: `В кутия има $${red}$ червени и $${blue}$ сини топки. Изваждаме една топка на случай. Каква е вероятността тя да е червена?`,
         right: Fr(red, red + blue), wrong: [{ t: Fr(red, blue), misc: 'prob.part_whole' }, { t: Fr(blue, red + blue), misc: 'prob.complement' }, { t: Fr(1, red + blue), misc: 'calc' }],
         fill: [Fr(1, 2), Fr(red, 2 * (red + blue))],
         explain: `Благоприятни са $${red}$ от всички $${red + blue}$ равновъзможни изхода: $P=${Fr(red, red + blue)}$.`
@@ -250,7 +250,7 @@ const MATH_GEN = {
       return mcTask(r, {
         prompt: `Хвърляме два зара. Каква е вероятността сборът от точките да е $${s}$?`,
         right: Fr(ways, 36), wrong: [{ t: Fr(1, 11), misc: 'prob.not_equal' }, { t: Fr(ways, 12), misc: 'prob.space' }, { t: Fr(36 - ways, 36), misc: 'prob.complement' }],
-        explain: `Изходите са $6\\cdot6=36$ равновероятни подредени двойки. Сбор $${s}$ дават $${ways}$ от тях, затова $P=${Fr(ways, 36)}$. Сборовете от 2 до 12 не са равновероятни.`
+        explain: `Изходите са $6\\cdot6=36$ равновъзможни подредени двойки. Сбор $${s}$ дават $${ways}$ от тях, затова $P=${Fr(ways, 36)}$. Сборовете от 2 до 12 не са равновероятни.`
       });
     }
     const n = r.pick([2, 3, 4]);
