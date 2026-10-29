@@ -14,7 +14,9 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
   const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
-  const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
+  /* A focus session starts from a fresh, immutable 8-task snapshot: the queue is replaced, never appended to. */
+  let Q = mode === 'focus' ? Object.freeze(planned.plan.map(p => ({ ...p }))) : planned.plan.map(p => ({ ...p }));
+  const P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
   if (!Q.length) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
   /* a later planned slot that a twin or Gemini's task may take over */
   const freeSlot = (skillId, from) => Q.find((x, i) => i >= from && x.why === 'focus' && !x.task && (!skillId || x.skill === skillId)) || Q.find((x, i) => i >= from && x.why === 'focus' && !x.task);
@@ -36,7 +38,8 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const paintCount = () => { el.querySelector('.pcount').textContent = `${Math.min(P.i + 1, Q.length)} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
 
   /* The same question never comes twice in one session (P.used holds ids and, for generated
-     tasks, the question text). If a skill has no unseen task left, its place is dropped. */
+     tasks, the question text). If a skill has no unseen task left, its place is dropped:
+     a focus queue is replaced with a new immutable snapshot, it is never appended to. */
   function nextTask() {
     const item = Q[P.i], st = skillState(subj, item.skill), lvl = item.level || levelFor(st.p);
     const t = item.task && !P.used.has(taskKey(item.task)) ? item.task : pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used);
@@ -46,7 +49,10 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   }
 
   function showTask() {
-    while (P.i < Q.length && !(task = nextTask())) Q.splice(P.i, 1);
+    while (P.i < Q.length && !(task = nextTask())) {
+      if (mode === 'focus') Q = Object.freeze(Q.filter((_, i) => i !== P.i));
+      else Q.splice(P.i, 1);
+    }
     if (P.i >= Q.length) return P.answers.length ? finish() : (toast('Няма нови задачи по тази тема'), back());
     const item = Q[P.i]; P.phase = 'answer'; aiHints = 0; shownAt = Date.now();
     view = taskView(task, m, { mode: 'practice', seed: sessionId, onChange: upd });
