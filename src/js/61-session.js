@@ -114,7 +114,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
-      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${esc(L('Подсказка'))}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
+      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ Подсказка</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
