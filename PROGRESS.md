@@ -18,6 +18,7 @@
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
 - Fix: profile data now survives a reload. `sanitizeState()` in src/js/50-state.js previously rebuilt the profile with only name, class and id, dropping age, exam, track and extra. `cleanProfile()` keeps these fields, validates the saved exam against EXAMS, and preserves the profile id.
+- Fix: tests/play.py now answers every task type. It previously fell through to `.gap-in` for order, match and open tasks; when the random diagnostic sequence showed one of those, Playwright waited 30 seconds for an input that never appeared.
 
 ## Decisions
 - The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
@@ -33,6 +34,7 @@
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 - Android wrapper cleanup keeps `AndroidUI` and `AndroidFiles`: the web app uses `AndroidUI.night()`, `__systemTheme`, file import, and CSV export.
 - Profile fields are kept only when they are strings; `exam` is kept only when empty or a known key in `EXAMS`, so a bad saved value cannot break the past-exams screen.
+- The browser test now raises a clear AssertionError if it meets an unknown task type, instead of timing out on `.gap-in`.
 
 ## Left
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.

@@ -20,7 +20,7 @@ def setup(p, theme, take_shots):
         p.click('[data-ob="next"]'); p.wait_for_timeout(150)
     p.wait_for_selector('.losscard')
 def answer(p, wrong=False):
-    """answer the current task: pick an option, or type a number"""
+    """answer the current task: pick an option, type, fill gaps, order, match or self-grade"""
     if p.locator('.opt').count():
         n = p.locator('.opt').count()
         p.locator('.opt').nth(1 if wrong else 0).click()
@@ -28,8 +28,16 @@ def answer(p, wrong=False):
         p.locator('input.field').fill('999' if wrong else '1')
     elif p.locator('.gap.pick button').count():
         p.locator('.gap.pick button').first.click()
-    else:
+    elif p.locator('.gap-in').count():
         p.locator('.gap-in').first.fill('x')
+    elif p.locator('.orderlist [data-mv]').count():
+        p.locator('.orderlist [data-mv="1"]').first.click()   # move something, so the answer counts
+    elif p.locator('.match .mi.l').count() and p.locator('.match .mi.r').count():
+        p.locator('.match .mi.l').first.click(); p.locator('.match .mi.r').first.click()
+    elif p.locator('textarea.essay').count():
+        p.locator('textarea.essay').fill('Тестов отговор за браузърния тест.')
+    else:
+        raise AssertionError('no known answer control for the current task')
     p.click('[data-main]')
 with sync_playwright() as pw:
     b = pw.chromium.launch()
