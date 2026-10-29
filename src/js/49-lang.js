@@ -131,6 +131,8 @@ const EN_UI = {
   'Ключът не може да съдържа интервали': 'The key cannot contain spaces', 'Само латински букви, цифри, точка и тире (напр. gemini-3.8-flash)': 'Only Latin letters, digits, dot and dash (e.g. gemini-3.8-flash)',
   'Адресът трябва да започва с https://': 'The address must start with https://', 'Адресът трябва да започва с https://script.google.com/': 'The address must start with https://script.google.com/',
   'Невалидна стойност': 'Invalid value', 'Задължително поле': 'Required field', 'Невалидната стойност не е запазена': 'The invalid value was not saved',
+  'Името може да има най-много 40 знака': 'The name can have at most 40 characters', 'Класът може да има най-много 10 знака': 'The class can have at most 10 characters',
+  'Името може да има най-много 40 знака, а класът — 10.': 'The name can have at most 40 characters and the class at most 10.',
 
   /* demo and saved data */
   'Да заредим ли демо ученик?': 'Load a demo learner?',
@@ -153,14 +155,14 @@ const EN_UI = {
   'Задача {n} · {p} т.': 'Task {n} · {p} pts', 'Виж отговора': 'See the answer', 'Оцени се сам': 'Mark it yourself', 'по официалния отговор и критериите': 'using the official answer and criteria',
   'Отчасти': 'Partly', '{a} от {b} т.': '{a} of {b} pts', 'По скалата на МОН:': 'On the Ministry of Education scale:', 'Сгрешени задачи с избор:': 'Wrong multiple-choice tasks:', 'Отначало': 'Start over',
   /* setup: age, exam, high-school profile, extra matura */
-  'Името и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connect Google Sheets.',
-  'Име и фамилия': 'Full name', 'напр. Мария Петрова': 'e.g. Maria Petrova', 'Години': 'Age', 'напр. 17': 'e.g. 17', 'Въведи години от 7 до 99': 'Enter an age from 7 to 99',
+  'Името, класът и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.': 'Name, class and age are optional. Your teacher sees the name only if you connect Google Sheets.',
+  'Име и фамилия': 'Full name', 'напр. Мария Петрова': 'e.g. Maria Petrova', 'Клас': 'Class', 'напр. 11А': 'e.g. 11A', 'Години': 'Age', 'напр. 17': 'e.g. 17', 'Въведи години от 7 до 99': 'Enter an age from 7 to 99',
   'Значи за {e}, нали?': 'So it is {e}, right?', 'За кой изпит се готвиш?': 'Which exam are you preparing for?', 'Ако не е така, избери своя клас.': 'If not, choose your grade.', 'Избери изпит': 'Choose an exam',
   'НВО 4-ти клас': 'NVO, 4th grade', 'НВО 7-ми клас': 'NVO, 7th grade', 'НВО 10-ти клас': 'NVO, 10th grade', 'ДЗИ 12-ти клас': 'Matura (DZI), 12th grade',
   'Какъв е профилът ти?': 'What is your school profile?', 'Избери профил': 'Choose a profile',
   'НВО в 10-ти клас е еднакво за всички, но профилът решава коя ще е втората ти матура в 12-ти клас.': 'The 10th-grade NVO is the same for everyone, but your profile decides your second matura in 12th grade.',
   'Профилът решава коя може да е втората ти матура.': 'Your profile decides what your second matura can be.',
-  'Допълнителна матура?': 'An extra matura?', 'Освен двете задължителни можеш да се явиш и на допълнителна матура. Пропусни, ако нямаш.': 'Besides the two required ones you can also take an extra matura. Skip this if you don\'t have one.',
+  'Допълнителна матура?': 'An extra matura?', 'Освен двете задължителни можеш да се явиш и на допълнителна матура. Пропусни, ако не искаш.': 'Besides the two required ones you can also take an extra matura. Skip this if you do not want one.',
   ' (скоро)': ' (soon)',
   'Математически': 'Mathematics', 'Софтуерни и хардуерни науки': 'Software and hardware sciences', 'Природни науки': 'Natural sciences', 'Икономическо развитие': 'Economic development',
   'Предприемачески': 'Entrepreneurship', 'Чужди езици': 'Foreign languages', 'Хуманитарни науки': 'Humanities', 'Обществени науки': 'Social sciences',

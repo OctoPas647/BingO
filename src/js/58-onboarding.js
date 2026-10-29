@@ -9,8 +9,8 @@ const ONBOARD = {
       { key: 'lang', path: 'settings.lang', type: 'choice', options: LANGS, native: true, validate: v => (['bg', 'en'].includes(v) ? '' : 'Избери език') }
     ] },
     { id: 'profile', title: 'Кой си ти?', text: 'Името, класът и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.', skippable: true, fields: [
-      { key: 'name', path: 'profile.name', type: 'text', label: 'Име и фамилия', ph: 'напр. Мария Петрова', maxlength: MAX_NAME_LEN, validate: v => (v.length > MAX_NAME_LEN ? 'Най-много 40 знака' : '') },
-      { key: 'cls', path: 'profile.cls', type: 'text', label: 'Клас', ph: 'напр. 11А', maxlength: MAX_CLS_LEN, validate: v => (v.length > MAX_CLS_LEN ? 'Най-много 10 знака' : '') },
+      { key: 'name', path: 'profile.name', type: 'text', label: 'Име и фамилия', ph: 'напр. Мария Петрова', validate: v => (v.length > MAX_NAME_LEN ? 'Най-много 40 знака' : '') },
+      { key: 'cls', path: 'profile.cls', type: 'text', label: 'Клас', ph: 'напр. 11А', validate: v => (v.length > MAX_CLS_LEN ? 'Най-много 10 знака' : '') },
       { key: 'age', path: 'profile.age', type: 'number', label: 'Години', ph: 'напр. 17', validate: v => (/^\d+$/.test(v) && +v >= 7 && +v <= 99 ? '' : 'Въведи години от 7 до 99') }
     ] },
     { id: 'exam', title: () => (examFromAge(S.profile.age) ? L('Значи за {e}, нали?', { e: L(EXAMS[examFromAge(S.profile.age)]) }) : L('За кой изпит се готвиш?')), text: 'Ако не е така, избери своя клас.', fields: [
@@ -204,7 +204,7 @@ SCREENS.onboarding = async el => {
       const opts = typeof f.options === 'function' ? f.options() : f.options;
       return `<div class="seg${f.list ? ' list' : ''}" data-key="${f.key}">${opts.map(([v, label, off]) => `<button data-v="${esc(v)}" class="${!off && d[f.key] === v ? 'on' : ''}"${off ? ' disabled' : ''}>${esc(f.native ? label : L(label))}</button>`).join('')}</div>${err}`;
     }
-    return `<label class="fld"><span>${esc(L(f.label))}</span><input class="field" data-k="${f.key}" type="${f.type}" value="${esc(d[f.key])}" placeholder="${esc(L(f.ph || ''))}" autocomplete="off" spellcheck="false"${f.maxlength ? ` maxlength="${f.maxlength}"` : ''}></label>${err}`;
+    return `<label class="fld"><span>${esc(L(f.label))}</span><input class="field" data-k="${f.key}" type="${f.type}" value="${esc(d[f.key])}" placeholder="${esc(L(f.ph || ''))}" autocomplete="off" spellcheck="false"></label>${err}`;
   };
   const draw = () => {
     el.innerHTML = `<div class="pad onboarding">
