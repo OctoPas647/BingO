@@ -27,6 +27,9 @@ buildBanks = function () { _buildBanksBase(); buildPast(); };
 /* the learner's exam from the setup (58-onboarding.js); before the setup asked, it was the ДЗИ */
 const myExam = () => (EXAMS[S.profile.exam] ? S.profile.exam : 'dzi12');
 const pastView = m => (m && appLang() === 'en' && PAST_EN[m.id]) || m;
+/* In English mode, pastView() swaps in the English module, so its exam title, part titles and
+   instructions supply the UI chrome. Tasks, options, solutions, explanations and rubrics stay in
+   their original language. */
 const pastFor = (subj, exam) => PAST.filter(m => m.past.subj === subj && m.past.exam === exam).map(pastView);
 const pastById = id => pastView(PAST.find(m => m.id === id));
 const pastTasks = m => m.exams[0].parts.flatMap(p => p.tasks.map(t => ({ task: t, part: p })));
