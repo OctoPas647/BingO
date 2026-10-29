@@ -39,9 +39,21 @@ const rowTime = r => r.t || Date.parse(r.timestamp) || 0;
 const dayKey = t => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
 function activity() {
   const days = new Set(S.log.map(r => dayKey(rowTime(r))));
-  let streak = 0; const d = new Date();
-  if (!days.has(dayKey(d))) d.setDate(d.getDate() - 1);
-  while (days.has(dayKey(d))) { streak++; d.setDate(d.getDate() - 1); }
+  /* The streak uses only completed-session days, so old answers cannot keep it alive. */
+  const sessionDates = (Array.isArray(S.sessionDays) ? S.sessionDays : [])
+    .map(day => new Date(day + 'T00:00:00'))
+    .filter(d => !isNaN(d))
+    .sort((a, b) => b - a);
+  let streak = 0;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const cursor = new Date(today);
+  if (!sessionDates.some(d => d.getTime() === cursor.getTime())) cursor.setDate(cursor.getDate() - 1);
+  for (const d of sessionDates) {
+    if (d.getTime() > cursor.getTime()) continue;
+    if (d.getTime() !== cursor.getTime()) break;
+    streak++;
+    cursor.setDate(cursor.getDate() - 1);
+  }
   const names = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
   const week = Array.from({ length: 7 }, (_, i) => {
     const x = new Date(); x.setDate(x.getDate() - (6 - i)); const k = dayKey(x);
