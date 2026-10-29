@@ -66,7 +66,8 @@ const STR = {
     'code.code': 'Код', 'code.copy': 'Копирай', 'code.copied': 'Кодът е копиран', 'code.copyFail': 'Не успях да копирам. Задръж пръст върху кода и избери „Копирай“.', 'code.save': 'Запази като файл',
     'n.lines': { one: '{n} ред', other: '{n} реда' },
     'n.tasks': { one: '{n} задача', other: '{n} задачи' }, 'n.points': { one: '{n} точка', other: '{n} точки' }, 'n.tries': { one: '{n} опит', other: '{n} опита' },
-    'n.units': { one: '{n} раздел', other: '{n} раздела' }, 'n.words': { one: '{n} дума', other: '{n} думи' }
+    'n.units': { one: '{n} раздел', other: '{n} раздела' }, 'n.words': { one: '{n} дума', other: '{n} думи' },
+    'past_exams.title': 'Изпити от минали години', 'past_exams.filter_year': 'Година', 'past_exams.filter_subject': 'Предмет', 'past_exams.start': 'Започни', 'past_exams.back': 'Назад', 'past_exams.loading': 'Зареждане…', 'past_exams.no_results': 'Няма намерени изпити'
   },
   en: {
     'hi.night': 'Still studying?', 'hi.morning': 'Good morning', 'hi.day': 'Good afternoon', 'hi.evening': 'Good evening',
@@ -132,7 +133,8 @@ const STR = {
     'code.code': 'Code', 'code.copy': 'Copy', 'code.copied': 'Code copied', 'code.copyFail': 'Could not copy. Long-press the code and choose Copy.', 'code.save': 'Save as a file',
     'n.lines': { one: '{n} line', other: '{n} lines' },
     'n.tasks': { one: '{n} task', other: '{n} tasks' }, 'n.points': { one: '{n} point', other: '{n} points' }, 'n.tries': { one: '{n} attempt', other: '{n} attempts' },
-    'n.units': { one: '{n} unit', other: '{n} units' }, 'n.words': { one: '{n} word', other: '{n} words' }
+    'n.units': { one: '{n} unit', other: '{n} units' }, 'n.words': { one: '{n} word', other: '{n} words' },
+    'past_exams.title': 'Past Years’ Exams', 'past_exams.filter_year': 'Year', 'past_exams.filter_subject': 'Subject', 'past_exams.start': 'Start', 'past_exams.back': 'Back', 'past_exams.loading': 'Loading…', 'past_exams.no_results': 'No exams found'
   }
 };
 const fill = (s, v) => (v ? String(s).replace(/\{(\w+)\}/g, (m, k) => (v[k] != null ? v[k] : m)) : s);
