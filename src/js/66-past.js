@@ -114,7 +114,7 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     P.done = true;
     const pts = roundTo(sum(P.got.map(v => v || 0)), 2), max = x.max, grade = pastGrade(m, pts, max);
     (S.pastResults || (S.pastResults = {}))[id] = { pts, max, at: Date.now() }; saveState(true);
-    const wrong = Q.map((q, i) => (q.task.type !== 'open' && (P.got[i] || 0) < q.task.points ? i + 1 : 0)).filter(Boolean);
+    const wrong = Q.map((q, i) => (q.task.type === 'choice' && (P.got[i] || 0) < q.task.points ? i + 1 : 0)).filter(Boolean);
     if (pts / max >= 0.7) { sound('done'); confetti(); }
     el.querySelector('.playbar').outerHTML = topbar(esc(x.title), { closeIcon: true });
     foot.remove();

@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- Past-exam result now lists only wrong choice tasks under “Сгрешени задачи с избор”; free-response, gap and ordering tasks are excluded (`src/js/66-past.js`).
 - ISSUE 3 — Системният размер на шрифта се игнорира (достъпност): the Android WebView now applies the system font scale on startup and reapplies it when the system configuration changes. The old hardcoded `setTextZoom(100)` no longer prevents Android accessibility text sizing from working.
 - ISSUE 2 — „Тренирай слабото · 8 задачи“ води до 11–16 задачи; общият брой расте по време на сесията: a wrong answer now converts the next planned focus task into an immediate extra task for the same skill. This preserves immediate remediation while an eight-task focus session remains eight tasks; the queue can no longer grow during the session.
 - ISSUE 1 — Оценката на усвояването се мени прекалено рязко: mastery updates in `src/js/51-skills.js` now use less learning gain while there is little evidence and cap how far one answer can move mastery. Early answers can change mastery by at most 8 percentage points; the cap grows gradually as the learner answers more tasks.
