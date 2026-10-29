@@ -156,7 +156,7 @@ const TASK_BUILDERS = {
     let ord = resp && Array.isArray(resp.order) ? resp.order.slice() : shuffledIdx(task.items.length, seed), moved = !!(resp && resp.moved), area;
     const draw = () => {
       area.querySelector('.orderlist').innerHTML = ord.map((k, pos) => `<li data-pos="${pos}"><span class="oi-n">${pos + 1}</span><span class="oi-text">${richInline(task.items[k])}</span>
-        <span class="oi-btns"><button data-mv="-1" aria-label="${esc(t('task.up'))}"${pos === 0 ? ' disabled' : ''}>${icon('up')}</button><button data-mv="1" aria-label="${esc(t('task.down'))}"${pos === ord.length - 1 ? ' disabled' : ''}>${icon('down')}</button></span></li>`).join('');
+        <span class="oi-btns"><button data-mv="-1" aria-label="−">−</button><button data-mv="1" aria-label="+">+</button></span></li>`).join('');
     };
     return {
       html: '<ol class="orderlist"></ol>',
@@ -253,22 +253,26 @@ function fieldBuilder(task, m, resp, changed, numeric) {
   };
 }
 
-/* Self-grading with the task's rubric (open tasks), used in practice and after an exam */
-function rubricView(task, marks, onChange) {
+/* Self-grading with the task's rubric (open tasks), used in practice and after an exam.
+   canGrade is an optional callback: while it returns false, the criteria remain visible but the
+   point steppers are disabled, so a blank essay cannot be self-assessed. */
+function rubricView(task, marks, onChange, canGrade = () => true) {
   const rub = rubricOf(task), vals = Array.isArray(marks) ? marks.slice() : rub.map(() => 0);
   const stepOf = r => (r.points <= 2 ? 0.5 : 1);
+  const ready = () => { try { return !!canGrade(); } catch (e) { return true; } };
   const el = h(`<div class="rubric" lang="${UI_LANG}"><p class="rub-intro">${esc(t('rub.intro'))}</p>
     ${rub.map((r, k) => `<div class="rub-row"><div class="rub-text rt" lang="${esc(document.documentElement.lang)}">${r.text ? rich(r.text) : esc(t('rub.overall'))}</div>
       <div class="stepper" data-k="${k}"><button data-d="-1" aria-label="−">−</button><output></output><span class="of">/ ${fmtPts(r.points, UI_LANG)}</span><button data-d="1" aria-label="+">+</button></div></div>`).join('')}
     <div class="rub-total"><span>${esc(t('rub.total'))}</span><b></b></div></div>`);
   const paint = () => {
-    el.querySelectorAll('.stepper').forEach(s => { const k = +s.dataset.k; s.querySelector('output').textContent = fmtPts(vals[k], UI_LANG); s.querySelector('[data-d="-1"]').disabled = vals[k] <= 0; s.querySelector('[data-d="1"]').disabled = vals[k] >= rub[k].points; });
+    const ok = ready();
+    el.querySelectorAll('.stepper').forEach(s => { const k = +s.dataset.k; s.querySelector('output').textContent = fmtPts(vals[k], UI_LANG); s.querySelector('[data-d="-1"]').disabled = !ok || vals[k] <= 0; s.querySelector('[data-d="1"]').disabled = !ok || vals[k] >= rub[k].points; });
     el.querySelector('.rub-total b').textContent = `${fmtPts(sum(vals), UI_LANG)} / ${fmtPts(task.points, UI_LANG)}`;
   };
   el.addEventListener('click', e => {
-    const b = e.target.closest('[data-d]'); if (!b) return;
+    const b = e.target.closest('[data-d]'); if (!b || !ready()) return;
     const k = +b.parentNode.dataset.k, r = rub[k]; vals[k] = clamp(roundTo(vals[k] + +b.dataset.d * stepOf(r), 2), 0, r.points); paint(); onChange && onChange(vals.slice());
   });
   paint();
-  return { el, get: () => vals.slice() };
+  return { el, get: () => vals.slice(), refresh: paint };
 }
