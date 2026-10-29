@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
-import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -47,8 +46,6 @@ public class MainActivity extends Activity {
 
     WebView web;
     FrameLayout root;
-    View fullscreen;
-    WebChromeClient.CustomViewCallback fullscreenDone;
     ValueCallback<Uri[]> pickCallback;
     File outFile;
     Uri pendingIncoming;
@@ -117,25 +114,6 @@ public class MainActivity extends Activity {
                 try { startActivityForResult(Intent.createChooser(i, null), REQ_PICK); }
                 catch (ActivityNotFoundException e) { pickCallback = null; return false; }
                 return true;
-            }
-
-            /* Full-screen video from a lesson */
-            @Override
-            public void onShowCustomView(View view, CustomViewCallback callback) {
-                if (fullscreen != null) { callback.onCustomViewHidden(); return; }
-                fullscreen = view; fullscreenDone = callback;
-                root.addView(view, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            }
-
-            @Override
-            public void onHideCustomView() {
-                if (fullscreen == null) return;
-                root.removeView(fullscreen); fullscreen = null;
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                hideNavigationBar();
-                if (fullscreenDone != null) fullscreenDone.onCustomViewHidden();
-                fullscreenDone = null;
             }
         });
 
@@ -265,7 +243,6 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (fullscreen != null) { if (fullscreenDone != null) fullscreenDone.onCustomViewHidden(); return; }
         try {
             web.evaluateJavascript("(window.__back ? window.__back() : '')", new ValueCallback<String>() {
                 @Override public void onReceiveValue(String v) { if (v == null || !v.contains("h")) finish(); }

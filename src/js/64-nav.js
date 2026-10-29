@@ -18,6 +18,22 @@ function goTab(from, to) {
   go(to, {}, from === 'home' ? {} : { replace: true });
 }
 
+/* Bottom-tab navigation can ask the router to remove its history trap and then open another
+   screen before the asynchronous history.back() finishes. Queue that removal so the app never
+   calls history.back() without a trap entry; otherwise browser Back could close the app. */
+let trapRemovePending = false;
+syncHistory = function () {
+  if (trapRemovePending) return;
+  if (needTrap() && !histTrap) { history.pushState({ trap: 1 }, ''); histTrap = true; }
+  else if (!needTrap() && histTrap) { trapRemovePending = true; histSkip++; history.back(); }
+};
+window.addEventListener('popstate', () => {
+  if (!trapRemovePending) return;
+  trapRemovePending = false;
+  histTrap = false;
+  syncHistory();
+});
+
 /* ---------- numbers shared by Stats and Profile ---------- */
 const rowTime = r => r.t || Date.parse(r.timestamp) || 0;
 const dayKey = t => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
