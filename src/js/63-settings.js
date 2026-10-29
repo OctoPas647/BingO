@@ -33,7 +33,7 @@ SCREENS.settings = async el => {
     if (e.target.closest('[data-setup]')) {
       if (demoBackupExists()) { restoreFromDemo(); onboardingRestart(); }
       else onboardingRestart({ clearLearnerData: true });
-      toast('Настройката е рестартирана');
+      toast(L('Настройката е рестартирана'));
       NAV.length = 0; NAV.push({ screen: 'onboarding', params: {} }); return render();
     }
     if (e.target.closest('[data-demo]')) { if (await loadDemoLearner()) { toast('Зареден е демо ученик'); home(); } return; }
