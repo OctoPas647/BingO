@@ -16,8 +16,10 @@
  *
  * The URL only lets someone ADD rows; it cannot read the Sheet. Treat it like a class password anyway.
  * The app resends rows when it did not get a confirmation, so rows already in the last 2000 are skipped (same time, student and task).
+ * Feedback submissions are stored in a separate "feedback" tab; the server forwards them as { id, at, data }.
  */
 const SHEET_NAME = 'answers';
+const FEEDBACK_SHEET_NAME = 'feedback';
 const KEY_COLS = ['timestamp', 'student_id', 'task_id'];
 const DEDUPE_WINDOW = 2000;
 
@@ -37,11 +39,43 @@ function loadSeen(sh) {
   return seen;
 }
 
+function safeCell(v) {
+  if (typeof v === 'number') return v;
+  const s = String(v == null ? '' : v).slice(0, 300);
+  return /^[=+\-@]/.test(s) ? "'" + s : s;
+}
+
+function feedbackRow(payload) {
+  const receivedAt = new Date();
+  const submittedAt = new Date(Number(payload.at));
+  return [
+    safeCell(payload.id),
+    receivedAt,
+    isNaN(submittedAt.getTime()) ? safeCell(payload.at) : submittedAt,
+    safeCell(JSON.stringify(payload.data || {}))
+  ];
+}
+
+function saveFeedback(payload) {
+  if (typeof payload.id !== 'string' || !payload.id.trim()) throw new Error('id is missing');
+  if (!Number.isFinite(payload.at)) throw new Error('at is missing');
+  if (!payload.data || typeof payload.data !== 'object' || Array.isArray(payload.data)) throw new Error('data must be an object');
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sh = ss.getSheetByName(FEEDBACK_SHEET_NAME) || ss.insertSheet(FEEDBACK_SHEET_NAME);
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(['id', 'received_at', 'submitted_at', 'data']);
+    sh.setFrozenRows(1);
+  }
+  sh.appendRow(feedbackRow(payload));
+  return { ok: true, added: 1 };
+}
+
 function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
     const data = JSON.parse(e.postData.contents);
+    if (data && typeof data === 'object' && data.id != null && data.data != null && !data.columns) return saveFeedback(data);
     const columns = data.columns, rows = data.rows;
     if (!Array.isArray(columns) || !Array.isArray(rows) || rows.length > 500) return out({ ok: false, error: 'bad payload' });
     const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -56,12 +90,7 @@ function doPost(e) {
         if (seen.has(k)) { skipped++; return; }
         seen.add(k);
       }
-      clean.push(columns.map((_, i) => {
-        const v = r[i];
-        if (typeof v === 'number') return v;
-        const s = String(v == null ? '' : v).slice(0, 300);
-        return /^[=+\-@]/.test(s) ? "'" + s : s; // never let a cell become a formula
-      }));
+      clean.push(columns.map((_, i) => safeCell(r[i])));
     });
     if (clean.length) sh.getRange(sh.getLastRow() + 1, 1, clean.length, columns.length).setValues(clean);
     return out({ ok: true, added: clean.length, skipped: skipped });
