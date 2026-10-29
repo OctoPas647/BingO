@@ -68,6 +68,55 @@
 .aiexplain { margin-top: 10px; }
 .playmain { padding-bottom: 210px; }
 
+/* strict full-sentence validation feedback */
+.fb { overflow: hidden; }
+.fb .feedback-strict,
+.fb .hint-incomplete {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border: 1.5px solid color-mix(in srgb, var(--bad) 38%, transparent);
+  border-radius: 12px;
+  background: var(--bad-bg);
+  color: var(--ink);
+  font-size: .95rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.fb .feedback-strict::before,
+.fb .hint-incomplete::before {
+  content: '!';
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bad);
+  color: var(--surface);
+  font-weight: 900;
+  font-size: .78rem;
+  line-height: 1;
+}
+.fb .feedback-strict b,
+.fb .hint-incomplete b { color: var(--bad); }
+.fb .feedback-strict:not([hidden]),
+.fb .hint-incomplete:not([hidden]) {
+  animation: feedback-strict-in .18s var(--ease) both;
+}
+@keyframes feedback-strict-in {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fb .feedback-strict:not([hidden]),
+  .fb .hint-incomplete:not([hidden]) { animation: none; }
+}
+
 /* result */
 .strongnote { display: flex; gap: 12px; align-items: center; background: var(--good-bg); }
 .strongnote > .ic { width: 34px; height: 34px; color: var(--good); }
