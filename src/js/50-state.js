@@ -10,7 +10,7 @@ let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, sh
 const DEFAULT_STATE = () => ({
   v: 1,
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
-  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true, lang: 'bg' },
+  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true, lang: 'bg', glass: false },
   subject: 'math',
   skills: {},            /* "math.quad" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] } */
   log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
@@ -39,7 +39,8 @@ const SETTING_OK = {
   sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/script\.google\.com\/[^\s]+$/.test(v)),
   theme: v => ['auto', 'light', 'dark', 'amoled'].includes(v),
   sound: v => typeof v === 'boolean',
-  lang: v => ['bg', 'en'].includes(v)
+  lang: v => ['bg', 'en'].includes(v),
+  glass: v => typeof v === 'boolean'
 };
 function cleanSkill(st) {
   if (!isObj(st)) return null;
@@ -113,6 +114,7 @@ applySettings = function () {
   const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
   if (S.settings.theme === 'auto') rootEl.dataset.theme = systemDark() ? 'dark' : 'light';
   if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
+  if (S.settings.glass) rootEl.dataset.glass = '1'; else delete rootEl.dataset.glass;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
 };
@@ -122,6 +124,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const url2 = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (url2) el.poster = url2; el.removeAttribute('data-poster'); }
   });
 }
