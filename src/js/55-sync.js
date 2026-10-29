@@ -18,7 +18,8 @@ function logAnswer({ subj, task, correct, misc, secs, hints, before, after, mode
     mastery_before: roundTo(before, 3), mastery_after: roundTo(after, 3), mode, session_id: session, task_id: task.id
   };
   S.log.push(row); if (S.log.length > 3000) S.log.splice(0, S.log.length - 3000);
-  if (S.settings.sheetUrl) { S.queue.push(row); if (S.queue.length > QUEUE_MAX) S.queue.splice(0, S.queue.length - QUEUE_MAX); }
+  /* only this learner's rows are queued for the shared Sheet */
+  if (S.settings.sheetUrl && row.student_id === S.profile.id) { S.queue.push(row); if (S.queue.length > QUEUE_MAX) S.queue.splice(0, S.queue.length - QUEUE_MAX); }
   saveState();
   scheduleFlush();
 }
@@ -46,7 +47,7 @@ async function postRows(url, rows) {
 async function flushToSheet() {
   const url = S.settings.sheetUrl; if (!url || !S.queue.length || !navigator.onLine || flushing) return false;
   flushing = true;
-  const batch = S.queue.slice(0, 200), rows = batch.map(r => LOG_COLUMNS.map(c => r[c]));
+  const batch = S.queue.slice(0, 200).filter(r => isObj(r) && r.student_id === S.profile.id), rows = batch.map(r => LOG_COLUMNS.map(c => r[c]));
   S.sync = S.sync || { fails: 0, lastError: '', lastOk: 0, unverified: false };
   try {
     const mode = await postRows(url, rows);
@@ -66,6 +67,6 @@ async function flushToSheet() {
 window.addEventListener('online', () => scheduleFlush());
 
 const csvCell = v => { const s = v == null ? '' : String(v); return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-function logCSV(rows = S.log) { return '\uFEFF' + [LOG_COLUMNS.join(','), ...rows.map(r => LOG_COLUMNS.map(c => csvCell(r[c])).join(','))].join('\n'); }
+function logCSV(rows = myLog()) { return '\uFEFF' + [LOG_COLUMNS.join(','), ...rows.map(r => LOG_COLUMNS.map(c => csvCell(r[c])).join(','))].join('\n'); }
 /* Shelly's Native.saveFile: a save dialog on Android, a download in the browser */
 function downloadText(name, text, type = 'text/csv') { return Native.saveFile(new Blob([text], { type: type + ';charset=utf-8' }), name, 'save'); }

@@ -17,6 +17,11 @@
   - Cause: `go()` pushes a history entry per screen, but in-app back, Android back, `home()` and `backTo()` only popped `NAV`. The history kept stale entries.
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
+- Feedback fix: daily activity now counts only the signed-in learner's own answers (`myLog()`), not demo rows or other students' rows from the shared Google Sheet.
+  - `src/js/50-state.js`: added `myLog()`; `sanitizeState()` now keeps only rows whose `student_id` matches the profile id in `S.log` and `S.queue`.
+  - `src/js/55-sync.js`: only the current learner's rows are queued and flushed to Google Sheets; the personal CSV export defaults to `myLog()`.
+  - `src/js/60-home.js`: the "Отговори досега" counter uses `myLog()`.
+  - `src/js/62-insights.js`: mistake/answer counts and the personal CSV use `myLog()`.
 
 ## Decisions
 - The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
@@ -31,12 +36,14 @@
 - New exam id is dzi12-math-2020-06-02-v2 (not ...-06-v2: that one is 03.06.2020). past.date is 2020-06-02. The PDF is named "3dzi" (third ДЗИ); I kept it under dzi12 math.
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 - Android wrapper cleanup keeps `AndroidUI` and `AndroidFiles`: the web app uses `AndroidUI.night()`, `__systemTheme`, file import, and CSV export.
+- Daily activity is strictly per learner: `student_id === S.profile.id`. Demo data and other students' rows are never shown as the user's own activity.
+- The shared Google Sheet still receives rows from every student, because that is what the teacher's Looker Studio dashboard needs; the app just never mixes them into one learner's view.
 
 ## Left
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
-- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
+- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
 - Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in its file.
 - past.pages in the new files is the PDF page range, not the book page numbers used in the 2017+ files.
 - Add the 25 drawing questions with their images (cropped from the PDFs).
@@ -50,6 +57,3 @@
 
 ## Bugs
 - The fast-tap history edge case is addressed by 67-history-sync.js, but still needs a manual test on web and APK.
-- Два грешни отговора с една и съща стойност (генератор по математика): fixed.
-  - Cause: `mcTask()` in `src/js/52-math.js` compared option text as raw strings, so mathematically equivalent values written differently (for example `0,5` and `\frac{1}{2}`) could both appear as choices.
-  - Fix: added `normalize()` and used it before duplicate checks in `mcTask()`, so LaTeX fractions, numbers with `{,}` decimal commas, and whitespace differences are compared by their canonical value.
