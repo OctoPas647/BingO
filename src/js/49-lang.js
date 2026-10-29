@@ -18,7 +18,7 @@ const EN_UI = {
   /* subjects, skills, statuses */
   'Математика': 'Mathematics', 'БЕЛ': 'Bulgarian', 'Матем.': 'Math',
   'Квадратни уравнения': 'Quadratic equations', 'Проценти': 'Percentages', 'Степени и корени': 'Powers and roots',
-  'Линейни неравенства': 'Linear inequalities', 'Правоъгълен триъгълник': 'Right triangle', 'Аритметична прогресия': 'Arithmetic progression',
+  'Линейни неравенства': 'Linear inequalities', 'Правоъглен триъгълник': 'Right triangle', 'Аритметична прогресия': 'Arithmetic progression',
   'Вероятности': 'Probability', 'Пълен и кратък член': 'Full and short article', 'Запетая': 'Commas',
   'Слято, полуслято, разделно': 'Joined, hyphenated, separate', 'Литература: Дебелянов': 'Literature: Debelyanov',
   'Малко данни': 'Little data', 'Слабо': 'Weak', 'Почти': 'Almost', 'Силно': 'Strong',
@@ -55,7 +55,7 @@ const EN_UI = {
   'Диагностика': 'Diagnostic', 'Тренировка на слабото': 'Weak-spot training', 'Една тема': 'One topic', 'Затвори сесията': 'Close the session',
   'Всички теми са силни — няма какво да тренираме': 'All topics are strong — nothing to train', 'Няма нови задачи по тази тема': 'No new tasks for this topic',
   'Да спрем ли?': 'Stop here?', 'Отговорите досега вече са записани в картата на уменията.': 'Your answers so far are already saved in the skill map.', 'Спри': 'Stop',
-  'Проверка на силно умение': 'Check of a strong skill', 'Близнак: същото, нови числа': 'Twin: same thing, new numbers', 'Ниво {n}': 'Level {n}',
+  'Проверка на силно умение': 'Check of a strong skill', 'Близнак: същото, нови числа': 'Twin: same thing, new numbers', 'Близнак: същата тема, нова задача': 'Twin: same topic, new task', 'Ниво {n}': 'Level {n}',
   'Задачата е създадена от ИИ и може да има грешка.': 'This task was made by AI and may contain a mistake.', 'Докладвай грешка': 'Report a mistake',
   'Подсказка от Gemini': 'Hint from Gemini', 'без отговора': 'without the answer', 'Провери': 'Check', 'Напред': 'Next', 'Виж резултата': 'See the result',
   'Вярно!': 'Correct!', 'Не съвсем': 'Not quite', 'Типична грешка': 'Typical mistake', 'Грешка': 'Mistake', 'Виж решението по-долу.': 'See the solution below.',
@@ -153,7 +153,7 @@ const EN_UI = {
   'Задача {n} · {p} т.': 'Task {n} · {p} pts', 'Виж отговора': 'See the answer', 'Оцени се сам': 'Mark it yourself', 'по официалния отговор и критериите': 'using the official answer and criteria',
   'Отчасти': 'Partly', '{a} от {b} т.': '{a} of {b} pts', 'По скалата на МОН:': 'On the Ministry of Education scale:', 'Сгрешени задачи с избор:': 'Wrong multiple-choice tasks:', 'Отначало': 'Start over',
   /* setup: age, exam, high-school profile, extra matura */
-  'Името и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connect Google Sheets.',
+  'Името и годините са по желание. Учителят вижда името само ако свързал Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connected Google Sheets.',
   'Име и фамилия': 'Full name', 'напр. Мария Петрова': 'e.g. Maria Petrova', 'Години': 'Age', 'напр. 17': 'e.g. 17', 'Въведи години от 7 до 99': 'Enter an age from 7 to 99',
   'Значи за {e}, нали?': 'So it is {e}, right?', 'За кой изпит се готвиш?': 'Which exam are you preparing for?', 'Ако не е така, избери своя клас.': 'If not, choose your grade.', 'Избери изпит': 'Choose an exam',
   'НВО 4-ти клас': 'NVO, 4th grade', 'НВО 7-ми клас': 'NVO, 7th grade', 'НВО 10-ти клас': 'NVO, 10th grade', 'ДЗИ 12-ти клас': 'Matura (DZI), 12th grade',
