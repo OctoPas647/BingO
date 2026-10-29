@@ -14,7 +14,7 @@ SCREENS.settings = async el => {
       <p class="muted small">${L('Gemini обяснява грешките, дава подсказки без отговора, прави нови задачи за слабите теми и седмичен план. Без него приложението работи изцяло.')}</p></section>
     <section class="card"><h3>${icon('upload')}Google Sheets → Looker Studio</h3>${field('sheetUrl', L('Адрес на Apps Script (Web app)'), 'https://script.google.com/macros/s/…/exec')}
       <p class="muted small">${L('Всеки отговор става ред в таблица на учителя. Как се прави — apps-script/Code.gs в проекта.')}</p></section>
-    <section class="card"><h3>${icon('moon')}${L('Тема')}</h3>${seg('theme', [['auto', L('Системна')], ['light', L('Светла')], ['dark', L('Тъмна')], ['amoled', 'AMOLED']])}
+    <section class="card"><h3>${icon('moon')}${L('Тема')}</h3>${seg('theme', [['auto', L('Системна')], ['light', L('Светла')], ['dark', 'Тъмна'], ['amoled', 'AMOLED']])}
       <p class="muted small">${L('„Системна“ следва светлата или тъмната тема на телефона.')}</p>
       <div class="rows"><div class="row"><span>${icon('sound')}${L('Звуци')}</span><button class="switch${st.sound ? ' on' : ''}" data-sw="sound" role="switch"><i></i></button></div></div></section>
     <section class="card"><h3>${icon('eye')}${L('Демо')}</h3>
@@ -30,7 +30,12 @@ SCREENS.settings = async el => {
     if (b) { st[b.parentNode.dataset.key] = b.dataset.v; APP.settings.theme = st.theme; APP.settings.lang = st.lang; saveState(); applySettings(); return refresh(); }
     const w = e.target.closest('[data-sw]');
     if (w) { st.sound = !st.sound; APP.settings.sound = st.sound; saveState(); w.classList.toggle('on'); return; }
-    if (e.target.closest('[data-setup]')) { onboardingRestart(); NAV.length = 0; NAV.push({ screen: 'onboarding', params: {} }); return render(); }
+    if (e.target.closest('[data-setup]')) {
+      if (demoBackupExists()) { restoreFromDemo(); onboardingRestart(); }
+      else onboardingRestart({ clearLearnerData: true });
+      toast('Настройката е рестартирана');
+      NAV.length = 0; NAV.push({ screen: 'onboarding', params: {} }); return render();
+    }
     if (e.target.closest('[data-demo]')) { if (await loadDemoLearner()) { toast('Зареден е демо ученик'); home(); } return; }
     if (e.target.closest('[data-restore]')) { if (restoreFromDemo()) { APP.settings.theme = S.settings.theme; APP.settings.lang = S.settings.lang; applySettings(); toast('Твоите отговори са върнати'); home(); } else toast('Копието не може да се прочете', 'bad'); return; }
     if (e.target.closest('[data-wipe]') && await confirmBox(L('Да изчистим ли всичко?'), L('Картата на уменията и всички отговори на това устройство ще се изтрият.'), L('Изчисти'), true)) { resetState(true); toast('Изчистено'); return home(); }
