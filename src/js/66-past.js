@@ -133,7 +133,7 @@ SCREENS.pastexam = async (el, { id }, nav) => {
 
   btn.addEventListener('click', () => {
     if (P.phase === 'answer') return check();
-    if (rubric) P.got[P.i] = sum(rubric.get());
+    if (rubric) P.got[P.i] = Math.min(sum(rubric.get()), task.points);
     if (++P.i < Q.length) showTask(); else finish();
   });
   main.addEventListener('submit-answer', () => { if (P.phase === 'answer' && !btn.disabled) check(); });
