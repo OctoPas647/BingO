@@ -16,7 +16,7 @@
 - Fix: browser Back button "gets stuck", then suddenly leaves the app.
   - Cause: `go()` pushes a history entry per screen, but in-app back, Android back, `home()` and `backTo()` only popped `NAV`. The history kept stale entries.
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
-- Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
+- Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
 
 ## Decisions
 - The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
@@ -31,12 +31,13 @@
 - New exam id is dzi12-math-2020-06-02-v2 (not ...-06-v2: that one is 03.06.2020). past.date is 2020-06-02. The PDF is named "3dzi" (third ДЗИ); I kept it under dzi12 math.
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 - Android wrapper cleanup keeps `AndroidUI` and `AndroidFiles`: the web app uses `AndroidUI.night()`, `__systemTheme`, file import, and CSV export.
+- Progress is keyed by the selected exam/class level (`profile.exam`), not by one global progress record. Changing class preserves the old class under its own key and creates a clean record for the new class.
 
 ## Left
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
-- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
+- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14; 2013 q13,14; 2014 q14,15; 2015 q13,14; 2016 q13,14,18.
 - Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in its file.
 - past.pages in the new files is the PDF page range, not the book page numbers used in the 2017+ files.
 - Add the 25 drawing questions with their images (cropped from the PDFs).
@@ -53,3 +54,8 @@
 - Два грешни отговора с една и съща стойност (генератор по математика): fixed.
   - Cause: `mcTask()` in `src/js/52-math.js` compared option text as raw strings, so mathematically equivalent values written differently (for example `0,5` and `\frac{1}{2}`) could both appear as choices.
   - Fix: added `normalize()` and used it before duplicate checks in `mcTask()`, so LaTeX fractions, numbers with `{,}` decimal commas, and whitespace differences are compared by their canonical value.
+- При правене на нова матури от по-нисък клас, след като вече е направена матури от по-висок клас. води до увеличаване на точките дори и при много грешни отговора: fixed.
+  - Cause: progress, review data and past-exam results were stored in one shared state, so starting a lower-class matura after a higher-class one could inherit or add to the earlier class’s results.
+  - Fix: progress is now stored separately per exam/class level in `S.progress[examId]`. Changing class preserves the previous class’s data and gives the new class a clean skill map, review schedule and past-exam results. Session results, insights and the Home progress display use only the active class.
+  - Files: `src/js/50-state.js`, `src/js/58-onboarding.js`, `src/js/61-session.js`, `src/js/62-insights.js`, `tests/fixes.py`.
+  - Manual verification: complete or partially complete a ДЗИ/12th-class matura, then switch to НВО 7th class and answer mostly incorrectly. The Home total must show only the 7th-class result, must not increase because of the 12th-class history, and returning to 12th class must still show its earlier progress. Repeat in the opposite direction and on the Android APK.

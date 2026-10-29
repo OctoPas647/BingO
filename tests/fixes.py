@@ -136,6 +136,30 @@ with sync_playwright() as pw:
     bad = p.evaluate("Array.from({length: 300}, (_, i) => genMathTask('quad', 1, i).explain).filter(e => /\\d--\\d/.test(e)).length")
     ok('quad explanation: no double minus', bad == 0, str(bad))
     ctx.close()
+
+    # 11. cross-grade progress stays isolated
+    ctx, p = fresh(b, state={**DONE, 'profile': {**DONE['profile'], 'exam': 'dzi12'}})
+    isolated = p.evaluate("""() => {
+      const high = subjectSummary('math');
+      const highLost = high.lost;
+      startClassProgress('nvo7', 'dzi12');
+      const clean = subjectSummary('math');
+      for (const sk of SUBJECTS.math.skills) recordAnswer('math', { skill: sk.id, type: 'choice', options: ['a', 'b'], answer: 0 }, false, null);
+      const low = subjectSummary('math');
+      const preserved = S.progress.dzi12;
+      return {
+        highLost, lowLost: low.lost, cleanLost: clean.lost,
+        lowClean: Object.keys(S.skills).length === 0 || Object.values(S.skills).every(x => !x.n),
+        lowWorse: low.lost > highLost,
+        highPreserved: preserved && Object.keys(preserved.skills).length > 0,
+        lowPastEmpty: Object.keys(S.pastResults).length === 0
+      };
+    }""")
+    ok('cross-grade: lower class starts clean', isolated['lowClean'])
+    ok('cross-grade: lower-class wrong answers do not inherit higher-class points', isolated['lowWorse'] and isolated['lowPastEmpty'])
+    ok('cross-grade: higher-class progress is preserved', isolated['highPreserved'])
+    p.screenshot(path=str(SHOTS / 'cross-grade-isolation.png'))
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')
