@@ -136,6 +136,58 @@ with sync_playwright() as pw:
     bad = p.evaluate("Array.from({length: 300}, (_, i) => genMathTask('quad', 1, i).explain).filter(e => /\\d--\\d/.test(e)).length")
     ok('quad explanation: no double minus', bad == 0, str(bad))
     ctx.close()
+
+    # 11. the whole profile, past results and the Sheet retry state survive a restart; broken entries are dropped
+    state = {**DONE, 'profile': {**DONE['profile'], 'age': '17', 'exam': 'dzi12', 'track': 'math', 'extra': 'maths'},
+             'pastResults': {'dzi12-math-2020-06-02-v2': {'pts': 82.5, 'max': 100, 'at': 1760000000000}, 'bad': {'pts': 'x', 'max': 100, 'at': 1}},
+             'sync': {'fails': 2, 'lastError': 'x', 'lastOk': 1, 'unverified': True}}
+    ctx, p = fresh(b, state=state)
+    p.reload(); p.wait_for_timeout(300)
+    prof = p.evaluate("S.profile")
+    ok('restart: age/exam/track/extra kept', [prof['age'], prof['exam'], prof['track'], prof['extra']] == ['17', 'dzi12', 'math', 'maths'], str(prof))
+    ok('restart: past result kept', p.evaluate("S.pastResults['dzi12-math-2020-06-02-v2']?.pts") == 82.5)
+    ok('restart: broken past result dropped', p.evaluate("S.pastResults.bad === undefined"))
+    ok('restart: Sheet retry state kept', p.evaluate("S.sync.fails") == 2)
+    ctx.close()
+
+    # 12. loading the demo twice never replaces the real copy with demo data
+    real = {**DONE, 'sessions': 2, 'log': [{'t': 1, 'timestamp': '2026-10-01T10:00:00Z', 'student_id': 'u1', 'subject': 'Математика', 'task_id': 'x', 'correct': 1}]}
+    ctx, p = fresh(b, state=real)
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard')
+    ok('demo: marked as demo', p.evaluate("S.demo") is True)
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.wait_for_selector('.losscard')
+    ok('demo: second load keeps the demo', p.evaluate("S.demo") is True and p.evaluate("S.profile.name") == 'Демо ученик')
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-restore]')
+    p.click('[data-restore]'); p.wait_for_selector('.losscard')
+    ok('demo: restore after two loads brings real data back', p.evaluate("S.sessions") == 2 and p.evaluate("S.profile.name") == 'Тест' and p.evaluate("S.demo") is False)
+    ok('demo: no restore button without a real copy', p.evaluate("demoBackupHasRealData()") is False)
+    ctx.close()
+
+    # 13. running the setup again with the demo loaded does not keep the demo's answers
+    ctx, p = fresh(b, state=DONE)
+    p.evaluate("simulateLearner()")
+    p.evaluate("onboardingRestart()")
+    ok('setup again: demo answers removed', p.evaluate("S.log.length") == 0 and p.evaluate("S.demo") is False)
+    ctx.close()
+
+    # 14. streak counts days with a finished session; activity counts only this learner's answers
+    rows = [{'t': 1, 'timestamp': '2026-10-01T10:00:00Z', 'student_id': 'u1', 'subject': 'Математика', 'task_id': 'a', 'correct': 1},
+            {'t': 2, 'timestamp': '2026-10-01T10:00:00Z', 'student_id': 'someone-else', 'subject': 'Математика', 'task_id': 'b', 'correct': 0}]
+    ctx, p = fresh(b, state={**DONE, 'log': rows, 'sessionDays': []})
+    ok('streak: answers alone do not make a streak', p.evaluate("activity().streak") == 0)
+    ok('activity: only my answers counted', p.evaluate("myLog().length") == 1)
+    p.evaluate("S.sessionDays = [localDay()]")
+    ok('streak: a finished session today counts', p.evaluate("activity().streak") == 1)
+    ctx.close()
+
+    # 15. skill progress is kept per exam; an old key moves to the current exam
+    ctx, p = fresh(b, state={**DONE, 'profile': {**DONE['profile'], 'exam': 'nvo7'}, 'skills': {'math.quad': {'p': 0.8, 'n': 5, 'ok': 4, 'last': 1, 'misc': {}, 'hist': []}}})
+    ok('exam scope: old key moved to the current exam', p.evaluate("skillState('math', 'quad').p") == 0.8 and p.evaluate("'math.quad@nvo7' in S.skills"))
+    p.evaluate("S.profile.exam = 'dzi12'")
+    ok('exam scope: another exam starts fresh', p.evaluate("skillState('math', 'quad').n") == 0)
+    p.evaluate("S.profile.exam = 'nvo7'")
+    ok('exam scope: switching back keeps the progress', p.evaluate("skillState('math', 'quad').n") == 5)
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')

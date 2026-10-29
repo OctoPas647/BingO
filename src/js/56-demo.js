@@ -36,10 +36,10 @@ function simulateLearner({ truth = DEMO_TRUE, name = 'Демо ученик', cl
         level: lvl, correct: correct ? 1 : 0, misconception_code: correct ? '' : misc || '', misconception: correct || !misc ? '' : miscLabel(misc).replace(/\$/g, ''), source: task.src || 'bank',
         seconds: 20 + Math.floor(r.f() * 70), hints: 0, mastery_before: roundTo(before, 3), mastery_after: roundTo(st.p, 3), mode: i < 1 ? 'diag' : 'focus', session_id: 'demo' + Math.floor(i / 3), task_id: task.id });
     }
-    skills[subj + '.' + sk.id] = st;
+    skills[subj + '.' + sk.id + '@' + currentExamKey()] = st;
   }
   rows.sort((a, b) => a.t - b.t);
-  if (commit) { S.skills = skills; S.log = rows; S.profile = { ...S.profile, name, cls }; S.queue = []; saveState(true); }
+  if (commit) { S.skills = skills; S.log = rows; S.profile = { ...S.profile, name, cls }; S.queue = []; S.demo = true; saveState(true); }
   return rows;
 }
 
@@ -57,24 +57,36 @@ function simulateClass(n = 28, seed = 'class') {
 
 /* ---------- loading the demo learner without losing a real learner's progress ----------
    The demo replaces the skill map and the answers. If there is real progress, ask first and keep
-   a copy under its own key, so "Върни моите отговори" in Settings can bring it back. */
+   a copy under its own key, so "Върни моите отговори" in Settings can bring it back.
+   The copy is only ever written from real data: loading the demo a second time, or loading it
+   while a real copy is still kept, never replaces that copy with demo data. */
 const DEMO_BACKUP_KEY = STORE_KEY + '.before-demo';
-const hasRealProgress = () => S.sessions > 0 || S.log.some(r => r.student_id !== 'demo');
+const stateHasRealProgress = s => !s.demo && (s.sessions > 0 || s.log.some(r => r.student_id !== 'demo'));
+const hasRealProgress = () => stateHasRealProgress(S);
 const demoBackupExists = () => { try { return !!localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return false; } };
+/* the kept copy, read and checked; null when there is none or it is not a real learner's data */
+function demoBackup() {
+  let raw = null; try { raw = localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return null; }
+  if (!raw) return null;
+  try { const v = sanitizeState(JSON.parse(raw)); return stateHasRealProgress(v) ? v : null; } catch (e) { return null; }
+}
+const demoBackupHasRealData = () => !!demoBackup();
 async function loadDemoLearner() {
   if (hasRealProgress()) {
     const ok = await confirmBox(L('Да заредим ли демо ученик?'), L('Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.'), L('Зареди демото'));
     if (!ok) return false;
-    try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S)); }
-    catch (e) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
+    if (!demoBackupHasRealData()) {
+      try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S)); }
+      catch (e) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
+    }
   }
   simulateLearner();
   return true;
 }
 function restoreFromDemo() {
-  let raw = null; try { raw = localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { }
-  if (!raw) return false;
-  try { S = sanitizeState(JSON.parse(raw)); } catch (e) { return false; }
+  const v = demoBackup();
+  if (!v) return false;   /* never restore demo data or an empty copy as "my answers" */
+  S = v; S.demo = false;
   saveState(true);
   try { localStorage.removeItem(DEMO_BACKUP_KEY); } catch (e) { }
   return true;

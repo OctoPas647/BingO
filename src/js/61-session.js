@@ -118,7 +118,9 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   });
 
   function finish() {
-    P.done = true; S.sessions++; saveState(true); flushToSheet();
+    P.done = true; S.sessions++;
+    const day = localDay(); if (!S.sessionDays.includes(day)) { S.sessionDays.push(day); S.sessionDays = S.sessionDays.slice(-400); }
+    saveState(true); flushToSheet();
     const endMap = subjectSummary(subj), touched = [...new Set(P.answers.map(a => a.skill))];
     const right = P.answers.filter(a => a.correct).length, gained = startMap.lost - endMap.lost;
     const rows = touched.map(id => { const x = endMap.list.find(y => y.sk.id === id), was = skillStatus({ ...x.st, p: before[id] }); return { x, was }; });

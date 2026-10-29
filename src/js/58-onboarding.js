@@ -171,7 +171,15 @@ function onboardingFinish() {
   return { ok: true, done: true };
 }
 let _obShown = 0;   /* last drawn bar fraction, so the intro bar animates from there to the new step */
-function onboardingRestart() { S.onboarding = { done: false, step: 0 }; _obShown = 0; saveState(true); }
+/* Running the setup again while the demo learner is loaded: the demo's answers must not stay as the
+   learner's. Bring back the learner's own copy if there is one, otherwise start with empty answers
+   (settings are kept). A real learner keeps their progress. */
+function onboardingRestart() {
+  if (S.demo) {
+    if (!restoreFromDemo()) { const settings = S.settings; S = DEFAULT_STATE(); S.settings = settings; }
+  }
+  S.onboarding = { done: false, step: 0 }; _obShown = 0; saveState(true);
+}
 
 /* "Clear my answers" keeps the profile and settings, so it must keep the setup state too */
 const _resetStateBase = resetState;

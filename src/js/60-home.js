@@ -27,7 +27,7 @@ SCREENS.home = async el => {
     <header class="apphead">
       <div class="brand bingo">Bing<span>O</span></div>
       <div class="head-stats">
-        <span class="pill" title="${L('Отговори досега')}">${icon('check')}${S.log.length}</span>
+        <span class="pill" title="${L('Отговори досега')}">${icon('check')}${myLog().length}</span>
         <button class="iconbtn" data-go="insights" aria-label="${L('Грешки и данни')}">${icon('grid')}</button>
         <button class="iconbtn" data-go="settings" aria-label="${L('Настройки')}">${icon('settings')}</button>
       </div>
@@ -44,7 +44,8 @@ SCREENS.home = async el => {
       ${started ? `<button class="btn accent big block" data-start="focus">${icon('target')}${L('Тренирай слабото · 8 задачи')}</button>
         ${weakest ? `<p class="muted small center">${L('Започваме от <b>{s}</b> — там губиш най-много.', { s: esc(L(weakest.sk.name)) })}</p>` : `<p class="muted small center">${L('Всички теми са силни. Направи пробна матура в Shelly!')}</p>`}`
         : `<button class="btn accent big block" data-start="diag">${icon('play')}${L('Започни диагностика')}</button>
-           <button class="btn ghost block demo-btn" data-demo>${icon('eye')}${L('Покажи с демо ученик')}</button>`}
+           <button class="btn ghost block demo-btn" data-demo>${icon('eye')}${L('Покажи с демо ученик')}</button>
+           <p class="muted small center">${L('Демо ученикът е примерен ученик с генерирани отговори — показва как работи картата на уменията.')}</p>`}
       <h2 class="sec-title">${L('Карта на уменията')}</h2>
       <div class="sklist">${list.map(x => skillRow(subj, x)).join('')}</div>
       ${started ? `<button class="btn ghost block" data-start="diag">${icon('reset')}${L('Нова диагностика')}</button>` : ''}

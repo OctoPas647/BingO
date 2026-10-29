@@ -38,14 +38,16 @@ window.addEventListener('popstate', () => {
 const rowTime = r => r.t || Date.parse(r.timestamp) || 0;
 const dayKey = t => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
 function activity() {
-  const days = new Set(S.log.map(r => dayKey(rowTime(r))));
+  const mine = myLog(), days = new Set(mine.map(r => dayKey(rowTime(r))));
+  /* the streak counts days with a finished session, so a few stray answers do not keep it alive */
+  const done = new Set(S.sessionDays);
   let streak = 0; const d = new Date();
-  if (!days.has(dayKey(d))) d.setDate(d.getDate() - 1);
-  while (days.has(dayKey(d))) { streak++; d.setDate(d.getDate() - 1); }
+  if (!done.has(dayKey(d))) d.setDate(d.getDate() - 1);
+  while (done.has(dayKey(d))) { streak++; d.setDate(d.getDate() - 1); }
   const names = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
   const week = Array.from({ length: 7 }, (_, i) => {
     const x = new Date(); x.setDate(x.getDate() - (6 - i)); const k = dayKey(x);
-    return { label: L(names[x.getDay()]), n: S.log.filter(r => dayKey(rowTime(r)) === k).length };
+    return { label: L(names[x.getDay()]), n: mine.filter(r => dayKey(rowTime(r)) === k).length };
   });
   return { days: days.size, streak, week };
 }
@@ -55,9 +57,9 @@ function setAccent(el) { const sub = SUBJECTS[S.subject]; el.style.setProperty('
 /* ---------- Статистики: one card per matura ---------- */
 SCREENS.stats = async el => {
   setAccent(el);
-  const act = activity(), total = S.log.length, max = Math.max(1, ...act.week.map(w => w.n));
+  const act = activity(), mine = myLog(), total = mine.length, max = Math.max(1, ...act.week.map(w => w.n));
   const cards = Object.values(SUBJECTS).map(sub => {
-    const sm = subjectSummary(sub.id), rows = S.log.filter(r => r.subject === sub.title), started = sm.answered > 0, kept = sm.total - sm.lost;
+    const sm = subjectSummary(sub.id), rows = mine.filter(r => r.subject === sub.title), started = sm.answered > 0, kept = sm.total - sm.lost;
     const cnt = { strong: 0, mid: 0, weak: 0, new: 0 }; sm.list.forEach(x => cnt[x.status]++);
     const worst = sm.list.filter(x => x.status !== 'strong').sort((a, b) => b.lost - a.lost).slice(0, 3);
     const avgSec = rows.length ? Math.round(sum(rows.map(r => r.seconds || 0)) / rows.length) : 0;
@@ -72,7 +74,7 @@ SCREENS.stats = async el => {
   }).join('');
   el.innerHTML = `<header class="apphead"><div class="brand bingo">Bing<span>O</span></div></header>
     <section class="pad"><h1 class="screen-title">${L('Статистики')}</h1>
-      <div class="card"><div class="minis four"><div><b>${total}</b><small>${L('отговора')}</small></div><div><b>${total ? pctTxt(accOf(S.log)) : '–'}</b><small>${L('верни')}</small></div><div><b>${act.streak}</b><small>${L('дни поредни')}</small></div><div><b>${act.days}</b><small>${L('активни дни')}</small></div></div>
+      <div class="card"><div class="minis four"><div><b>${total}</b><small>${L('отговора')}</small></div><div><b>${total ? pctTxt(accOf(mine)) : '–'}</b><small>${L('верни')}</small></div><div><b>${act.streak}</b><small>${L('дни поредни')}</small></div><div><b>${act.days}</b><small>${L('активни дни')}</small></div></div>
         <h4 class="stat-sub">${L('Последните 7 дни')}</h4>
         <div class="weekbars">${act.week.map(w => `<div class="wk"><i style="height:${Math.max(4, w.n / max * 100)}%" title="${w.n}"></i><small>${w.label}</small></div>`).join('')}</div></div>
       <h2 class="sec-title">${L('По матури')}</h2>${cards}</section>`;
@@ -84,7 +86,7 @@ SCREENS.stats = async el => {
 /* ---------- Профил ---------- */
 SCREENS.profile = async el => {
   setAccent(el);
-  const p = S.profile, act = activity(), total = S.log.length;
+  const p = S.profile, act = activity(), mine = myLog(), total = mine.length;
   const subs = Object.values(SUBJECTS).map(s => ({ s, sm: subjectSummary(s.id) }));
   const strongN = sum(subs.map(x => x.sm.list.filter(y => y.status === 'strong').length)), skillN = sum(subs.map(x => x.sm.list.length));
   const initials = (name => name.trim().split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase() || L('Ученик')[0]);
@@ -100,7 +102,7 @@ SCREENS.profile = async el => {
       <div class="card"><h3>${icon('trophy')}${L('Моят напредък')}</h3>
         <div class="rows prows">
           <div class="row"><span>${icon('flame')}${L('Поредни дни')}</span><b>${act.streak}</b></div>
-          <div class="row"><span>${icon('check')}${L('Отговори')}</span><b>${total}${total ? ' · ' + L('{n} верни', { n: pctTxt(accOf(S.log)) }) : ''}</b></div>
+          <div class="row"><span>${icon('check')}${L('Отговори')}</span><b>${total}${total ? ' · ' + L('{n} верни', { n: pctTxt(accOf(mine)) }) : ''}</b></div>
           <div class="row"><span>${icon('play')}${L('Тренировки')}</span><b>${S.sessions}</b></div>
           <div class="row"><span>${icon('target')}${L('Силни умения')}</span><b>${L('{a} от {b}', { a: strongN, b: skillN })}</b></div></div>
         ${subs.map(({ s, sm }) => `<div class="psub" style="--accent:${s.color}"><span>${s.icon} ${esc(L(s.title))}</span>${bar(sm.answered ? 1 - sm.lost / sm.total : 0)}<small class="muted">${sm.answered ? L('запазени ≈ {a} от {b} т.', { a: fmt1(sm.total - sm.lost), b: sm.total }) : L('още не е измерено')}</small></div>`).join('')}</div>

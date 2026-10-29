@@ -66,6 +66,6 @@ async function flushToSheet() {
 window.addEventListener('online', () => scheduleFlush());
 
 const csvCell = v => { const s = v == null ? '' : String(v); return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-function logCSV(rows = S.log) { return '\uFEFF' + [LOG_COLUMNS.join(','), ...rows.map(r => LOG_COLUMNS.map(c => csvCell(r[c])).join(','))].join('\n'); }
+function logCSV(rows = myLog()) { return '\uFEFF' + [LOG_COLUMNS.join(','), ...rows.map(r => LOG_COLUMNS.map(c => csvCell(r[c])).join(','))].join('\n'); }
 /* Shelly's Native.saveFile: a save dialog on Android, a download in the browser */
 function downloadText(name, text, type = 'text/csv') { return Native.saveFile(new Blob([text], { type: type + ';charset=utf-8' }), name, 'save'); }

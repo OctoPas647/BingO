@@ -95,7 +95,9 @@ const BKT = { prior: 0.3, learn: 0.1, slip: 0.12, strong: 0.9, weak: 0.6 };
 const guessOf = task => (task.type === 'choice' ? 1 / task.options.length : task.type === 'gaps' && task.gaps.every(g => g.options) ? Math.pow(0.5, task.gaps.length) : 0.05);
 
 function skillState(subj, id) {
-  const k = subj + '.' + id;
+  const k = subj + '.' + id + '@' + currentExamKey();
+  /* a key without an exam (an older save, imported data) moves to the current exam when first read */
+  if (!S.skills[k] && S.skills[subj + '.' + id]) { S.skills[k] = S.skills[subj + '.' + id]; delete S.skills[subj + '.' + id]; }
   return S.skills[k] || (S.skills[k] = { p: BKT.prior, n: 0, ok: 0, last: 0, misc: {}, hist: [] });
 }
 function bktUpdate(p, correct, guess) {
