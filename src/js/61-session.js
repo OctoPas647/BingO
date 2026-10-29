@@ -47,7 +47,8 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const item = Q[P.i]; P.phase = 'answer'; aiHints = 0; shownAt = Date.now();
     view = taskView(task, m, { mode: 'practice', seed: sessionId, onChange: upd });
     const sk = skillDef(subj, task.skill);
-    const tag = item.why === 'check' ? `<i class="chk">${icon('check')}${L('Проверка на силно умение')}</i>` : item.why === 'twin' ? `<i class="twin">${icon('reset')}${L('Близнак: същото, нови числа')}</i>` : '';
+    const twinLabel = subj === 'bel' ? 'Близнак: същото умение, нова задача' : 'Близнак: същото, нови числа';
+    const tag = item.why === 'check' ? `<i class="chk">${icon('check')}${L('Проверка на силно умение')}</i>` : item.why === 'twin' ? `<i class="twin">${icon('reset')}${L(twinLabel)}</i>` : '';
     main.innerHTML = `<div class="taskhead"><div class="chips"><i class="score">${esc(L(sk.name))}</i><i>${L('Ниво {n}', { n: task.level || 2 })}</i><i class="src-${task.src}">${esc(L(SRC_LABEL[task.src] || ''))}</i>${tag}</div></div>`;
     main.appendChild(view.el);
     if (task.src === 'ai') main.insertAdjacentHTML('beforeend', `<p class="aiwarn">${icon('info')}${L('Задачата е създадена от ИИ и може да има грешка.')} <button class="linkbtn" data-report>${L('Докладвай грешка')}</button></p>`);
@@ -100,7 +101,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
-      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>${L('✦ Подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
+      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${L('Подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
