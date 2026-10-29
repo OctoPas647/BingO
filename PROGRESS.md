@@ -1,76 +1,29 @@
 # Progress
 
 ## Done
-- ISSUE 1: Скала на МОН в прогнозата - по-ясна и точна
-  - Replaced the rounded forecast grade thresholds (30 / 41 / 62.5 / 84) with the official MON DZI bands: до 29,75; 30–40,5; 40,75–62,25; 62,5–83,75; 84–94,75; 95–100.
-  - Added a single MON_SCALE table in src/js/65-forecast.js. gradeOf, nextGrade, the scale bar and the detailed scale list now use the same boundaries.
-  - Corrected the top bands: 84–94,75 is Много добър 5 and 95–100 is Отличен 6. gradeOf uses exact float comparisons, so 94,75 stays Много добър 5 and 95 becomes Отличен 6.
-  - The forecast scale now shows one tick per grade: 2 at 0, 3 at 30, 4 at 40,75, 5 at 62,5 and 6 at 95. This avoids two "5" ticks.
-  - Kept a GRADES alias (threshold + grade pairs) because tools/check.js reads it for the English-UI translation check. This fixes the `GRADES is not defined` failure in `python tools/build.py check`.
-  - Added the three missing English UI translations for the new MON scale text: point ranges and the explanation about the 0.25-point conversion.
-  - Added Playwright check 11 in tests/fixes.py: it checks gradeOf at every MON boundary and that the scale renders the 2–6 ticks and the exact band colours.
-  - Added Playwright check 12 in tests/fixes.py: it simulates forecast scores of 90 and 98 and asserts that the forecast displays Много добър 5 and Отличен 6. It uses fixed forecast values, so it is deterministic.
-  - Made browser check 4 retry the diagnostic up to 3 times until it meets a number task. The diagnostic picks random task variants, so the old single-run check was flaky; this is not related to the MON scale change.
-  - The detailed sheet now shows exact point ranges for every grade and explains that MON converts points in 0.25-point steps.
-  - Files: src/js/65-forecast.js, src/css/forecast.css, src/js/49-lang.js, tests/fixes.py, PROGRESS.md.
-- Removed the AI/API onboarding screen: the `ai` step in src/js/58-onboarding.js no longer appears during first-run setup. AI configuration is no longer shown at startup, but remains fully accessible via the Settings menu.
-- Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
-  - Cause: `syncHistory()` removed the history trap with `history.back()`, but the sheet callback called `go()` before that back was processed. `render()` then pushed a new trap, which the queued back removed; browser Back could then leave the app.
-  - Fix: `src/js/67-history-sync.js` delays history syncing while `histSkip > 0` and applies the pending sync after the queued `popstate`.
-- Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
-- Duolingo-style progress bar (feature/duo-progress-bar):
-  - Intro (first-run setup): animated bar in src/js/58-onboarding.js. It fills with a small spring, has a shimmer, and pulses once on the last step. Style is in src/css/bingo.css (`.duo`).
-  - Tests (diagnostic, focus, one topic): same look, but static. `.playbar .bar.pbar` has transitions and animations switched off in src/css/bingo.css. src/js/61-session.js is not changed.
-- Added НВО 4. клас Math past exams 2007-2016 (content/past-exams/nvo4-math-2007.json ... nvo4-math-2016.json): 170 questions. Official answer keys used for every year except 2013 (no key published, answers calculated and marked with a note).
-- 0.3.2 release prepared: version 0.3.1 -> 0.3.2, androidVersionCode 4 -> 5, CHANGELOG entry.
-- Fix: confetti no longer falls on the next screen. The result screen now removes the confetti canvas when you leave it (nav.onLeave in src/js/61-session.js).
-- Fix: the same question no longer repeats in one session. nextTask() remembers what was shown (prompt, options, answer), retries other seeds, then neighbouring levels, and only repeats if nothing new exists.
-- Fix: browser Back button "gets stuck", then suddenly leaves the app.
-  - Cause: `go()` pushes a history entry per screen, but in-app back, Android back, `home()` and `backTo()` only popped `NAV`. The history kept stale entries.
-  - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
-- Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
+- ISSUE 1: Скала на МОН в прогнозата - по-ясна и точна — superseded in 0.5.0: the 95-point Отличен band and the exact 84–94,75 / 95–100 split were not taken; main keeps the 30 / 41 / 62,5 / 84 scale.
+- **0.5.0**: all 64 open branches merged into one version (see CHANGELOG.md). Many branches fixed the same problem several times; each fix is in once, reviewed, without the unrelated edits the bot made on the way. Every merge commit message says what was taken from each branch and what was not, and why.
+- Earlier work (0.4.x): ДЗИ Математика 02.06.2020 вариант 2, НВО 4 Математика 2007–2016, Duolingo-style progress bar, browser-history fixes (67-history-sync.js and the tab-bar wrapper in 64-nav.js), confetti cleanup, no repeated question in a session, Android fullscreen-video code removed, no duplicate option values in generated tasks (`normalize()` in 52-math.js).
 
 ## Decisions
-- MON scale: 84–94,75 is Много добър 5; 95–100 is Отличен 6.
-- The forecast scale colours are generated from MON_SCALE in JavaScript, so the CSS no longer hard-codes the old 30% / 62.5% boundaries.
-- The scale shows one tick per grade label, not one per MON band.
-- GRADES stays as a derived alias of MON_SCALE for compatibility with tools/check.js.
-- Browser check 4 retries the diagnostic because its number-task appearance depends on random task seeds; it is not a deterministic guarantee of one diagnostic run.
-- Browser checks 11 and 12 test the MON scale with fixed values, so they do not depend on random diagnostic tasks.
-- The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
-- The sheet history fix lives in BingO's own src/ (67-history-sync.js), not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
-- The old fix/browser-back branch and src/js/66-history.js are not reused: they assume one history entry per screen, while the current engine keeps one trap entry.
-- Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
-- Progress bar uses var(--good) so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
-- The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
-- Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
-- Release and APK are built by the Build workflow (.github/workflows/build.yml) after merge to main.
-- Cause of the repeats: generated math tasks get a new id per seed, so the old id check could not see identical questions; some generators have only 3-12 variants.
-- New exam id is dzi12-math-2020-06-02-v2 (not ...-06-v2: that one is 03.06.2020). past.date is 2020-06-02. The PDF is named "3dzi" (third ДЗИ); I kept it under dzi12 math.
-- Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
-- Android wrapper cleanup keeps `AndroidUI` and `AndroidFiles`: the web app uses `AndroidUI.night()`, `__systemTheme`, file import, and CSV export.
+- МОН's grade scale stays 30 / 41 / 62,5 / 84 (checked against МОН's announcement); feedback-1623-s16's 95-point Отличен was not taken.
+- Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
+- Skill progress is kept per exam (`math.quad@nvo7`). Keys without an exam move to the current exam the first time they are read (`skillState` in 51-skills.js); the demo learner writes keys for the current exam.
+- НВО 4/7/10 profiles follow `S.profile.exam` (`nvoGrade()`, `skillList()`), not a separate picker. ДЗИ 12 keeps the matura skill map.
+- Mastery smoothing: one rule only (`bktStep` in 51-skills.js: less learning and a smaller maximum jump while a skill has few answers; a wrong answer never raises mastery). A second engine-level smoothing (feedback-2348-s33) was not added on top.
+- Focus and one-topic sessions keep their length: a twin takes the next planned place. The diagnostic still adds one more task where the first was wrong, as documented.
+- The streak counts days with a finished session (`S.sessionDays`); older saves start from the days with answers.
+- "Сказуемно определение" is kept as the term (textbook term, used by the typical-mistake labels).
+- Firestore: only staff read /questions (it holds correctAnswer); students get questions from `startAttempt`.
 
 ## Left
-- Run `python tools/build.py web`, then `python tests/fixes.py` (needs Playwright) to run checks 11 and 12; both should pass deterministically.
-- Run `python tools/build.py check` again; it should pass.
-- Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
-- Manual test of the forecast scale on web and APK: check the 2–6 ticks, the band colours, and the detailed MON scale list.
-- Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
-- Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
-- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
-- Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in its file.
-- past.pages in the new files is the PDF page range, not the book page numbers used in the 2017+ files.
-- Add the 25 drawing questions with their images (cropped from the PDFs).
-- Check the flagged formulas against the original PDFs.
-- Add НВО 4. клас БЕЛ 2007-2016 (separate PR).
-- After merge to main, check that the release has the new APK.
-- Manual test on web and APK.
+- Exams the bot could not upload (its branches held placeholder text, nothing was taken): НВО 4 БЕЛ 2007–2016, ДЗИ Математика (общообразователна) 2022-08, English НВО 10 Математика 2025 and 2026, integrated НВО 10 samples (БЕЛ, математика).
+- НВО 4 Математика 2007–2016: 25 drawing questions are missing (2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18), and the formulas rebuilt from the key (2012 q9, 2013 q9 and q17, 2015 q9 and q17) should be checked against the PDFs.
+- The website upload in the Build workflow fails: curl cannot verify the FTP server's certificate (exit code 60). The FTP_HOST secret must be a host name the server's certificate is issued for. The APK and the GitHub release are not affected.
+- Firebase is not wired into the app yet (functions, rules and docs only); the Gemini free-text grading (54b-ai-grade.js) is not on a screen yet.
+- НВО profiles reuse the matura generators; НВО-specific tasks (especially for НВО 4) and weights checked against МОН's specification are still to do.
+- Manual test on web and APK: Liquid glass on a real phone (blur performance), Android font size, feedback form against a deployed server.
 - Maybe add more variants to the small math generators.
-- Check the other 2020-2021 files (БЕЛ 01.06.2020, 27.08.2020, 19.05.2021, math 28.08.2020) against the repo; they look already added.
-- Build and test the Android APK after this wrapper cleanup: open the app, switch System/Light/Dark/AMOLED themes, import a module, export CSV, and test Android Back.
 
 ## Bugs
-- The fast-tap history edge case is addressed by 67-history-sync.js, but still needs a manual test on web and APK.
-- Два грешни отговора с една и съща стойност (генератор по математика): fixed.
-  - Cause: `mcTask()` in `src/js/52-math.js` compared option text as raw strings, so mathematically equivalent values written differently (for example `0,5` and `\\frac{1}{2}`) could both appear as choices.
-  - Fix: added `normalize()` and used it before duplicate checks in `mcTask()`, so LaTeX fractions, numbers with `{,}` decimal commas, and whitespace differences are compared by their canonical value.
+- None known. tests/fixes.py covers the 0.5.0 fixes (tests 11–25).
