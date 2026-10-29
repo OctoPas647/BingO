@@ -1,16 +1,10 @@
 # Progress
 
 ## Done
-- Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
-  - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
-  - Scope: UI only. Questions, answer options, solutions, explanations and rubrics stay in their original language.
-  - Files: verified `lang: "en"` in all `content/past-exams-en/*.json`; documented the English metadata selection in `src/js/66-past.js`; checked that every `L()` key in `src/js/66-past.js` already has an English entry in `src/js/49-lang.js`.
-  - Manual test: switch Settings → Language to English, open Home → „Изпити от минали години“, open an exam with an English variant, and check that the exam header, part headers and instructions are English while questions, options and solutions remain Bulgarian. Repeat for an exam without an English variant; it should remain Bulgarian and keep the `BG` marker.
 - **0.5.0**: all 64 open branches merged into one version (see CHANGELOG.md). Many branches fixed the same problem several times; each fix is in once, reviewed, without the unrelated edits the bot made on the way. Every merge commit message says what was taken from each branch and what was not, and why.
 - Earlier work (0.4.x): ДЗИ Математика 02.06.2020 вариант 2, НВО 4 Математика 2007–2016, Duolingo-style progress bar, browser-history fixes (67-history-sync.js and the tab-bar wrapper in 64-nav.js), confetti cleanup, no repeated question in a session, Android fullscreen-video code removed, no duplicate option values in generated tasks (`normalize()` in 52-math.js).
 
 ## Decisions
-- Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
 - Skill progress is kept per exam (`math.quad@nvo7`). Keys without an exam move to the current exam the first time they are read (`skillState` in 51-skills.js); the demo learner writes keys for the current exam.
 - НВО 4/7/10 profiles follow `S.profile.exam` (`nvoGrade()`, `skillList()`), not a separate picker. ДЗИ 12 keeps the matura skill map.
