@@ -154,8 +154,7 @@ if (E('S.subject') !== 'bel') fail('onboarding: a profile without mathematics sh
 if (E('onboardingNext({ subject: "xx" }).ok')) fail('onboarding: unknown subject accepted');
 E('onboardingNext({ subject: "bel" })'); if (E('S.subject') !== 'bel') fail('onboarding: subject not saved');
 E('onboardingNext({ theme: "amoled" })');
-if (E('onboardingNext({ aiMode: "key", apiKey: "" }).ok')) fail('onboarding: API key mode without a key accepted');
-E('onboardingNext({ aiMode: "off" })');
+if (E('obStep().id') !== 'sheets') fail('onboarding: the AI setup should no longer appear after the theme');
 if (E('onboardingNext({ sheetUrl: "https://example.com" }).ok')) fail('onboarding: non-Apps-Script URL accepted');
 E('onboardingSkip()');
 if (!E('onboardingNext({}).done') || E('onboardingNeeded()')) fail('onboarding: finishing did not stick');
