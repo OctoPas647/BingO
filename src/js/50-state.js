@@ -60,7 +60,7 @@ function sanitizeState(v) {
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', age: isStr(prof.age) ? prof.age.slice(0, 10) : '', exam: isStr(prof.exam) ? prof.exam.slice(0, 20) : '', track: isStr(prof.track) ? prof.track.slice(0, 30) : '', extra: isStr(prof.extra) ? prof.extra.slice(0, 30) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
@@ -73,7 +73,7 @@ function sanitizeState(v) {
   out.progress = {};
   if (isObj(v.progress)) for (const [cls, p] of Object.entries(v.progress)) if (isStr(cls) && cls) out.progress[cls] = cleanClassProgress(p);
   const legacy = cleanClassProgress({ skills: v.skills, review: v.review, pastResults: v.pastResults });
-  const legacyId = out.profile.cls || 'default';
+  const legacyId = out.profile.exam || 'default';
   const hasLegacy = Object.keys(legacy.skills).length || Object.keys(legacy.review).length || Object.keys(legacy.pastResults).length;
   if (hasLegacy && !Object.keys(out.progress[legacyId] || {}).length) out.progress[legacyId] = legacy;
 
@@ -89,31 +89,33 @@ function backupRaw(raw) {
   try { localStorage.setItem(key, raw); return key; } catch (e) { return null; }
 }
 function getClassId(state = S) {
-  return (state.profile && isStr(state.profile.cls) && state.profile.cls) || 'default';
+  return (state.profile && isStr(state.profile.exam) && state.profile.exam) || 'default';
 }
 function ensureClassProgress(classId) {
   const id = isStr(classId) && classId ? classId : 'default';
   if (!isObj(S.progress[id])) S.progress[id] = { skills: {}, review: {}, pastResults: {} };
   return S.progress[id];
 }
-function storeActiveClassProgress() {
-  const id = getClassId();
-  S.progress[id] = { skills: S.skills || {}, review: S.review || {}, pastResults: S.pastResults || {} };
+function storeActiveClassProgress(classId = getClassId()) {
+  S.progress[classId] = { skills: S.skills || {}, review: S.review || {}, pastResults: S.pastResults || {} };
 }
 function loadClassProgress(classId) {
   storeActiveClassProgress();
   const id = isStr(classId) && classId ? classId : 'default';
-  S.profile.cls = id === 'default' ? '' : id;
+  S.profile.exam = id === 'default' ? '' : id;
   const p = ensureClassProgress(id);
   S.skills = p.skills;
   S.review = p.review;
   S.pastResults = p.pastResults;
   saveState(true);
 }
-function startClassProgress(classId) {
+/* Start a matura for another class: preserve the old class under its own key, then give the
+   new class a completely clean skill map, review schedule and past-exam results. */
+function startClassProgress(classId, prevClassId = getClassId()) {
   const id = isStr(classId) && classId ? classId : 'default';
-  storeActiveClassProgress();
-  S.profile.cls = id === 'default' ? '' : id;
+  const prev = isStr(prevClassId) && prevClassId ? prevClassId : 'default';
+  storeActiveClassProgress(prev);
+  S.profile.exam = id === 'default' ? '' : id;
   S.progress[id] = { skills: {}, review: {}, pastResults: {} };
   S.skills = S.progress[id].skills;
   S.review = S.progress[id].review;

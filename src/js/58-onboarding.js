@@ -33,7 +33,7 @@ const ONBOARD = {
       { key: 'proxyUrl', path: 'settings.proxyUrl', type: 'text', label: 'Адрес на сървъра (Cloud Run)', ph: 'https://bingo-ai-xxxx.run.app', showIf: d => d.aiMode === 'proxy', required: d => d.aiMode === 'proxy', validate: v => (/^https:\/\//.test(v) ? '' : 'Адресът трябва да започва с https://') }
     ] },
     { id: 'sheets', title: 'Свързване с учител (по желание)', text: 'Ако учителят ти е дал адрес на Apps Script, постави го тук. Иначе пропусни.', skippable: true, fields: [
-      { key: 'sheetUrl', path: 'settings.sheetUrl', type: 'text', label: 'Адрес на Apps Script (Web app)', ph: 'https://script.google.com/macros/s/…/exec', validate: v => (/^https:\/\/script\.google\.com\//.test(v) ? '' : 'Адресът трябва да е от script.google.com') }
+      { key: 'sheetUrl', path: 'settings.sheetUrl', type: 'text', label: 'Адрес на Apps Script (Web app)', ph: 'https://script.google.com/macros/s/…/exec', validate: v => (/^https:\/\/script\.google\.com\//.test(v) ? '' : 'Адресът трябва да започва с https://') }
     ] },
     { id: 'done', title: 'Готово!', text: 'Започни с кратка диагностика, за да видим къде губиш най-много точки.', fields: [] }
   ]
@@ -56,13 +56,13 @@ const TRACKS = {
   soft: { icon: '💻', title: 'Софтуерни и хардуерни науки', dzi: ['информатика', 'информационни технологии', 'математика'] },
   nat: { icon: '🔬', title: 'Природни науки', dzi: ['биология и здравно образование', 'химия и опазване на околната среда', 'физика и астрономия', 'математика'] },
   econ: { icon: '📊', title: 'Икономическо развитие', dzi: ['география и икономика', 'математика', 'информационни технологии', 'чужд език'] },
-  ent: { icon: '🚀', title: 'Предприемачески', dzi: ['предприемачество', 'география и икономика', 'информационни технологии', 'чужд език'] },
+  ent: { icon: '🚀', title: 'Предприемачески', dzi: ['предприемачество', 'география и икономика', 'математика', 'чужд език'] },
   lang: { icon: '🌍', title: 'Чужди езици', dzi: ['чужд език'] },
-  hum: { icon: '📜', title: 'Хуманитарни науки', dzi: ['български език и литература', 'история и цивилизации', 'чужд език', 'философия'] },
-  soc: { icon: '🏛️', title: 'Обществени науки', dzi: ['история и цивилизации', 'география и икономика', 'философия'] },
+  hum: { icon: '🏛️', title: 'Хуманитарни науки', dzi: ['български език и литература', 'история и цивилизации', 'чужд език', 'философия'] },
+  soc: { icon: '🏛️', title: 'Обществени науки', dzi: ['история и цивилизации', 'чужд език', 'философия'] },
   art: { icon: '🎨', title: 'Изобразително изкуство', dzi: ['изобразително изкуство'] },
-  music: { icon: '🎵', title: 'Музика', dzi: ['музика'] },
-  sport: { icon: '⚽', title: 'Физическо възпитание и спорт', dzi: ['физическо възпитание и спорт', 'биология и здравно образование'] },
+  music: { icon: '🎵', title: 'Музика', dzi: [] },
+  sport: { icon: '⚽', title: 'Спорт', dzi: ['биология и здравно образование'] },
   prof: { icon: '🛠️', title: 'Професионална гимназия', dzi: [] }
 };
 /* 4th and 7th grade have no profile yet, so the profile question is skipped for them */
@@ -132,22 +132,29 @@ function obValidate(step, d) {
   return errors;
 }
 function obApply(step, d) {
+  const prevExam = S.profile.exam || 'default';
   for (const f of step.fields) {
     const v = String(d[f.key] == null ? '' : d[f.key]).trim();
     if (obVisible(f, d) && !(f.type === 'choice' && !v)) obSet(f.path, v);
   }
   if (step.id === 'theme') { APP.settings.theme = S.settings.theme; applySettings(); }
+  if (step.id === 'exam') {
+    const nextExam = S.profile.exam || 'default';
+    /* Changing class level starts an isolated progress record; it never carries points
+       or past results from the previous class. */
+    if (nextExam !== prevExam) startClassProgress(nextExam, prevExam);
+  }
   if (step.id === 'exam' && !needsTrack(S.profile.exam)) S.profile.track = '';
   if (step.id === 'exam' && !needsTrack(S.profile.exam)) S.profile.extra = '';
-  if (step.id === 'track' && !trackHasMath(S.profile.track)) S.subject = 'bel';   /* its 2nd matura has no tasks here yet */
+  if (step.id === 'track' && !trackHasMath(S.profile.track)) S.subject = 'bel';
   if (step.id === 'track' && S.profile.extra === S.profile.track) S.profile.extra = '';
-  if (step.id === 'profile') S.profile.exam = examFromAge(S.profile.age) || S.profile.exam || '';  /* the next step suggests the exam for this age */
+  if (step.id === 'profile') S.profile.exam = examFromAge(S.profile.age) || S.profile.exam || '';
   if (step.id === 'welcome') { APP.settings.lang = S.settings.lang; applySettings(); }
 }
 function obMove(dir) {
   const o = obState(), last = ONBOARD.steps.length - 1;
   let i = clamp(o.step + dir, 0, last);
-  while (i > 0 && i < last && !obActive(ONBOARD.steps[i])) i += dir;   /* steps that don't apply are passed over */
+  while (i > 0 && i < last && !obActive(ONBOARD.steps[i])) i += dir;
   o.step = i; saveState(true);
   return { ok: true, done: false, step: o.step };
 }
@@ -163,17 +170,16 @@ function onboardingNext(d) {
 function onboardingBack() { return obState().step > 0 ? obMove(-1) : { ok: false }; }
 function onboardingSkip() {
   const step = obStep(); if (!step.skippable) return { ok: false };
-  if (step.id === 'extra') S.profile.extra = '';   /* skipping means "no extra matura" */
+  if (step.id === 'extra') S.profile.extra = '';
   return obMove(1);
 }
 function onboardingFinish() {
   const o = obState(); o.done = true; o.finishedAt = Date.now(); saveState(true);
   return { ok: true, done: true };
 }
-let _obShown = 0;   /* last drawn bar fraction, so the intro bar animates from there to the new step */
+let _obShown = 0;
 function onboardingRestart() { S.onboarding = { done: false, step: 0 }; _obShown = 0; saveState(true); }
 
-/* "Clear my answers" keeps the profile and settings, so it must keep the setup state too */
 const _resetStateBase = resetState;
 resetState = function (keepSettings) {
   const ob = S.onboarding;
@@ -181,8 +187,6 @@ resetState = function (keepSettings) {
   if (keepSettings && ob) { S.onboarding = ob; saveState(true); }
 };
 
-/* ---------- a plain screen on top of the logic (restyle later) ---------- */
-/* Android back and the browser back go one step back during setup instead of closing the app */
 const _backHook = window.__back;
 window.__back = () => {
   const cur = NAV[NAV.length - 1];
