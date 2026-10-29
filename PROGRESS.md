@@ -15,6 +15,7 @@
 - Past exams: in English mode, Bulgarian-only exams now show an English UI title built from exam, subject, date/year, session and variant. Part titles such as “Тест”, “Част 1” and “Част 2” are localized too. Questions, instructions, answers and rubrics remain in their original language.
 - Fix: aligned the welcome/profile onboarding strings with their English UI keys (the profile text now uses “свържеш” consistently), so `tools/build.py check` passes again.
 - Result screens (training sessions and past exams) now have a close (X) button in the top-right corner. It closes the result and returns to the main screen.
+- Open past-exam tasks without criteria (e.g. a 30-point essay/LIS) now show a default rubric: relevance, argumentation, structure, and language. An empty answer gets 0 points and no rubric stepper, so full points cannot be given to an empty text.
 
 ## Decisions
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
@@ -27,6 +28,7 @@
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 - Past-exam UI localization uses metadata already present in each module; it does not translate exam questions or require a new English JSON for every Bulgarian-only exam.
 - The result-screen X uses `home()` (not `back()`), so it always returns to the main screen.
+- The default rubric applies only to open past-exam tasks with 20+ points and no rubric in the module; smaller open tasks keep the single overall self-grade.
 
 ## Left
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
@@ -46,6 +48,7 @@
 - Check the other 2020-2021 files (БЕЛ 01.06.2020, 27.08.2020, 19.05.2021, math 28.08.2020) against the repo; they look already added.
 - Test Past exams in English on web and APK: module titles, part titles, buttons and result screen should be English; Bulgarian-only exam questions should remain Bulgarian.
 - Test the result-screen X on web and APK for a training session and a past exam.
+- Test a 30-point open past-exam task: empty answer must give 0 points; a written answer must show the default criteria.
 
 ## Bugs
 - None known. Edge case: tapping very fast while a history rewind is running was not tested.

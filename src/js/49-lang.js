@@ -154,6 +154,11 @@ const EN_UI = {
   'Отчасти': 'Partly', '{a} от {b} т.': '{a} of {b} pts', 'По скалата на МОН:': 'On the Ministry of Education scale:', 'Сгрешени задачи с избор:': 'Wrong multiple-choice tasks:', 'Отначало': 'Start over',
   'Вариант {n}': 'Variant {n}', 'май': 'May', 'юни': 'June', 'август': 'August', 'септември': 'September',
   'Тест': 'Test', 'Част 1': 'Part 1', 'Част 2': 'Part 2',
+  'Няма отговор': 'No answer',
+  'Съответствие с темата и пълен отговор': 'Relevance to the topic and a complete answer',
+  'Аргументация и примери': 'Argumentation and examples',
+  'Структура и логика': 'Structure and logic',
+  'Език, правопис и пунктуация': 'Language, spelling and punctuation',
   /* setup: age, exam, high-school profile, extra matura */
   'Името и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connect Google Sheets.',
   'Име и фамилия': 'Full name', 'напр. Мария Петрова': 'e.g. Maria Petrova', 'Години': 'Age', 'напр. 17': 'e.g. 17', 'Въведи години от 7 до 99': 'Enter an age from 7 to 99',

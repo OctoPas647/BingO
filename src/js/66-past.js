@@ -43,6 +43,20 @@ const pastTitle = m => {
   if (p.variant) bits.push(L('Вариант {n}', { n: p.variant }));
   return bits.join(' · ');
 };
+/* Open tasks without criteria (e.g. a 30-point essay/LIS) get a sensible default rubric, so the
+   learner cannot give all points to an empty or irrelevant answer with one tap. */
+const pastRubric = task => {
+  if (task.rubric && task.rubric.length) return task.rubric;
+  const p = task.points;
+  if (p < 20) return [{ text: '', points: p }];
+  const a = Math.round(p * 0.4), b = Math.round(p * 0.3), c = Math.round(p * 0.15);
+  return [
+    { text: 'Съответствие с темата и пълен отговор', points: a },
+    { text: 'Аргументация и примери', points: b },
+    { text: 'Структура и логика', points: c },
+    { text: 'Език, правопис и пунктуация', points: p - a - b - c }
+  ];
+};
 
 /* the button on Home, under the training buttons */
 const _homePastBase = SCREENS.home;
@@ -97,12 +111,18 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     P.phase = 'next'; P.touched = true;
     const fb = view.el.querySelector('.fb');
     if (task.type === 'open') {
+      const resp = view.get(), hasText = !!String(resp.text || '').trim();
       view.show({ status: 'ungraded' });
       /* pictures that belong to the official solution (a drawing in the key), shown only after the answer */
       if (task.solutionMedia && task.solutionMedia.length) { fb.insertAdjacentHTML('beforeend', `<div class="task-media">${blocksHTML(task.solutionMedia)}</div>`); hydrateMedia(fb, m.id); }
-      rubric = rubricView(task, null);
-      fb.hidden = false; fb.appendChild(rubric.el);
-      verdict.innerHTML = `${icon('info')}<span><b>${L('Оцени се сам')}</b><small>${L('по официалния отговор и критериите')}</small></span>`;
+      if (!hasText) {
+        rubric = null; P.got[P.i] = 0;
+        verdict.innerHTML = `${icon('info')}<span><b>${L('Няма отговор')}</b><small>${L('{a} от {b} т.', { a: fmtPts(0, lg), b: fmtPts(task.points, lg) })}</small></span>`;
+      } else {
+        rubric = rubricView({ ...task, rubric: pastRubric(task) }, null);
+        fb.hidden = false; fb.appendChild(rubric.el);
+        verdict.innerHTML = `${icon('info')}<span><b>${L('Оцени се сам')}</b><small>${L('по официалния отговор и критериите')}</small></span>`;
+      }
     } else {
       const res = scoreTask(task, view.get(), m.lang || 'bg'), right = res.status === 'right';
       P.got[P.i] = res.points;
