@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.5.0
+Everything from the 64 open branches in one version.
+
+- **Your data stays after a restart**: age, exam, profile and extra matura, past exam results and the Sheet's retry state were lost when the app restarted
+- **Demo learner is safe**: loading it again never overwrites the copy of your own answers; "Върни моите отговори" shows up only when there is a real copy; running the setup again with the demo loaded removes the demo's answers. A short note under "Покажи с демо ученик" says what the demo is
+- **Progress per exam**: НВО 4, НВО 7, НВО 10 and ДЗИ 12 each keep their own skill map, so switching exams starts fresh and switching back keeps what you had
+- **НВО math profiles**: with an НВО chosen in the setup, mathematics trains that grade's topics at that grade's pace (НВО 4 never gets the hardest level)
+- **Planned maturas**: Stats and the subject picker show the maturas from your setup; one without tasks yet says "Скоро"
+- **Fairer skill map**: a wrong answer never raises mastery, and the first answers on a topic move it only a little, so one lucky or unlucky answer does not swing it
+- **Training keeps 8 tasks**: the "twin" after a mistake takes the next place instead of making the session longer
+- **Streak** counts days on which you finished a session; Stats, Profile and the CSV count only your own answers
+- **Setup**: no Gemini step (set it up in Settings); the step counter moves one by one
+- **Liquid glass**: an optional see-through look in Settings, over any theme
+- **Feedback from the app**: Settings → "Изпрати обратна връзка"; it waits on the phone when offline and goes to a "feedback" tab of the teacher's Sheet (**redeploy `apps-script/Code.gs`**; the server needs `FEEDBACK_SCRIPT_URL`)
+- **Android**: text follows the phone's font size
+- **Past exams**: English titles for exams that are only in Bulgarian, a close button on results, essays need an answer before self-grading, the "wrong choice tasks" list shows only choice tasks
+- **Text answers**: a whole-sentence answer is not wrong because of a capital letter, a final full stop or the quotation marks
+- **Generated math**: every choice task has four options; Дебелянов: the right option now quotes the poem word for word
+- **For later**: Firebase sign-in, roles and server-side timed tests (`functions/`, `firestore.rules`, see `docs/firebase.md`) and Gemini grading of free-text answers are in the code but not in the app yet
+
 ## 0.4.2
 Also includes everything from 0.4.1 (past math exams in English), which was never released on its own.
 
