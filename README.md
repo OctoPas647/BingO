@@ -7,7 +7,7 @@ BingO мери всяко умение от матурата поотделно,
 
 | Какво | Файл |
 |---|---|
-| Android | [`downloads/BingO-0.4.1.apk`](downloads/BingO-0.4.1.apk) |
+| Android | [последната версия в Releases](https://github.com/OctoPas647/BingO/releases/latest) |
 | Уеб версия (един файл, работи и офлайн) | [`downloads/BingO-web.html`](downloads/BingO-web.html) |
 | Примерни данни за клас (Looker Studio) | `data/sample-class.csv` |
 
@@ -73,7 +73,8 @@ server/        Cloud Run + Vertex AI
 apps-script/   Google Sheets приемник
 platforms/     Android обвивка (WebView)
 tools/         build.py, check.js (3000+ генерирани задачи се проверяват при всеки build)
-tests/         play.py (играе приложението в браузър), fixes.py (поправките от 0.3.2), ai_mock.py (Gemini пътищата с фалшив Gemini)
+tests/         play.py (играе приложението в браузър), fixes.py (поправките от 0.3.2 до 0.5.0), ai_mock.py (Gemini пътищата с фалшив Gemini)
+functions/     Firebase: роли и тестове с оценяване на сървъра (още не са в приложението, виж docs/firebase.md)
 ```
 
 ## Build

@@ -35,6 +35,17 @@ const pastById = id => pastView(PAST.find(m => m.id === id));
 const pastTasks = m => m.exams[0].parts.flatMap(p => p.tasks.map(t => ({ task: t, part: p })));
 /* the MON scale (65-forecast.js) is for 100 points and holds for НВО 7, НВО 10 and ДЗИ */
 const pastGrade = (m, pts, max) => (m.past.exam !== 'dzi12' || !max ? '' : gradeOf(pts / max * 100)[1]);
+/* English UI title for a Bulgarian-only exam: translated metadata, not translated questions. */
+const pastTitle = m => {
+  const x = m.exams[0];
+  if (appLang() !== 'en' || m.lang === 'en') return x.title;
+  const p = m.past, bits = [L(EXAMS[p.exam]), L(SUBJECTS[p.subj].title)];
+  if (p.date) bits.push(p.date.split('-').reverse().join('.'));
+  else if (p.year) bits.push(String(p.year));
+  if (p.session) bits.push(L(p.session));
+  if (p.variant) bits.push(L('Вариант {n}', { n: p.variant }));
+  return bits.join(' · ');
+};
 
 /* the button on Home, under the training buttons */
 const _homePastBase = SCREENS.home;
@@ -53,12 +64,20 @@ function pastSheet(subj) {
     body: `<p class="muted">${esc(L(EXAMS[myExam()]))} · ${esc(L(SUBJECTS[subj].title))}. ${esc(L('Задачите са както на изпита; отговорите се проверяват по официалния ключ.'))}${appLang() === 'en' && list.some(m => m.lang !== 'en') ? ' ' + esc(L('Изпитите без английски превод са на български.')) : ''}</p>
       <div class="sklist">${list.map(m => {
         const x = m.exams[0], r = res[m.id];
-        return `<button class="skrow" data-act="${esc(m.id)}"><div class="sk-main"><b>${esc(x.title)}</b>
+        return `<button class="skrow" data-act="${esc(m.id)}"><div class="sk-main"><b>${esc(pastTitle(m))}</b>
           <small>${L('{n} задачи · {p} т.', { n: x.count, p: fmtPts(x.max, appLang()) })}${r ? L(' · последно: {p} т.', { p: fmtPts(r.pts, appLang()) }) : ''}${appLang() === 'en' && m.lang !== 'en' ? ' · BG' : ''}</small></div></button>`;
       }).join('')}</div>`,
     actions: [{ id: 'x', label: L('Затвори') }]
   }).then(v => { if (v && v !== 'x' && pastById(v)) go('pastexam', { id: v }); });
 }
+
+/* A clear fallback rubric for a 30-point essay / ЛИС when the exam file does not provide one. */
+const ESSAY_RUBRIC_30 = [
+  { text: 'Съдържание и аргументация: отговаря на темата, има ясна позиция и подкрепящи примери.', points: 10 },
+  { text: 'Структура и свързаност: въведение, развитие и заключение; логични връзки между частите.', points: 7 },
+  { text: 'Езикова грамотност: правопис, пунктуация, словообразуване и подходящ речников запас.', points: 7 },
+  { text: 'Формат и изисквания: обем, стил и съответствие с поставената задача.', points: 6 }
+];
 
 SCREENS.pastexam = async (el, { id }, nav) => {
   const m = pastById(id); if (!m) return back();
@@ -72,13 +91,18 @@ SCREENS.pastexam = async (el, { id }, nav) => {
   nav.guard = async () => P.done || !P.touched || confirmBox(L('Да спрем ли?'), L('Резултатът от този изпит няма да се запази.'), L('Спри'), true);
   let view = null, task = null, rubric = null;
   const paintCount = () => { el.querySelector('.pcount').textContent = `${P.i + 1} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
-  const upd = () => { if (P.phase === 'answer') btn.disabled = !(view.ready() || task.type === 'order' || task.type === 'open'); P.touched = P.touched || view.ready(); };
+  const upd = () => {
+    if (P.phase !== 'answer') return;
+    if (task.type === 'open') btn.disabled = !String(view.get().text || '').trim();
+    else btn.disabled = !(view.ready() || task.type === 'order');
+    P.touched = P.touched || !btn.disabled;
+  };
 
   function showTask() {
     const { task: t, part } = Q[P.i]; task = t; P.phase = 'answer'; rubric = null;
     view = taskView(task, m, { mode: 'practice', seed: id, onChange: upd });
     const first = part.tasks[0] === task;   /* the part's instructions, as on the exam sheet, before its first task */
-    main.innerHTML = `<div class="taskhead"><div class="chips"><i class="score">${esc(x.title)}</i><i>${esc(part.title || '')}</i><i>${L('Задача {n} · {p} т.', { n: esc(task.id.replace(/^q/, '')), p: fmtPts(task.points, lg) })}</i></div></div>
+    main.innerHTML = `<div class="taskhead"><div class="chips"><i class="score">${esc(pastTitle(m))}</i><i>${esc(L(part.title || ''))}</i><i>${L('Задача {n} · {p} т.', { n: esc(task.id.replace(/^q/, '')), p: fmtPts(task.points, lg) })}</i></div></div>
       ${first && part.instructions ? `<p class="muted rt">${richInline(part.instructions)}</p>` : ''}`;
     main.appendChild(view.el);
     window.scrollTo(0, 0); paintCount();
@@ -86,9 +110,12 @@ SCREENS.pastexam = async (el, { id }, nav) => {
   }
 
   function check() {
-    P.phase = 'next'; P.touched = true;
     const fb = view.el.querySelector('.fb');
     if (task.type === 'open') {
+      const answer = view.get();
+      if (!String(answer.text || '').trim()) { toast(L('Напиши отговор, преди да се оцениш.'), 'bad'); return; }
+      if (task.points >= 30 && (!Array.isArray(task.rubric) || !task.rubric.length)) task.rubric = ESSAY_RUBRIC_30;
+      P.phase = 'next'; P.touched = true;
       view.show({ status: 'ungraded' });
       /* pictures that belong to the official solution (a drawing in the key), shown only after the answer */
       if (task.solutionMedia && task.solutionMedia.length) { fb.insertAdjacentHTML('beforeend', `<div class="task-media">${blocksHTML(task.solutionMedia)}</div>`); hydrateMedia(fb, m.id); }
@@ -96,6 +123,7 @@ SCREENS.pastexam = async (el, { id }, nav) => {
       fb.hidden = false; fb.appendChild(rubric.el);
       verdict.innerHTML = `${icon('info')}<span><b>${L('Оцени се сам')}</b><small>${L('по официалния отговор и критериите')}</small></span>`;
     } else {
+      P.phase = 'next'; P.touched = true;
       const res = scoreTask(task, view.get(), m.lang || 'bg'), right = res.status === 'right';
       P.got[P.i] = res.points;
       view.show(res); sound(right ? 'right' : 'wrong');
@@ -117,14 +145,15 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     P.done = true;
     const pts = roundTo(sum(P.got.map(v => v || 0)), 2), max = x.max, grade = pastGrade(m, pts, max);
     (S.pastResults || (S.pastResults = {}))[id] = { pts, max, at: Date.now() }; saveState(true);
-    const wrong = Q.map((q, i) => (q.task.type !== 'open' && (P.got[i] || 0) < q.task.points ? i + 1 : 0)).filter(Boolean);
+    const wrong = Q.map((q, i) => (q.task.type === 'choice' && (P.got[i] || 0) < q.task.points ? i + 1 : 0)).filter(Boolean);
     if (pts / max >= 0.7) { sound('done'); confetti(); }
-    el.querySelector('.playbar').outerHTML = topbar(esc(x.title), { closeIcon: true });
+    el.querySelector('.playbar').outerHTML = topbar(esc(pastTitle(m)), { noBack: true, right: `<button class="iconbtn" data-close aria-label="${esc(L('Затвори'))}">${icon('close')}</button>` });
+    el.querySelector('[data-close]').onclick = () => home();
     foot.remove();
     main.innerHTML = `<div class="result pad">
       <div class="res-hero">${ring(pts / max, Math.round(pts / max * 100) + '%', 'big')}
         <h1>${L('{a} от {b} т.', { a: fmtPts(pts, lg), b: fmtPts(max, lg) })}</h1>
-        <p class="res-main">${grade ? `${L('По скалата на МОН:')} <b>${esc(grade)}</b>` : esc(x.title)}</p></div>
+        <p class="res-main">${grade ? `${L('По скалата на МОН:')} <b>${esc(grade)}</b>` : esc(pastTitle(m))}</p></div>
       ${wrong.length ? `<div class="card strongnote">${icon('target')}<div><b>${L('Сгрешени задачи с избор:')}</b><br><span class="muted">${wrong.join(', ')}</span></div></div>` : ''}
       <div class="res-actions"><button class="btn ghost" data-out>${L('Към картата')}</button><button class="btn accent" data-again>${icon('reset')}${L('Отначало')}</button></div></div>`;
     main.querySelector('[data-out]').onclick = () => home();

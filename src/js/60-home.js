@@ -4,7 +4,13 @@ const pctTxt = p => Math.round(p * 100) + '%';
 const SRC_LABEL = { gen: 'Нов вариант', shelly: 'От Shelly', bank: 'Банка задачи', ai: 'Създадена от ИИ' };
 
 function subjectTabs(cur) {
-  return `<label class="subj-pick"><span class="kicker">${L('Предмет за матура')}</span><span class="selwrap"><select class="field subj-select" id="subjSelect" aria-label="${L('Избери предмет за матура')}">${Object.values(SUBJECTS).map(s => `<option value="${s.id}"${s.id === cur ? ' selected' : ''}>${s.icon} ${esc(L(s.title))}</option>`).join('')}</select></span></label>`;
+  /* show the matura the learner plans to take; keep the current one visible even if it has no tasks yet */
+  const planned = myMatura().filter(m => m.ready || m.id === cur);
+  const opts = planned.map(m => {
+    const s = SUBJECTS[m.id];
+    return `<option value="${s.id}"${s.id === cur ? ' selected' : ''}>${s.icon} ${esc(L(s.title))}</option>`;
+  }).join('');
+  return `<label class="subj-pick"><span class="kicker">${L('Предмет за матура')}</span><span class="selwrap"><select class="field subj-select" id="subjSelect" aria-label="${L('Избери предмет за матура')}">${opts}</select></span></label>`;
 }
 
 function skillRow(subj, x) {
@@ -27,7 +33,7 @@ SCREENS.home = async el => {
     <header class="apphead">
       <div class="brand bingo">Bing<span>O</span></div>
       <div class="head-stats">
-        <span class="pill" title="${L('Отговори досега')}">${icon('check')}${S.log.length}</span>
+        <span class="pill" title="${L('Отговори досега')}">${icon('check')}${myLog().length}</span>
         <button class="iconbtn" data-go="insights" aria-label="${L('Грешки и данни')}">${icon('grid')}</button>
         <button class="iconbtn" data-go="settings" aria-label="${L('Настройки')}">${icon('settings')}</button>
       </div>
@@ -36,7 +42,7 @@ SCREENS.home = async el => {
       ${subjectTabs(subj)}
       <div class="card losscard">
         ${ring(started ? kept : 0, started ? '−' + fmt1(sm.lost) : '?', 'big')}
-        <div><span class="kicker">${L('Матура · {s}', { s: esc(L(sub.title)) })}</span>
+        <div><span class="kicker">${nvoGrade() && subj === 'math' ? `${esc(L(EXAMS[S.profile.exam]))} · ${esc(L(sub.title))}` : L('Матура · {s}', { s: esc(L(sub.title)) })}</span>
           ${started ? `<h1>${L('Губиш ≈ {a} от {b} т.', { a: fmt1(sm.lost), b: sm.total })}</h1><p class="muted">${L('в тези теми на ДЗИ. Тренираме само там, където губиш най-много — силното не го повтаряме.')}</p>`
             : `<h1>${L('Къде губиш точки?')}</h1><p class="muted">${L('Кратка диагностика (≈5 мин): по една задача за всяка тема. После тренираш само слабото.')}</p>`}
         </div>
@@ -44,7 +50,8 @@ SCREENS.home = async el => {
       ${started ? `<button class="btn accent big block" data-start="focus">${icon('target')}${L('Тренирай слабото · 8 задачи')}</button>
         ${weakest ? `<p class="muted small center">${L('Започваме от <b>{s}</b> — там губиш най-много.', { s: esc(L(weakest.sk.name)) })}</p>` : `<p class="muted small center">${L('Всички теми са силни. Направи пробна матура в Shelly!')}</p>`}`
         : `<button class="btn accent big block" data-start="diag">${icon('play')}${L('Започни диагностика')}</button>
-           <button class="btn ghost block demo-btn" data-demo>${icon('eye')}${L('Покажи с демо ученик')}</button>`}
+           <button class="btn ghost block demo-btn" data-demo>${icon('eye')}${L('Покажи с демо ученик')}</button>
+           <p class="muted small center">${L('Демо ученикът е примерен ученик с генерирани отговори — показва как работи картата на уменията.')}</p>`}
       <h2 class="sec-title">${L('Карта на уменията')}</h2>
       <div class="sklist">${list.map(x => skillRow(subj, x)).join('')}</div>
       ${started ? `<button class="btn ghost block" data-start="diag">${icon('reset')}${L('Нова диагностика')}</button>` : ''}

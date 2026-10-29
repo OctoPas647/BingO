@@ -68,14 +68,15 @@ SCREENS.home = async (el, ...rest) => {
   bindForecast(el);
 };
 
-/* a forecast row in each matura card on Stats (cards come in the order of SUBJECTS) */
+/* a forecast row in each matura card on Stats; matched by the card's own subject id */
 const _statsBase = SCREENS.stats;
 SCREENS.stats = async (el, ...rest) => {
   await _statsBase(el, ...rest);
-  const ids = Object.keys(SUBJECTS);
-  el.querySelectorAll('.statcard').forEach((c, i) => {
-    const f = ids[i] && forecast(ids[i]), head = c.querySelector('.stat-head');
-    if (f && head) head.insertAdjacentHTML('afterend', `<button class="fcrow" data-forecast="${ids[i]}"><span>${L('Прогноза')}</span><b>≈ ${ptsL(r0(f.pts))}</b><em>${esc(gradeText(f))}</em></button>`);
+  el.querySelectorAll('.statcard').forEach(c => {
+    const open = c.querySelector('[data-open]');
+    const id = open ? open.dataset.open : '';
+    const f = id && forecast(id), head = c.querySelector('.stat-head');
+    if (f && head) head.insertAdjacentHTML('afterend', `<button class="fcrow" data-forecast="${id}"><span>${L('Прогноза')}</span><b>≈ ${ptsL(r0(f.pts))}</b><em>${esc(gradeText(f))}</em></button>`);
   });
   bindForecast(el);
 };

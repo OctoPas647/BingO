@@ -27,12 +27,15 @@ with sync_playwright() as pw:
     p.click('[data-main]'); p.wait_for_selector('[data-aiexplain]'); p.click('[data-aiexplain]'); p.wait_for_selector('.aiexplain + .aibox b, .fb .aibox b'); p.wait_for_timeout(200)
     p.screenshot(path=str(SHOTS / 'ai-02-explain.png'), full_page=True)
     found = False
+    # "Напред" right after "Провери" is ignored for 450 ms (double-tap guard), so wait before moving on
     for i in range(14):
-        p.click('[data-main]'); p.wait_for_timeout(150)
+        p.wait_for_timeout(500); p.click('[data-main]'); p.wait_for_timeout(150)
         if p.locator('.result').count(): break
         if p.locator('.chips i.src-ai').count(): found = True; p.screenshot(path=str(SHOTS / 'ai-03-aitask.png')); break
         if p.locator('.opt').count(): p.locator('.opt').first.click()
-        else: p.locator('input.field').fill('1')
+        elif p.locator('input.field').count() and p.locator('input.field').first.is_editable(): p.locator('input.field').first.fill('1')
+        elif p.locator('.bank .chip:not(.used)').count(): p.locator('.bank .chip:not(.used)').first.click()
+        if p.locator('[data-main]').is_disabled(): break
         p.click('[data-main]'); p.wait_for_timeout(120)
     p.goto((ROOT / 'dist/web/index.html').as_uri()); p.click('[data-go="insights"]'); p.click('[data-plan]'); p.wait_for_selector('.plan li'); p.screenshot(path=str(SHOTS / 'ai-04-plan.png'))
     b.close()

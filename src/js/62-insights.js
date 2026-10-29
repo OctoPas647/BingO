@@ -5,7 +5,7 @@ SCREENS.insights = async el => {
   const miscs = [];
   sm.list.forEach(x => Object.entries(x.st.misc).forEach(([k, n]) => miscs.push({ k, n, sk: x.sk })));
   miscs.sort((a, b) => b.n - a.n);
-  const mine = S.log.filter(r => r.subject === sub.title), acc = mine.length ? mine.filter(r => r.correct).length / mine.length : 0;
+  const mine = myLog().filter(r => r.subject === sub.title), acc = mine.length ? mine.filter(r => r.correct).length / mine.length : 0;
   el.innerHTML = `${topbar(L('Грешки и данни'))}<div class="pad settings">
     ${subjectTabs(subj)}
     <section class="card"><h3>${icon('target')}${L('Типичните ти грешки · {s}', { s: esc(L(sub.title)) })}</h3>

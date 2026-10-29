@@ -96,6 +96,44 @@
 }
 .settings .seg button { font-size: .92rem; }
 
+/* Liquid glass theme: an optional translucent overlay on the existing light or dark theme.
+   It changes surfaces, cards and the bottom navigation only; text and status colors stay readable. */
+/* The surfaces are fixed translucent colours per theme: a variable defined from itself
+   (--surface: color-mix(... var(--surface) ...)) is invalid in CSS and would leave cards with no background. */
+:root[data-glass="1"] {
+  --surface: rgba(255, 255, 255, .62); --surface-2: rgba(239, 235, 226, .58); --surface-3: rgba(230, 225, 214, .6);
+  --line: rgba(226, 221, 210, .7); --shadow: 0 10px 30px rgba(15, 23, 42, .14), 0 2px 8px rgba(15, 23, 42, .06);
+  --glass-blur: 18px; --glass-saturate: 150%;
+}
+:root[data-theme="dark"][data-glass="1"] {
+  --surface: rgba(28, 27, 35, .62); --surface-2: rgba(37, 36, 46, .58); --surface-3: rgba(48, 47, 58, .6);
+  --line: rgba(255, 255, 255, .1); --shadow: 0 10px 30px rgba(0, 0, 0, .38), 0 2px 8px rgba(0, 0, 0, .22);
+}
+:root[data-theme="dark"][data-amoled="1"][data-glass="1"] {
+  --surface: rgba(11, 11, 14, .6); --surface-2: rgba(21, 21, 25, .58); --surface-3: rgba(32, 32, 38, .6);
+}
+/* something behind the glass to blur: a soft wash of the subject colour */
+:root[data-glass="1"] body { background: radial-gradient(120% 60% at 0% 0%, color-mix(in srgb, var(--accent, #2F5BD3) 22%, transparent), transparent 60%), radial-gradient(90% 50% at 100% 100%, color-mix(in srgb, #B4532A 16%, transparent), transparent 60%), var(--bg); background-attachment: fixed; }
+
+:root[data-glass="1"] .card,
+:root[data-glass="1"] .skrow,
+:root[data-glass="1"] .misclist li,
+:root[data-glass="1"] .worst li,
+:root[data-glass="1"] .minis > div,
+:root[data-glass="1"] .aibox,
+:root[data-glass="1"] .fcrow {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  box-shadow: var(--shadow);
+}
+
+:root[data-glass="1"] .subj-select {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
 /* first-run setup */
 .onboarding { display: grid; gap: 10px; padding-top: 10px; }
 .ob-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin-bottom: 8px; }

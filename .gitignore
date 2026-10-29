@@ -2,3 +2,12 @@ dist/
 build/
 platforms/android/signing/
 server/node_modules/
+functions/node_modules/
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+*serviceAccount*.json
+service-account*.json
+.env
+.env.*
