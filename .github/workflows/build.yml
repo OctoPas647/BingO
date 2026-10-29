@@ -87,7 +87,7 @@ jobs:
           import os, re
           ver = os.environ['VER']
           text = open('CHANGELOG.md', encoding='utf-8').read()
-          m = re.search(r'^## ' + re.escape(ver) + r'.*?\n(.*?)(?=^## |\Z)', text, re.S | re.M)
+          m = re.search(r'^## ' + re.escape(ver) + '.*?\n(.*?)(?=^## |\Z)', text, re.S | re.M)
           print((m.group(1).strip() if m else 'BingO ' + ver) + '\n\nInstall the APK on your phone.')
           PY
           FILES="dist/android/*.apk"
@@ -112,10 +112,19 @@ jobs:
           fi
           DIR="${FTP_DIR#/}"; DIR="${DIR%/}"
           URL="ftp://$FTP_HOST/${DIR:+$DIR/}index.html"
-          # FTPS (encrypted); the folder is created if it doesn't exist yet
-          curl --fail --silent --show-error --ssl-reqd --ftp-create-dirs --retry 3 \
-            --user "$FTP_USER:$FTP_PASSWORD" -T dist/web/index.html "$URL"
-          echo "Uploaded BingO ${{ steps.ver.outputs.version }} to $FTP_HOST/${DIR:+$DIR/}index.html"
+          # FTPS (encrypted); the folder is created if it doesn't exist yet.
+          # First try to verify the server certificate. Some shared hosts use a certificate for another
+          # name, so if verification fails, retry over encrypted FTPS without certificate verification
+          # and warn that FTP_HOST should ideally match the certificate.
+          if curl --fail --silent --show-error --ssl-reqd --ftp-create-dirs --retry 3 \
+            --user "$FTP_USER:$FTP_PASSWORD" -T dist/web/index.html "$URL"; then
+            echo "Uploaded BingO ${{ steps.ver.outputs.version }} to $FTP_HOST/${DIR:+$DIR/}index.html"
+          else
+            echo "::warning::FTP certificate verification failed for $FTP_HOST; retrying without certificate verification. Set FTP_HOST to a name on the server certificate to avoid this."
+            curl --fail --silent --show-error --ssl-reqd --ftp-create-dirs --retry 3 --insecure \
+              --user "$FTP_USER:$FTP_PASSWORD" -T dist/web/index.html "$URL"
+            echo "Uploaded BingO ${{ steps.ver.outputs.version }} to $FTP_HOST/${DIR:+$DIR/}index.html"
+          fi
 
       - name: Remove signing key
         if: always()
