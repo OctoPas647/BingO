@@ -95,7 +95,7 @@ with sync_playwright() as pw:
     ok('demo: loaded after yes', p.evaluate("S.profile.name") == 'Демо ученик')
     p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-restore]')
     p.click('[data-restore]'); p.wait_for_selector('.losscard')
-    ok('demo: restore brings real data back', p.evaluate("S.sessions") == 2 and p.evaluate("S.profile.name") == 'Тест')
+    ok('demo: restore brings real data back', p.evaluate("S.sessions") == 2 and p.evaluate("S.log.length") == 1)
     ctx.close()
 
     # 7. settings refuse invalid values
@@ -135,6 +135,49 @@ with sync_playwright() as pw:
     ctx, p = fresh(b, state=DONE)
     bad = p.evaluate("Array.from({length: 300}, (_, i) => genMathTask('quad', 1, i).explain).filter(e => /\\d--\\d/.test(e)).length")
     ok('quad explanation: no double minus', bad == 0, str(bad))
+    ctx.close()
+
+    # 11. strict text answers: normalization, full-sentence rule, scoring and feedback keys
+    ctx, p = fresh(b, state=DONE)
+    strict_checks = p.evaluate("""() => {
+      const answer = ['Новият учител е подлог, затова е с пълен член.', '„Новият учител“ е подлог, затова е с пълен член.'];
+      const task = { type: 'text', strict: true, points: 1, answer };
+      const match = given => textMatches(given, answer, 'bg', true);
+      const score = given => scoreTask(task, given, 'bg');
+      return {
+        normalizeSpaces: normalizeTextAnswer('  Новият    учител  ') === 'новият учител',
+        normalizeQuotes: normalizeTextAnswer('„Новият учител“') === normalizeTextAnswer('\"Новият учител\"'),
+        normalizeDashes: normalizeTextAnswer('подлог — затова') === normalizeTextAnswer('подлог - затова'),
+        keepsDiacritics: normalizeTextAnswer('Ъгълът е остър') === 'ъгълът е остър',
+        acceptsPlain: match('Новият учител е подлог, затова е с пълен член.'),
+        acceptsCasing: match('новият учител Е подлог, затова е с пълен член'),
+        acceptsPunctuation: match('Новият учител е подлог, затова е с пълен член'),
+        acceptsQuotes: match('„Новият учител“ е подлог, затова е с пълен член.'),
+        acceptsExtraSpaces: match('  Новият   учител  е  подлог,  затова  е  с  пълен  член.  '),
+        rejectsKeyword: !match('подлог'),
+        rejectsFragment: !match('Новият учител е подлог'),
+        rejectsWrongSentence: !match('Новият учител е допълнение, затова е с пълен член.'),
+        rightScore: score('Новият учител е подлог, затова е с пълен член.'),
+        fragmentScore: score('подлог'),
+        wrongScore: score('Новият учител е допълнение, затова е с пълен член.')
+      };
+    }""")
+    ok('strict text: normalizes spaces', strict_checks['normalizeSpaces'])
+    ok('strict text: normalizes mixed quotes', strict_checks['normalizeQuotes'])
+    ok('strict text: normalizes dashes', strict_checks['normalizeDashes'])
+    ok('strict text: preserves Bulgarian diacritics', strict_checks['keepsDiacritics'])
+    ok('strict text: accepts correct sentence', strict_checks['acceptsPlain'])
+    ok('strict text: accepts casing differences', strict_checks['acceptsCasing'])
+    ok('strict text: accepts punctuation differences', strict_checks['acceptsPunctuation'])
+    ok('strict text: accepts Bulgarian quotes', strict_checks['acceptsQuotes'])
+    ok('strict text: accepts extra spaces', strict_checks['acceptsExtraSpaces'])
+    ok('strict text: rejects keyword-only answer', strict_checks['rejectsKeyword'])
+    ok('strict text: rejects short fragment', strict_checks['rejectsFragment'])
+    ok('strict text: rejects wrong full sentence', strict_checks['rejectsWrongSentence'])
+    ok('strict text: correct answer scores right', strict_checks['rightScore']['status'] == 'right' and strict_checks['rightScore']['points'] == 1)
+    ok('strict text: fragment scores wrong with no points', strict_checks['fragmentScore']['status'] == 'wrong' and strict_checks['fragmentScore']['points'] == 0)
+    ok('strict text: wrong sentence scores wrong with no points', strict_checks['wrongScore']['status'] == 'wrong' and strict_checks['wrongScore']['points'] == 0)
+    ok('strict text: scoring returns expected keys', set(strict_checks['rightScore']) == {'points', 'max', 'status', 'detail'})
     ctx.close()
     b.close()
 
