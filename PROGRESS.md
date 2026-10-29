@@ -4,13 +4,14 @@
 - ISSUE 1: Скала на МОН в прогнозата - по-ясна и точна
   - Replaced the rounded forecast grade thresholds (30 / 41 / 62.5 / 84) with the official MON DZI bands: до 29,75; 30–40,5; 40,75–62,25; 62,5–83,75; 84–94,75; 95–100.
   - Added a single MON_SCALE table in src/js/65-forecast.js. gradeOf, nextGrade, the scale bar and the detailed scale list now use the same boundaries.
-  - Corrected the top bands: 84–94,75 is Много добър 5 and 95–100 is Отличен 6.
+  - Corrected the top bands: 84–94,75 is Много добър 5 and 95–100 is Отличен 6. gradeOf uses exact float comparisons, so 94,75 stays Много добър 5 and 95 becomes Отличен 6.
   - The forecast scale now shows one tick per grade: 2 at 0, 3 at 30, 4 at 40,75, 5 at 62,5 and 6 at 95. This avoids two "5" ticks.
   - Kept a GRADES alias (threshold + grade pairs) because tools/check.js reads it for the English-UI translation check. This fixes the `GRADES is not defined` failure in `python tools/build.py check`.
   - Added the three missing English UI translations for the new MON scale text: point ranges and the explanation about the 0.25-point conversion.
+  - Added Playwright check 11 in tests/fixes.py: it checks gradeOf at every MON boundary and that the scale renders the 2–6 ticks and the exact band colours.
+  - Added Playwright check 12 in tests/fixes.py: it simulates forecast scores of 90 and 98 and asserts that the forecast displays Много добър 5 and Отличен 6. It uses fixed forecast values, so it is deterministic.
   - Made browser check 4 retry the diagnostic up to 3 times until it meets a number task. The diagnostic picks random task variants, so the old single-run check was flaky; this is not related to the MON scale change.
   - The detailed sheet now shows exact point ranges for every grade and explains that MON converts points in 0.25-point steps.
-  - Added Playwright check 11 in tests/fixes.py: it checks gradeOf at every MON boundary and that the scale renders the 2–6 ticks and the exact band colours.
   - Files: src/js/65-forecast.js, src/css/forecast.css, src/js/49-lang.js, tests/fixes.py, PROGRESS.md.
 - Added past exam ДЗИ Математика 02.06.2020, вариант 2: content/past-exams/dzi12-math-2020-06-02-v2.json (28 tasks, 100 points) and 5 SVG figures in content/past-exams/media/dzi12-math-2020-06-02-v2/. The key matches the official answer key. Tasks 26-28 have the official solution and point breakdown.
 - Duolingo-style progress bar (feature/duo-progress-bar):
@@ -30,6 +31,7 @@
 - The scale shows one tick per grade label, not one per MON band.
 - GRADES stays as a derived alias of MON_SCALE for compatibility with tools/check.js.
 - Browser check 4 retries the diagnostic because its number-task appearance depends on random task seeds; it is not a deterministic guarantee of one diagnostic run.
+- Browser checks 11 and 12 test the MON scale with fixed values, so they do not depend on random diagnostic tasks.
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
 - Progress bar uses `var(--good)` so it follows the themes (light, dark, AMOLED). `prefers-reduced-motion` turns the intro animation off too.
 - The `3/9` text stays next to the intro bar (`.ob-count`), so existing tests that look for it keep working.
@@ -40,8 +42,8 @@
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 
 ## Left
+- Run `python tools/build.py web`, then `python tests/fixes.py` (needs Playwright) to run checks 11 and 12; both should pass deterministically.
 - Run `python tools/build.py check` again; it should pass.
-- Run `python tools/build.py web`, then `python tests/fixes.py` (needs Playwright) to run the updated number-task check and the MON scale check.
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the forecast scale on web and APK: check the 2–6 ticks, the band colours, and the detailed MON scale list.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.

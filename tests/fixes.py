@@ -148,6 +148,12 @@ with sync_playwright() as pw:
     ok('MON scale: ticks 2-6', all(f'>{g}</span>' in scale for g in ['2', '3', '4', '5', '6']), scale)
     ok('MON scale: band colours from MON_SCALE', 'linear-gradient' in scale and '40.75%' in scale, scale)
     ctx.close()
+
+    # 12. MON scale: a 90-point forecast is Много добър 5, a 98-point forecast is Отличен 6
+    ctx, p = fresh(b, state=DONE)
+    ok('MON scale: 90 t. forecast is Много добър 5', p.evaluate("gradeText({ conf: 'high', pts: 90, lo: 90, hi: 90 })") == 'Мн. добър 5')
+    ok('MON scale: 98 t. forecast is Отличен 6', p.evaluate("gradeText({ conf: 'high', pts: 98, lo: 98, hi: 98 })") == 'Отличен 6')
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')
