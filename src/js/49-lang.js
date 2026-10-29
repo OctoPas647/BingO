@@ -108,7 +108,7 @@ const EN_UI = {
   '{n} чакат': '{n} waiting', 'изпратено': 'sent', 'не е свързан': 'not connected', 'Изпрати сега': 'Send now',
   'Примерен клас от 28 ученика (CSV)': 'Sample class of 28 learners (CSV)', 'Отвори Looker Studio': 'Open Looker Studio',
   'Докладвани ИИ задачи': 'Reported AI tasks', '{n} задачи чакат проверка от учител.': '{n} tasks are waiting for a teacher to check.', 'Изтегли (JSON)': 'Download (JSON)',
-  'В Looker Studio: <b>Create → Data source → Google Sheets</b> (или File upload за CSV), после таблица „умение × ученик“ със средно <code>mastery_after</code> и стълбова диаграма на <code>misconception</code>. Подробно — в README.': 'In Looker Studio: <b>Create → Data source → Google Sheets</b> (or File upload for a CSV), then a "skill × learner" table with the average <code>mastery_after</code> and a bar chart of <code>misconception</code>. Details in the README.',
+  'В Looker Studio: <b>Create → Data source → Google Sheets</b> (или File upload за CSV), после таблица „умение × ученик“ със средно <code>mastery_after</code> и стълбова диаграма на <code>misconception</code>. Подробно — в README.': 'In Looker Studio: <b>Create → Data source → Google Sheets</b> (или File upload за CSV), после таблица „умение × ученик“ със средно <code>mastery_after</code> и стълбова диаграма на <code>misconception</code>. Подробно — в README.',
   'Изпратено към Google Sheets': 'Sent to Google Sheets', 'Няма връзка — ще опитаме пак': 'Could not send — we will try again',
 
   /* settings */
@@ -127,7 +127,7 @@ const EN_UI = {
   'Построено върху Shelly (задачи, точкуване, модули) и идеи от BrainBurst, BandUp и SQL Practice. EduHack Plovdiv 2026.': 'Built on Shelly (tasks, scoring, modules) and ideas from BrainBurst, BandUp and SQL Practice. EduHack Plovdiv 2026.',
   'Зареден е демо ученик': 'Demo learner loaded', 'Твоите отговори са върнати': 'Your answers are back', 'Копието не може да се прочете': 'The copy cannot be read',
   'Да изчистим ли всичко?': 'Clear everything?', 'Картата на уменията и всички отговори на това устройство ще се изтрият.': 'The skill map and all answers on this device will be deleted.',
-  'Изчисти': 'Clear', 'Изчистено': 'Cleared', 'Работи! {m}': 'It works! {m}', 'Не стана: {e}': 'That did not work: {e}',
+  'Изчисти': 'Clear', 'Изчистено': 'Cleared', 'Настройката е рестартирана': 'Setup restarted', 'Работи! {m}': 'It works! {m}', 'Не стана: {e}': 'That did not work: {e}',
   'Ключът не може да съдържа интервали': 'The key cannot contain spaces', 'Само латински букви, цифри, точка и тире (напр. gemini-3.8-flash)': 'Only Latin letters, digits, dot and dash (e.g. gemini-3.8-flash)',
   'Адресът трябва да започва с https://': 'The address must start with https://', 'Адресът трябва да започва с https://script.google.com/': 'The address must start with https://script.google.com/',
   'Невалидна стойност': 'Invalid value', 'Задължително поле': 'Required field', 'Невалидната стойност не е запазена': 'The invalid value was not saved',
