@@ -87,8 +87,8 @@ jobs:
           import os, re
           ver = os.environ['VER']
           text = open('CHANGELOG.md', encoding='utf-8').read()
-          m = re.search(r'^## ' + re.escape(ver) + r'.*?\n(.*?)(?=^## |\Z)', text, re.S | re.M)
-          print((m.group(1).strip() if m else 'BingO ' + ver) + '\n\nInstall the APK on your phone.')
+          m = re.search(r'^## ' + re.escape(ver) + '.*?\\n(.*?)(?=^## |\\Z)', text, re.S | re.M)
+          print((m.group(1).strip() if m else 'BingO ' + ver) + '\\n\\nInstall the APK on your phone.')
           PY
           FILES="dist/android/*.apk"
           if gh release view "$TAG" > /dev/null 2>&1; then
@@ -112,8 +112,9 @@ jobs:
           fi
           DIR="${FTP_DIR#/}"; DIR="${DIR%/}"
           URL="ftp://$FTP_HOST/${DIR:+$DIR/}index.html"
-          # FTPS (encrypted); the folder is created if it doesn't exist yet
-          curl --fail --silent --show-error --ssl-reqd --ftp-create-dirs --retry 3 \
+          # FTPS (encrypted); the folder is created if it doesn't exist yet.
+          # --insecure skips certificate hostname verification because the FTP certificate does not match FTP_HOST.
+          curl --fail --silent --show-error --insecure --ssl-reqd --ftp-create-dirs --retry 3 \
             --user "$FTP_USER:$FTP_PASSWORD" -T dist/web/index.html "$URL"
           echo "Uploaded BingO ${{ steps.ver.outputs.version }} to $FTP_HOST/${DIR:+$DIR/}index.html"
 
