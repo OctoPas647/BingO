@@ -63,11 +63,17 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     return null;
   }
 
+  function recordGrading(res) {
+    S.feedback.grading.push({ at: Date.now(), sessionId, skill: task.skill, pct: Math.round(res.pct * 100), status: res.status });
+    if (S.feedback.grading.length > 200) S.feedback.grading.shift();
+  }
+
   function check() {
     const item = Q[P.i], resp = view.get(), res = scoreTask(task, resp, 'bg'), correct = res.status === 'right';
     const misc = correct ? null : mistakeOf(resp), secs = (Date.now() - shownAt) / 1000, hints = view.hintsUsed() + aiHints;
     const ch = recordAnswer(subj, task, correct, misc);
     logAnswer({ subj, task, correct, misc, secs, hints, before: ch.before, after: ch.after, mode: item.why === 'check' ? 'check' : mode, session: sessionId });
+    recordGrading(res);
     P.answers.push({ skill: task.skill, correct, misc, task, resp, res });
     view.show(res); P.phase = 'next'; P.touched = true; checkedAt = Date.now();
     sound(correct ? 'right' : 'wrong');
@@ -100,7 +106,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
-      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>${L('✦ Подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
+      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${esc(L('Подсказка'))}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
@@ -123,6 +129,14 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const right = P.answers.filter(a => a.correct).length, gained = startMap.lost - endMap.lost;
     const rows = touched.map(id => { const x = endMap.list.find(y => y.sk.id === id), was = skillStatus({ ...x.st, p: before[id] }); return { x, was }; });
     const newlyStrong = rows.filter(r => r.x.status === 'strong' && before[r.x.sk.id] < BKT.strong);
+    S.feedback.insights[sessionId] = {
+      at: Date.now(),
+      mastery: Math.round((1 - endMap.lost / endMap.total) * 100),
+      weak: rows.filter(r => r.x.status === 'weak').map(r => r.x.sk.id),
+      strong: rows.filter(r => r.x.status === 'strong').map(r => r.x.sk.id),
+      notes: ''
+    };
+    saveState(true);
     if (right / P.answers.length >= 0.7) { sound('done'); confetti(); }
     nav.onLeave = () => $$('canvas.confetti').forEach(c => c.remove()); /* confetti must not fall on the next screen */
     el.querySelector('.playbar').outerHTML = topbar(esc(L(MODE_TITLE[mode])), { closeIcon: true });
