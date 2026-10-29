@@ -12,23 +12,20 @@ const DEFAULT_STATE = () => ({
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
   settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', sound: true, lang: 'bg' },
   subject: 'math',
-  skills: {},            /* "math.quad" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] } */
-  log: [],               /* every answer, the rows that go to Google Sheets / Looker Studio */
-  queue: [],             /* rows not yet sent to the Sheet */
+  skills: {},
+  log: [],
+  queue: [],
   sessions: 0,
-  review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
-  onboarding: null,      /* first-run setup progress (58-onboarding.js) */
-  aiFlags: [],           /* AI-made tasks a learner reported as wrong */
-  pastResults: {}        /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  review: {},
+  onboarding: null,
+  aiFlags: [],
+  pastResults: {},
+  progress: {}
 });
 
 let S = DEFAULT_STATE();
-/* What went wrong while loading, shown once after start (99-boot.js): null | { backup: key } */
 let STATE_NOTICE = null;
 
-/* Saved data can be broken (a half-written save) or from an older version with other shapes.
-   Every field is checked and anything that does not fit falls back to its default, so one bad
-   value never stops the app from opening. */
 const isNum = x => typeof x === 'number' && Number.isFinite(x);
 const isStr = x => typeof x === 'string';
 const SETTING_OK = {
@@ -36,7 +33,7 @@ const SETTING_OK = {
   apiKey: v => isStr(v) && !/\s/.test(v) && v.length < 200,
   model: v => isStr(v) && /^[\w.\-]{1,80}$/.test(v),
   proxyUrl: v => v === '' || (isStr(v) && /^https:\/\/[^\s]+$/.test(v)),
-  sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/script\.google\.com\/[^\s]+$/.test(v)),
+  sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/[^\s]+$/.test(v)),
   theme: v => ['auto', 'light', 'dark', 'amoled'].includes(v),
   sound: v => typeof v === 'boolean',
   lang: v => ['bg', 'en'].includes(v)
@@ -50,6 +47,14 @@ function cleanSkill(st) {
     hist: Array.isArray(st.hist) ? st.hist.filter(h => Array.isArray(h) && isNum(h[0]) && isNum(h[1])).slice(-60) : []
   };
 }
+function cleanClassProgress(p) {
+  const out = { skills: {}, review: {}, pastResults: {} };
+  if (!isObj(p)) return out;
+  if (isObj(p.skills)) for (const [k, st] of Object.entries(p.skills)) { const c = cleanSkill(st); if (c && /^\w+\.\w+$/.test(k)) out.skills[k] = c; }
+  if (isObj(p.review)) for (const [k, r] of Object.entries(p.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
+  if (isObj(p.pastResults)) for (const [k, r] of Object.entries(p.pastResults)) if (isObj(r) && isNum(r.pts) && isNum(r.max)) out.pastResults[k] = { pts: r.pts, max: r.max, at: isNum(r.at) ? r.at : 0 };
+  return out;
+}
 function sanitizeState(v) {
   const d = DEFAULT_STATE();
   if (!isObj(v)) return d;
@@ -59,23 +64,61 @@ function sanitizeState(v) {
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
-  out.skills = {};
-  if (isObj(v.skills)) for (const [k, st] of Object.entries(v.skills)) { const c = cleanSkill(st); if (c && /^\w+\.\w+$/.test(k)) out.skills[k] = c; }
   out.log = Array.isArray(v.log) ? v.log.filter(r => isObj(r) && isStr(r.task_id || '') && isStr(r.subject || '')).slice(-3000) : [];
   out.queue = Array.isArray(v.queue) ? v.queue.filter(isObj).slice(-3000) : [];
   out.sessions = isNum(v.sessions) && v.sessions >= 0 ? Math.floor(v.sessions) : 0;
-  out.review = {};
-  if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
+
+  out.progress = {};
+  if (isObj(v.progress)) for (const [cls, p] of Object.entries(v.progress)) if (isStr(cls) && cls) out.progress[cls] = cleanClassProgress(p);
+  const legacy = cleanClassProgress({ skills: v.skills, review: v.review, pastResults: v.pastResults });
+  const legacyId = out.profile.cls || 'default';
+  const hasLegacy = Object.keys(legacy.skills).length || Object.keys(legacy.review).length || Object.keys(legacy.pastResults).length;
+  if (hasLegacy && !Object.keys(out.progress[legacyId] || {}).length) out.progress[legacyId] = legacy;
+
+  const active = getClassId(out);
+  out.progress[active] = out.progress[active] || cleanClassProgress(null);
+  Object.assign(out, out.progress[active]);
   return out;
 }
-const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
+const BKT_PRIOR = 0.3;
 
-/* A save that cannot be read is copied to its own key before anything can overwrite it */
 function backupRaw(raw) {
   const key = STORE_KEY + '.broken-' + new Date().toISOString().replace(/[:.]/g, '-');
   try { localStorage.setItem(key, raw); return key; } catch (e) { return null; }
+}
+function getClassId(state = S) {
+  return (state.profile && isStr(state.profile.cls) && state.profile.cls) || 'default';
+}
+function ensureClassProgress(classId) {
+  const id = isStr(classId) && classId ? classId : 'default';
+  if (!isObj(S.progress[id])) S.progress[id] = { skills: {}, review: {}, pastResults: {} };
+  return S.progress[id];
+}
+function storeActiveClassProgress() {
+  const id = getClassId();
+  S.progress[id] = { skills: S.skills || {}, review: S.review || {}, pastResults: S.pastResults || {} };
+}
+function loadClassProgress(classId) {
+  storeActiveClassProgress();
+  const id = isStr(classId) && classId ? classId : 'default';
+  S.profile.cls = id === 'default' ? '' : id;
+  const p = ensureClassProgress(id);
+  S.skills = p.skills;
+  S.review = p.review;
+  S.pastResults = p.pastResults;
+  saveState(true);
+}
+function startClassProgress(classId) {
+  const id = isStr(classId) && classId ? classId : 'default';
+  storeActiveClassProgress();
+  S.profile.cls = id === 'default' ? '' : id;
+  S.progress[id] = { skills: {}, review: {}, pastResults: {} };
+  S.skills = S.progress[id].skills;
+  S.review = S.progress[id].review;
+  S.pastResults = S.progress[id].pastResults;
+  saveState(true);
 }
 function loadState() {
   let raw = null;
@@ -84,24 +127,25 @@ function loadState() {
     try { S = sanitizeState(JSON.parse(raw)); }
     catch (e) { console.warn('state not loaded', e); S = DEFAULT_STATE(); STATE_NOTICE = { backup: backupRaw(raw) }; }
   }
+  ensureClassProgress(getClassId());
   APP.settings.theme = S.settings.theme; APP.settings.sound = S.settings.sound !== false; APP.settings.lang = S.settings.lang;
 }
 let saveTimer = 0;
 function saveState(now) {
+  storeActiveClassProgress();
   clearTimeout(saveTimer);
   const put = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { console.warn('state not saved', e); } };
   if (now) put(); else saveTimer = setTimeout(put, 120);
 }
 function resetState(keepSettings) {
   const keep = keepSettings ? { settings: S.settings, profile: S.profile } : {};
-  S = { ...DEFAULT_STATE(), ...keep }; saveState(true);
+  S = { ...DEFAULT_STATE(), ...keep };
+  ensureClassProgress(getClassId());
+  Object.assign(S, S.progress[getClassId()]);
+  saveState(true);
 }
 
-/* AMOLED theme: the dark theme with true-black surfaces (OLED pixels switch off).
-   Shelly's applySettings() only knows auto/light/dark, so BingO wraps it. */
 const _applyBase = applySettings;
-/* "Системна": the phone's own setting. In the Android app the WebView reports the app theme, not the
-   phone's, so the app asks Android directly (AndroidUI.night); in a browser prefers-color-scheme works. */
 function systemDark() {
   try { if (window.AndroidUI && typeof window.AndroidUI.night === 'function') return !!window.AndroidUI.night(); } catch (e) { }
   return matchMedia('(prefers-color-scheme: dark)').matches;
@@ -117,11 +161,10 @@ applySettings = function () {
   if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
 };
 
-/* Shelly's media loader, reading the few pictures that the build embeds (window.SHELLY_MEDIA: "module id\npath" -> data URL) */
 function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (url) el.src = url; if (el.dataset.poster) el.poster = poster; }
   });
 }
