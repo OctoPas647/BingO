@@ -18,7 +18,7 @@ const EN_UI = {
   /* subjects, skills, statuses */
   'Математика': 'Mathematics', 'БЕЛ': 'Bulgarian', 'Матем.': 'Math',
   'Квадратни уравнения': 'Quadratic equations', 'Проценти': 'Percentages', 'Степени и корени': 'Powers and roots',
-  'Линейни неравенства': 'Linear inequalities', 'Правоъглен триъгълник': 'Right triangle', 'Аритметична прогресия': 'Arithmetic progression',
+  'Линейни неравенства': 'Linear inequalities', 'Правоъгълен триъгълник': 'Right triangle', 'Аритметична прогресия': 'Arithmetic progression',
   'Вероятности': 'Probability', 'Пълен и кратък член': 'Full and short article', 'Запетая': 'Commas',
   'Слято, полуслято, разделно': 'Joined, hyphenated, separate', 'Литература: Дебелянов': 'Literature: Debelyanov',
   'Малко данни': 'Little data', 'Слабо': 'Weak', 'Почти': 'Almost', 'Силно': 'Strong',
@@ -153,7 +153,7 @@ const EN_UI = {
   'Задача {n} · {p} т.': 'Task {n} · {p} pts', 'Виж отговора': 'See the answer', 'Оцени се сам': 'Mark it yourself', 'по официалния отговор и критериите': 'using the official answer and criteria',
   'Отчасти': 'Partly', '{a} от {b} т.': '{a} of {b} pts', 'По скалата на МОН:': 'On the Ministry of Education scale:', 'Сгрешени задачи с избор:': 'Wrong multiple-choice tasks:', 'Отначало': 'Start over',
   /* setup: age, exam, high-school profile, extra matura */
-  'Името и годините са по желание. Учителят вижда името само ако свързал Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connected Google Sheets.',
+  'Името и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connected Google Sheets.',
   'Име и фамилия': 'Full name', 'напр. Мария Петрова': 'e.g. Maria Petrova', 'Години': 'Age', 'напр. 17': 'e.g. 17', 'Въведи години от 7 до 99': 'Enter an age from 7 to 99',
   'Значи за {e}, нали?': 'So it is {e}, right?', 'За кой изпит се готвиш?': 'Which exam are you preparing for?', 'Ако не е така, избери своя клас.': 'If not, choose your grade.', 'Избери изпит': 'Choose an exam',
   'НВО 4-ти клас': 'NVO, 4th grade', 'НВО 7-ми клас': 'NVO, 7th grade', 'НВО 10-ти клас': 'NVO, 10th grade', 'ДЗИ 12-ти клас': 'Matura (DZI), 12th grade',
