@@ -23,10 +23,12 @@ SCREENS.home = async el => {
   const list = sm.list.slice().sort((a, b) => (a.status === 'strong') - (b.status === 'strong') || b.lost - a.lost);
   const kept = 1 - sm.lost / sm.total, started = sm.answered > 0;
   const weakest = list.find(x => x.status !== 'strong');
+  const streak = sessionStreak();
   el.innerHTML = `
     <header class="apphead">
       <div class="brand bingo">Bing<span>O</span></div>
       <div class="head-stats">
+        <span class="pill" title="${L('Поредни дни с завършена тренировка')}">${icon('flame')}${streak}</span>
         <span class="pill" title="${L('Отговори досега')}">${icon('check')}${S.log.length}</span>
         <button class="iconbtn" data-go="insights" aria-label="${L('Грешки и данни')}">${icon('grid')}</button>
         <button class="iconbtn" data-go="settings" aria-label="${L('Настройки')}">${icon('settings')}</button>
@@ -77,6 +79,6 @@ function skillSheet(subj, id) {
 }
 function sparkline(vals) {
   const w = 280, hgt = 54, n = vals.length, x = i => 4 + i * (w - 8) / Math.max(1, n - 1), y = v => hgt - 4 - v * (hgt - 8);
-  const pts = vals.map((v, i) => `${roundTo(x(i), 1)},${roundTo(y(v), 1)}`).join(' ');
+  const pts = vals.map((v, i) => `${roundTo(x(i), 1)},${roundTo(y(i), 1)}`).join('');
   return `<svg viewBox="0 0 ${w} ${hgt}" class="sparksvg" aria-hidden="true"><line x1="0" x2="${w}" y1="${y(BKT.strong)}" y2="${y(BKT.strong)}" class="sp-strong"/><line x1="0" x2="${w}" y1="${y(BKT.weak)}" y2="${y(BKT.weak)}" class="sp-weak"/><polyline points="${pts}" class="sp-line"/><circle cx="${x(n - 1)}" cy="${y(vals[n - 1])}" r="4" class="sp-dot"/></svg>`;
 }
