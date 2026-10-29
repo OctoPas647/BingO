@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- Fix: the “twin” badge no longer shows math-specific wording on БЕЛ tasks. `src/js/61-session.js` now uses `Близнак: същото, нови числа` for math and `Близнак: същото умение, нова задача` for БЕЛ.
 - Removed the AI/API onboarding screen: the `ai` step in src/js/58-onboarding.js no longer appears during first-run setup. AI configuration is no longer shown at startup, but remains fully accessible via the Settings menu.
 - Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
   - Cause: `syncHistory()` removed the history trap with `history.back()`, but the sheet callback called `go()` before that back was processed. `render()` then pushed a new trap, which the queued back removed; browser Back could then leave the app.
@@ -19,6 +20,7 @@
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
 
 ## Decisions
+- The twin badge stays for both subjects; only its wording is subject-aware. The extra practice task after a wrong answer remains unchanged.
 - The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
 - The sheet history fix lives in BingO's own src/ (67-history-sync.js), not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
 - The old fix/browser-back branch and src/js/66-history.js are not reused: they assume one history entry per screen, while the current engine keeps one trap entry.
@@ -33,6 +35,7 @@
 - Android wrapper cleanup keeps `AndroidUI` and `AndroidFiles`: the web app uses `AndroidUI.night()`, `__systemTheme`, file import, and CSV export.
 
 ## Left
+- Manual test of the subject-aware twin badge on web and APK: answer one math and one БЕЛ task incorrectly, then check the badge text.
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
@@ -50,6 +53,9 @@
 
 ## Bugs
 - The fast-tap history edge case is addressed by 67-history-sync.js, but still needs a manual test on web and APK.
+- Надписът „Близнак: същото, нови числа“ се показва и на задачи по БЕЛ: fixed.
+  - Cause: the shared session screen used one hard-coded math-specific twin label for every subject.
+  - Fix: `src/js/61-session.js` selects the label from `subj`, keeping the original wording for math and using neutral wording for БЕЛ.
 - Два грешни отговора с една и съща стойност (генератор по математика): fixed.
   - Cause: `mcTask()` in `src/js/52-math.js` compared option text as raw strings, so mathematically equivalent values written differently (for example `0,5` and `\frac{1}{2}`) could both appear as choices.
   - Fix: added `normalize()` and used it before duplicate checks in `mcTask()`, so LaTeX fractions, numbers with `{,}` decimal commas, and whitespace differences are compared by their canonical value.
