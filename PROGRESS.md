@@ -13,7 +13,7 @@
   - Cause: `go()` pushes a history entry per screen, but in-app back, Android back, `home()` and `backTo()` only popped `NAV`. The history kept stale entries.
   - Fix: `src/js/66-history.js` wraps `back/home/backTo` and rewinds the history by the same number of entries. A real browser Back is not rewound.
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
-- Системният размер на шрифта се игнорира (достъпност): the Android WebView previously forced `setTextZoom(100)`, so the user's system font size had no effect. It now applies `Configuration.fontScale` as `textZoom` and refreshes it in `onConfigurationChanged` (platforms/android/java/app/shelly/MainActivity.java).
+- Системният размер на шрифта се игнорира (достъпност): fixed. The Android WebView now follows the system font scale (`Configuration.fontScale` -> `textZoom`) and updates it on configuration changes; commit c6a7322 also made the Playwright smoke test handle order/matching tasks and avoid assuming a `.gap-in` input exists.
 
 ## Decisions
 - Progress bar: only the bar is animated in the intro and static in tests. Other animations (confetti, result bars `.dbar`) are unchanged.
