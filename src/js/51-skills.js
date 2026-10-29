@@ -51,10 +51,8 @@ const EXAM_SKILLS = {
     bel: ['art', 'comma', 'spell', 'lit']
   }
 };
-/* The active exam key; older saves without profile.exam keep the previous matura behaviour. */
-const currentExamKey = () => (EXAM_SKILLS[S.profile.exam] ? S.profile.exam : 'dzi12');
-/* Skills available for the active exam. An exam without a mapping for a subject keeps all skills,
-   so future subjects or partial mappings cannot accidentally hide the whole subject. */
+/* Skills available for the active exam. `currentExamKey()` is defined in 50-state.js and already
+   falls back to ДЗИ for older saves. An exam without a mapping for a subject keeps all skills. */
 function skillList(subj) {
   const all = SUBJECTS[subj] ? SUBJECTS[subj].skills : [];
   const ids = EXAM_SKILLS[currentExamKey()][subj];
@@ -125,8 +123,8 @@ const BKT = { prior: 0.3, learn: 0.1, slip: 0.12, strong: 0.9, weak: 0.6 };
 const guessOf = task => (task.type === 'choice' ? 1 / task.options.length : task.type === 'gaps' && task.gaps.every(g => g.options) ? Math.pow(0.5, task.gaps.length) : 0.05);
 
 function skillState(subj, id) {
-  const exam = currentExamKey();
-  const k = subj + '@' + exam + '.' + id;
+  /* Keep the existing key shape from 50-state.js: `math.quad@dzi12`. */
+  const k = subj + '.' + id + '@' + currentExamKey();
   if (!S.skills[k]) {
     /* Migrate the pre-exam key once, so existing progress is not lost. The old key stays in
        place for rollback safety; new answers are written only to the exam-aware key. */
