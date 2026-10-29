@@ -16,7 +16,6 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
   if (!Q.length) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
 
-  /* Gemini: prepare one new task for the weakest skill in the background, and slot it in when ready */
   if (aiOn() && mode !== 'diag') {
     const target = planned.focus ? planned.focus[0] : skill;
     if (target) aiNewTask(subj, target, levelFor(skillState(subj, target).p), sessionId)
@@ -32,8 +31,6 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   let view = null, task = null, shownAt = 0, aiHints = 0, checkedAt = 0;
   const paintCount = () => { el.querySelector('.pcount').textContent = `${Math.min(P.i + 1, Q.length)} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
 
-  /* The same question never comes twice in one session (P.used holds ids and, for generated
-     tasks, the question text). If a skill has no unseen task left, its place is dropped. */
   function nextTask() {
     const item = Q[P.i], st = skillState(subj, item.skill), lvl = item.level || levelFor(st.p);
     const t = item.task && !P.used.has(taskKey(item.task)) ? item.task : pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used);
@@ -82,7 +79,6 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       const inlineWhy = task.type === 'choice' && task.why && task.why[resp];
       if (misc || !inlineWhy) fb.insertAdjacentHTML('afterbegin', `<div class="mistake">${icon('target')}<div><b>${misc ? L('Типична грешка') : L('Грешка')}</b><span class="rt">${misc ? richInline(miscLabel(misc)) : L('Виж решението по-долу.')}</span></div></div>`);
       if (aiOn()) fb.insertAdjacentHTML('beforeend', `<button class="btn ghost block aiexplain" data-aiexplain>${L('✦ Защо сгреших? Обясни Gemini')}</button><div class="aibox" hidden></div>`);
-      /* a twin right away (once per original task), so the fix is practised while it is fresh */
       if (item.why !== 'twin' && mode !== 'diag') Q.splice(P.i + 1, 0, { skill: task.skill, why: 'twin', level: task.level });
       if (mode === 'diag' && !P.extraDiag.has(task.skill)) { P.extraDiag.add(task.skill); Q.push({ skill: task.skill, why: 'diag' }); }
     }
@@ -92,7 +88,6 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
 
   btn.addEventListener('click', () => {
     if (P.phase === 'answer') return check();
-    /* a quick second tap on "Провери" must not skip the feedback the first tap just opened */
     if (Date.now() - checkedAt < 450) return;
     if (++P.i < Q.length) showTask(); else finish();
   });
@@ -102,7 +97,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
       try {
-        const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${esc(L('Подсказка'))}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove();
+        const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${esc(L('Подсказка от Gemini'))}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove();
       }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
@@ -122,15 +117,13 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
 
   function finish() {
     P.done = true; S.sessions++; saveState(true); flushToSheet();
-    /* The result is calculated only from the active class. A weak lower-class matura can
-       increase lost points, but it can never add points from another class. */
     const endMap = getClassId() === classId ? subjectSummary(subj) : (loadClassProgress(classId), subjectSummary(subj));
     const touched = [...new Set(P.answers.map(a => a.skill))];
     const right = P.answers.filter(a => a.correct).length, gained = Math.max(0, startMap.lost - endMap.lost);
     const rows = touched.map(id => { const x = endMap.list.find(y => y.sk.id === id), was = skillStatus({ ...x.st, p: before[id] }); return { x, was }; });
     const newlyStrong = rows.filter(r => r.x.status === 'strong' && before[r.x.sk.id] < BKT.strong);
     if (right / P.answers.length >= 0.7) { sound('done'); confetti(); }
-    nav.onLeave = () => $$('canvas.confetti').forEach(c => c.remove()); /* confetti must not fall on the next screen */
+    nav.onLeave = () => $$('canvas.confetti').forEach(c => c.remove());
     el.querySelector('.playbar').outerHTML = topbar(esc(L(MODE_TITLE[mode])), { closeIcon: true });
     foot.remove();
     main.innerHTML = `<div class="result pad">

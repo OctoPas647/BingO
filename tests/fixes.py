@@ -36,8 +36,8 @@ with sync_playwright() as pw:
     # 3. browser back: settings -> back returns home, next back leaves (no stuck presses)
     ctx, p = fresh(b, state=DONE)
     p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('.settings')
-    p.click('[data-back]'); p.wait_for_timeout(200)            # in-app back to Profile
-    p.click('[data-tab="home"]'); p.wait_for_timeout(300)        # home() pops the rest
+    p.click('[data-back]'); p.wait_for_timeout(200)
+    p.click('[data-tab="home"]'); p.wait_for_timeout(300)
     hl = p.evaluate('history.length')
     p.click('[data-tab="stats"]'); p.wait_for_timeout(200)
     p.go_back(); p.wait_for_timeout(300)
@@ -143,14 +143,14 @@ with sync_playwright() as pw:
       const high = subjectSummary('math');
       const highLost = high.lost;
       startClassProgress('nvo7', 'dzi12');
-      const clean = subjectSummary('math');
+      const lowClean = Object.keys(S.skills).length === 0 && Object.keys(S.pastResults).length === 0;
+      const cleanLost = subjectSummary('math').lost;
       for (const sk of SUBJECTS.math.skills) recordAnswer('math', { skill: sk.id, type: 'choice', options: ['a', 'b'], answer: 0 }, false, null);
       const low = subjectSummary('math');
       const preserved = S.progress.dzi12;
       return {
-        highLost, lowLost: low.lost, cleanLost: clean.lost,
-        lowClean: Object.keys(S.skills).length === 0 || Object.values(S.skills).every(x => !x.n),
-        lowWorse: low.lost > highLost,
+        highLost, lowLost: low.lost, cleanLost,
+        lowClean, lowWorse: low.lost > highLost,
         highPreserved: preserved && Object.keys(preserved.skills).length > 0,
         lowPastEmpty: Object.keys(S.pastResults).length === 0
       };

@@ -33,7 +33,7 @@ const SETTING_OK = {
   apiKey: v => isStr(v) && !/\s/.test(v) && v.length < 200,
   model: v => isStr(v) && /^[\w.\-]{1,80}$/.test(v),
   proxyUrl: v => v === '' || (isStr(v) && /^https:\/\/[^\s]+$/.test(v)),
-  sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/[^\s]+$/.test(v)),
+  sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/script\.google\.com\/[^\s]+$/.test(v)),
   theme: v => ['auto', 'light', 'dark', 'amoled'].includes(v),
   sound: v => typeof v === 'boolean',
   lang: v => ['bg', 'en'].includes(v)
@@ -109,8 +109,6 @@ function loadClassProgress(classId) {
   S.pastResults = p.pastResults;
   saveState(true);
 }
-/* Start a matura for another class: preserve the old class under its own key, then give the
-   new class a completely clean skill map, review schedule and past-exam results. */
 function startClassProgress(classId, prevClassId = getClassId()) {
   const id = isStr(classId) && classId ? classId : 'default';
   const prev = isStr(prevClassId) && prevClassId ? prevClassId : 'default';
