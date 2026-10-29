@@ -31,6 +31,7 @@
 - New exam id is dzi12-math-2020-06-02-v2 (not ...-06-v2: that one is 03.06.2020). past.date is 2020-06-02. The PDF is named "3dzi" (third ДЗИ); I kept it under dzi12 math.
 - Figures for tasks 16, 17, 19, 20 and the solution of 28 are redrawn as SVG, not copied from the PDF. Task 24's table is written as two lines of numbers.
 - Android wrapper cleanup keeps `AndroidUI` and `AndroidFiles`: the web app uses `AndroidUI.night()`, `__systemTheme`, file import, and CSV export.
+- Profile length limits are shared: name is limited to 40 characters (`MAX_NAME_LEN`) and class to 10 characters (`MAX_CLS_LEN`). Settings, onboarding, and the state sanitizer all use the same limits.
 
 ## Left
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
@@ -47,9 +48,15 @@
 - Maybe add more variants to the small math generators.
 - Check the other 2020-2021 files (БЕЛ 01.06.2020, 27.08.2020, 19.05.2021, math 28.08.2020) against the repo; they look already added.
 - Build and test the Android APK after this wrapper cleanup: open the app, switch System/Light/Dark/AMOLED themes, import a module, export CSV, and test Android Back.
+- QA: manually test the profile length-limit fix on web and APK, including existing saved data with an over-length name or class.
 
 ## Bugs
 - The fast-tap history edge case is addressed by 67-history-sync.js, but still needs a manual test on web and APK.
+- Дълъг клас или име се отрязват тихо при рестартиране: fixed.
+  - Reproduction: enter a name longer than 40 characters or a class longer than 10 characters, save it, then restart BingO. The saved value was silently shortened on the next `loadState()`.
+  - Cause: the UI allowed values longer than the state sanitizer’s hardcoded limits (`name.slice(0, 40)` and `cls.slice(0, 10)` in `src/js/50-state.js`), so long profile values were accepted while editing and then truncated after restart.
+  - Fix: added shared `MAX_NAME_LEN = 40` and `MAX_CLS_LEN = 10` constants in `src/js/50-state.js`; `sanitizeState()` now uses them and sets `STATE_NOTICE = { truncated: true }` if an existing saved value is too long. Settings now has profile name/class fields with matching `maxlength`, inline validation, an error toast, and no save when the limit is exceeded. Onboarding now includes a class field and uses the same limits and Bulgarian error messages.
+  - Manual test: open Настройки, enter a 41-character name and an 11-character class; both inputs must stop at 40/10 characters, show an error, and must not save the over-length value. Repeat in onboarding. Then create valid profile values, save, restart the web app or APK, and confirm the values remain unchanged. For an existing local state with an over-length value, restarting must show the one-time truncation warning instead of silently cutting the data.
 - Два грешни отговора с една и съща стойност (генератор по математика): fixed.
   - Cause: `mcTask()` in `src/js/52-math.js` compared option text as raw strings, so mathematically equivalent values written differently (for example `0,5` and `\frac{1}{2}`) could both appear as choices.
   - Fix: added `normalize()` and used it before duplicate checks in `mcTask()`, so LaTeX fractions, numbers with `{,}` decimal commas, and whitespace differences are compared by their canonical value.
