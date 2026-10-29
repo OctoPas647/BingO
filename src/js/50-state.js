@@ -3,6 +3,8 @@
    Shelly's IndexedDB store with one small localStorage record. */
 const STORE_KEY = 'bingo.v1';
 const APP_NAME_UI = 'BingO';
+const MAX_NAME_LEN = 40;
+const MAX_CLS_LEN = 10;
 
 /* Shelly's 20-ui.js reads APP.settings (theme, sound, motion, lang) */
 let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, shuffle: false }, xp: 0, days: {} };
@@ -55,7 +57,10 @@ function sanitizeState(v) {
   if (!isObj(v)) return d;
   const prof = isObj(v.profile) ? v.profile : {}, set = isObj(v.settings) ? v.settings : {};
   const out = { ...d };
-  out.profile = { name: isStr(prof.name) ? prof.name.slice(0, 40) : '', cls: isStr(prof.cls) ? prof.cls.slice(0, 10) : '', id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
+  const name = isStr(prof.name) ? prof.name : '';
+  const cls = isStr(prof.cls) ? prof.cls : '';
+  if (name.length > MAX_NAME_LEN || cls.length > MAX_CLS_LEN) STATE_NOTICE = { truncated: true };
+  out.profile = { name: name.slice(0, MAX_NAME_LEN), cls: cls.slice(0, MAX_CLS_LEN), id: isStr(prof.id) && prof.id ? prof.id : d.profile.id };
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
   out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
@@ -100,7 +105,7 @@ function resetState(keepSettings) {
 /* AMOLED theme: the dark theme with true-black surfaces (OLED pixels switch off).
    Shelly's applySettings() only knows auto/light/dark, so BingO wraps it. */
 const _applyBase = applySettings;
-/* "Системна": the phone's own setting. In the Android app the WebView reports the app theme, not the
+/* "Системна": follows the phone's own light or dark theme. In the Android app the WebView reports the app theme, not the
    phone's, so the app asks Android directly (AndroidUI.night); in a browser prefers-color-scheme works. */
 function systemDark() {
   try { if (window.AndroidUI && typeof window.AndroidUI.night === 'function') return !!window.AndroidUI.night(); } catch (e) { }
@@ -122,6 +127,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
   });
 }
