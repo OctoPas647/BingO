@@ -96,6 +96,39 @@
 }
 .settings .seg button { font-size: .92rem; }
 
+/* Liquid glass theme: translucent surfaces and blur (set manually with data-glass="1" in part 1) */
+:root[data-glass="1"] {
+  --surface: rgba(255, 255, 255, 0.62);
+  --surface-2: rgba(255, 255, 255, 0.42);
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.16), 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+:root[data-theme="dark"][data-glass="1"] {
+  --surface: rgba(20, 24, 34, 0.62);
+  --surface-2: rgba(28, 33, 45, 0.48);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.38), 0 2px 8px rgba(0, 0, 0, 0.22);
+}
+
+:root[data-glass="1"] .card,
+:root[data-glass="1"] .surface,
+:root[data-glass="1"] .btn,
+:root[data-glass="1"] .modal {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:root[data-glass="1"] .card,
+:root[data-glass="1"] .surface,
+:root[data-glass="1"] .modal {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+:root[data-theme="dark"][data-glass="1"] .card,
+:root[data-theme="dark"][data-glass="1"] .surface,
+:root[data-theme="dark"][data-glass="1"] .modal {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
 /* first-run setup */
 .onboarding { display: grid; gap: 10px; padding-top: 10px; }
 .ob-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin-bottom: 8px; }
