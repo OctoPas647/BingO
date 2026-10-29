@@ -32,7 +32,13 @@ SCREENS.settings = async el => {
     if (w) { st.sound = !st.sound; APP.settings.sound = st.sound; saveState(); w.classList.toggle('on'); return; }
     if (e.target.closest('[data-setup]')) { onboardingRestart(); NAV.length = 0; NAV.push({ screen: 'onboarding', params: {} }); return render(); }
     if (e.target.closest('[data-demo]')) { if (await loadDemoLearner()) { toast('Зареден е демо ученик'); home(); } return; }
-    if (e.target.closest('[data-restore]')) { if (restoreFromDemo()) { APP.settings.theme = S.settings.theme; APP.settings.lang = S.settings.lang; applySettings(); toast('Твоите отговори са върнати'); home(); } else toast('Копието не може да се прочете', 'bad'); return; }
+    if (e.target.closest('[data-restore]')) {
+      /* the backup must still hold real learner data, even if the hidden button is triggered another way */
+      if (!demoBackupHasRealData()) { toast('Копието не може да се прочете', 'bad'); return; }
+      if (restoreFromDemo()) { APP.settings.theme = S.settings.theme; APP.settings.lang = S.settings.lang; applySettings(); toast('Твоите отговори са върнати'); home(); }
+      else toast('Копието не може да се прочете', 'bad');
+      return;
+    }
     if (e.target.closest('[data-wipe]') && await confirmBox(L('Да изчистим ли всичко?'), L('Картата на уменията и всички отговори на това устройство ще се изтрият.'), L('Изчисти'), true)) { resetState(true); toast('Изчистено'); return home(); }
     if (e.target.closest('[data-test]')) {
       const tb = e.target.closest('[data-test]'); tb.disabled = true;
