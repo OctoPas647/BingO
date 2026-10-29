@@ -125,7 +125,8 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const newlyStrong = rows.filter(r => r.x.status === 'strong' && before[r.x.sk.id] < BKT.strong);
     if (right / P.answers.length >= 0.7) { sound('done'); confetti(); }
     nav.onLeave = () => $$('canvas.confetti').forEach(c => c.remove()); /* confetti must not fall on the next screen */
-    el.querySelector('.playbar').outerHTML = topbar(esc(L(MODE_TITLE[mode])), { closeIcon: true });
+    el.querySelector('.playbar').outerHTML = topbar(esc(L(MODE_TITLE[mode])), { noBack: true, right: `<button class="iconbtn" data-close aria-label="${esc(L('Затвори'))}">${icon('close')}</button>` });
+    el.querySelector('[data-close]').onclick = () => home();
     foot.remove();
     main.innerHTML = `<div class="result pad">
       <div class="res-hero">${ring(right / P.answers.length, right + '/' + P.answers.length, 'big')}

@@ -127,7 +127,8 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     (S.pastResults || (S.pastResults = {}))[id] = { pts, max, at: Date.now() }; saveState(true);
     const wrong = Q.map((q, i) => (q.task.type !== 'open' && (P.got[i] || 0) < q.task.points ? i + 1 : 0)).filter(Boolean);
     if (pts / max >= 0.7) { sound('done'); confetti(); }
-    el.querySelector('.playbar').outerHTML = topbar(esc(pastTitle(m)), { closeIcon: true });
+    el.querySelector('.playbar').outerHTML = topbar(esc(pastTitle(m)), { noBack: true, right: `<button class="iconbtn" data-close aria-label="${esc(L('Затвори'))}">${icon('close')}</button>` });
+    el.querySelector('[data-close]').onclick = () => home();
     foot.remove();
     main.innerHTML = `<div class="result pad">
       <div class="res-hero">${ring(pts / max, Math.round(pts / max * 100) + '%', 'big')}
