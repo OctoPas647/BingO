@@ -2,28 +2,29 @@
    Built on Shelly's practice screen and task views. What is new:
    - tasks come from the weakest skills (planSession), at a level that follows the learner
    - a wrong answer names the typical mistake, and Gemini can explain it for *this* answer
-   - after a wrong answer comes a "twin": the same skill, new numbers, to fix it right away.
-     It takes the place of a later planned task, so a training session keeps its length
-     (the counter never jumps from 8 to 9); only the diagnostic adds a second task where needed
+   - after a wrong answer comes a "twin": the same skill, new numbers, to fix it right away
    - every answer updates the skill map and goes to the log (Google Sheets / Looker Studio) */
 
 const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема' };
 
+/* НВО profiles must not receive matura-level tasks: НВО 4 stays at level 1, НВО 7 and НВО 10
+   may use levels 1–2, while ДЗИ keeps the full 1–3 range. */
+const targetLevelFor = exam => (exam === 'nvo4' ? 1 : exam === 'nvo7' || exam === 'nvo10' ? 2 : 3);
+
 SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const sub = SUBJECTS[subj], m = fakeModule(subj), sessionId = uid();
+  const exam = S.profile.exam || 'dzi12', maxLevel = targetLevelFor(exam);
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
   const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
   const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
   if (!Q.length) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
-  /* a later planned slot that a twin or Gemini's task may take over */
-  const freeSlot = (skillId, from) => Q.find((x, i) => i >= from && x.why === 'focus' && !x.task && (!skillId || x.skill === skillId)) || Q.find((x, i) => i >= from && x.why === 'focus' && !x.task);
 
-  /* Gemini: prepare one new task for the weakest skill in the background; when ready it fills a later planned slot */
+  /* Gemini: prepare one new task for the weakest skill in the background, and slot it in when ready */
   if (aiOn() && mode !== 'diag') {
     const target = planned.focus ? planned.focus[0] : skill;
-    if (target) aiNewTask(subj, target, levelFor(skillState(subj, target).p), sessionId)
-      .then(t => { const slot = !P.done && t && !P.used.has(taskKey(t)) && freeSlot(target, P.i + 2); if (slot) { slot.skill = target; slot.task = t; } })
+    if (target) aiNewTask(subj, target, Math.min(levelFor(skillState(subj, target).p), maxLevel), sessionId)
+      .then(t => { if (!P.done) { Q.splice(Math.min(Q.length, P.i + 2), 0, { skill: target, why: 'focus', task: t }); paintCount(); } })
       .catch(err => console.warn('AI task', err));
   }
 
@@ -38,7 +39,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   /* The same question never comes twice in one session (P.used holds ids and, for generated
      tasks, the question text). If a skill has no unseen task left, its place is dropped. */
   function nextTask() {
-    const item = Q[P.i], st = skillState(subj, item.skill), lvl = item.level || levelFor(st.p);
+    const item = Q[P.i], st = skillState(subj, item.skill), lvl = Math.min(item.level || levelFor(st.p), maxLevel);
     const t = item.task && !P.used.has(taskKey(item.task)) ? item.task : pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used);
     if (!t) return null;
     item.task = t; P.used.add(t.id); P.used.add(taskKey(t));
@@ -51,7 +52,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const item = Q[P.i]; P.phase = 'answer'; aiHints = 0; shownAt = Date.now();
     view = taskView(task, m, { mode: 'practice', seed: sessionId, onChange: upd });
     const sk = skillDef(subj, task.skill);
-    const tag = item.why === 'check' ? `<i class="chk">${icon('check')}${L('Проверка на силно умение')}</i>` : item.why === 'twin' ? `<i class="twin">${icon('reset')}${L(subj === 'math' ? 'Близнак: същото, нови числа' : 'Близнак: същото умение, нова задача')}</i>` : '';
+    const tag = item.why === 'check' ? `<i class="chk">${icon('check')}${L('Проверка на силно умение')}</i>` : item.why === 'twin' ? `<i class="twin">${icon('reset')}${L('Близнак: същото, нови числа')}</i>` : '';
     main.innerHTML = `<div class="taskhead"><div class="chips"><i class="score">${esc(L(sk.name))}</i><i>${L('Ниво {n}', { n: task.level || 2 })}</i><i class="src-${task.src}">${esc(L(SRC_LABEL[task.src] || ''))}</i>${tag}</div></div>`;
     main.appendChild(view.el);
     if (task.src === 'ai') main.insertAdjacentHTML('beforeend', `<p class="aiwarn">${icon('info')}${L('Задачата е създадена от ИИ и може да има грешка.')} <button class="linkbtn" data-report>${L('Докладвай грешка')}</button></p>`);
@@ -85,12 +86,8 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       const inlineWhy = task.type === 'choice' && task.why && task.why[resp];
       if (misc || !inlineWhy) fb.insertAdjacentHTML('afterbegin', `<div class="mistake">${icon('target')}<div><b>${misc ? L('Типична грешка') : L('Грешка')}</b><span class="rt">${misc ? richInline(miscLabel(misc)) : L('Виж решението по-долу.')}</span></div></div>`);
       if (aiOn()) fb.insertAdjacentHTML('beforeend', `<button class="btn ghost block aiexplain" data-aiexplain>${L('✦ Защо сгреших? Обясни Gemini')}</button><div class="aibox" hidden></div>`);
-      /* a twin right away (once per original task), so the fix is practised while it is fresh:
-         the next planned task becomes the twin, the session does not get longer */
-      if (item.why !== 'twin' && mode !== 'diag') {
-        const next = Q[P.i + 1];
-        if (next && next.why === 'focus' && !next.task) { Object.assign(next, { skill: task.skill, why: 'twin', level: task.level }); delete next.task; }
-      }
+      /* a twin right away (once per original task), so the fix is practised while it is fresh */
+      if (item.why !== 'twin' && mode !== 'diag') Q.splice(P.i + 1, 0, { skill: task.skill, why: 'twin', level: task.level });
       if (mode === 'diag' && !P.extraDiag.has(task.skill)) { P.extraDiag.add(task.skill); Q.push({ skill: task.skill, why: 'diag' }); }
     }
     btn.textContent = P.i === Q.length - 1 ? L('Виж резултата') : L('Напред');
@@ -126,17 +123,14 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   });
 
   function finish() {
-    P.done = true; S.sessions++;
-    const day = localDay(); if (!S.sessionDays.includes(day)) { S.sessionDays.push(day); S.sessionDays = S.sessionDays.slice(-400); }
-    saveState(true); flushToSheet();
+    P.done = true; S.sessions++; saveState(true); flushToSheet();
     const endMap = subjectSummary(subj), touched = [...new Set(P.answers.map(a => a.skill))];
     const right = P.answers.filter(a => a.correct).length, gained = startMap.lost - endMap.lost;
     const rows = touched.map(id => { const x = endMap.list.find(y => y.sk.id === id), was = skillStatus({ ...x.st, p: before[id] }); return { x, was }; });
     const newlyStrong = rows.filter(r => r.x.status === 'strong' && before[r.x.sk.id] < BKT.strong);
     if (right / P.answers.length >= 0.7) { sound('done'); confetti(); }
     nav.onLeave = () => $$('canvas.confetti').forEach(c => c.remove()); /* confetti must not fall on the next screen */
-    el.querySelector('.playbar').outerHTML = topbar(esc(L(MODE_TITLE[mode])), { noBack: true, right: `<button class="iconbtn" data-close aria-label="${esc(L('Затвори'))}">${icon('close')}</button>` });
-    el.querySelector('[data-close]').onclick = () => home();
+    el.querySelector('.playbar').outerHTML = topbar(esc(L(MODE_TITLE[mode])), { closeIcon: true });
     foot.remove();
     main.innerHTML = `<div class="result pad">
       <div class="res-hero">${ring(right / P.answers.length, right + '/' + P.answers.length, 'big')}
