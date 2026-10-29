@@ -38,7 +38,14 @@ const EN_UI = {
   'Кратка диагностика (≈5 мин): по една задача за всяка тема. После тренираш само слабото.': 'A short diagnostic (≈5 min): one task per topic. Then you train only your weak spots.',
   'Тренирай слабото · 8 задачи': 'Train weak spots · 8 tasks', 'Започваме от <b>{s}</b> — там губиш най-много.': 'We start with <b>{s}</b> — that is where you lose the most.',
   'Всички теми са силни. Направи пробна матура в Shelly!': 'All topics are strong. Try a practice matura in Shelly!',
-  'Започни диагностика': 'Start the diagnostic', 'Покажи с демо ученик': 'Show with a demo learner', 'Карта на уменията': 'Skill map', 'Нова диагностика': 'New diagnostic',
+  'Започни диагностика': 'Start the diagnostic', 'Покажи с демо ученик': 'Show with a demo learner',
+  'Напиши отговор, преди да се оцениш.': 'Write an answer before you grade yourself.',
+  /* past-exam titles and parts for exams that have no English version (66-past.js pastTitle) */
+  'Liquid glass': 'Liquid glass', 'Добавя полупрозрачни, размазани повърхности върху избраната тема. Оригиналният изглед остава наличен, когато опцията е изключена.': 'Adds see-through, blurred surfaces on top of the chosen theme. The original look comes back when this is off.',
+  'Вариант {n}': 'Variant {n}', 'май': 'May', 'юни': 'June', 'август': 'August', 'септември': 'September',
+  'Тест': 'Test', 'Част 1': 'Part 1', 'Част 2': 'Part 2', 'Част 3': 'Part 3', 'Първа част': 'Part one', 'Втора част': 'Part two',
+  'Модул 1': 'Module 1', 'Модул 2': 'Module 2', 'Първи модул': 'Module one', 'Втори модул': 'Module two', 'Трети модул': 'Module three',
+  'Демо ученикът е примерен ученик с генерирани отговори — показва как работи картата на уменията.': 'A demo learner is an example learner with generated answers — it shows how the skill map works.', 'Карта на уменията': 'Skill map', 'Нова диагностика': 'New diagnostic',
   '✦ Gemini е включен': '✦ Gemini is on', 'Без ИИ · включи Gemini в настройките': 'No AI · turn on Gemini in Settings',
   'данните отиват в Google Sheets': 'data goes to Google Sheets', 'данните остават на устройството': 'data stays on this device',
   'Зареден е демо ученик с история от 6 дни': 'Demo learner loaded with 6 days of history',
@@ -55,7 +62,7 @@ const EN_UI = {
   'Диагностика': 'Diagnostic', 'Тренировка на слабото': 'Weak-spot training', 'Една тема': 'One topic', 'Затвори сесията': 'Close the session',
   'Всички теми са силни — няма какво да тренираме': 'All topics are strong — nothing to train', 'Няма нови задачи по тази тема': 'No new tasks for this topic',
   'Да спрем ли?': 'Stop here?', 'Отговорите досега вече са записани в картата на уменията.': 'Your answers so far are already saved in the skill map.', 'Спри': 'Stop',
-  'Проверка на силно умение': 'Check of a strong skill', 'Близнак: същото, нови числа': 'Twin: same thing, new numbers', 'Близнак: същата тема, нова задача': 'Twin: same topic, new task', 'Ниво {n}': 'Level {n}',
+  'Проверка на силно умение': 'Check of a strong skill', 'Близнак: същото, нови числа': 'Twin: same thing, new numbers', 'Близнак: същото умение, нова задача': 'Twin: same skill, new task', 'Близнак: същата тема, нова задача': 'Twin: same topic, new task', 'Ниво {n}': 'Level {n}',
   'Задачата е създадена от ИИ и може да има грешка.': 'This task was made by AI and may contain a mistake.', 'Докладвай грешка': 'Report a mistake',
   'Подсказка от Gemini': 'Hint from Gemini', 'без отговора': 'without the answer', 'Провери': 'Check', 'Напред': 'Next', 'Виж резултата': 'See the result',
   'Вярно!': 'Correct!', 'Не съвсем': 'Not quite', 'Типична грешка': 'Typical mistake', 'Грешка': 'Mistake', 'Виж решението по-долу.': 'See the solution below.',
@@ -70,6 +77,7 @@ const EN_UI = {
 
   /* stats and profile */
   'Матура': 'Matura', '≈ {a} от {b} т. запазени': '≈ {a} of {b} pts kept', 'Още не е измерено — направи диагностика': 'Not measured yet — do the diagnostic',
+  'Още няма задачи за тази матура.': 'No tasks for this matura yet.', 'Скоро': 'Soon',
   'отговора': 'answers', 'верни': 'right', 'средно време': 'average time', '{n} с': '{n} s',
   '{n} силни': '{n} strong', '{n} почти': '{n} almost', '{n} слаби': '{n} weak', '{n} малко данни': '{n} little data',
   'Къде губиш най-много': 'Where you lose the most', 'Отвори картата · {s}': 'Open the map · {s}',
@@ -131,6 +139,14 @@ const EN_UI = {
   'Ключът не може да съдържа интервали': 'The key cannot contain spaces', 'Само латински букви, цифри, точка и тире (напр. gemini-3.8-flash)': 'Only Latin letters, digits, dot and dash (e.g. gemini-3.8-flash)',
   'Адресът трябва да започва с https://': 'The address must start with https://', 'Адресът трябва да започва с https://script.google.com/': 'The address must start with https://script.google.com/',
   'Невалидна стойност': 'Invalid value', 'Задължително поле': 'Required field', 'Невалидната стойност не е запазена': 'The invalid value was not saved',
+  'Обратна връзка': 'Feedback', 'Изпрати обратна връзка': 'Send feedback',
+  'Ако си офлайн, съобщението се пази на устройството и се изпраща автоматично по-късно.': 'If you are offline, your message stays on this device and is sent automatically later.',
+  'Какво искаш да кажеш?': 'What would you like to say?', 'Какво ти помогна, какво не стана или какво липсва?': 'What helped, what did not work, or what is missing?',
+  'Отказ': 'Cancel', 'Изпрати': 'Send', 'Напиши съобщение първо.': 'Write a message first.',
+  'Първо задай адреса на Vertex AI сървъра.': 'First set the Vertex AI server address.', 'Изпращане…': 'Sending…',
+  'Съобщението не може да се запази.': 'The message cannot be saved.',
+  'Благодаря! Обратната връзка е изпратена.': 'Thank you! Your feedback has been sent.',
+  'Запазено е офлайн. Ще се изпрати автоматично.': 'Saved offline. It will be sent automatically.',
 
   /* demo and saved data */
   'Да заредим ли демо ученик?': 'Load a demo learner?',
