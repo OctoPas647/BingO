@@ -41,7 +41,7 @@
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
-- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q14,15,16; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
+- 25 questions that need a drawing were left out of the 2007-2016 files (the GitHub connector can only push text, not images): 2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18.
 - Formulas rebuilt from the answer key because the PDF text lost the signs: 2012 q9, 2015 q9 and q17 (checked against the key), 2013 q9 and q17 (not confirmed, no key). Each has a note in its file.
 - past.pages in the new files is the PDF page range, not the book page numbers used in the 2017+ files.
 - Add the 25 drawing questions with their images (cropped from the PDFs).
@@ -55,3 +55,6 @@
 
 ## Bugs
 - The fast-tap history edge case is addressed by 67-history-sync.js, but still needs a manual test on web and APK.
+- Два грешни отговора с една и съща стойност (генератор по математика): fixed.
+  - Cause: `mcTask()` in `src/js/52-math.js` compared option text as raw strings, so mathematically equivalent values written differently (for example `0,5` and `\frac{1}{2}`) could both appear as choices.
+  - Fix: added `normalize()` and used it before duplicate checks in `mcTask()`, so LaTeX fractions, numbers with `{,}` decimal commas, and whitespace differences are compared by their canonical value.
