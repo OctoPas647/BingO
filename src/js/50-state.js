@@ -19,7 +19,12 @@ const DEFAULT_STATE = () => ({
   review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
   onboarding: null,      /* first-run setup progress (58-onboarding.js) */
   aiFlags: [],           /* AI-made tasks a learner reported as wrong */
-  pastResults: {}        /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  pastResults: {},       /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  feedback: {
+    insights: {},        /* session id -> { at, mastery, weak: [skill ids], strong: [skill ids], notes } */
+    grading: [],         /* recent grading outcomes: { at, sessionId, skill, pct, status } */
+    smoothing: { lr: 0.2, maxDelta: 15 }
+  }
 });
 
 let S = DEFAULT_STATE();
@@ -50,6 +55,37 @@ function cleanSkill(st) {
     hist: Array.isArray(st.hist) ? st.hist.filter(h => Array.isArray(h) && isNum(h[0]) && isNum(h[1])).slice(-60) : []
   };
 }
+function cleanFeedback(v) {
+  const d = DEFAULT_STATE().feedback;
+  if (!isObj(v)) return d;
+  const insights = {};
+  if (isObj(v.insights)) for (const [id, x] of Object.entries(v.insights)) {
+    if (!isObj(x)) continue;
+    insights[id] = {
+      at: isNum(x.at) ? x.at : 0,
+      mastery: isNum(x.mastery) ? clamp(x.mastery, 0, 100) : null,
+      weak: Array.isArray(x.weak) ? x.weak.filter(isStr).slice(0, 50) : [],
+      strong: Array.isArray(x.strong) ? x.strong.filter(isStr).slice(0, 50) : [],
+      notes: isStr(x.notes) ? x.notes.slice(0, 1000) : ''
+    };
+  }
+  const grading = Array.isArray(v.grading) ? v.grading.filter(isObj).map(x => ({
+    at: isNum(x.at) ? x.at : 0,
+    sessionId: isStr(x.sessionId) ? x.sessionId.slice(0, 80) : '',
+    skill: isStr(x.skill) ? x.skill.slice(0, 80) : '',
+    pct: isNum(x.pct) ? clamp(x.pct, 0, 100) : 0,
+    status: ['right', 'partial', 'wrong', 'empty', 'ungraded'].includes(x.status) ? x.status : 'ungraded'
+  })).slice(-200) : [];
+  const sm = isObj(v.smoothing) ? v.smoothing : {};
+  return {
+    insights,
+    grading,
+    smoothing: {
+      lr: isNum(sm.lr) && sm.lr > 0 && sm.lr <= 1 ? sm.lr : d.smoothing.lr,
+      maxDelta: isNum(sm.maxDelta) && sm.maxDelta > 0 && sm.maxDelta <= 100 ? sm.maxDelta : d.smoothing.maxDelta
+    }
+  };
+}
 function sanitizeState(v) {
   const d = DEFAULT_STATE();
   if (!isObj(v)) return d;
@@ -68,6 +104,7 @@ function sanitizeState(v) {
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
+  out.feedback = cleanFeedback(v.feedback);
   return out;
 }
 const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
@@ -122,6 +159,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { el.poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster] || ''; el.removeAttribute('data-poster'); }
   });
 }
