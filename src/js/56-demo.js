@@ -60,12 +60,24 @@ function simulateClass(n = 28, seed = 'class') {
    a copy under its own key, so "Върни моите отговори" in Settings can bring it back. */
 const DEMO_BACKUP_KEY = STORE_KEY + '.before-demo';
 const demoBackupExists = () => { try { return !!localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return false; } };
+/* A backup is real only when it is readable, is not itself the demo learner, and has measured progress */
+function demoBackupHasRealData() {
+  let raw = null; try { raw = localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return false; }
+  if (!raw) return false;
+  try {
+    const v = sanitizeState(JSON.parse(raw));
+    return !v.isDemo && (Object.keys(v.skills).length > 0 || v.log.length > 0);
+  } catch (e) { return false; }
+}
 async function loadDemoLearner() {
   if (hasRealProgress()) {
     const ok = await confirmBox(L('Да заредим ли демо ученик?'), L('Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.'), L('Зареди демото'));
     if (!ok) return false;
-    try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S)); }
-    catch (e) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
+    /* never replace a backup that still holds real learner data with demo data */
+    if (!demoBackupHasRealData()) {
+      try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S)); }
+      catch (e) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
+    }
   }
   simulateLearner();
   return true;
@@ -73,9 +85,14 @@ async function loadDemoLearner() {
 function restoreFromDemo() {
   let raw = null; try { raw = localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { }
   if (!raw) return false;
-  try { S = sanitizeState(JSON.parse(raw)); } catch (e) { return false; }
+  let restored = null;
+  try { restored = sanitizeState(JSON.parse(raw)); } catch (e) { return false; }
+  /* refuse a backup that is itself demo data or has no real progress to restore */
+  if (restored.isDemo || !(Object.keys(restored.skills).length > 0 || restored.log.length > 0)) return false;
+  S = restored;
   S.isDemo = false;
   saveState(true);
+  /* the backup is removed only after the real state has been restored and saved */
   try { localStorage.removeItem(DEMO_BACKUP_KEY); } catch (e) { }
   return true;
 }
