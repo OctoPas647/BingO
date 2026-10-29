@@ -27,11 +27,6 @@ const ONBOARD = {
     { id: 'theme', title: 'Как да изглежда?', text: '„Системна“ следва светлата или тъмната тема на телефона.', fields: [
       { key: 'theme', path: 'settings.theme', type: 'choice', required: true, options: [['auto', 'Системна'], ['light', 'Светла'], ['dark', 'Тъмна'], ['amoled', 'AMOLED']], validate: v => (['auto', 'light', 'dark', 'amoled'].includes(v) ? '' : 'Избери тема') }
     ] },
-    { id: 'ai', title: 'Gemini (по желание)', text: 'Обяснява грешките и дава подсказки без отговора. Без него приложението работи изцяло.', skippable: true, fields: [
-      { key: 'aiMode', path: 'settings.aiMode', type: 'choice', required: true, options: [['off', 'Изключен'], ['key', 'API ключ'], ['proxy', 'Vertex AI сървър']], validate: v => (['off', 'key', 'proxy'].includes(v) ? '' : 'Избери режим') },
-      { key: 'apiKey', path: 'settings.apiKey', type: 'password', label: 'Gemini API ключ', ph: 'от aistudio.google.com', showIf: d => d.aiMode === 'key', required: d => d.aiMode === 'key' },
-      { key: 'proxyUrl', path: 'settings.proxyUrl', type: 'text', label: 'Адрес на сървъра (Cloud Run)', ph: 'https://bingo-ai-xxxx.run.app', showIf: d => d.aiMode === 'proxy', required: d => d.aiMode === 'proxy', validate: v => (/^https:\/\//.test(v) ? '' : 'Адресът трябва да започва с https://') }
-    ] },
     { id: 'sheets', title: 'Свързване с учител (по желание)', text: 'Ако учителят ти е дал адрес на Apps Script, постави го тук. Иначе пропусни.', skippable: true, fields: [
       { key: 'sheetUrl', path: 'settings.sheetUrl', type: 'text', label: 'Адрес на Apps Script (Web app)', ph: 'https://script.google.com/macros/s/…/exec', validate: v => (/^https:\/\/script\.google\.com\//.test(v) ? '' : 'Адресът трябва да е от script.google.com') }
     ] },
@@ -98,6 +93,9 @@ const extraText = extra => (extra === EXTRA_MATH ? 'математика' : TRAC
 const obText = v => (typeof v === 'function' ? v() : v);
 const obTitle = step => obText(step.title);
 const obActive = step => !step.when || step.when();
+/* the step number shown to the learner: the screens seen so far, so a step that is skipped
+   because of an answer never makes the counter jump by two */
+const obPosNow = () => Math.max(1, ONBOARD.steps.slice(0, obState().step + 1).filter(obActive).length);
 
 /* ---------- state helpers ---------- */
 const obState = () => {
@@ -148,6 +146,7 @@ function obMove(dir) {
   const o = obState(), last = ONBOARD.steps.length - 1;
   let i = clamp(o.step + dir, 0, last);
   while (i > 0 && i < last && !obActive(ONBOARD.steps[i])) i += dir;   /* steps that don't apply are passed over */
+  if (i !== o.step) o.pos = clamp((o.pos || obPosNow()) + dir, 1, ONBOARD.steps.length);
   o.step = i; saveState(true);
   return { ok: true, done: false, step: o.step };
 }
@@ -178,7 +177,7 @@ function onboardingRestart() {
   if (S.demo) {
     if (!restoreFromDemo()) { const settings = S.settings; S = DEFAULT_STATE(); S.settings = settings; }
   }
-  S.onboarding = { done: false, step: 0 }; _obShown = 0; saveState(true);
+  S.onboarding = { done: false, step: 0, pos: 1 }; _obShown = 0; saveState(true);
 }
 
 /* "Clear my answers" keeps the profile and settings, so it must keep the setup state too */
@@ -201,7 +200,7 @@ window.__back = () => {
 SCREENS.onboarding = async el => {
   el.style.setProperty('--accent', SUBJECTS[S.subject].color); el.style.setProperty('--accent-ink', inkOn(SUBJECTS[S.subject].color));
   const o = obState(), step = obStep(), isLast = o.step >= ONBOARD.steps.length - 1;
-  const shown = ONBOARD.steps.filter(obActive), n = shown.length, pos = shown.indexOf(step) + 1;
+  const n = ONBOARD.steps.filter(obActive).length, pos = clamp(o.pos || obPosNow(), 1, n);
   const d = {}; step.fields.forEach(f => { const v = obGet(f.path); d[f.key] = v == null ? '' : v; });
   let errors = {};
   const fieldHtml = f => {

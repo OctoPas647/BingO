@@ -238,6 +238,40 @@ with sync_playwright() as pw:
         if p.locator('.pcount').count() and '/ 8' not in p.locator('.pcount').inner_text(): stable = False; break
     ok('weak practice: counter stays / 8 after answers', stable)
     ctx.close()
+
+    # 19. bottom menu: fast tab switches keep browser history in sync (feedback-1443-s1, fix/tab-history)
+    ctx, p = fresh(b, state=DONE)
+    p.click('[data-tab="stats"]'); p.wait_for_timeout(100)
+    p.click('[data-tab="profile"]'); p.wait_for_timeout(100)
+    p.click('[data-tab="home"]'); p.wait_for_timeout(300)
+    p.click('[data-tab="stats"]'); p.wait_for_timeout(300)
+    p.go_back(); p.wait_for_timeout(300)
+    ok('bottom menu: Back from Stats lands on Home', p.locator('.losscard').count() == 1)
+    ok('bottom menu: no stale trap on Home', not ((p.evaluate('history.state') or {}).get('trap')))
+    ctx.close()
+
+    # 20. strict text answers: a whole sentence ignores case, final full stop and quotes; a strict word does not
+    ctx, p = fresh(b, state=DONE)
+    ok('strict sentence: case and full stop ignored', p.evaluate("textMatches('новият учител е подлог.', ['„Новият учител е подлог“'], 'bg', true)"))
+    ok('strict sentence: other words still wrong', not p.evaluate("textMatches('новият учител е допълнение', ['Новият учител е подлог'], 'bg', true)"))
+    ok('strict gap word: capital letter still matters', p.evaluate("scoreTask({ type: 'gaps', points: 1, strict: true, gaps: [{ answer: 'Директорът' }] }, ['директорът'], 'bg').status") == 'wrong')
+    ctx.close()
+
+    # 21. setup: no Gemini step, and the step counter moves by one
+    ctx, p = fresh(b)
+    ok('setup: no Gemini step', p.evaluate("ONBOARD.steps.every(s => s.id !== 'ai')"))
+    seen = []
+    for i in range(6):
+        if not p.locator('.ob-count').count(): break
+        seen.append(p.locator('.ob-count').inner_text().split('/')[0].strip())
+        if p.locator('[data-ob="skip"]').count(): p.click('[data-ob="skip"]')
+        else:
+            if p.locator('.seg button:not([disabled])').count(): p.locator('.seg button:not([disabled])').first.click()
+            p.click('[data-ob="next"]')
+        p.wait_for_timeout(250)
+    nums = [int(x) for x in seen if x.isdigit()]
+    ok('setup: counter goes up by one', nums == list(range(1, len(nums) + 1)) and len(nums) >= 3, str(seen))
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')

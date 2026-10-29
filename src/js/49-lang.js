@@ -40,6 +40,10 @@ const EN_UI = {
   'Всички теми са силни. Направи пробна матура в Shelly!': 'All topics are strong. Try a practice matura in Shelly!',
   'Започни диагностика': 'Start the diagnostic', 'Покажи с демо ученик': 'Show with a demo learner',
   'Напиши отговор, преди да се оцениш.': 'Write an answer before you grade yourself.',
+  /* past-exam titles and parts for exams that have no English version (66-past.js pastTitle) */
+  'Вариант {n}': 'Variant {n}', 'май': 'May', 'юни': 'June', 'август': 'August', 'септември': 'September',
+  'Тест': 'Test', 'Част 1': 'Part 1', 'Част 2': 'Part 2', 'Част 3': 'Part 3', 'Първа част': 'Part one', 'Втора част': 'Part two',
+  'Модул 1': 'Module 1', 'Модул 2': 'Module 2', 'Първи модул': 'Module one', 'Втори модул': 'Module two', 'Трети модул': 'Module three',
   'Демо ученикът е примерен ученик с генерирани отговори — показва как работи картата на уменията.': 'A demo learner is an example learner with generated answers — it shows how the skill map works.', 'Карта на уменията': 'Skill map', 'Нова диагностика': 'New diagnostic',
   '✦ Gemini е включен': '✦ Gemini is on', 'Без ИИ · включи Gemini в настройките': 'No AI · turn on Gemini in Settings',
   'данните отиват в Google Sheets': 'data goes to Google Sheets', 'данните остават на устройството': 'data stays on this device',

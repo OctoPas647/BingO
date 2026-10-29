@@ -78,7 +78,7 @@ Object.assign(MISC, {
 const mixOptions = t => { const o = shuffledIdx(t.options.length, t.id); return { ...t, options: o.map(i => t.options[i]), misc: o.map(i => t.misc[i]), answer: o.indexOf(t.answer) }; };
 BEL_BANK.push(...[
   { id: 'b:lit1', skill: 'lit', level: 1, type: 'choice', passage: 'debelyanov', prompt: 'Кого „приласкава“ тихата нощ в строфата?',
-    options: ['скръбните и нещастните', 'децата в бащината къща', 'щастливите и спокойните', 'войниците на фронта'], answer: 0, misc: [null, 'lit.text', 'lit.text', 'lit.text'],
+    options: ['скръбни и нещастни', 'децата в бащината къща', 'щастливите и спокойните', 'войниците на фронта'], answer: 0, misc: [null, 'lit.text', 'lit.text', 'lit.text'],
     explain: 'Последният стих казва, че нощта идва, за да приласкае **скръбни и нещастни**. Утехата е за страдащия — като лирическия Аз.' },
   { id: 'b:lit2', skill: 'lit', level: 1, type: 'choice', prompt: 'Къде е роден Димчо Дебелянов?',
     options: ['в Копривщица', 'в Пловдив', 'във Велико Търново', 'в София'], answer: 0, misc: [null, 'lit.author', 'lit.author', 'lit.author'],
