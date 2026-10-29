@@ -20,7 +20,7 @@ def setup(p, theme, take_shots):
         p.click('[data-ob="next"]'); p.wait_for_timeout(150)
     p.wait_for_selector('.losscard')
 def answer(p, wrong=False):
-    """answer the current task: pick an option, or type a number"""
+    """answer the current task: pick an option, type a number, or fill a gap"""
     if p.locator('.opt').count():
         n = p.locator('.opt').count()
         p.locator('.opt').nth(1 if wrong else 0).click()
@@ -28,6 +28,8 @@ def answer(p, wrong=False):
         p.locator('input.field').fill('999' if wrong else '1')
     elif p.locator('.gap.pick button').count():
         p.locator('.gap.pick button').first.click()
+    elif p.locator('.gap.slot').count():
+        p.locator('.bank .chip:not(.used)').first.click()
     else:
         p.locator('.gap-in').first.fill('x')
     p.click('[data-main]')
