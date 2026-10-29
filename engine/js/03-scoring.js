@@ -17,8 +17,38 @@ function normText(s, lang, strict, cyr) {
   if (cyr) s = s.replace(/[acepoxyk]/g, ch => LOOKALIKE[ch]);
   return s;
 }
+
+/* Normalizes a free-text answer without removing Bulgarian diacritics: collapses whitespace and
+   makes harmless typography and casing differences comparable. */
+function normalizeTextAnswer(str) {
+  return String(str ?? '')
+    .normalize('NFC')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/[’‘`´]/g, "'")
+    .replace(/[“”„«»]/g, '"')
+    .replace(/[‐-―−]/g, '-')
+    .toLocaleLowerCase('bg');
+}
+
+/* A strict text answer must look like a complete thought: enough words and either a common
+   Bulgarian verb form or sentence-ending punctuation. This rejects lone keywords and fragments. */
+function isFullSentence(str) {
+  const s = normalizeTextAnswer(str).replace(/["'()]/g, '').trim();
+  if (!s) return false;
+  const words = s.split(/\s+/).filter(w => /[\p{L}\p{N}]/u.test(w));
+  if (words.length < 4) return false;
+  const hasVerb = words.some(w => /^(съм|си|е|сме|сте|са|бях|беше|бяха|има|няма|мога|може|можем|можете|трябва|искам|иска|искат|правя|прави|правят|казвам|казва|казват|пиша|пише|пишат|знам|знае|знаят|виждам|вижда|виждат|става|стават)$/u.test(w));
+  return hasVerb || /[.!?]$/.test(s);
+}
+
 function textMatches(given, accepted, lang, strict) {
-  const list = arr(accepted), cyr = list.some(hasCyr), g = normText(given, lang, strict, cyr);
+  const list = arr(accepted), cyr = list.some(hasCyr);
+  if (strict) {
+    const g = normalizeTextAnswer(given);
+    return g !== '' && isFullSentence(given) && list.some(a => normalizeTextAnswer(a) === g);
+  }
+  const g = normText(given, lang, strict, cyr);
   return g !== '' && list.some(a => normText(a, lang, strict, cyr) === g);
 }
 
