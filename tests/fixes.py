@@ -136,6 +136,26 @@ with sync_playwright() as pw:
     bad = p.evaluate("Array.from({length: 300}, (_, i) => genMathTask('quad', 1, i).explain).filter(e => /\\d--\\d/.test(e)).length")
     ok('quad explanation: no double minus', bad == 0, str(bad))
     ctx.close()
+
+    # 11. quad level 2: every equation has real roots and the right Vieta answer
+    ctx, p = fresh(b, state=DONE)
+    bad = p.evaluate(r'''(() => {
+      const fails = [];
+      for (let i = 0; i < 1000; i++) {
+        const t = genMathTask('quad', 2, i);
+        const m = t.prompt.match(/\$([2-5])x\^2([+-])(\d*)x([+-])(\d+)=0\$/);
+        if (!m) { fails.push(['parse', i, t.prompt]); continue; }
+        const a = +m[1];
+        const b = (m[2] === '-' ? -1 : 1) * (m[3] ? +m[3] : 1);
+        const c = (m[4] === '-' ? -1 : 1) * +m[5];
+        if (b * b - 4 * a * c < 0) fails.push(['discriminant', i, b * b - 4 * a * c]);
+        const expected = t.prompt.includes('x_1+x_2') ? Fr(-b, a) : Fr(c, a);
+        if (t.options[t.answer] !== '$' + expected + '$') fails.push(['vieta', i, t.options[t.answer], expected]);
+      }
+      return fails.slice(0, 5);
+    })()''')
+    ok('quad level 2: D >= 0 and Vieta answer matches', len(bad) == 0, str(bad))
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')
