@@ -10,6 +10,7 @@ const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировк�
 SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const sub = SUBJECTS[subj], m = fakeModule(subj), sessionId = uid();
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
+  const classId = getClassId();
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
   const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
   const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
@@ -100,7 +101,9 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
-      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>${L('✦ Подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
+      try {
+        const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${esc(L('Подсказка'))}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove();
+      }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
@@ -119,8 +122,11 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
 
   function finish() {
     P.done = true; S.sessions++; saveState(true); flushToSheet();
-    const endMap = subjectSummary(subj), touched = [...new Set(P.answers.map(a => a.skill))];
-    const right = P.answers.filter(a => a.correct).length, gained = startMap.lost - endMap.lost;
+    /* The result is calculated only from the active class. A weak lower-class matura can
+       increase lost points, but it can never add points from another class. */
+    const endMap = getClassId() === classId ? subjectSummary(subj) : (loadClassProgress(classId), subjectSummary(subj));
+    const touched = [...new Set(P.answers.map(a => a.skill))];
+    const right = P.answers.filter(a => a.correct).length, gained = Math.max(0, startMap.lost - endMap.lost);
     const rows = touched.map(id => { const x = endMap.list.find(y => y.sk.id === id), was = skillStatus({ ...x.st, p: before[id] }); return { x, was }; });
     const newlyStrong = rows.filter(r => r.x.status === 'strong' && before[r.x.sk.id] < BKT.strong);
     if (right / P.answers.length >= 0.7) { sound('done'); confetti(); }

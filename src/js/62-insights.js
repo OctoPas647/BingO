@@ -2,10 +2,14 @@
 SCREENS.insights = async el => {
   const subj = S.subject, sm = subjectSummary(subj), sub = SUBJECTS[subj];
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color));
+  const classId = getClassId();
   const miscs = [];
   sm.list.forEach(x => Object.entries(x.st.misc).forEach(([k, n]) => miscs.push({ k, n, sk: x.sk })));
   miscs.sort((a, b) => b.n - a.n);
-  const mine = S.log.filter(r => r.subject === sub.title), acc = mine.length ? mine.filter(r => r.correct).length / mine.length : 0;
+  /* Answers and mistakes are shown only for the currently selected class, so a lower-class
+     matura cannot inherit or add accuracy data from a higher-class matura. */
+  const mine = S.log.filter(r => r.subject === sub.title && (r.cls || classId) === classId);
+  const acc = mine.length ? mine.filter(r => r.correct).length / mine.length : 0;
   el.innerHTML = `${topbar(L('Грешки и данни'))}<div class="pad settings">
     ${subjectTabs(subj)}
     <section class="card"><h3>${icon('target')}${L('Типичните ти грешки · {s}', { s: esc(L(sub.title)) })}</h3>
@@ -22,7 +26,7 @@ SCREENS.insights = async el => {
       ${S.settings.sheetUrl ? `<button class="btn ghost block" data-flush>${icon('upload')}${L('Изпрати сега')}</button>` : ''}
       <button class="btn ghost block" data-csv>${icon('download')}${L('Моите отговори (CSV)')}</button>
       <button class="btn ghost block" data-class>${icon('download')}${L('Примерен клас от 28 ученика (CSV)')}</button>
-      <p class="muted small">${L('В Looker Studio: <b>Create → Data source → Google Sheets</b> (или File upload за CSV), после таблица „умение × ученик“ със средно <code>mastery_after</code> и стълбова диаграма на <code>misconception</code>. Подробно — в README.')}</p>
+      <p class="muted small">${L('В Looker Studio: <b>Create → Data source → Google Sheets</b> (или File upload → CSV), после таблица „умение × ученик“ със средно <code>mastery_after</code> и стълбова диаграма на <code>misconception</code>. Подробности — в README.')}</p>
       <a class="btn ghost block" href="https://lookerstudio.google.com/" target="_blank" rel="noopener">${icon('next')}${L('Отвори Looker Studio')}</a></section>
     ${S.aiFlags.length ? `<section class="card"><h3>${icon('flag')}${L('Докладвани ИИ задачи')}</h3><p class="small">${L('{n} задачи чакат проверка от учител.', { n: S.aiFlags.length })}</p><button class="btn ghost block" data-flags>${icon('download')}${L('Изтегли (JSON)')}</button></section>` : ''}
   </div>`;
