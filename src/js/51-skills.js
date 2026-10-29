@@ -53,7 +53,7 @@ const MISC = {
   'pow.neg_sign': 'Отрицателният показател не прави числото отрицателно',
   'pow.neg_ignored': 'Отрицателният показател обръща дробта',
   'lin.flip': 'При деление на отрицателно число знакът на неравенството се обръща',
-  'lin.move_sign': 'Знак при пренасяне от едната страна на другата',
+  'lin.move_sign': 'Знак при пренасяне от една страна на друга',
   'lin.divide': 'Делене вместо изваждане (или обратно)',
   'rtri.add_legs': 'Хипотенузата не е сбор от катетите',
   'rtri.no_root': 'Забравен корен квадратен накрая',
@@ -92,7 +92,7 @@ const miscLabel = code => MISC[code] || MISC[code && code.split('.').pop()] || '
    p = chance the skill is mastered. Each answer updates it with Bayes' rule, allowing for
    lucky guesses (guess) and careless slips (slip); then a little learning happens (learn). */
 const BKT = { prior: 0.3, learn: 0.1, slip: 0.12, strong: 0.9, weak: 0.6 };
-const guessOf = task => (task.type === 'choice' ? 1 / task.options.length : task.type === 'gaps' && task.gaps.every(g => g.options) ? Math.pow(0.5, task.gaps.length) : 0.05);
+const guessOf = task => (task.type === 'choice' ? 1 / task.options.length : task.type === 'gaps' && task.gaps.every(g => g.options) ? Math.min(0.2, Math.pow(0.5, task.gaps.length)) : 0.2);
 
 function skillState(subj, id) {
   const k = subj + '.' + id + '@' + currentExamKey();
@@ -103,16 +103,16 @@ function skillState(subj, id) {
 function bktUpdate(p, correct, guess, learn = BKT.learn, maxJump = 1) {
   const s = BKT.slip, g = clamp(guess, 0.01, 0.5);
   const post = correct ? p * (1 - s) / (p * (1 - s) + (1 - p) * g) : p * s / (p * s + (1 - p) * (1 - g));
-  const next = clamp(post + (1 - post) * learn, 0.01, 0.995);
-  /* a wrong answer may lower mastery but never raise it (the learning step could otherwise lift a
-     very weak skill after a mistake); and one answer moves it by at most maxJump */
+  /* learning happens only after a correct answer: a mistake may lower mastery or leave it flat,
+     but must never raise it; one answer also moves the estimate by at most maxJump */
+  const next = correct ? clamp(post + (1 - post) * learn, 0.01, 0.995) : post;
   return clamp(correct ? next : Math.min(p, next), p - maxJump, p + maxJump);
 }
 /* With little evidence one lucky or unlucky answer must not swing the estimate: the first answers
    on a skill learn less and may move it only a little; the limits loosen as answers add up. */
 function bktStep(st, correct, guess) {
-  const learn = BKT.learn * (st.n < 3 ? 0.35 : st.n < 6 ? 0.65 : 1);
-  const maxJump = st.n < 2 ? 0.08 : st.n < 4 ? 0.12 : st.n < 7 ? 0.16 : 0.22;
+  const learn = BKT.learn * (st.n < 3 ? 0.25 : st.n < 6 ? 0.65 : 1);
+  const maxJump = st.n < 2 ? 0.05 : st.n < 4 ? 0.10 : st.n < 7 ? 0.16 : 0.22;
   return bktUpdate(st.p, correct, guess, learn, maxJump);
 }
 function recordAnswer(subj, task, correct, misc) {
