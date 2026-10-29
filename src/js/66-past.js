@@ -50,14 +50,14 @@ SCREENS.home = async (el, ...rest) => {
   await _homePastBase(el, ...rest);
   const list = pastFor(S.subject, myExam()), sec = el.querySelector('.sec-title');
   if (!list.length || !sec) return;
-  sec.insertAdjacentHTML('beforebegin', `<button class="btn ghost block" data-past>${icon('text')}${L('Изпити от минали години')} · ${esc(L(EXAMS[myExam()]))}</button>`);
+  sec.insertAdjacentHTML('beforebegin', `<button class="btn ghost block" data-past>${icon('text')}${t('past_exams.title')} · ${esc(L(EXAMS[myExam()]))}</button>`);
   el.querySelector('[data-past]').onclick = () => pastSheet(S.subject);
 };
 
 function pastSheet(subj) {
   const list = pastFor(subj, myExam()), res = S.pastResults || {};
   sheet({
-    title: L('Изпити от минали години'),
+    title: t('past_exams.title'),
     body: `<p class="muted">${esc(L(EXAMS[myExam()]))} · ${esc(L(SUBJECTS[subj].title))}. ${esc(L('Задачите са както на изпита; отговорите се проверяват по официалния ключ.'))}${appLang() === 'en' && list.some(m => m.lang !== 'en') ? ' ' + esc(L('Изпитите без английски превод са на български.')) : ''}</p>
       <div class="sklist">${list.map(m => {
         const x = m.exams[0], r = res[m.id];
