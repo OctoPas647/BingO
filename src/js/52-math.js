@@ -1,7 +1,7 @@
 /* ================= Math task generators =================
    The idea comes from BrainBurst: a task is built from a seed, so there is an endless supply
    of fresh variants and nobody can learn the answers by heart. Every wrong option is built
-   from one typical mistake, so a wrong answer tells us which mistake was made.
+   from one typical mistake, so a wrong answer tells you which mistake was made.
    Output is a normal Shelly task (choice / number) plus: skill, level, misc (per option). */
 
 function seedRng(seed) {
@@ -47,8 +47,6 @@ function mcTask(r, { prompt, right, wrong, explain, fill }) {
   for (const w of wrong) if (w && !opts.some(o => normalize(o.t) === normalize(w.t))) opts.push(w);
   const extra = (fill || []).slice();
   while (opts.length < 4 && extra.length) { const t = extra.shift(); if (!opts.some(o => normalize(o.t) === normalize(t))) opts.push({ t, misc: 'calc' }); }
-  /* still fewer than four: add near misses (one number in the right answer changed slightly) */
-  if (opts.length < 4) for (const t of nearMisses(right)) { if (opts.length >= 4) break; if (!opts.some(o => normalize(o.t) === normalize(t))) opts.push({ t, misc: 'calc' }); }
   const pick = opts.slice(0, 4), order = shuffledIdx(pick.length, String(r.f()));
   const o = order.map(i => pick[i]);
   return {
@@ -57,16 +55,6 @@ function mcTask(r, { prompt, right, wrong, explain, fill }) {
     answer: o.findIndex(x => x.misc === null),
     misc: o.map(x => x.misc)
   };
-}
-/* Near misses for mcTask: the right answer with one of its numbers moved by 1, 2 or 10 */
-function nearMisses(right) {
-  const out = [];
-  for (const m of String(right).matchAll(/-?\d+(?:\{,\}\d+)?/g)) for (const d of [1, -1, 2, -2, 10, -10]) {
-    const v = roundTo(parseFloat(m[0].replace('{,}', '.')) + d, 4), rep = N(v);
-    const t = right.slice(0, m.index) + rep + right.slice(m.index + m[0].length);
-    if (t !== right && !out.includes(t)) out.push(t);
-  }
-  return out;
 }
 /* A typed-number task; known wrong values map to mistakes */
 const numTask = ({ prompt, answer, explain, wrongs, unit }) => ({ type: 'number', prompt, answer, explain, unit, numMisc: (wrongs || []).filter(w => Number.isFinite(w.v) && Math.abs(w.v - answer) > 0.011) });
@@ -242,7 +230,7 @@ const MATH_GEN = {
         prompt: `В кутия има $${red}$ червени и $${blue}$ сини топки. Изваждаме една топка наслуки. Каква е вероятността тя да е червена?`,
         right: Fr(red, red + blue), wrong: [{ t: Fr(red, blue), misc: 'prob.part_whole' }, { t: Fr(blue, red + blue), misc: 'prob.complement' }, { t: Fr(1, red + blue), misc: 'calc' }],
         fill: [Fr(1, 2), Fr(red, 2 * (red + blue))],
-        explain: `Благоприятни са $${red}$ от всички $${red + blue}$ равновъзможни изхода: $P=${Fr(red, red + blue)}$.`
+        explain: `Благоприятни са $${red}$ от всички $${red + blue}$ равновероятни изхода: $P=${Fr(red, red + blue)}$.`
       });
     }
     if (lvl === 2) {
@@ -263,7 +251,8 @@ const MATH_GEN = {
 };
 
 function genMathTask(skill, level, seed) {
-  const g = nvoGrade(); if (g) level = Math.min(level, NVO_PROFILES.math[g].maxLevel);   /* НВО 4: never level 3 */
+  /* НВО profiles must never reach a generator's level-3 matura branch; clamp before generation. */
+  level = Math.min(level, targetLevelFor(currentExamKey()));
   const r = seedRng(skill + ':' + level + ':' + seed);
   const t = MATH_GEN[skill](r, level);
   return { id: `g:${skill}:${level}:${seed}`, points: 1, media: [], ...t, skill, level, src: 'gen' };

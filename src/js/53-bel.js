@@ -39,10 +39,10 @@ const BEL_BANK = [
     options: ['Исках да дойда, но валеше.', 'Исках да дойда но валеше.'], answer: 0, misc: [null, 'comma.contrast'],
     explain: 'Пред противопоставителния съюз „но“ се пише запетая.' },
   { id: 'b:com5', skill: 'comma', level: 2, type: 'choice', prompt: 'В кое изречение пунктуацията е **правилна**?',
-    options: ['Слънцето изгря, и птиците запяха.', 'Слънцето изгря и птиците запяха.'], answer: 1, misc: ['comma.i', null],
+    options: ['Слънцето изгря, и птиците запяха.', 'Слънцето изгря и птиците запяха.'], answer: 1, misc: [null, 'comma.i'],
     explain: 'Пред единичен съединителен съюз „и“ между две прости изречения запетая **не** се пише.' },
   { id: 'b:com6', skill: 'comma', level: 3, type: 'choice', prompt: 'В кое изречение пунктуацията е **правилна**?',
-    options: ['Когато се стъмни ще запалим огъня.', 'Когато се стъмни, ще запалим огъня.', 'Когато, се стъмни ще запалим огъня.'], answer: 1, misc: ['comma.first', null, 'comma.first'],
+    options: ['Когато се стъмни ще запалим огъня.', 'Когато се стъмни, ще запалим огъня.', 'Когато, се стъмни ще запалим огъня.'], answer: 2, misc: ['comma.first', 'comma.first', null],
     explain: 'Подчиненото изречение „Когато се стъмни“ стои пред главното и се отделя от него със запетая.' },
 
   /* ---------- слято, полуслято, разделно ---------- */
@@ -78,8 +78,8 @@ Object.assign(MISC, {
 const mixOptions = t => { const o = shuffledIdx(t.options.length, t.id); return { ...t, options: o.map(i => t.options[i]), misc: o.map(i => t.misc[i]), answer: o.indexOf(t.answer) }; };
 BEL_BANK.push(...[
   { id: 'b:lit1', skill: 'lit', level: 1, type: 'choice', passage: 'debelyanov', prompt: 'Кого „приласкава“ тихата нощ в строфата?',
-    options: ['скръбни и нещастни', 'децата в бащината къща', 'щастливите и спокойните', 'войниците на фронта'], answer: 0, misc: [null, 'lit.text', 'lit.text', 'lit.text'],
-    explain: 'Последният стих казва, че нощта идва, за да приласкае **скръбни и нещастни**. Утехата е за страдащия — като лирическия Аз.' },
+    options: ['скръбните и нещастните', 'децата в бащината къща', 'щастливите и спокойните', 'войниците на фронта'], answer: 0, misc: [null, 'lit.text', 'lit.text', 'lit.text'],
+    explain: 'Последният стих казва, че нощта идва, за да приласка **скръбни и нещастни**. Утехата е за страдащия — като лирическия Аз.' },
   { id: 'b:lit2', skill: 'lit', level: 1, type: 'choice', prompt: 'Къде е роден Димчо Дебелянов?',
     options: ['в Копривщица', 'в Пловдив', 'във Велико Търново', 'в София'], answer: 0, misc: [null, 'lit.author', 'lit.author', 'lit.author'],
     explain: 'Дебелянов е роден през 1887 г. в **Копривщица**. Родният град и бащината къща са важен образ в поезията му.' },
@@ -94,7 +94,7 @@ BEL_BANK.push(...[
     explain: 'Дебелянов загива през **1916 г.** на Южния фронт през **Първата световна война**. Стихотворенията му излизат в книга след смъртта му.' },
   { id: 'b:lit6', skill: 'lit', level: 2, type: 'choice', passage: 'debelyanov', prompt: 'Каква е римата в строфата (къща – гасне – разгръща – нещастни)?',
     options: ['кръстосана', 'съседна', 'обхватна', 'няма рима'], answer: 0, misc: [null, 'lit.term', 'lit.term', 'lit.term'],
-    explain: 'Римуват се 1. и 3. стих (*къща – разгръща*) и 2. и 4. стих (*гасне – нещастни*): схема **абаб**, т.е. **кръстосана** рима.' },
+    explain: 'Римуват се 1. и 3. стих (*къща – разгръща*) и 2. и 4. стих (*нещастни*): схема **абаб**, т.е. **кръстосана** рима.' },
   { id: 'b:lit7', skill: 'lit', level: 2, type: 'choice', passage: 'debelyanov', prompt: 'Коя дума в строфата е **епитет**?',
     options: ['„тиха“ (нощ)', '„къща“', '„гасне“', '„разгръща“'], answer: 0, misc: [null, 'lit.term', 'lit.term', 'lit.term'],
     explain: '**Епитетът** е художествено определение: „тиха нощ“, „тихи пазви“. „Къща“ е съществително, а „гасне“ и „разгръща“ са глаголи.' },
@@ -110,7 +110,7 @@ BEL_BANK.push(...[
 const EXPLAIN_FIX = {
   'math:q1': 'Търсим две числа със сбор $5$ и произведение $6$ (формули на Виет): това са $2$ и $3$. Проверка: $2^2-5\\cdot2+6=0$ и $3^2-5\\cdot3+6=0$.',
   'math:p2': '$20\\%$ от $50$ е $50\\cdot0{,}2=10$ лв., затова новата цена е $50+10=60$ лв. Или направо: $50\\cdot1{,}2=60$ лв.',
-  'math:p5': 'Увеличение с $25\\%$: новото е $100\\%+25\\%=125\\%$ от старото, т.е. умножаваме по $1{,}25$. Намаление с $25\\%$: остават $100\\%-25\\%=75\\%$, т.е. умножаваме по $0{,}75$.',
+  'math:p5': 'Увеличение с $25\\%$: новото е $100\\%+25\\%=125\\%$ от старото, т.е. умножаваме по $1{,}25$. Намаление с $25\\%$: остават $100\\%-25\\%=75\\%$ от старото, т.е. умножаваме по $0{,}75$.',
   'math:g4': 'Срещу ъгъла $\\alpha$ е катетът $a$, до него е катетът $b$, а $c$ е хипотенузата. $\\sin\\alpha=\\frac{a}{c}$ (срещулежащ катет : хипотенуза), $\\cos\\alpha=\\frac{b}{c}$ (прилежащ катет : хипотенуза), $\\operatorname{tg}\\alpha=\\frac{a}{b}$ (срещулежащ : прилежащ).',
   'bel:c1': 'Подчиненото изречение „която ми подари“ е вмъкнато в главното („Книгата е много интересна“), затова се огражда със запетаи **от двете страни**: пред „която“ и след „подари“.',
   'bel:d1': '„Да се завърнеш…“ изразява **желано** действие — копнеж. Лирическият Аз мечтае за дома, но не е сигурно, че завръщането ще се случи.'
@@ -143,15 +143,17 @@ function seenRecently(id) { const cut = Date.now() - 5 * 24 * 3600 * 1000; retur
    so a session tells tasks apart by their text */
 const taskKey = t => (t.src === 'gen' ? 'q:' + t.skill + ':' + t.prompt : t.id);
 function pickTask(subj, skill, level, seed, avoid = new Set()) {
+  /* The exam cap is enforced here too, so hand-written and Shelly tasks cannot bypass it. */
+  const cap = targetLevelFor(currentExamKey());
   if (subj === 'math' && MATH_GEN[skill]) {
-    const fromModule = BANK.math.filter(t => t.skill === skill && !avoid.has(t.id) && !seenRecently(t.id));
+    const fromModule = BANK.math.filter(t => t.skill === skill && (t.level || 2) <= cap && !avoid.has(t.id) && !seenRecently(t.id));
     if (fromModule.length && seedRng(seed).chance(0.25)) return fromModule[Math.floor(seedRng(seed + ':m').f() * fromModule.length)];
     /* the asked level first, then the neighbouring ones */
-    for (const lvl of [level, ...[1, 2, 3].filter(l => l !== level).sort((a, b) => Math.abs(a - level) - Math.abs(b - level))])
+    for (const lvl of [level, ...[1, 2, 3].filter(l => l !== level && l <= cap).sort((a, b) => Math.abs(a - level) - Math.abs(b - level))])
       for (let k = 0; k < 24; k++) { const t = genMathTask(skill, lvl, k ? seed + ':' + k : seed); if (!avoid.has(taskKey(t))) return t; }
     return fromModule[0] || null;
   }
-  const pool = BANK[subj].filter(t => t.skill === skill && !avoid.has(t.id));
+  const pool = BANK[subj].filter(t => t.skill === skill && (t.level || 2) <= cap && !avoid.has(t.id));
   if (!pool.length) return null;
   const fresh = pool.filter(t => !seenRecently(t.id));
   const list = (fresh.length ? fresh : pool).slice().sort((a, b) => Math.abs((a.level || 2) - level) - Math.abs((b.level || 2) - level));
