@@ -100,14 +100,24 @@ function skillState(subj, id) {
   if (!S.skills[k] && S.skills[subj + '.' + id]) { S.skills[k] = S.skills[subj + '.' + id]; delete S.skills[subj + '.' + id]; }
   return S.skills[k] || (S.skills[k] = { p: BKT.prior, n: 0, ok: 0, last: 0, misc: {}, hist: [] });
 }
-function bktUpdate(p, correct, guess) {
+function bktUpdate(p, correct, guess, learn = BKT.learn, maxJump = 1) {
   const s = BKT.slip, g = clamp(guess, 0.01, 0.5);
   const post = correct ? p * (1 - s) / (p * (1 - s) + (1 - p) * g) : p * s / (p * s + (1 - p) * (1 - g));
-  return clamp(post + (1 - post) * BKT.learn, 0.01, 0.995);
+  const next = clamp(post + (1 - post) * learn, 0.01, 0.995);
+  /* a wrong answer may lower mastery but never raise it (the learning step could otherwise lift a
+     very weak skill after a mistake); and one answer moves it by at most maxJump */
+  return clamp(correct ? next : Math.min(p, next), p - maxJump, p + maxJump);
+}
+/* With little evidence one lucky or unlucky answer must not swing the estimate: the first answers
+   on a skill learn less and may move it only a little; the limits loosen as answers add up. */
+function bktStep(st, correct, guess) {
+  const learn = BKT.learn * (st.n < 3 ? 0.35 : st.n < 6 ? 0.65 : 1);
+  const maxJump = st.n < 2 ? 0.08 : st.n < 4 ? 0.12 : st.n < 7 ? 0.16 : 0.22;
+  return bktUpdate(st.p, correct, guess, learn, maxJump);
 }
 function recordAnswer(subj, task, correct, misc) {
   const st = skillState(subj, task.skill), before = st.p;
-  st.p = bktUpdate(st.p, correct, guessOf(task)); st.n++; if (correct) st.ok++; st.last = Date.now();
+  st.p = bktStep(st, correct, guessOf(task)); st.n++; if (correct) st.ok++; st.last = Date.now();
   if (!correct && misc) st.misc[misc] = (st.misc[misc] || 0) + 1;
   st.hist.push([Date.now(), roundTo(st.p, 3)]); if (st.hist.length > 60) st.hist.shift();
   saveState();
@@ -128,23 +138,25 @@ function subjectSummary(subj) {
 
 /* ---------- Choosing what to train ----------
    Highest expected points lost first; unknown skills get a small push so they get measured;
-   strong skills are left out, except one quick check if not seen for 3 days. */
+   strong skills are left out, except one quick check if not seen for 3 days.
+   The plan never has more than `size` tasks, the quick check included. */
 const CHECK_AFTER = 3 * 24 * 3600 * 1000;
 function planSession(subj, size = 8) {
   const sum_ = subjectSummary(subj);
   const open = sum_.list.filter(x => x.status !== 'strong').map(x => ({ ...x, prio: x.lost * (x.st.n < 2 ? 1.3 : 1) })).sort((a, b) => b.prio - a.prio);
   const focus = open.slice(0, Math.min(open.length, open.length > 3 ? 3 : open.length));
+  const due = sum_.list.filter(x => x.status === 'strong' && Date.now() - x.st.last > CHECK_AFTER).sort((a, b) => a.st.last - b.st.last)[0];
+  const room = due && focus.length ? size - 1 : size;
   const plan = [];
   if (focus.length) {
-    const shares = focus.length === 1 ? [size] : focus.length === 2 ? [Math.ceil(size * 0.6), Math.floor(size * 0.4)] : [Math.ceil(size * 0.5), Math.round(size * 0.3), 0];
-    shares[shares.length - 1] = size - sum(shares.slice(0, -1));
+    const shares = focus.length === 1 ? [room] : focus.length === 2 ? [Math.ceil(room * 0.6), Math.floor(room * 0.4)] : [Math.ceil(room * 0.5), Math.round(room * 0.3), 0];
+    shares[shares.length - 1] = room - sum(shares.slice(0, -1));
     const queues = focus.map((f, i) => Array.from({ length: shares[i] }, () => f.sk.id));
     /* interleave the skills: mixing them makes you recognise *which* method to use */
     while (queues.some(q => q.length)) queues.forEach(q => { if (q.length) plan.push({ skill: q.shift(), why: 'focus' }); });
   }
-  const due = sum_.list.filter(x => x.status === 'strong' && Date.now() - x.st.last > CHECK_AFTER).sort((a, b) => a.st.last - b.st.last)[0];
   if (due) plan.splice(Math.min(3, plan.length), 0, { skill: due.sk.id, why: 'check' });
-  return { plan, focus: focus.map(f => f.sk.id), check: due ? due.sk.id : null };
+  return { plan: plan.slice(0, size), focus: focus.map(f => f.sk.id), check: due ? due.sk.id : null };
 }
 /* Diagnostic: one task per skill, a second one only where the first was wrong */
 function planDiagnostic(subj) { return SUBJECTS[subj].skills.map(sk => ({ skill: sk.id, why: 'diag' })); }

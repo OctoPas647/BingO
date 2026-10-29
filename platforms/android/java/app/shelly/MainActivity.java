@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(false);
         s.setAllowContentAccess(false);
         s.setMediaPlaybackRequiresUserGesture(true);
-        s.setTextZoom(100);
+        applyFontScale();
         s.setUserAgentString(s.getUserAgentString() + " ShellyApp/1.0");
 
         web.addJavascriptInterface(new UiBridge(), "AndroidUI");
@@ -261,7 +261,16 @@ public class MainActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration c) {
         super.onConfigurationChanged(c);
+        applyFontScale();
         js("window.__systemTheme && __systemTheme()");
+    }
+
+    /* Text follows Android's font size setting (accessibility): 100% at the normal size, larger
+       when the phone's font is larger. setTextZoom(100) used to ignore that setting. */
+    void applyFontScale() {
+        float scale = getResources().getConfiguration().fontScale;
+        if (scale <= 0) scale = 1f;
+        web.getSettings().setTextZoom(Math.round(scale * 100f));
     }
 
     class UiBridge {

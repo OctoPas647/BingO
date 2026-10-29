@@ -29,7 +29,7 @@ function simulateLearner({ truth = DEMO_TRUE, name = 'Демо ученик', cl
       const lvl = levelFor(st.p), task = pickTask(subj, sk.id, lvl, seed + sk.id + i, used) || pickTask(subj, sk.id, lvl, seed + sk.id + i); used.add(task.id);
       const { correct, misc } = simulateAnswer(task, pTrue, r, (off + i * 0.6180339887) % 1);
       const t = start + (i / n) * days * 24 * 3600 * 1000 + Math.floor(r.f() * 3600e3);
-      const before = st.p; st.p = bktUpdate(st.p, correct, guessOf(task)); st.n++; if (correct) st.ok++; st.last = t;
+      const before = st.p; st.p = bktStep(st, correct, guessOf(task)); st.n++; if (correct) st.ok++; st.last = t;
       if (!correct && misc) st.misc[misc] = (st.misc[misc] || 0) + 1;
       st.hist.push([t, roundTo(st.p, 3)]);
       rows.push({ t, timestamp: new Date(t).toISOString(), student_id: id, student: name, class: cls, subject: SUBJECTS[subj].title, skill_id: subj + '.' + sk.id, skill: sk.name,

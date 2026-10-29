@@ -45,31 +45,38 @@ with sync_playwright() as pw:
     ok('history has no stale entries', p.evaluate('history.state') is None or 'trap' not in (p.evaluate('history.state') or {}), str(p.evaluate('history.state')))
     ctx.close()
 
-    # 4. session: double tap on Провери keeps the feedback; order needs a move; ± works
-    ctx, p = fresh(b, state=DONE)
-    p.click('[data-start="diag"]'); p.wait_for_selector('.task')
-    seen_number = False
-    for i in range(14):
-        if p.locator('input.field.num').count() and not seen_number:
-            seen_number = True
-            p.fill('input.field.num', '29'); p.click('.signbtn')
-            ok('± turns 29 into -29', p.input_value('input.field.num') == '-29')
-            p.click('.signbtn'); ok('± again gives 29', p.input_value('input.field.num') == '29')
-        if p.locator('.orderlist').count():
-            ok('order task: Провери disabled before any move', p.locator('[data-main]').is_disabled())
-            p.locator('[data-mv="1"]').first.click()
-        if p.locator('.opt').count(): p.locator('.opt').first.click()
-        elif p.locator('input.field').count() and not p.input_value('input.field'): p.fill('input.field', '1')
-        if p.locator('[data-main]').is_disabled(): break
-        before = p.locator('.pcount').inner_text()
-        p.locator('[data-main]').dblclick(); p.wait_for_timeout(150)
-        if i == 0:
-            ok('double tap: feedback still shown', p.locator('.checkbar.good, .checkbar.bad').count() == 1 and p.locator('.pcount').inner_text() == before, before)
-            p.screenshot(path=str(SHOTS / 'double-tap.png'))
-        p.wait_for_timeout(500); p.click('[data-main]'); p.wait_for_timeout(150)
-        if p.locator('.result').count(): break
-    ok('a number task was met', seen_number)
-    ctx.close()
+    # 4. session: double tap on Провери keeps the feedback; order needs a move; ± works.
+    #    The diagnostic picks random variants, so a number task may not come in one run: retry a few times.
+    sign_checked = False
+    def number_task_seen(first):
+        global sign_checked
+        ctx, p = fresh(b, state=DONE)
+        p.click('[data-start="diag"]'); p.wait_for_selector('.task')
+        seen = False
+        for i in range(14):
+            if p.locator('input.field.num').count() and not seen:
+                seen = True
+                if not sign_checked:
+                    sign_checked = True
+                    p.fill('input.field.num', '29'); p.click('.signbtn')
+                    ok('± turns 29 into -29', p.input_value('input.field.num') == '-29')
+                    p.click('.signbtn'); ok('± again gives 29', p.input_value('input.field.num') == '29')
+            if p.locator('.orderlist').count():
+                ok('order task: Провери disabled before any move', p.locator('[data-main]').is_disabled())
+                p.locator('[data-mv="1"]').first.click()
+            if p.locator('.opt').count(): p.locator('.opt').first.click()
+            elif p.locator('input.field').count() and not p.input_value('input.field'): p.fill('input.field', '1')
+            if p.locator('[data-main]').is_disabled(): break
+            before = p.locator('.pcount').inner_text()
+            p.locator('[data-main]').dblclick(); p.wait_for_timeout(150)
+            if i == 0 and first:
+                ok('double tap: feedback still shown', p.locator('.checkbar.good, .checkbar.bad').count() == 1 and p.locator('.pcount').inner_text() == before, before)
+                p.screenshot(path=str(SHOTS / 'double-tap.png'))
+            p.wait_for_timeout(500); p.click('[data-main]'); p.wait_for_timeout(150)
+            if p.locator('.result').count(): break
+        ctx.close()
+        return seen
+    ok('a number task was met', any(number_task_seen(k == 0) for k in range(3)))
 
     # 5. no repeated questions in a one-skill session (Дебелянов)
     ctx, p = fresh(b, state={**DONE, 'subject': 'bel'})
@@ -187,6 +194,49 @@ with sync_playwright() as pw:
     ok('exam scope: another exam starts fresh', p.evaluate("skillState('math', 'quad').n") == 0)
     p.evaluate("S.profile.exam = 'nvo7'")
     ok('exam scope: switching back keeps the progress', p.evaluate("skillState('math', 'quad').n") == 5)
+    ctx.close()
+
+    # 16. generated math: quadratics at level 2 have real roots, every choice task has four options
+    ctx, p = fresh(b, state=DONE)
+    bad = p.evaluate(r"""(() => {
+      const fails = [];
+      for (let i = 0; i < 1000; i++) {
+        const t = genMathTask('quad', 2, i);
+        const m = t.prompt.match(/\$([2-5])x\^2([+-])(\d*)x([+-])(\d+)=0\$/);
+        if (!m) { fails.push(['parse', i, t.prompt]); continue; }
+        const a = +m[1], b = (m[2] === '-' ? -1 : 1) * (m[3] ? +m[3] : 1), c = (m[4] === '-' ? -1 : 1) * +m[5];
+        if (b * b - 4 * a * c < 0) fails.push(['D<0', i, b * b - 4 * a * c]);
+      }
+      return fails.slice(0, 5);
+    })()""")
+    ok('quad level 2: D >= 0', len(bad) == 0, str(bad))
+    few = p.evaluate("Object.keys(MATH_GEN).flatMap(sk => [1, 2, 3].flatMap(l => Array.from({ length: 150 }, (_, i) => genMathTask(sk, l, i)))).filter(t => t.type === 'choice' && t.options.length < 4).map(t => t.id).slice(0, 5)")
+    ok('generated choice tasks: always four options', len(few) == 0, str(few))
+    ctx.close()
+
+    # 17. the model: a wrong answer never raises mastery; the first answers move it only a little
+    ctx, p = fresh(b, state=DONE)
+    ok('model: wrong answer never raises mastery', p.evaluate("[0.02, 0.05, 0.1, 0.3].every(x => bktUpdate(x, false, 0.5) <= x)"))
+    ok('model: first answer moves at most 0.08', p.evaluate("bktStep({ p: 0.3, n: 0 }, true, 0.05)") <= 0.3801)
+    ok('model: later answers may move more', p.evaluate("bktStep({ p: 0.3, n: 8 }, true, 0.05)") > 0.45)
+    ctx.close()
+
+    # 18. weak practice keeps 8 tasks: a twin takes the next planned place, the counter stays "/ 8"
+    weak = {k: {'p': v, 'n': 3, 'ok': 1, 'last': 0, 'misc': {}, 'hist': []} for k, v in {'math.quad': 0.2, 'math.pct': 0.3, 'math.pow': 0.4}.items()}
+    ctx, p = fresh(b, state={**DONE, 'subject': 'math', 'skills': weak})
+    p.click('[data-start="focus"]'); p.wait_for_selector('.task')
+    ok('weak practice: counter starts at 1 / 8', p.locator('.pcount').inner_text() == '1 / 8', p.locator('.pcount').inner_text())
+    stable = True
+    for i in range(6):
+        if p.locator('.result').count(): break
+        if p.locator('.opt').count(): p.locator('.opt').last.click()
+        elif p.locator('input.field').count() and p.locator('input.field').first.is_editable(): p.fill('input.field', '12345')
+        elif p.locator('.bank .chip:not(.used)').count(): p.locator('.bank .chip:not(.used)').first.click()
+        if p.locator('[data-main]').is_disabled(): break
+        p.locator('[data-main]').click(); p.wait_for_timeout(500)
+        p.locator('[data-main]').click(); p.wait_for_timeout(200)
+        if p.locator('.pcount').count() and '/ 8' not in p.locator('.pcount').inner_text(): stable = False; break
+    ok('weak practice: counter stays / 8 after answers', stable)
     ctx.close()
     b.close()
 

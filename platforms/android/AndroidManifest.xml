@@ -16,7 +16,7 @@
             android:name="app.shelly.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|keyboard|smallestScreenSize|uiMode|density"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|keyboard|smallestScreenSize|uiMode|density|fontScale"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

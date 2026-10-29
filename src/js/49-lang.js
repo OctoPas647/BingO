@@ -57,7 +57,7 @@ const EN_UI = {
   'Диагностика': 'Diagnostic', 'Тренировка на слабото': 'Weak-spot training', 'Една тема': 'One topic', 'Затвори сесията': 'Close the session',
   'Всички теми са силни — няма какво да тренираме': 'All topics are strong — nothing to train', 'Няма нови задачи по тази тема': 'No new tasks for this topic',
   'Да спрем ли?': 'Stop here?', 'Отговорите досега вече са записани в картата на уменията.': 'Your answers so far are already saved in the skill map.', 'Спри': 'Stop',
-  'Проверка на силно умение': 'Check of a strong skill', 'Близнак: същото, нови числа': 'Twin: same thing, new numbers', 'Ниво {n}': 'Level {n}',
+  'Проверка на силно умение': 'Check of a strong skill', 'Близнак: същото, нови числа': 'Twin: same thing, new numbers', 'Близнак: същото умение, нова задача': 'Twin: same skill, new task', 'Ниво {n}': 'Level {n}',
   'Задачата е създадена от ИИ и може да има грешка.': 'This task was made by AI and may contain a mistake.', 'Докладвай грешка': 'Report a mistake',
   'Подсказка от Gemini': 'Hint from Gemini', 'без отговора': 'without the answer', 'Провери': 'Check', 'Напред': 'Next', 'Виж резултата': 'See the result',
   'Вярно!': 'Correct!', 'Не съвсем': 'Not quite', 'Типична грешка': 'Typical mistake', 'Грешка': 'Mistake', 'Виж решението по-долу.': 'See the solution below.',
