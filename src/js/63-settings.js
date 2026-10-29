@@ -2,8 +2,12 @@
 SCREENS.settings = async el => {
   const st = S.settings;
   const seg = (key, opts) => `<div class="seg" data-key="${key}">${opts.map(([v, label]) => `<button data-v="${v}" class="${st[key] === v ? 'on' : ''}">${esc(label)}</button>`).join('')}</div>`;
-  const field = (key, label, ph, type = 'text', obj = 'settings') => `<label class="fld"><span>${esc(label)}</span><input class="field" data-f="${obj}.${key}" type="${type}" value="${esc((obj === 'profile' ? S.profile : st)[key] || '')}" placeholder="${esc(ph)}" autocomplete="off" spellcheck="false"></label>`;
+  const field = (key, label, ph, type = 'text', obj = 'settings', max = '') => `<label class="fld"><span>${esc(label)}</span><input class="field" data-f="${obj}.${key}" type="${type}" value="${esc((obj === 'profile' ? S.profile : st)[key] || '')}" placeholder="${esc(ph)}" autocomplete="off" spellcheck="false"${max ? ` maxlength="${max}"` : ''}></label>`;
   el.innerHTML = `${topbar(L('Настройки'))}<div class="pad settings">
+    <section class="card"><h3>${icon('user')}${L('Профил')}</h3>
+      ${field('name', L('Име и фамилия'), L('напр. Мария Петрова'), 'text', 'profile', MAX_NAME_LEN)}
+      ${field('cls', L('Клас'), L('напр. 11А'), 'text', 'profile', MAX_CLS_LEN)}
+      <p class="muted small">${L('Името може да има най-много 40 знака, а класът — 10.')}</p></section>
     <section class="card"><h3>${icon('globe')}Език · Language</h3>${seg('lang', LANGS)}
       <p class="muted small">${L('Езикът сменя менютата и бутоните. Задачите остават на български.')}</p></section>
     <section class="card"><h3>✦ Gemini</h3>${seg('aiMode', [['off', L('Изключен')], ['key', L('API ключ')], ['proxy', L('Vertex AI сървър')]])}
@@ -32,7 +36,7 @@ SCREENS.settings = async el => {
     if (w) { st.sound = !st.sound; APP.settings.sound = st.sound; saveState(); w.classList.toggle('on'); return; }
     if (e.target.closest('[data-setup]')) { onboardingRestart(); NAV.length = 0; NAV.push({ screen: 'onboarding', params: {} }); return render(); }
     if (e.target.closest('[data-demo]')) { if (await loadDemoLearner()) { toast('Зареден е демо ученик'); home(); } return; }
-    if (e.target.closest('[data-restore]')) { if (restoreFromDemo()) { APP.settings.theme = S.settings.theme; APP.settings.lang = S.settings.lang; applySettings(); toast('Твоите отговори са върнати'); home(); } else toast('Копието не може да се прочете', 'bad'); return; }
+    if (e.target.closest('[data-restore]')) { if (restoreFromDemo()) { APP.settings.theme = S.settings.theme; APP.settings.lang = st.lang; applySettings(); toast('Твоите отговори са върнати'); home(); } else toast('Копието не може да се прочете', 'bad'); return; }
     if (e.target.closest('[data-wipe]') && await confirmBox(L('Да изчистим ли всичко?'), L('Картата на уменията и всички отговори на това устройство ще се изтрият.'), L('Изчисти'), true)) { resetState(true); toast('Изчистено'); return home(); }
     if (e.target.closest('[data-test]')) {
       const tb = e.target.closest('[data-test]'); tb.disabled = true;
@@ -49,6 +53,11 @@ SCREENS.settings = async el => {
     proxyUrl: 'Адресът трябва да започва с https://',
     sheetUrl: 'Адресът трябва да започва с https://script.google.com/'
   };
+  const PROFILE_MAX = { name: MAX_NAME_LEN, cls: MAX_CLS_LEN };
+  const PROFILE_MSG = {
+    name: 'Името може да има най-много 40 знака',
+    cls: 'Класът може да има най-много 10 знака'
+  };
   const fieldError = (f, msg) => {
     f.classList.toggle('invalid', !!msg); f.setAttribute('aria-invalid', msg ? 'true' : 'false');
     let m = f.parentNode.querySelector('.fld-err');
@@ -58,6 +67,11 @@ SCREENS.settings = async el => {
   el.addEventListener('input', e => {
     const f = e.target.closest('[data-f]'); if (!f) return;
     const [obj, key] = f.dataset.f.split('.'), v = f.value.trim(), ok = SETTING_OK[key];
+    if (obj === 'profile' && PROFILE_MAX[key] != null && v.length > PROFILE_MAX[key]) {
+      fieldError(f, L(PROFILE_MSG[key]));
+      toast(L(PROFILE_MSG[key]), 'bad');
+      return;
+    }
     if (obj === 'settings' && ok && !ok(v)) {
       if (!(key === 'model' && v === '')) return fieldError(f, L(SETTING_MSG[key] || 'Невалидна стойност'));
       return fieldError(f, L('Задължително поле'));
