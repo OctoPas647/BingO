@@ -16,7 +16,7 @@
 - Focus and one-topic sessions keep their length: a twin takes the next planned place. The diagnostic still adds one more task where the first was wrong, as documented.
 - МОН's grade scale stays 30 / 41 / 62,5 / 84 (checked against МОН's announcement); feedback-1623-s16's 95-point Отличен was not taken.
 - The streak counts days with a finished session (`S.sessionDays`); older saves start from the days with answers.
-- "Сказуемно определение" is kept as the term (textbook term, used by the typical-mistake labels).
+- "Сказуемо определение" is kept as the term (textbook term, used by the typical-mistake labels).
 - Firestore: only staff read /questions (it holds correctAnswer); students get questions from `startAttempt`.
 
 ## Left
@@ -30,7 +30,7 @@
 
 ## Manual testing
 1. Open BingO on web and choose **НВО 4-ти клас** during onboarding.
-2. Start **Диагностика** and then **Тренировка на слабото** for Математика и БЕЛ.
+2. Start **Диагностика** and then **Тренировка на слабото** for Математика and БЕЛ.
 3. Confirm that every task shows **Ниво 1**, that matura-only skills such as quadratic equations, progressions, and Дебелянов literature do not appear, and that existing progress from an old save is still visible after switching to the exam-aware profile.
 4. Repeat with **НВО 7-ми клас** and **НВО 10-ти клас**: tasks must be level 1 or 2 only; НВО 10 may include the full mapped skill set, while НВО 7 excludes matura-only skills.
 5. Choose **ДЗИ 12-ти клас** and confirm that level 3 tasks and the full matura skill map still work.
