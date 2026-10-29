@@ -20,17 +20,20 @@ def setup(p, theme, take_shots):
         p.click('[data-ob="next"]'); p.wait_for_timeout(150)
     p.wait_for_selector('.losscard')
 def answer(p, wrong=False):
-    """answer the current task: pick an option, or type a number"""
+    """answer the current task: pick an option, type a number, order items, or match pairs"""
     if p.locator('.opt').count():
-        n = p.locator('.opt').count()
         p.locator('.opt').nth(1 if wrong else 0).click()
     elif p.locator('input.field').count():
         p.locator('input.field').fill('999' if wrong else '1')
     elif p.locator('.gap.pick button').count():
         p.locator('.gap.pick button').first.click()
-    else:
+    elif p.locator('.orderlist').count():
+        p.locator('[data-mv="1"]').first.click()
+    elif p.locator('.mi.l').count():
+        p.locator('.mi.l').first.click(); p.locator('.mi.r').first.click()
+    elif p.locator('.gap-in').count():
         p.locator('.gap-in').first.fill('x')
-    p.click('[data-main]')
+    if p.locator('[data-main]').count(): p.click('[data-main]')
 with sync_playwright() as pw:
     b = pw.chromium.launch()
     for theme in ['light', 'dark']:
@@ -47,7 +50,7 @@ with sync_playwright() as pw:
             if not p.locator('[data-main]').count(): break
             answer(p, wrong=(i % 3 == 1)); p.wait_for_timeout(500)  # a quick second tap is ignored on purpose
             if i == 1: shot(p, 'light-03-diag-wrong')
-            p.click('[data-main]'); p.wait_for_timeout(120)
+            if p.locator('[data-main]').count(): p.click('[data-main]'); p.wait_for_timeout(120)
         p.wait_for_selector('.result'); shot(p, 'light-04-diag-result')
         p.click('[data-out]'); p.wait_for_selector('.losscard'); shot(p, 'light-05-map')
         # demo learner and focus
@@ -59,7 +62,7 @@ with sync_playwright() as pw:
             answer(p, wrong=(i == 0)); p.wait_for_timeout(500)
             if i == 0: shot(p, 'light-10-focus-wrong')
             if i == 1: shot(p, 'light-11-twin')
-            p.click('[data-main]'); p.wait_for_timeout(150)
+            if p.locator('[data-main]').count(): p.click('[data-main]'); p.wait_for_timeout(150)
         p.wait_for_selector('.result'); p.wait_for_timeout(900); shot(p, 'light-12-focus-result')
         p.click('[data-out]'); p.wait_for_selector('.losscard')
         p.click('[data-go="insights"]'); p.wait_for_selector('.misclist, .card'); shot(p, 'light-13-insights')
