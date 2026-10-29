@@ -1,0 +1,82 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isSelf(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function hasRole(role) {
+      return signedIn()
+        && request.auth.token.role == role;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function isTeacher() {
+      return hasRole('teacher');
+    }
+
+    // A student profile can be created by its owner on first sign-in.
+    // Role is controlled by custom claims / admin callable, not by clients.
+    match /users/{userId} {
+      allow read: if isSelf(userId) || isTeacher() || isAdmin();
+      allow create: if isSelf(userId)
+        && request.resource.data.role == 'student'
+        && request.resource.data.uid == userId;
+      allow update: if isSelf(userId)
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.uid == resource.data.uid;
+      allow delete: if isAdmin();
+    }
+
+    // Classes are managed by teachers/admins.
+    match /classes/{classId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isTeacher() || isAdmin();
+    }
+
+    // Question banks hold the correct answers, so only staff read them directly.
+    // Students get a test's questions without answers from the startAttempt function.
+    match /questions/{questionId} {
+      allow read: if isTeacher() || isAdmin();
+      allow create, update, delete: if isTeacher() || isAdmin();
+    }
+
+    // Attempts and answers are created and graded only by callable Functions.
+    // Students and teachers can read according to the rules below.
+    match /attempts/{attemptId} {
+      allow read: if isSelf(resource.data.studentId)
+        || isTeacher()
+        || isAdmin();
+      allow create, update, delete: if false;
+
+      match /answers/{answerId} {
+        allow read: if isSelf(get(/databases/$(database)/documents/attempts/$(attemptId)).data.studentId)
+          || isTeacher()
+          || isAdmin();
+        allow create, update, delete: if false;
+      }
+    }
+
+    // Final results are readable by the student and their teachers.
+    match /results/{resultId} {
+      allow read: if isSelf(resource.data.studentId)
+        || isTeacher()
+        || isAdmin();
+      allow write: if false;
+    }
+
+    // Default deny.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

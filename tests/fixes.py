@@ -272,6 +272,50 @@ with sync_playwright() as pw:
     nums = [int(x) for x in seen if x.isdigit()]
     ok('setup: counter goes up by one', nums == list(range(1, len(nums) + 1)) and len(nums) >= 3, str(seen))
     ctx.close()
+
+    # 22. Stats shows every planned matura; one without tasks yet says "Скоро"
+    ctx, p = fresh(b, state={**DONE, 'profile': {**DONE['profile'], 'exam': 'dzi12', 'track': 'hum', 'extra': 'maths'}})
+    p.click('[data-tab="stats"]'); p.wait_for_selector('.statcard')
+    ok('planned matura: БЕЛ, Хуманитарни (скоро), Математика', p.locator('.statcard').count() == 3 and p.locator('.statcard button[disabled]').count() == 1, str(p.locator('.statcard h3').all_inner_texts()))
+    p.screenshot(path=str(SHOTS / 'stats-planned.png'), full_page=True)
+    ctx.close()
+
+    # 23. НВО: the exam from the setup picks the skill map and the difficulty
+    ctx, p = fresh(b, state={**DONE, 'subject': 'math', 'profile': {**DONE['profile'], 'exam': 'nvo4'}})
+    ok('НВО 4: three math skills', p.evaluate("subjectSummary('math').list.map(x => x.sk.id).join()") == 'pct,rtri,prob')
+    ok('НВО 4: no level 3 tasks', p.evaluate("genMathTask('pct', 3, 1).level") == 2)
+    ok('НВО 4: Home says НВО', 'НВО' in p.locator('.losscard .kicker').first.inner_text())
+    p.evaluate("S.profile.exam = 'dzi12'")
+    ok('ДЗИ: the matura skill map', p.evaluate("subjectSummary('math').list.length") == 7)
+    ctx.close()
+
+    # 24. Liquid glass: the switch turns the look on and off, and cards keep a background
+    ctx, p = fresh(b, state=DONE)
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-sw="glass"]')
+    p.click('[data-sw="glass"]'); p.wait_for_timeout(200)
+    ok('glass: on', p.evaluate("document.documentElement.dataset.glass") == '1' and p.evaluate("S.settings.glass") is True)
+    bg = p.evaluate("getComputedStyle(document.querySelector('.card')).backgroundColor")
+    ok('glass: cards keep a see-through background', bg.startswith('rgba(') and not bg.endswith(', 0)'), bg)
+    p.screenshot(path=str(SHOTS / 'settings-glass.png'), full_page=True)
+    p.reload(); p.wait_for_timeout(300)
+    ok('glass: kept after restart', p.evaluate("document.documentElement.dataset.glass") == '1')
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-sw="glass"]'); p.wait_for_timeout(200)
+    ok('glass: off again', p.evaluate("document.documentElement.dataset.glass") is None)
+    ctx.close()
+
+    # 25. feedback: kept on the phone when the server fails, sent when it answers
+    ctx, p = fresh(b, state={**DONE, 'settings': {'aiMode': 'proxy', 'proxyUrl': 'https://bingo.example.run.app'}})
+    mode = {'v': 'error'}
+    def fb(route):
+        if mode['v'] == 'error': route.fulfill(status=502, body='{}')
+        else: route.fulfill(status=200, content_type='application/json', headers={'Access-Control-Allow-Origin': '*'}, body='{"ok":true}')
+    p.route('https://bingo.example.run.app/**', fb)
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-feedback]')
+    p.fill('[data-fb-text]', 'Много добро приложение'); p.click('[data-fb-send]'); p.wait_for_timeout(600)
+    ok('feedback: kept when the server fails', p.evaluate("JSON.parse(localStorage.getItem('bingo.feedback.v1')).length") == 1)
+    mode['v'] = 'ok'; p.evaluate("BingOFeedback.flushFeedback()"); p.wait_for_timeout(400)
+    ok('feedback: sent and removed', p.evaluate("JSON.parse(localStorage.getItem('bingo.feedback.v1')).length") == 0)
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')

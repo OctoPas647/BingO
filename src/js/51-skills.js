@@ -29,7 +29,7 @@ const SUBJECTS = {
     ]
   }
 };
-const skillDef = (subj, id) => SUBJECTS[subj].skills.find(s => s.id === id);
+const skillDef = (subj, id) => skillList(subj).find(s => s.id === id) || SUBJECTS[subj].skills.find(s => s.id === id);
 
 /* Typical mistakes. A wrong option in a task can name the mistake it comes from,
    so a wrong answer says *why* it was wrong, not only that it was. */
@@ -131,7 +131,7 @@ const STATUS_LABEL = { new: 'Малко данни', weak: 'Слабо', mid: '�
 /* Matura points the learner probably loses on a skill */
 const pointsLost = (sk, st) => sk.weight * (1 - st.p);
 function subjectSummary(subj) {
-  const list = SUBJECTS[subj].skills.map(sk => { const st = skillState(subj, sk.id); return { sk, st, status: skillStatus(st), lost: pointsLost(sk, st) }; });
+  const list = skillList(subj).map(sk => { const st = skillState(subj, sk.id); return { sk, st, status: skillStatus(st), lost: pointsLost(sk, st) }; });
   const total = sum(list.map(x => x.sk.weight)), lost = sum(list.map(x => x.lost)), answered = sum(list.map(x => x.st.n));
   return { list, total, lost, answered, diagnosed: list.every(x => x.st.n >= 1) };
 }
@@ -159,7 +159,37 @@ function planSession(subj, size = 8) {
   return { plan: plan.slice(0, size), focus: focus.map(f => f.sk.id), check: due ? due.sk.id : null };
 }
 /* Diagnostic: one task per skill, a second one only where the first was wrong */
-function planDiagnostic(subj) { return SUBJECTS[subj].skills.map(sk => ({ skill: sk.id, why: 'diag' })); }
+function planDiagnostic(subj) { return skillList(subj).map(sk => ({ skill: sk.id, why: 'diag' })); }
 
 /* level 1..3 follows how well the skill is known */
-const levelFor = p => (p < 0.35 ? 1 : p < 0.7 ? 2 : 3);
+const levelFor = p => {
+  const g = nvoGrade(), t = g ? NVO_PROFILES.math[g].levels : { weak: 0.35, mid: 0.7 };
+  return p < t.weak ? 1 : p < t.mid ? 2 : 3;
+};
+
+/* ---------- НВО 4, 7 and 10 ----------
+   When the learner's exam (from the setup or Profile) is an НВО, mathematics uses that grade's
+   skills and weights instead of the matura's, and difficulty rises at that grade's pace: НВО 4
+   stays easier for longer (and never gets level 3, see 52-math.js), НВО 10 moves on sooner.
+   The tasks still come from the same generators; grade-specific tasks can be added later.
+   The weights are planning estimates, like the matura's, to be checked against МОН's specification. */
+const NVO_PROFILES = {
+  math: {
+    4: { levels: { weak: 0.5, mid: 0.8 }, maxLevel: 2, skills: [
+      { id: 'pct', name: 'Проценти', weight: 14 }, { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prob', name: 'Вероятности', weight: 10 }] },
+    7: { levels: { weak: 0.4, mid: 0.7 }, maxLevel: 3, skills: [
+      { id: 'quad', name: 'Квадратни уравнения', weight: 12 }, { id: 'pct', name: 'Проценти', weight: 10 }, { id: 'pow', name: 'Степени и корени', weight: 10 },
+      { id: 'lin', name: 'Линейни неравенства', weight: 10 }, { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prog', name: 'Аритметична прогресия', weight: 8 },
+      { id: 'prob', name: 'Вероятности', weight: 8 }] },
+    10: { levels: { weak: 0.35, mid: 0.65 }, maxLevel: 3, skills: [
+      { id: 'quad', name: 'Квадратни уравнения', weight: 14 }, { id: 'pow', name: 'Степени и корени', weight: 12 }, { id: 'lin', name: 'Линейни неравенства', weight: 12 },
+      { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prog', name: 'Аритметична прогресия', weight: 10 }, { id: 'prob', name: 'Вероятности', weight: 10 }] }
+  }
+};
+/* '4' | '7' | '10' when the learner prepares for an НВО, otherwise null (ДЗИ 12) */
+const nvoGrade = () => ({ nvo4: '4', nvo7: '7', nvo10: '10' })[S.profile && S.profile.exam] || null;
+/* the skills trained for a subject: the НВО grade's for mathematics, otherwise the matura's */
+function skillList(subj) {
+  const g = nvoGrade(), prof = g && NVO_PROFILES[subj] && NVO_PROFILES[subj][g];
+  return prof ? prof.skills : SUBJECTS[subj].skills;
+}

@@ -4,7 +4,13 @@ const pctTxt = p => Math.round(p * 100) + '%';
 const SRC_LABEL = { gen: 'Нов вариант', shelly: 'От Shelly', bank: 'Банка задачи', ai: 'Създадена от ИИ' };
 
 function subjectTabs(cur) {
-  return `<label class="subj-pick"><span class="kicker">${L('Предмет за матура')}</span><span class="selwrap"><select class="field subj-select" id="subjSelect" aria-label="${L('Избери предмет за матура')}">${Object.values(SUBJECTS).map(s => `<option value="${s.id}"${s.id === cur ? ' selected' : ''}>${s.icon} ${esc(L(s.title))}</option>`).join('')}</select></span></label>`;
+  /* show the matura the learner plans to take; keep the current one visible even if it has no tasks yet */
+  const planned = myMatura().filter(m => m.ready || m.id === cur);
+  const opts = planned.map(m => {
+    const s = SUBJECTS[m.id];
+    return `<option value="${s.id}"${s.id === cur ? ' selected' : ''}>${s.icon} ${esc(L(s.title))}</option>`;
+  }).join('');
+  return `<label class="subj-pick"><span class="kicker">${L('Предмет за матура')}</span><span class="selwrap"><select class="field subj-select" id="subjSelect" aria-label="${L('Избери предмет за матура')}">${opts}</select></span></label>`;
 }
 
 function skillRow(subj, x) {
@@ -36,7 +42,7 @@ SCREENS.home = async el => {
       ${subjectTabs(subj)}
       <div class="card losscard">
         ${ring(started ? kept : 0, started ? '−' + fmt1(sm.lost) : '?', 'big')}
-        <div><span class="kicker">${L('Матура · {s}', { s: esc(L(sub.title)) })}</span>
+        <div><span class="kicker">${nvoGrade() && subj === 'math' ? `${esc(L(EXAMS[S.profile.exam]))} · ${esc(L(sub.title))}` : L('Матура · {s}', { s: esc(L(sub.title)) })}</span>
           ${started ? `<h1>${L('Губиш ≈ {a} от {b} т.', { a: fmt1(sm.lost), b: sm.total })}</h1><p class="muted">${L('в тези теми на ДЗИ. Тренираме само там, където губиш най-много — силното не го повтаряме.')}</p>`
             : `<h1>${L('Къде губиш точки?')}</h1><p class="muted">${L('Кратка диагностика (≈5 мин): по една задача за всяка тема. После тренираш само слабото.')}</p>`}
         </div>

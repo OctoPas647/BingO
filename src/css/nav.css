@@ -6,6 +6,15 @@
 .tabbar button.on { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
 .tabbar button:active { transform: scale(.96); }
 
+/* Liquid glass navigation: translucent bar with blur, while keeping the same layout and actions. */
+:root[data-glass="1"] .tabbar {
+  background: color-mix(in srgb, var(--surface) 68%, transparent);
+  backdrop-filter: blur(var(--glass-blur, 18px)) saturate(var(--glass-saturate, 150%));
+  -webkit-backdrop-filter: blur(var(--glass-blur, 18px)) saturate(var(--glass-saturate, 150%));
+  border-top: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
+  box-shadow: 0 -8px 30px color-mix(in srgb, #000 18%, transparent);
+}
+
 .screen-title { font-size: 1.7rem; margin: 6px 2px 14px; }
 .stat-sub { font-size: .9rem; color: var(--ink-2); margin: 16px 0 8px; }
 

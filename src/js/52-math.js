@@ -263,6 +263,7 @@ const MATH_GEN = {
 };
 
 function genMathTask(skill, level, seed) {
+  const g = nvoGrade(); if (g) level = Math.min(level, NVO_PROFILES.math[g].maxLevel);   /* НВО 4: never level 3 */
   const r = seedRng(skill + ':' + level + ':' + seed);
   const t = MATH_GEN[skill](r, level);
   return { id: `g:${skill}:${level}:${seed}`, points: 1, media: [], ...t, skill, level, src: 'gen' };

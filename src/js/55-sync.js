@@ -65,6 +65,128 @@ async function flushToSheet() {
 }
 window.addEventListener('online', () => scheduleFlush());
 
+/* ================= User feedback -> queued JSON POST =================
+   Feedback can be submitted while offline. It is stored in its own localStorage queue,
+   then sent as JSON when the app is online. A payload must provide `endpoint`; other
+   fields are free-form so later feedback screens can add type, text, diagnostics, etc. */
+
+/**
+ * A pending user-feedback submission.
+ * @typedef {Object} FeedbackPayload
+ * @property {string} endpoint Absolute URL that accepts a JSON POST.
+ * @property {*} [data] Arbitrary JSON-safe feedback data.
+ * @property {number} [at] Creation time in milliseconds.
+ * @property {number} [attempts] Number of failed delivery attempts.
+ * @property {string} [id] Stable local id, used to avoid duplicate processing.
+ */
+
+const FEEDBACK_QUEUE_KEY = 'bingo.feedback.v1';
+const FEEDBACK_QUEUE_MAX = 200;
+const FEEDBACK_RETRY_MS = [4000, 15000, 60000, 300000, 600000];
+let feedbackQueue = null;
+let feedbackFlushTimer = 0;
+let feedbackFlushing = false;
+
+function loadFeedbackQueue() {
+  if (Array.isArray(feedbackQueue)) return feedbackQueue;
+  try {
+    const raw = localStorage.getItem(FEEDBACK_QUEUE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    feedbackQueue = Array.isArray(parsed) ? parsed.filter(isFeedbackPayload) : [];
+  } catch (e) {
+    console.warn('feedback queue not loaded', e);
+    feedbackQueue = [];
+  }
+  return feedbackQueue;
+}
+
+function saveFeedbackQueue() {
+  try { localStorage.setItem(FEEDBACK_QUEUE_KEY, JSON.stringify(loadFeedbackQueue())); }
+  catch (e) { console.warn('feedback queue not saved', e); }
+}
+
+function isFeedbackPayload(v) {
+  return !!v && typeof v === 'object' && typeof v.endpoint === 'string' && /^https?:\/\/[^\s]+$/.test(v.endpoint);
+}
+
+function newFeedbackId() {
+  return 'fb-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+}
+
+/**
+ * Store feedback locally and ask for delivery. Safe to call offline.
+ * @param {FeedbackPayload} payload
+ * @returns {boolean} true when the payload was accepted into the queue
+ */
+function enqueueFeedback(payload) {
+  if (!isFeedbackPayload(payload)) return false;
+  const queue = loadFeedbackQueue();
+  const item = {
+    ...payload,
+    id: typeof payload.id === 'string' && payload.id ? payload.id : newFeedbackId(),
+    at: typeof payload.at === 'number' ? payload.at : Date.now(),
+    attempts: typeof payload.attempts === 'number' && payload.attempts >= 0 ? Math.floor(payload.attempts) : 0
+  };
+  queue.push(item);
+  if (queue.length > FEEDBACK_QUEUE_MAX) queue.splice(0, queue.length - FEEDBACK_QUEUE_MAX);
+  saveFeedbackQueue();
+  scheduleFeedbackFlush();
+  return true;
+}
+
+function scheduleFeedbackFlush(delay) {
+  clearTimeout(feedbackFlushTimer);
+  feedbackFlushTimer = setTimeout(() => { flushFeedback(); }, delay == null ? 4000 : delay);
+}
+
+async function postFeedback(payload) {
+  const res = await fetch(payload.endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    body: JSON.stringify({ id: payload.id, at: payload.at, data: payload.data })
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const result = await res.json().catch(() => null);
+  if (!result || result.ok !== true) throw new Error(result && result.error ? result.error : 'Неочакван отговор от сървъра');
+  return true;
+}
+
+/**
+ * Send every queued feedback item. Successfully delivered items are removed;
+ * failed items stay in localStorage and are retried later.
+ * @returns {Promise<boolean>} true when at least one item was delivered
+ */
+async function flushFeedback() {
+  const queue = loadFeedbackQueue();
+  if (!queue.length || !navigator.onLine || feedbackFlushing) return false;
+  feedbackFlushing = true;
+  let delivered = false;
+  try {
+    for (const item of [...queue]) {
+      try {
+        await postFeedback(item);
+        const index = queue.findIndex(x => x.id === item.id);
+        if (index >= 0) queue.splice(index, 1);
+        delivered = true;
+      } catch (e) {
+        console.warn('feedback delivery failed', e);
+        item.attempts = (item.attempts || 0) + 1;
+      }
+    }
+    saveFeedbackQueue();
+    const next = queue.reduce((min, item) => Math.min(min, item.attempts || 0), Number.MAX_SAFE_INTEGER);
+    if (queue.length && next < FEEDBACK_RETRY_MS.length) scheduleFeedbackFlush(FEEDBACK_RETRY_MS[next]);
+    return delivered;
+  } finally {
+    feedbackFlushing = false;
+  }
+}
+
+window.addEventListener('online', () => scheduleFeedbackFlush());
+
+/* Public API for other BingO modules. */
+window.BingOFeedback = { enqueueFeedback, flushFeedback };
+
 const csvCell = v => { const s = v == null ? '' : String(v); return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
 function logCSV(rows = myLog()) { return '\uFEFF' + [LOG_COLUMNS.join(','), ...rows.map(r => LOG_COLUMNS.map(c => csvCell(r[c])).join(','))].join('\n'); }
 /* Shelly's Native.saveFile: a save dialog on Android, a download in the browser */

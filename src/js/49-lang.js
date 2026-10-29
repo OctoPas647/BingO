@@ -41,6 +41,7 @@ const EN_UI = {
   'Започни диагностика': 'Start the diagnostic', 'Покажи с демо ученик': 'Show with a demo learner',
   'Напиши отговор, преди да се оцениш.': 'Write an answer before you grade yourself.',
   /* past-exam titles and parts for exams that have no English version (66-past.js pastTitle) */
+  'Liquid glass': 'Liquid glass', 'Добавя полупрозрачни, размазани повърхности върху избраната тема. Оригиналният изглед остава наличен, когато опцията е изключена.': 'Adds see-through, blurred surfaces on top of the chosen theme. The original look comes back when this is off.',
   'Вариант {n}': 'Variant {n}', 'май': 'May', 'юни': 'June', 'август': 'August', 'септември': 'September',
   'Тест': 'Test', 'Част 1': 'Part 1', 'Част 2': 'Part 2', 'Част 3': 'Part 3', 'Първа част': 'Part one', 'Втора част': 'Part two',
   'Модул 1': 'Module 1', 'Модул 2': 'Module 2', 'Първи модул': 'Module one', 'Втори модул': 'Module two', 'Трети модул': 'Module three',
@@ -76,6 +77,7 @@ const EN_UI = {
 
   /* stats and profile */
   'Матура': 'Matura', '≈ {a} от {b} т. запазени': '≈ {a} of {b} pts kept', 'Още не е измерено — направи диагностика': 'Not measured yet — do the diagnostic',
+  'Още няма задачи за тази матура.': 'No tasks for this matura yet.', 'Скоро': 'Soon',
   'отговора': 'answers', 'верни': 'right', 'средно време': 'average time', '{n} с': '{n} s',
   '{n} силни': '{n} strong', '{n} почти': '{n} almost', '{n} слаби': '{n} weak', '{n} малко данни': '{n} little data',
   'Къде губиш най-много': 'Where you lose the most', 'Отвори картата · {s}': 'Open the map · {s}',
@@ -137,6 +139,14 @@ const EN_UI = {
   'Ключът не може да съдържа интервали': 'The key cannot contain spaces', 'Само латински букви, цифри, точка и тире (напр. gemini-3.8-flash)': 'Only Latin letters, digits, dot and dash (e.g. gemini-3.8-flash)',
   'Адресът трябва да започва с https://': 'The address must start with https://', 'Адресът трябва да започва с https://script.google.com/': 'The address must start with https://script.google.com/',
   'Невалидна стойност': 'Invalid value', 'Задължително поле': 'Required field', 'Невалидната стойност не е запазена': 'The invalid value was not saved',
+  'Обратна връзка': 'Feedback', 'Изпрати обратна връзка': 'Send feedback',
+  'Ако си офлайн, съобщението се пази на устройството и се изпраща автоматично по-късно.': 'If you are offline, your message stays on this device and is sent automatically later.',
+  'Какво искаш да кажеш?': 'What would you like to say?', 'Какво ти помогна, какво не стана или какво липсва?': 'What helped, what did not work, or what is missing?',
+  'Отказ': 'Cancel', 'Изпрати': 'Send', 'Напиши съобщение първо.': 'Write a message first.',
+  'Първо задай адреса на Vertex AI сървъра.': 'First set the Vertex AI server address.', 'Изпращане…': 'Sending…',
+  'Съобщението не може да се запази.': 'The message cannot be saved.',
+  'Благодаря! Обратната връзка е изпратена.': 'Thank you! Your feedback has been sent.',
+  'Запазено е офлайн. Ще се изпрати автоматично.': 'Saved offline. It will be sent automatically.',
 
   /* demo and saved data */
   'Да заредим ли демо ученик?': 'Load a demo learner?',

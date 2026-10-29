@@ -54,11 +54,19 @@ function activity() {
 const accOf = rows => rows.length ? rows.filter(r => r.correct).length / rows.length : 0;
 function setAccent(el) { const sub = SUBJECTS[S.subject]; el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); }
 
-/* ---------- Статистики: one card per matura ---------- */
+/* ---------- Статистики: one card per matura the learner plans to take ---------- */
 SCREENS.stats = async el => {
   setAccent(el);
   const act = activity(), mine = myLog(), total = mine.length, max = Math.max(1, ...act.week.map(w => w.n));
-  const cards = Object.values(SUBJECTS).map(sub => {
+  /* one card per matura the learner plans to take; the ones without tasks yet say "Скоро" */
+  const cards = myMatura().map(m => {
+    if (!m.ready) {
+      return `<article class="card statcard" style="--accent:#6B7280;--accent-ink:#FFFFFF">
+        <div class="stat-head"><div><span class="kicker">${L('Матура')}</span><h3>${esc(L(m.label))}</h3>
+          <p class="muted small">${L('Още няма задачи за тази матура.')}</p></div></div>
+        <button class="btn ghost block" disabled>${L('Скоро')}</button></article>`;
+    }
+    const sub = SUBJECTS[m.id];
     const sm = subjectSummary(sub.id), rows = mine.filter(r => r.subject === sub.title), started = sm.answered > 0, kept = sm.total - sm.lost;
     const cnt = { strong: 0, mid: 0, weak: 0, new: 0 }; sm.list.forEach(x => cnt[x.status]++);
     const worst = sm.list.filter(x => x.status !== 'strong').sort((a, b) => b.lost - a.lost).slice(0, 3);
