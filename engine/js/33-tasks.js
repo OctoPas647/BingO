@@ -229,7 +229,7 @@ function fieldBuilder(task, m, resp, changed, numeric) {
   let val = resp ?? '', area;
   return {
     html: (() => {
-      const input = `<input class="field${numeric ? ' num' : ''}" ${numeric ? 'inputmode="decimal"' : ''} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="${esc(numeric ? t('task.numHint') : t('task.typeHint'))}" value="${esc(val)}">`;
+      const input = `<input class="field${numeric ? ' num' : ''}" ${numeric ? 'inputmode="decimal"' : ''} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="${esc(numeric ? t('task.numHint') : (task.strict ? 'Напишете цяло изречение.' : t('task.typeHint')))}" value="${esc(val)}">`;
       if (!numeric) return input;
       return `<div class="field-unit"><button type="button" class="signbtn" aria-label="${esc(t('task.sign'))}" title="${esc(t('task.sign'))}">±</button>${input}${task.unit ? `<span class="unit">${esc(task.unit)}</span>` : ''}</div>`;
     })(),
@@ -247,8 +247,10 @@ function fieldBuilder(task, m, resp, changed, numeric) {
     show(res) {
       const f = area.querySelector('input'); f.classList.add(res.status === 'right' ? 'right' : 'wrong');
       if (res.status === 'right') return '';
+      const fragment = !numeric && task.strict && !isFullSentence(val);
+      const feedback = fragment ? `<div class="why rt" lang="${esc(m.lang)}">Отговорът трябва да е цяло изречение.</div>` : '';
       const ans = numeric ? esc(fmtSig(task.answer, m.lang) + (task.unit ? '\u00A0' + task.unit : '') + (task.tolerance > 0 ? ` (± ${fmtSig(task.tolerance, m.lang, 2)})` : '')) : esc(arr(task.answer)[0]);
-      return solutionLine(t('task.correctIs'), ans);
+      return feedback + solutionLine(t('task.correctIs'), ans);
     }
   };
 }
@@ -262,7 +264,7 @@ function rubricView(task, marks, onChange) {
       <div class="stepper" data-k="${k}"><button data-d="-1" aria-label="−">−</button><output></output><span class="of">/ ${fmtPts(r.points, UI_LANG)}</span><button data-d="1" aria-label="+">+</button></div></div>`).join('')}
     <div class="rub-total"><span>${esc(t('rub.total'))}</span><b></b></div></div>`);
   const paint = () => {
-    el.querySelectorAll('.stepper').forEach(s => { const k = +s.dataset.k; s.querySelector('output').textContent = fmtPts(vals[k], UI_LANG); s.querySelector('[data-d="-1"]').disabled = vals[k] <= 0; s.querySelector('[data-d="1"]').disabled = vals[k] >= rub[k].points; });
+    el.querySelectorAll('.stepper').forEach(s => { const k = +s.dataset.k, r = rub[k]; s.querySelector('output').textContent = fmtPts(vals[k], UI_LANG); s.querySelector('[data-d="-1"]').disabled = vals[k] <= 0; s.querySelector('[data-d="1"]').disabled = vals[k] >= r.points; });
     el.querySelector('.rub-total b').textContent = `${fmtPts(sum(vals), UI_LANG)} / ${fmtPts(task.points, UI_LANG)}`;
   };
   el.addEventListener('click', e => {
