@@ -20,7 +20,7 @@ def setup(p, theme, take_shots):
         p.click('[data-ob="next"]'); p.wait_for_timeout(150)
     p.wait_for_selector('.losscard')
 def answer(p, wrong=False):
-    """answer the current task: pick an option, or type a number"""
+    """answer the current task: option, number, gaps, word bank, order, match, or open answer"""
     if p.locator('.opt').count():
         n = p.locator('.opt').count()
         p.locator('.opt').nth(1 if wrong else 0).click()
@@ -28,8 +28,16 @@ def answer(p, wrong=False):
         p.locator('input.field').fill('999' if wrong else '1')
     elif p.locator('.gap.pick button').count():
         p.locator('.gap.pick button').first.click()
-    else:
+    elif p.locator('.gap-in').count():
         p.locator('.gap-in').first.fill('x')
+    elif p.locator('.bank .chip').count():
+        p.locator('.bank .chip').first.click()
+    elif p.locator('.orderlist [data-mv]').count():
+        p.locator('.orderlist [data-mv="1"]').first.click()
+    elif p.locator('.mi.l').count() and p.locator('.mi.r').count():
+        p.locator('.mi.l').first.click(); p.locator('.mi.r').first.click()
+    elif p.locator('textarea.essay').count():
+        p.locator('textarea.essay').fill('Отговор')
     p.click('[data-main]')
 with sync_playwright() as pw:
     b = pw.chromium.launch()
