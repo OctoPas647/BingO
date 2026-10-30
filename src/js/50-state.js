@@ -7,6 +7,12 @@ const APP_NAME_UI = 'BingO';
 /* Shelly's 20-ui.js reads APP.settings (theme, sound, motion, lang) */
 let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, shuffle: false }, xp: 0, days: {} };
 
+/* Essay / ЛИС self-assessment scores are stored per rubric criterion, not as one unrestricted
+   total. Older saves without these fields fall back to zero for every criterion. */
+const ESSAY_CRITERIA = ['content', 'structure', 'language', 'compliance'];
+const ESSAY_CRITERION_MAX = 7.5;
+const defaultCriterionScores = () => Object.fromEntries(ESSAY_CRITERIA.map(id => [id, 0]));
+
 const DEFAULT_STATE = () => ({
   v: 1,
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
@@ -21,7 +27,8 @@ const DEFAULT_STATE = () => ({
   review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
   onboarding: null,      /* first-run setup progress (58-onboarding.js) */
   aiFlags: [],           /* AI-made tasks a learner reported as wrong */
-  pastResults: {}        /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  pastResults: {},       /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  essay: { criterionScores: defaultCriterionScores() }
 });
 
 let S = DEFAULT_STATE();
@@ -74,6 +81,12 @@ function cleanPastResult(r) {
   if (!isObj(r) || !isNum(r.pts) || !isNum(r.max) || r.max <= 0 || r.pts < 0 || r.pts > r.max) return null;
   return { pts: r.pts, max: r.max, at: isNum(r.at) ? r.at : 0 };
 }
+function cleanCriterionScores(scores) {
+  const out = defaultCriterionScores();
+  if (!isObj(scores)) return out;
+  for (const id of ESSAY_CRITERIA) if (isNum(scores[id])) out[id] = clamp(scores[id], 0, ESSAY_CRITERION_MAX);
+  return out;
+}
 function sanitizeState(v) {
   const d = DEFAULT_STATE();
   if (!isObj(v)) return d;
@@ -98,6 +111,9 @@ function sanitizeState(v) {
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
   out.pastResults = {};
   if (isObj(v.pastResults)) for (const [k, r] of Object.entries(v.pastResults)) { const c = cleanPastResult(r); if (c && k) out.pastResults[k] = c; }
+  /* Essay self-assessment: use valid per-criterion scores; older saves with no criterion data
+     (including a legacy single `score`) start safely at zero instead of crashing. */
+  out.essay = { criterionScores: cleanCriterionScores(isObj(v.essay) ? v.essay.criterionScores : null) };
   /* the Sheet's retry state (55-sync.js): without it a restart forgets failed sends */
   if (isObj(v.sync)) out.sync = { fails: isNum(v.sync.fails) ? Math.max(0, Math.floor(v.sync.fails)) : 0, lastError: isStr(v.sync.lastError) ? v.sync.lastError.slice(0, 200) : '', lastOk: isNum(v.sync.lastOk) ? v.sync.lastOk : 0, unverified: !!v.sync.unverified };
   return out;
@@ -129,6 +145,7 @@ function loadState() {
     try { S = sanitizeState(JSON.parse(raw)); }
     catch (e) { console.warn('state not loaded', e); S = DEFAULT_STATE(); STATE_NOTICE = { backup: backupRaw(raw) }; }
   }
+  console.log('[BingO] Essay state initialized', S.essay);
   APP.settings.theme = S.settings.theme; APP.settings.glass = S.settings.glass; APP.settings.sound = S.settings.sound !== false; APP.settings.lang = S.settings.lang;
 }
 let saveTimer = 0;
@@ -158,16 +175,7 @@ applySettings = function () {
   const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
   if (S.settings.theme === 'auto') rootEl.dataset.theme = systemDark() ? 'dark' : 'light';
   if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
-  if (S.settings.glass) rootEl.dataset.glass = '1'; else delete rootEl.dataset.glass;
+  if (S.settings.glass) { rootEl.dataset.glass = '1'; } else delete rootEl.dataset.glass;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
 };
-
-/* Shelly's media loader, reading the few pictures that the build embeds (window.SHELLY_MEDIA: "module id\npath" -> data URL) */
-function hydrateMedia(root, id) {
-  root.querySelectorAll('[data-media]').forEach(el => {
-    const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
-    if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
-  });
-}

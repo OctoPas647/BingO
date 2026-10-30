@@ -3,6 +3,19 @@
    names its mistake), plus the lesson tasks of Shelly's two matura modules, plus new tasks from
    Gemini when AI is switched on. */
 
+/* Essay / ЛИС self-assessment rubric: four equally weighted criteria, 30 points total.
+   The schema is shared by the task definition, self-assessment UI and saved learner state. */
+const BEL_ESSAY_RUBRIC = {
+  maxPoints: 30,
+  criteria: [
+    { id: 'content', label: 'Съдържание и аргументация', max: 7.5 },
+    { id: 'structure', label: 'Структура и свързаност', max: 7.5 },
+    { id: 'language', label: 'Език и стил', max: 7.5 },
+    { id: 'compliance', label: 'Съответствие с задачата', max: 7.5 }
+  ]
+};
+console.log('[BingO] Essay rubric initialized', BEL_ESSAY_RUBRIC);
+
 const BEL_BANK = [
   /* ---------- пълен и кратък член ---------- */
   { id: 'b:art1', skill: 'art', level: 1, type: 'choice', prompt: 'Изберете правилно написаното изречение.',
@@ -79,7 +92,7 @@ const mixOptions = t => { const o = shuffledIdx(t.options.length, t.id); return 
 BEL_BANK.push(...[
   { id: 'b:lit1', skill: 'lit', level: 1, type: 'choice', passage: 'debelyanov', prompt: 'Кого „приласкава“ тихата нощ в строфата?',
     options: ['скръбни и нещастни', 'децата в бащината къща', 'щастливите и спокойните', 'войниците на фронта'], answer: 0, misc: [null, 'lit.text', 'lit.text', 'lit.text'],
-    explain: 'Последният стих казва, че нощта идва, за да приласкае **скръбни и нещастни**. Утехата е за страдащия — като лирическия Аз.' },
+    explain: 'Последният стих казва, че нощта идва, за да приласка **скръбни и нещастни**. Утехата е за страдащия — като лирическия Аз.' },
   { id: 'b:lit2', skill: 'lit', level: 1, type: 'choice', prompt: 'Къде е роден Димчо Дебелянов?',
     options: ['в Копривщица', 'в Пловдив', 'във Велико Търново', 'в София'], answer: 0, misc: [null, 'lit.author', 'lit.author', 'lit.author'],
     explain: 'Дебелянов е роден през 1887 г. в **Копривщица**. Родният град и бащината къща са важен образ в поезията му.' },
@@ -108,12 +121,12 @@ BEL_BANK.push(...[
 
 /* Shelly tasks that show only the right answer get an explanation of *how* it is solved */
 const EXPLAIN_FIX = {
-  'math:q1': 'Търсим две числа със сбор $5$ и произведение $6$ (формули на Виет): това са $2$ и $3$. Проверка: $2^2-5\\cdot2+6=0$ и $3^2-5\\cdot3+6=0$.',
+  'math:q1': 'Търсим две числа със сбор $5$ и произведение $6$ (формули на Виет): това са $2$ и $3$. Проверка: $2^2-5\\cdot2+6=0$ и $3^2-5\\cdot2+6=0$.',
   'math:p2': '$20\\%$ от $50$ е $50\\cdot0{,}2=10$ лв., затова новата цена е $50+10=60$ лв. Или направо: $50\\cdot1{,}2=60$ лв.',
-  'math:p5': 'Увеличение с $25\\%$: новото е $100\\%+25\\%=125\\%$ от старото, т.е. умножаваме по $1{,}25$. Намаление с $25\\%$: остават $100\\%-25\\%=75\\%$, т.е. умножаваме по $0{,}75$.',
+  'math:p5': 'Увеличение с $25\\%$: новото е $100\\%+25\\%=125\\%$ от $50$, т.е. $62,5$ лв. Намаление с $25\\%$: остават $75\\%$ от $50$, т.е. $37,5$ лв.',
   'math:g4': 'Срещу ъгъла $\\alpha$ е катетът $a$, до него е катетът $b$, а $c$ е хипотенузата. $\\sin\\alpha=\\frac{a}{c}$ (срещулежащ катет : хипотенуза), $\\cos\\alpha=\\frac{b}{c}$ (прилежащ катет : хипотенуза), $\\operatorname{tg}\\alpha=\\frac{a}{b}$ (срещулежащ : прилежащ).',
   'bel:c1': 'Подчиненото изречение „която ми подари“ е вмъкнато в главното („Книгата е много интересна“), затова се огражда със запетаи **от двете страни**: пред „която“ и след „подари“.',
-  'bel:d1': '„Да се завърнеш…“ изразява **желано** действие — копнеж. Лирическият Аз мечтае за дома, но не е сигурно, че завръщането ще се случи.'
+  'bel:d1': '„Да се завърнеш…“ изразява **желано** действие — копнеж. Лирическият Аз мечтае за дома, но не е сигурен, че завръщането ще се случи.'
 };
 
 /* lessons of Shelly's matura modules -> skills here */
