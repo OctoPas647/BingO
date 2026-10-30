@@ -60,6 +60,9 @@ function scoreTask(t, r, lang) {
     }
     case 'open': {
       if (!r || !String(r.text || '').trim()) return { points: 0, max, status: 'empty' };
+      /* A task with no explicit rubric cannot be awarded its full points through an anonymous
+         fallback criterion: it stays ungraded until real criteria and marks are provided. */
+      if (!Array.isArray(t.rubric) || !t.rubric.length) return { points: 0, max, status: 'ungraded' };
       if (!Array.isArray(r.marks)) return { points: 0, max, status: 'ungraded' };
       return out(sum(r.marks) / max);
     }
@@ -67,7 +70,8 @@ function scoreTask(t, r, lang) {
   return { points: 0, max, status: 'wrong' };
 }
 
-/* The rubric of an open task (a task without one is graded as a whole) */
+/* The rubric shown for an open task. The fallback is for the self-assessment UI only; scoring
+   still requires explicit task.rubric criteria before it can award points. */
 const rubricOf = t => (t.rubric && t.rubric.length ? t.rubric : [{ text: '', points: t.points }]);
 
 function scaleValue(s, x) {
