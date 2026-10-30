@@ -105,7 +105,8 @@ SCREENS.pastexam = async (el, { id }, nav) => {
 
   btn.addEventListener('click', () => {
     if (P.phase === 'answer') return check();
-    if (rubric) P.got[P.i] = sum(rubric.get());
+    /* an empty essay cannot earn self-assessed points, even if its rubric has a full-points line */
+    if (rubric) P.got[P.i] = String(view.get().text || '').trim() ? sum(rubric.get()) : 0;
     if (++P.i < Q.length) showTask(); else finish();
   });
   main.addEventListener('submit-answer', () => { if (P.phase === 'answer' && !btn.disabled) check(); });
