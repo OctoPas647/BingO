@@ -35,25 +35,31 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const main = el.querySelector('.playmain'), foot = el.querySelector('.checkbar'), btn = foot.querySelector('[data-main]'), verdict = foot.querySelector('.verdict');
   nav.guard = async () => P.done || !P.touched || confirmBox(L('Да спрем ли?'), L('Отговорите досега вече са записани в картата на уменията.'), L('Спри'), true);
   let view = null, task = null, shownAt = 0, aiHints = 0, checkedAt = 0;
+  /* The counter and the finish point are bound to the immutable queue length: a focus session
+     always shows “n / 8” and ends after exactly 8 answered tasks. */
   const paintCount = () => { el.querySelector('.pcount').textContent = `${Math.min(P.i + 1, Q.length)} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
 
   /* The same question never comes twice in one session (P.used holds ids and, for generated
-     tasks, the question text). If a skill has no unseen task left, its place is dropped:
-     a focus queue is replaced with a new immutable snapshot, it is never appended to. */
+     tasks, the question text). A focus session keeps its immutable 8-slot queue: if the planned
+     skill has no unseen task, the slot is refilled from another planned focus skill, so the
+     counter and the finish point stay at exactly 8 tasks. */
   function nextTask() {
     const item = Q[P.i], st = skillState(subj, item.skill), lvl = item.level || levelFor(st.p);
-    const t = item.task && !P.used.has(taskKey(item.task)) ? item.task : pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used);
+    let t = item.task && !P.used.has(taskKey(item.task)) ? item.task : pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used);
+    if (!t && mode === 'focus') {
+      for (const alt of Q) {
+        if (alt === item || alt.why !== 'focus') continue;
+        t = pickTask(subj, alt.skill, levelFor(skillState(subj, alt.skill).p), sessionId + ':' + P.i + ':' + alt.skill, P.used);
+        if (t) { item.skill = alt.skill; break; }
+      }
+    }
     if (!t) return null;
     item.task = t; P.used.add(t.id); P.used.add(taskKey(t));
     return t;
   }
 
   function showTask() {
-    while (P.i < Q.length && !(task = nextTask())) {
-      if (mode === 'focus') Q = Object.freeze(Q.filter((_, i) => i !== P.i));
-      else Q.splice(P.i, 1);
-    }
-    if (P.i >= Q.length) return P.answers.length ? finish() : (toast('Няма нови задачи по тази тема'), back());
+    if (P.i >= Q.length || !(task = nextTask())) return P.answers.length ? finish() : (toast('Няма нови задачи по тази тема'), back());
     const item = Q[P.i]; P.phase = 'answer'; aiHints = 0; shownAt = Date.now();
     view = taskView(task, m, { mode: 'practice', seed: sessionId, onChange: upd });
     const sk = skillDef(subj, task.skill);
@@ -132,6 +138,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   });
 
   function finish() {
+    if (P.done) return;
     P.done = true; S.sessions++;
     const day = localDay(); if (!S.sessionDays.includes(day)) { S.sessionDays.push(day); S.sessionDays = S.sessionDays.slice(-400); }
     saveState(true); flushToSheet();
