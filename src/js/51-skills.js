@@ -106,7 +106,7 @@ function bktUpdate(p, correct, guess) {
 function recordAnswer(subj, task, correct, misc) {
   const st = skillState(subj, task.skill), before = st.p;
   const bkt = bktUpdate(st.p, correct, guessOf(task));
-  st.p = updateMastery(before * 100, bkt * 100) / 100; st.n++; if (correct) st.ok++; st.last = Date.now();
+  st.p = updateMastery(before * 100, bkt * 100, S.feedback.smoothing) / 100; st.n++; if (correct) st.ok++; st.last = Date.now();
   if (!correct && misc) st.misc[misc] = (st.misc[misc] || 0) + 1;
   st.hist.push([Date.now(), roundTo(st.p, 3)]); if (st.hist.length > 60) st.hist.shift();
   saveState();
