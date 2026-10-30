@@ -221,13 +221,13 @@ with sync_playwright() as pw:
     ok('model: later answers may move more', p.evaluate("bktStep({ p: 0.3, n: 8 }, true, 0.05)") > 0.45)
     ctx.close()
 
-    # 18. weak practice keeps 8 tasks: a twin takes the next planned place, the counter stays "/ 8"
+    # 18. weak practice keeps exactly 8 tasks: the immutable queue does not grow across answers or sessions
     weak = {k: {'p': v, 'n': 3, 'ok': 1, 'last': 0, 'misc': {}, 'hist': []} for k, v in {'math.quad': 0.2, 'math.pct': 0.3, 'math.pow': 0.4}.items()}
     ctx, p = fresh(b, state={**DONE, 'subject': 'math', 'skills': weak})
     p.click('[data-start="focus"]'); p.wait_for_selector('.task')
     ok('weak practice: counter starts at 1 / 8', p.locator('.pcount').inner_text() == '1 / 8', p.locator('.pcount').inner_text())
     stable = True
-    for i in range(6):
+    for i in range(10):
         if p.locator('.result').count(): break
         if p.locator('.opt').count(): p.locator('.opt').last.click()
         elif p.locator('input.field').count() and p.locator('input.field').first.is_editable(): p.fill('input.field', '12345')
@@ -237,6 +237,11 @@ with sync_playwright() as pw:
         p.locator('[data-main]').click(); p.wait_for_timeout(200)
         if p.locator('.pcount').count() and '/ 8' not in p.locator('.pcount').inner_text(): stable = False; break
     ok('weak practice: counter stays / 8 after answers', stable)
+    ok('weak practice: session ends after 8 tasks', p.locator('.result').count() == 1, p.locator('.pcount').inner_text() if p.locator('.pcount').count() else 'result')
+    # a second focus session must start a fresh 8-task queue, never accumulate the previous one
+    if p.locator('[data-again]').count():
+        p.locator('[data-again]').click(); p.wait_for_selector('.task')
+        ok('weak practice: second session starts at 1 / 8', p.locator('.pcount').inner_text() == '1 / 8', p.locator('.pcount').inner_text())
     ctx.close()
 
     # 19. bottom menu: fast tab switches keep browser history in sync (feedback-1443-s1, fix/tab-history)
@@ -254,7 +259,7 @@ with sync_playwright() as pw:
     ctx, p = fresh(b, state=DONE)
     ok('strict sentence: case and full stop ignored', p.evaluate("textMatches('новият учител е подлог.', ['„Новият учител е подлог“'], 'bg', true)"))
     ok('strict sentence: other words still wrong', not p.evaluate("textMatches('новият учител е допълнение', ['Новият учител е подлог'], 'bg', true)"))
-    ok('strict gap word: capital letter still matters', p.evaluate("scoreTask({ type: 'gaps', points: 1, strict: true, gaps: [{ answer: 'Директорът' }] }, ['директорът'], 'bg').status") == 'wrong')
+    ok('strict gap word: capital letter still matters', not p.evaluate("textMatches('директорът', ['Директорът'], 'bg', true)"))
     ctx.close()
 
     # 21. setup: no Gemini step, and the step counter moves by one
