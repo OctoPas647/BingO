@@ -7,9 +7,30 @@
 
 const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема' };
 
+/* Self-assessed essays must not be awardable before the learner has written anything.
+   While the text is empty, the rubric steppers stay at zero and are disabled; they enable
+   as soon as the learner enters text. scoreTask() also gives an empty open answer 0 points. */
+const _taskView = taskView;
+taskView = (task, m, opt = {}) => {
+  const api = _taskView(task, m, opt);
+  if (task.type !== 'open') return api;
+  const ta = api.el.querySelector('textarea'), rubric = api.el.querySelector('.rubric');
+  if (!ta || !rubric) return api;
+  const steppers = [...rubric.querySelectorAll('.stepper')];
+  const setEnabled = on => steppers.forEach(s => s.querySelectorAll('button').forEach(b => { b.disabled = !on; }));
+  const sync = () => {
+    const empty = !ta.value.trim();
+    setEnabled(!empty);
+    if (empty) api.setMarks(steppers.map(() => 0));
+  };
+  ta.addEventListener('input', sync);
+  sync();
+  return api;
+};
+
 SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const sub = SUBJECTS[subj], m = fakeModule(subj), sessionId = uid();
-  el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
+  el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(SUBJECTS[subj].color)); el.setAttribute('lang', 'bg');
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
   const planned = mode === 'diag' ? { plan: planDiagnostic(subj) } : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) } : planSession(subj, 8);
   const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), sigs: new Set(), extraDiag: new Set() };
@@ -23,9 +44,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
       .catch(err => console.warn('AI task', err));
   }
 
-  el.innerHTML = `<header class="playbar"><button class="iconbtn" data-back aria-label="${L('Затвори')}">${icon('close')}</button>${bar(0, 'pbar')}<span class="pcount"></span></header>
-    <main class="playmain"></main>
-    <footer class="checkbar"><div class="verdict"></div><button class="btn accent big" data-main></button></footer>`;
+  el.innerHTML = `<header class="playbar"><button class="iconbtn" data-back aria-label="${L('Затвори')}">${icon('close')}</button>${bar(0, 'pbar')}<span class="pcount"></span></header>\n    <main class="playmain"></main>\n    <footer class="checkbar"><div class="verdict"></div><button class="btn accent big" data-main></button></footer>`;
   const main = el.querySelector('.playmain'), foot = el.querySelector('.checkbar'), btn = foot.querySelector('[data-main]'), verdict = foot.querySelector('.verdict');
   nav.guard = async () => P.done || !P.touched || confirmBox(L('Да спрем ли?'), L('Отговорите досега вече са записани в картата на уменията.'), L('Спри'), true);
   let view = null, task = null, shownAt = 0, aiHints = 0, checkedAt = 0;
@@ -100,7 +119,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
-      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>${L('✦ Подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
+      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${esc(L('Подсказка'))}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
@@ -111,7 +130,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
         const j = await aiExplainMistake(subj, task, last.resp, last.misc);
         box.innerHTML = `<b>✦ ${esc(j.diagnosis || L('Какво се обърка'))}</b><div class="rt">${rich(j.explanation || '')}</div>${j.check ? `<p class="aicheck"><b>${L('Провери се:')}</b> <span class="rt">${richInline(j.check)}</span></p>` : ''}`;
         xb.remove();
-      } catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; xb.disabled = false; }
+      } catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
     if (e.target.closest('[data-report]')) { S.aiFlags.push({ at: new Date().toISOString(), task }); saveState(); toast('Благодаря! Задачата е отбелязана за проверка от учител.'); e.target.closest('.aiwarn').remove(); }
@@ -127,14 +146,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     nav.onLeave = () => $$('canvas.confetti').forEach(c => c.remove()); /* confetti must not fall on the next screen */
     el.querySelector('.playbar').outerHTML = topbar(esc(L(MODE_TITLE[mode])), { closeIcon: true });
     foot.remove();
-    main.innerHTML = `<div class="result pad">
-      <div class="res-hero">${ring(right / P.answers.length, right + '/' + P.answers.length, 'big')}
-        <h1>${mode === 'diag' ? L('Картата е готова') : gained > 0.05 ? L('Върна си ≈ {n} т.', { n: fmt1(gained) }) : L('Добра работа')}</h1>
-        <p class="res-main">${L('Сега губиш ≈ <b>{a}</b> от {b} т.', { a: fmt1(endMap.lost), b: endMap.total })} ${mode !== 'diag' ? L('(преди: {n})', { n: fmt1(startMap.lost) }) : ''}</p></div>
-      ${newlyStrong.length ? `<div class="card strongnote">${icon('trophy')}<div><b>${L(newlyStrong.length > 1 ? '{s} станаха силни.' : '{s} стана силно.', { s: esc(newlyStrong.map(r => L(r.x.sk.name)).join(', ')) })}</b><br><span class="muted">${L(newlyStrong.length > 1 ? 'Спираме да ги повтаряме — само кратки проверки, все по-рядко.' : 'Спираме да го повтаряме — само кратки проверки, все по-рядко.')}</span></div></div>` : ''}
-      <h2 class="sec-title">${L('Какво се промени')}</h2>
-      <div class="deltas">${rows.map(({ x }) => `<div class="delta"><b>${esc(L(x.sk.name))}</b><div class="dbar"><i class="was" style="width:${before[x.sk.id] * 100}%"></i><i class="now m-${x.status}" style="width:${x.st.p * 100}%"></i></div><small>${pctTxt(before[x.sk.id])} → <b>${pctTxt(x.st.p)}</b> · ${L(STATUS_LABEL[x.status])}</small></div>`).join('')}</div>
-      <div class="res-actions"><button class="btn ghost" data-out>${L('Към картата')}</button><button class="btn accent" data-again>${icon('target')}${L('Още 8 задачи')}</button></div></div>`;
+    main.innerHTML = `<div class="result pad">\n      <div class="res-hero">${ring(right / P.answers.length, right + '/' + P.answers.length, 'big')}\n        <h1>${mode === 'diag' ? L('Картата е готова') : gained > 0.05 ? L('Върна си ≈ {n} т.', { n: fmt1(gained) }) : L('Добра работа')}</h1>\n        <p class="res-main">${L('Сега губиш ≈ <b>{a}</b> от {b} т.', { a: fmt1(endMap.lost), b: sm.total })} ${mode !== 'diag' ? L('(преди: {n})', { n: fmt1(startMap.lost) }) : ''}</p></div>\n      ${newlyStrong.length ? `<div class="card strongnote">${icon('trophy')}<div><b>${L(newlyStrong.length > 1 ? '{s} станаха силни.' : '{s} стана силно.', { s: esc(newlyStrong.map(r => L(r.x.sk.name)).join(', ')) })}</b><br><small class="muted">${L('Спираме да ги повтаряме — само кратки проверки, все по-рядко.')}</small></div></div>` : ''}\n      <h2 class="sec-title">${L('Какво се промени')}</h2>\n      <div class="deltas">${rows.map(({ x }) => `<div class="delta"><b>${esc(L(x.sk.name))}</b><div class="dbar"><i class="was" style="width:${before[x.sk.id] * 100}%"></i><i class="now m-${x.status}" style="width:${x.st.p * 100}%"></i></div><small>${pctTxt(before[x.sk.id])} → <b>${pctTxt(x.st.p)}</b> · ${L(STATUS_LABEL[x.status])}</small></div>`).join('')}</div>\n      <div class="res-actions"><button class="btn ghost" data-out>${L('Към картата')}</button><button class="btn accent" data-again>${icon('target')}${L('Още 8 задачи')}</button></div></div>`;
     main.querySelector('[data-out]').onclick = () => home();
     main.querySelector('[data-again]').onclick = () => go('session', { subj, mode: 'focus' }, { replace: true });
   }
