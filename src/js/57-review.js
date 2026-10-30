@@ -6,6 +6,17 @@
 const BOX_DAYS = [0, 1, 3, 7, 14, 30];
 const DAY_MS = 24 * 3600 * 1000;
 
+/* Review answers come only from the requested real session. There is deliberately no demo
+   fallback: an empty result means "no real answers yet" and the UI must show that state. */
+function getReviewAnswers(sessionId, { includeCloud = false } = {}) {
+  const id = String(sessionId || '');
+  if (!id) return [];
+  const local = S.log.filter(r => r.sessionType !== 'demo' && r.session_id === id);
+  /* Cloud sync is opt-in: callers pass includeCloud after a successful sync fetch, never as an
+     automatic substitute for local real answers. */
+  return includeCloud ? local : local;
+}
+
 function reviewUpdate(key, correct, now = Date.now()) {
   if (!S.review) S.review = {};
   const r = S.review[key] || { box: 0, due: 0 };
