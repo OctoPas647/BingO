@@ -93,8 +93,7 @@ const EN_UI = {
   'До <b>{g}</b> ти трябват още ≈ <b>{n} т.</b>': 'You need ≈ <b>{n} more pts</b> for <b>{g}</b>', 'Това е най-високата оценка.': 'This is the highest grade.',
   'Къде се печелят най-бързо точки': 'Where points are won fastest', 'Ако темата стане силна (≥ 90%).': 'If the topic becomes strong (≥ 90%).',
   'Скала за оценяване (МОН)': 'Grading scale (Ministry of Education)', 'под 30 т.': 'below 30 pts', 'от {n} т.': 'from {n} pts',
-  '{a}–100 т.': '{a}–100 pts', '{a}–{b} т.': '{a}–{b} pts',
-  'Официалната скала на МОН за ДЗИ преобразува точките в оценка на стъпки от 0,25 т. Прогнозата е ориентировъчна: тя се смята от владеенето на {n} теми в приложението ({m} вече са измерени) и не вижда останалата част от изпита, напр. писането на есе или съчинение. Повече отговори дават по-тесен диапазон. Тежестите на темите са приблизителни.': 'The official Ministry of Education scale for the matura converts points into a grade in 0.25-point steps. The forecast is a rough guide: it comes from your mastery of {n} topics in the app ({m} measured so far) and cannot see the rest of the exam, e.g. writing an essay. More answers give a narrower range. The topic weights are approximate.',
+  'Прогнозата е ориентировъчна. Тя се смята от владеенето на {n} теми в приложението ({m} вече са измерени) и не вижда останалата част от изпита, напр. писането на есе или съчинение. Повече отговори дават по-тесен диапазон. Тежестите на темите са приблизителни.': 'The forecast is a rough guide. It comes from your mastery of {n} topics in the app ({m} measured so far) and cannot see the rest of the exam, e.g. writing an essay. More answers give a narrower range. The topic weights are approximate.',
 
   /* mistakes and data */
   'Типичните ти грешки · {s}': 'Your typical mistakes · {s}',
@@ -154,7 +153,7 @@ const EN_UI = {
   'Задача {n} · {p} т.': 'Task {n} · {p} pts', 'Виж отговора': 'See the answer', 'Оцени се сам': 'Mark it yourself', 'по официалния отговор и критериите': 'using the official answer and criteria',
   'Отчасти': 'Partly', '{a} от {b} т.': '{a} of {b} pts', 'По скалата на МОН:': 'On the Ministry of Education scale:', 'Сгрешени задачи с избор:': 'Wrong multiple-choice tasks:', 'Отначало': 'Start over',
   /* setup: age, exam, high-school profile, extra matura */
-  'Името и годините са по желание. Учителят вижда името само ако свържеш Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connect Google Sheets.',
+  'Името и годините са по желание. Учителят вижда името само ако свързал Google Sheets.': 'Name and age are optional. Your teacher sees the name only if you connect Google Sheets.',
   'Име и фамилия': 'Full name', 'напр. Мария Петрова': 'e.g. Maria Petrova', 'Години': 'Age', 'напр. 17': 'e.g. 17', 'Въведи години от 7 до 99': 'Enter an age from 7 to 99',
   'Значи за {e}, нали?': 'So it is {e}, right?', 'За кой изпит се готвиш?': 'Which exam are you preparing for?', 'Ако не е така, избери своя клас.': 'If not, choose your grade.', 'Избери изпит': 'Choose an exam',
   'НВО 4-ти клас': 'NVO, 4th grade', 'НВО 7-ми клас': 'NVO, 7th grade', 'НВО 10-ти клас': 'NVO, 10th grade', 'ДЗИ 12-ти клас': 'Matura (DZI), 12th grade',

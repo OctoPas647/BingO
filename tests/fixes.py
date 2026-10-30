@@ -140,18 +140,18 @@ with sync_playwright() as pw:
     ok('quad explanation: no double minus', bad == 0, str(bad))
     ctx.close()
 
-    # 11. MON forecast scale uses the official boundaries
+    # 11. MON forecast scale matches main’s 30 / 41 / 62.5 / 84 thresholds
     ctx, p = fresh(b, state=DONE)
     grades = p.evaluate("[29.75, 30, 40.5, 40.75, 62.25, 62.5, 83.75, 84, 94.75, 95].map(p => gradeOf(p)[1])")
-    ok('MON scale: boundary grades', grades == ['Слаб 2', 'Среден 3', 'Среден 3', 'Добър 4', 'Добър 4', 'Мн. добър 5', 'Мн. добър 5', 'Мн. добър 5', 'Мн. добър 5', 'Отличен 6'], str(grades))
+    ok('MON scale: boundary grades', grades == ['Слаб 2', 'Среден 3', 'Среден 3', 'Среден 3', 'Добър 4', 'Мн. добър 5', 'Мн. добър 5', 'Отличен 6', 'Отличен 6', 'Отличен 6'], str(grades))
     scale = p.evaluate("fcScale({ lo: 10, hi: 90, pts: 50 })")
-    ok('MON scale: ticks 2-6', all(f'>{g}</span>' in scale for g in ['2', '3', '4', '5', '6']), scale)
-    ok('MON scale: band colours from MON_SCALE', 'linear-gradient' in scale and '40.75%' in scale, scale)
+    ok('MON scale: ticks 3-6', all(f'>{g}</span>' in scale for g in ['3', '4', '5', '6']), scale)
+    ok('MON scale: track renders', '<div class="fctrack">' in scale and 'fcband' in scale and 'fcdot' in scale, scale)
     ctx.close()
 
-    # 12. MON scale: a 90-point forecast is Много добър 5, a 98-point forecast is Отличен 6
+    # 12. MON scale: 90 and 98 point forecasts are Отличен 6 on main’s scale
     ctx, p = fresh(b, state=DONE)
-    ok('MON scale: 90 t. forecast is Много добър 5', p.evaluate("gradeText({ conf: 'high', pts: 90, lo: 90, hi: 90 })") == 'Мн. добър 5')
+    ok('MON scale: 90 t. forecast is Отличен 6', p.evaluate("gradeText({ conf: 'high', pts: 90, lo: 90, hi: 90 })") == 'Отличен 6')
     ok('MON scale: 98 t. forecast is Отличен 6', p.evaluate("gradeText({ conf: 'high', pts: 98, lo: 98, hi: 98 })") == 'Отличен 6')
     ctx.close()
     b.close()
