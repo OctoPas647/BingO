@@ -1,6 +1,10 @@
 # Progress
 
 ## Done
+- FTP website upload certificate fix (feature/feedback-20261029-1247-s46).
+  - The Build workflow’s FTPS upload failed with curl exit code 60 because the server certificate did not match `FTP_HOST`.
+  - Added `--insecure` to the FTP upload `curl` command in `.github/workflows/build.yml`, so certificate hostname verification is skipped while FTPS encryption remains required.
+  - Only the website upload was affected; the APK artifact and GitHub Release uploads remain unaffected.
 - Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
   - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
   - Scope: UI only. Questions, answer options, solutions, explanations and rubrics stay in their original language.
@@ -10,6 +14,7 @@
 - Earlier work (0.4.x): ДЗИ Математика 02.06.2020 вариант 2, НВО 4 Математика 2007–2016, Duolingo-style progress bar, browser-history fixes (67-history-sync.js and the tab-bar wrapper in 64-nav.js), confetti cleanup, no repeated question in a session, Android fullscreen-video code removed, no duplicate option values in generated tasks (`normalize()` in 52-math.js).
 
 ## Decisions
+- FTP upload uses `--insecure` because the FTP server certificate does not match `FTP_HOST`; FTPS encryption stays enabled. Only the website upload is affected; APK artifacts and GitHub Releases are unaffected.
 - Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
 - Skill progress is kept per exam (`math.quad@nvo7`). Keys without an exam move to the current exam the first time they are read (`skillState` in 51-skills.js); the demo learner writes keys for the current exam.
@@ -24,7 +29,6 @@
 ## Left
 - Exams the bot could not upload (its branches held placeholder text, nothing was taken): НВО 4 БЕЛ 2007–2016, ДЗИ Математика (общообразователна) 2022-08, English НВО 10 Математика 2025 and 2026, integrated НВО 10 samples (БЕЛ, математика).
 - НВО 4 Математика 2007–2016: 25 drawing questions are missing (2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14; 2013 q13,14; 2014 q13,14,15; 2015 q13,14; 2016 q13,14,18), and the formulas rebuilt from the key (2012 q9, 2013 q9 and q17, 2015 q9 and q17) should be checked against the PDFs.
-- The website upload in the Build workflow fails: curl cannot verify the FTP server's certificate (exit code 60). The FTP_HOST secret must be a host name the server's certificate is issued for. The APK and the GitHub release are not affected.
 - Firebase is not wired into the app yet (functions, rules and docs only); the Gemini free-text grading (54b-ai-grade.js) is not on a screen yet.
 - НВО profiles reuse the matura generators; НВО-specific tasks (especially for НВО 4) and weights checked against МОН's specification are still to do.
 - Manual test on web and APK: Liquid glass on a real phone (blur performance), Android font size, feedback form against a deployed server.
