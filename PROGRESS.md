@@ -9,11 +9,6 @@
 - **0.5.0**: all 64 open branches merged into one version (see CHANGELOG.md). Many branches fixed the same problem several times; each fix is in once, reviewed, without the unrelated edits the bot made on the way. Every merge commit message says what was taken from each branch and what was not, and why.
 - Earlier work (0.4.x): ДЗИ Математика 02.06.2020 вариант 2, НВО 4 Математика 2007–2016, Duolingo-style progress bar, browser-history fixes (67-history-sync.js and the tab-bar wrapper in 64-nav.js), confetti cleanup, no repeated question in a session, Android fullscreen-video code removed, no duplicate option values in generated tasks (`normalize()` in 52-math.js).
 - **Оценката на усвояването се мени прекалено рязко**: `bktUpdate` in 51-skills.js no longer adds learning after a wrong answer, `guessOf` uses a 0.2 default for non-choice tasks, and `bktStep` keeps a conservative maximum jump (0.05 below two answers, 0.10 below four) and a 0.25 learning multiplier until `st.n >= 3`. This stabilizes the weak/mid/strong classification and matches the new smoothing logic.
-- Bulgarian text accuracy fixes:
-  - Math linear-inequality tasks now show and explain the generated comparison sign instead of always using `<`.
-  - Corrected the probability wording from “наслуки” to “на случай”.
-  - Changed “една стока струва” to “една стока вече струва” in the reverse-percentage task.
-  - Corrected the БЕЛ grammar term from “сказуемно определение” to “сказуемо определение”.
 
 ## Decisions
 - Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
