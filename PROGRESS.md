@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- 2026-10-30 — Fix: essay/ЛИС self-assessment can no longer award full points for a blank answer. `src/js/66-past.js` blocks advancing from an open task until its text is non-empty; `engine/js/33-tasks.js` keeps rubric criteria visible and supports a `canGrade` callback that disables the point steppers for an empty essay; `engine/js/03-scoring.js` returns `ungraded` and 0 points for an open task without explicit `task.rubric` criteria instead of using the anonymous full-point fallback. Branch: `feature/feedback-20261028-1609-s3`. Commits: 0890b25e8533a3a4e0d7a624605a39b496f5ec7b, fda503bc4d82d96aab18589a00ca422284736377, 2447bb12c823fb6665e47a8736b9bfe81cd2dc29.
 - Fix: past exam results no longer disappear after restarting the app. `sanitizeState()` in `src/js/50-state.js` now restores and validates `pastResults` from localStorage; previously it reset the field to `{}` on every load.
 - Removed the AI/API onboarding screen: the `ai` step in src/js/58-onboarding.js no longer appears during first-run setup. AI configuration is no longer shown at startup, but remains fully accessible via the Settings menu.
 - Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
@@ -20,6 +21,7 @@
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
 
 ## Decisions
+- Essay self-assessment: the anonymous rubric fallback remains for the UI, but scoring requires explicit `task.rubric` criteria; a blank essay cannot be graded or advance.
 - Past results keep the existing `{ pts, max, at }` shape. Invalid or incomplete saved entries are dropped rather than breaking state loading.
 - The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
 - The sheet history fix lives in BingO's own src/ (67-history-sync.js), not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
