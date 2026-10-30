@@ -143,10 +143,10 @@ with sync_playwright() as pw:
       const fails = [];
       for (let i = 0; i < 1000; i++) {
         const t = genMathTask('quad', 2, i);
-        const m = t.prompt.match(/\$([2-5])x\^2([+-])(\d*)x([+-])(\d+)=0\$/);
+        const m = t.prompt.match(/\$([2-5])x\^2(?:([+-])(\d*)x)?([+-])(\d+)=0\$/);
         if (!m) { fails.push(['parse', i, t.prompt]); continue; }
         const a = +m[1];
-        const b = (m[2] === '-' ? -1 : 1) * (m[3] ? +m[3] : 1);
+        const b = m[2] ? (m[2] === '-' ? -1 : 1) * (m[3] ? +m[3] : 1) : 0;
         const c = (m[4] === '-' ? -1 : 1) * +m[5];
         if (b * b - 4 * a * c < 0) fails.push(['discriminant', i, b * b - 4 * a * c]);
         const expected = t.prompt.includes('x_1+x_2') ? Fr(-b, a) : Fr(c, a);
