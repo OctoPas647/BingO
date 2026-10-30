@@ -7,10 +7,6 @@
 
 const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема' };
 
-/* НВО profiles must not receive matura-level tasks: НВО 4 stays at level 1, НВО 7 and НВО 10
-   may use levels 1–2, while ДЗИ keeps the full 1–3 range. */
-const targetLevelFor = exam => (exam === 'nvo4' ? 1 : exam === 'nvo7' || exam === 'nvo10' ? 2 : 3);
-
 SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const sub = SUBJECTS[subj], m = fakeModule(subj), sessionId = uid();
   const exam = S.profile.exam || 'dzi12', maxLevel = targetLevelFor(exam);

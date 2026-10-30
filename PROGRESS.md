@@ -8,8 +8,8 @@
 ## Decisions
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
 - Skill progress is kept per exam (`math.quad@nvo7`). Keys without an exam move to the current exam the first time they are read (`skillState` in 51-skills.js); the demo learner writes keys for the current exam. `currentExamKey()` remains defined once in 50-state.js.
-- `EXAM_SKILLS` in 51-skills.js maps every exam to its available math and БЕЛ skills. `skillList()` filters the subject skills by `S.profile.exam`, while missing exam data falls back to `dzi12` for compatibility with older saves.
-- `targetLevelFor()` in 61-session.js caps difficulty: НВО 4 uses level 1, НВО 7 and НВО 10 use levels 1–2, and ДЗИ 12 keeps levels 1–3. The cap applies to generated math tasks, Shelly/bank tasks, twins, and Gemini-generated tasks.
+- `EXAM_SKILLS` and `targetLevelFor()` live in 51-skills.js so the task generators and bank filter can use them before the session screen loads. `skillList()` filters the subject skills by `S.profile.exam`, while missing exam data falls back to `dzi12` for compatibility with older saves.
+- `targetLevelFor()` caps difficulty: НВО 4 uses level 1, НВО 7 and НВО 10 use levels 1–2, and ДЗИ 12 keeps levels 1–3. The cap applies to generated math tasks, Shelly/bank tasks, twins, and Gemini-generated tasks.
 - `genMathTask()` clamps the requested level before calling a generator, and `pickTask()` filters both generated fallbacks and bank tasks by the same exam cap. This is safer than adding a separate guard inside every `MATH_GEN` function.
 - НВО 4/7/10 profiles follow `S.profile.exam` (`skillList()`), not a separate picker. ДЗИ 12 keeps the matura skill map.
 - Mastery smoothing: one rule only (`bktStep` in 51-skills.js: less learning and a smaller maximum jump while a skill has few answers; a wrong answer never raises mastery). A second engine-level smoothing (feedback-2348-s33) was not added on top.

@@ -51,6 +51,10 @@ const EXAM_SKILLS = {
     bel: ['art', 'comma', 'spell', 'lit']
   }
 };
+/* НВО profiles must not receive matura-level tasks: НВО 4 stays at level 1, НВО 7 and НВО 10
+   may use levels 1–2, while ДЗИ keeps the full 1–3 range. Defined here because the task
+   generators and bank filter need it before the session screen loads. */
+const targetLevelFor = exam => (exam === 'nvo4' ? 1 : exam === 'nvo7' || exam === 'nvo10' ? 2 : 3);
 /* Skills available for the active exam. `currentExamKey()` is defined in 50-state.js and already
    falls back to ДЗИ for older saves. An exam without a mapping for a subject keeps all skills. */
 function skillList(subj) {
