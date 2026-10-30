@@ -9,6 +9,10 @@
 const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема' };
 const MAX_SESSION_TASKS = 8;
 
+/* A completed real session is saved exactly once; demo placeholder logic must not re-run or
+   overwrite it. */
+const COMPLETED_REAL_SESSIONS = new Set();
+
 SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   const sub = SUBJECTS[subj], m = fakeModule(subj), sessionId = uid();
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
@@ -117,7 +121,7 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
       const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
-      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>${L('✦ Подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
+      try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>✦ ${L('Подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
@@ -135,7 +139,16 @@ SCREENS.session = async (el, { subj, mode, skill }, nav) => {
   });
 
   function finish() {
-    P.done = true; S.sessions++; saveState(true); flushToSheet();
+    /* Never complete or overwrite the same real session twice. */
+    if (COMPLETED_REAL_SESSIONS.has(sessionId)) return;
+    COMPLETED_REAL_SESSIONS.add(sessionId);
+    P.done = true;
+    /* Every answer was already stored by logAnswer(); force-save the completed real session
+       before any demo placeholder logic can run. */
+    saveState(true);
+    S.sessions++;
+    saveState(true);
+    flushToSheet();
     const endMap = subjectSummary(subj), touched = [...new Set(P.answers.map(a => a.skill))];
     const right = P.answers.filter(a => a.correct).length, gained = startMap.lost - endMap.lost;
     const rows = touched.map(id => { const x = endMap.list.find(y => y.sk.id === id), was = skillStatus({ ...x.st, p: before[id] }); return { x, was }; });
