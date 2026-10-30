@@ -1,6 +1,11 @@
 # Progress
 
 ## Done
+- Added an optional Liquid Glass theme: `data-glass="1"` on `<html>` makes cards and surfaces translucent with `backdrop-filter: blur(12px)` and a softer shadow, while keeping the original light, dark, and AMOLED themes unchanged.
+  - `src/css/bingo.css`: adds `:root[data-glass="1"]` styles, including separate dark-theme glass values and blur for `.card`, `.surface`, `.btn`, and `.modal`.
+  - `src/js/50-state.js`: adds and validates `settings.glass`, then applies or removes `data-glass` in `applySettings()`.
+  - `src/js/63-settings.js`: adds a Bulgarian “Течно стъкло” toggle in Settings, saves it with `saveState()`, and calls `applySettings()` immediately.
+  - `PROGRESS.md`: records the feature and files changed.
 - Removed the AI/API onboarding screen: the `ai` step in src/js/58-onboarding.js no longer appears during first-run setup. AI configuration is no longer shown at startup, but remains fully accessible via the Settings menu.
 - Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
   - Cause: `syncHistory()` removed the history trap with `history.back()`, but the sheet callback called `go()` before that back was processed. `render()` then pushed a new trap, which the queued back removed; browser Back could then leave the app.
@@ -19,6 +24,7 @@
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
 
 ## Decisions
+- Liquid Glass is an additive boolean setting (`settings.glass`), not a replacement theme: it can be combined with the existing light, dark, AMOLED, and system themes.
 - The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
 - The sheet history fix lives in BingO's own src/ (67-history-sync.js), not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
 - The old fix/browser-back branch and src/js/66-history.js are not reused: they assume one history entry per screen, while the current engine keeps one trap entry.
@@ -33,6 +39,7 @@
 - Android wrapper cleanup keeps `AndroidUI` and `AndroidFiles`: the web app uses `AndroidUI.night()`, `__systemTheme`, file import, and CSV export.
 
 ## Left
+- Manually test Liquid Glass on web and APK in light, dark, AMOLED, and system themes; check readability, blur performance, and the Settings toggle.
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
