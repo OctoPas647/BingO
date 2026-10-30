@@ -12,27 +12,17 @@ Object.assign(ICONS, {
 const TABS = [['home', 'home', 'Начало'], ['stats', 'chart', 'Статистики'], ['profile', 'user', 'Профил']];
 const tabBar = cur => `<nav class="tabbar" aria-label="${L('Основно меню')}">${TABS.map(([id, ic, label]) => `<button data-tab="${id}" class="${id === cur ? 'on' : ''}"${id === cur ? ' aria-current="page"' : ''}>${icon(ic)}<span>${L(label)}</span></button>`).join('')}</nav>`;
 
+let tabLock = 0;
 function goTab(from, to) {
   if (to === from) return;
+  /* Returning Home from another tab starts an asynchronous history-trap removal. Ignore another
+     bottom-tab tap until it finishes: pushing a new trap while the old one is still being removed
+     desynchronizes browser history and could make browser Back close the app. */
+  if (Date.now() - tabLock < 400) return;
+  tabLock = Date.now();
   if (to === 'home') return home();
   go(to, {}, from === 'home' ? {} : { replace: true });
 }
-
-/* Bottom-tab navigation can ask the router to remove its history trap and then open another
-   screen before the asynchronous history.back() finishes. Queue that removal so the app never
-   calls history.back() without a trap entry; otherwise browser Back could close the app. */
-let trapRemovePending = false;
-syncHistory = function () {
-  if (trapRemovePending) return;
-  if (needTrap() && !histTrap) { history.pushState({ trap: 1 }, ''); histTrap = true; }
-  else if (!needTrap() && histTrap) { trapRemovePending = true; histSkip++; history.back(); }
-};
-window.addEventListener('popstate', () => {
-  if (!trapRemovePending) return;
-  trapRemovePending = false;
-  histTrap = false;
-  syncHistory();
-});
 
 /* ---------- numbers shared by Stats and Profile ---------- */
 const rowTime = r => r.t || Date.parse(r.timestamp) || 0;
