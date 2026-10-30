@@ -28,6 +28,8 @@ def answer(p, wrong=False):
         p.locator('input.field').fill('999' if wrong else '1')
     elif p.locator('.gap.pick button').count():
         p.locator('.gap.pick button').first.click()
+    elif p.locator('.bank .chip').count():
+        p.locator('.bank .chip').first.click()
     else:
         p.locator('.gap-in').first.fill('x')
     p.click('[data-main]')
