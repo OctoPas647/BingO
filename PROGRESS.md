@@ -3,6 +3,7 @@
 ## Done
 - **0.5.0**: all 64 open branches merged into one version (see CHANGELOG.md). Many branches fixed the same problem several times; each fix is in once, reviewed, without the unrelated edits the bot made on the way. Every merge commit message says what was taken from each branch and what was not, and why.
 - Earlier work (0.4.x): ДЗИ Математика 02.06.2020 вариант 2, НВО 4 Математика 2007–2016, Duolingo-style progress bar, browser-history fixes (67-history-sync.js and the tab-bar wrapper in 64-nav.js), confetti cleanup, no repeated question in a session, Android fullscreen-video code removed, no duplicate option values in generated tasks (`normalize()` in 52-math.js).
+- Activity-based streak: `S.streak`, `S.bestStreak` and `S.lastPracticeDay` count only completed sessions. `finish()` in `61-session.js` updates them once per local calendar day; opening the app does not extend the streak. Home shows the current streak in a 🔥 pill.
 
 ## Decisions
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
@@ -11,7 +12,7 @@
 - Mastery smoothing: one rule only (`bktStep` in 51-skills.js: less learning and a smaller maximum jump while a skill has few answers; a wrong answer never raises mastery). A second engine-level smoothing (feedback-2348-s33) was not added on top.
 - Focus and one-topic sessions keep their length: a twin takes the next planned place. The diagnostic still adds one more task where the first was wrong, as documented.
 - МОН's grade scale stays 30 / 41 / 62,5 / 84 (checked against МОН's announcement); feedback-1623-s16's 95-point Отличен was not taken.
-- The streak counts days with a finished session (`S.sessionDays`); older saves start from the days with answers.
+- The streak counts completed-session days: it continues when the previous active day was yesterday, resets to 1 after a gap, and ignores extra sessions on the same day. `S.sessionDays` remains as the historical day list; older saves start from the days with answers.
 - "Сказуемно определение" is kept as the term (textbook term, used by the typical-mistake labels).
 - Firestore: only staff read /questions (it holds correctAnswer); students get questions from `startAttempt`.
 
