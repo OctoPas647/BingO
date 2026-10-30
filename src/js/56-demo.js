@@ -7,6 +7,11 @@ const DEMO_TRUE = {
   bel: { art: 0.3, comma: 0.35, spell: 0.92, lit: 0.45 }
 };
 
+/* Answer-history routing: real answers are the default; demo rows are returned only on request. */
+function getAnswerHistory({ includeDemo = false } = {}) {
+  return includeDemo ? S.log.slice() : S.log.filter(r => r.sessionType !== 'demo');
+}
+
 /* One simulated answer: right with the learner's true chance, otherwise one of the task's real mistakes */
 /* u is an even spread of numbers (golden-ratio steps), so a short history still matches the learner's true level */
 function simulateAnswer(task, pTrue, r, u) {
@@ -34,7 +39,8 @@ function simulateLearner({ truth = DEMO_TRUE, name = 'Демо ученик', cl
       st.hist.push([t, roundTo(st.p, 3)]);
       rows.push({ t, timestamp: new Date(t).toISOString(), student_id: id, student: name, class: cls, subject: SUBJECTS[subj].title, skill_id: subj + '.' + sk.id, skill: sk.name,
         level: lvl, correct: correct ? 1 : 0, misconception_code: correct ? '' : misc || '', misconception: correct || !misc ? '' : miscLabel(misc).replace(/\$/g, ''), source: task.src || 'bank',
-        seconds: 20 + Math.floor(r.f() * 70), hints: 0, mastery_before: roundTo(before, 3), mastery_after: roundTo(st.p, 3), mode: i < 1 ? 'diag' : 'focus', session_id: 'demo' + Math.floor(i / 3), task_id: task.id });
+        seconds: 20 + Math.floor(r.f() * 70), hints: 0, mastery_before: roundTo(before, 3), mastery_after: roundTo(st.p, 3), mode: i < 1 ? 'diag' : 'focus', session_id: 'demo' + Math.floor(i / 3), task_id: task.id,
+        sessionType: 'demo' });
     }
     skills[subj + '.' + sk.id] = st;
   }
@@ -59,7 +65,7 @@ function simulateClass(n = 28, seed = 'class') {
    The demo replaces the skill map and the answers. If there is real progress, ask first and keep
    a copy under its own key, so "Върни моите отговори" in Settings can bring it back. */
 const DEMO_BACKUP_KEY = STORE_KEY + '.before-demo';
-const hasRealProgress = () => !S.demo && (S.sessions > 0 || S.log.some(r => r.student_id !== 'demo'));
+const hasRealProgress = () => !S.demo && (S.sessions > 0 || S.log.some(r => r.sessionType !== 'demo'));
 const demoBackupExists = () => { try { return !!localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return false; } };
 function clearDemoBackup() { try { localStorage.removeItem(DEMO_BACKUP_KEY); } catch (e) { } }
 async function loadDemoLearner() {
