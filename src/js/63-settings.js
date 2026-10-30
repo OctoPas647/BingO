@@ -1,4 +1,7 @@
 /* ================= Settings: who you are, Gemini / Vertex AI, Google Sheets, demo ================= */
+/* icons for the Liquid glass switch and the feedback card */
+Object.assign(ICONS, { chat: '<path d="M4 5h16v11H9l-5 4z"/>', glass: '<path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M18.5 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>' });
+
 SCREENS.settings = async el => {
   const st = S.settings;
   const seg = (key, opts) => `<div class="seg" data-key="${key}">${opts.map(([v, label]) => `<button data-v="${v}" class="${st[key] === v ? 'on' : ''}">${esc(label)}</button>`).join('')}</div>`;
@@ -14,22 +17,75 @@ SCREENS.settings = async el => {
       <p class="muted small">${L('Gemini обяснява грешките, дава подсказки без отговора, прави нови задачи за слабите теми и седмичен план. Без него приложението работи изцяло.')}</p></section>
     <section class="card"><h3>${icon('upload')}Google Sheets → Looker Studio</h3>${field('sheetUrl', L('Адрес на Apps Script (Web app)'), 'https://script.google.com/macros/s/…/exec')}
       <p class="muted small">${L('Всеки отговор става ред в таблица на учителя. Как се прави — apps-script/Code.gs в проекта.')}</p></section>
-    <section class="card"><h3>${icon('moon')}${L('Тема')}</h3>${seg('theme', [['auto', L('Системна')], ['light', L('Светла')], ['dark', 'Тъмна'], ['amoled', 'AMOLED']])}
+    <section class="card"><h3>${icon('moon')}${L('Тема')}</h3>${seg('theme', [['auto', L('Системна')], ['light', L('Светла')], ['dark', L('Тъмна')], ['amoled', 'AMOLED']])}
       <p class="muted small">${L('„Системна“ следва светлата или тъмната тема на телефона.')}</p>
+      <div class="rows"><div class="row"><span>${icon('glass')}${L('Liquid glass')}</span><button class="switch${st.glass ? ' on' : ''}" data-sw="glass" role="switch"><i></i></button></div></div>
+      <p class="muted small">${L('Добавя полупрозрачни, размазани повърхности върху избраната тема. Оригиналният изглед остава наличен, когато опцията е изключена.')}</p>
       <div class="rows"><div class="row"><span>${icon('sound')}${L('Звуци')}</span><button class="switch${st.sound ? ' on' : ''}" data-sw="sound" role="switch"><i></i></button></div></div></section>
+    <section class="card"><h3>${icon('chat')}${L('Обратна връзка')}</h3>
+      <button class="btn ghost block" data-feedback>${icon('chat')}${L('Изпрати обратна връзка')}</button>
+      <p class="muted small">${L('Ако си офлайн, съобщението се пази на устройството и се изпраща автоматично по-късно.')}</p></section>
     <section class="card"><h3>${icon('eye')}${L('Демо')}</h3>
       <button class="btn ghost block" data-demo>${icon('play')}${L('Зареди демо ученик')}</button>
-      ${demoBackupExists() ? `<button class="btn ghost block" data-restore>${icon('reset')}${L('Върни моите отговори')}</button>` : ''}
+      ${demoBackupHasRealData() ? `<button class="btn ghost block" data-restore>${icon('reset')}${L('Върни моите отговори')}</button>` : ''}
       <button class="btn ghost block" data-setup>${icon('reset')}${L('Начална настройка отново')}</button>
       <button class="btn ghost danger-text block" data-wipe>${icon('trash')}${L('Изчисти всичките ми отговори')}</button></section>
     <section class="card"><h3>${icon('info')}${L('За BingO')}</h3><p class="small"><b>BingO</b> ${L('alpha · подготовка за матура без зубрене: работа върху слабите места, не повтаряне на силните.')}</p>
       <p class="muted small">${L('Построено върху Shelly (задачи, точкуване, модули) и идеи от BrainBurst, BandUp и SQL Practice. EduHack Plovdiv 2026.')}</p></section>
+  </div>
+  <div class="fb-overlay" data-fb-overlay style="position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:1000">
+    <div class="fb-modal card" style="width:100%;max-width:420px;padding:16px">
+      <h3>${icon('chat')}${L('Обратна връзка')}</h3>
+      <label class="fld"><span>${L('Какво искаш да кажеш?')}</span>
+        <textarea class="field" data-fb-text rows="4" placeholder="${esc(L('Какво ти помогна, какво не стана или какво липсва?'))}"></textarea></label>
+      <p class="muted small" data-fb-status></p>
+      <div class="rows" style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn ghost" data-fb-cancel style="flex:1">${L('Отказ')}</button>
+        <button class="btn" data-fb-send style="flex:1">${L('Изпрати')}</button>
+      </div>
+    </div>
   </div>`;
+  const feedbackEndpoint = () => st.proxyUrl ? st.proxyUrl.replace(/\/+$/, '') + '/api/feedback' : '';
+  const openFeedback = () => {
+    const overlay = el.querySelector('[data-fb-overlay]');
+    overlay.style.display = 'flex';
+    el.querySelector('[data-fb-text]').focus();
+  };
+  const closeFeedback = () => {
+    el.querySelector('[data-fb-overlay]').style.display = 'none';
+    el.querySelector('[data-fb-status]').textContent = '';
+  };
+  const sendFeedback = async () => {
+    const button = el.querySelector('[data-fb-send]');
+    const status = el.querySelector('[data-fb-status]');
+    const text = el.querySelector('[data-fb-text]').value.trim();
+    const endpoint = feedbackEndpoint();
+    if (!text) { status.textContent = L('Напиши съобщение първо.'); return; }
+    if (!endpoint) { status.textContent = L('Първо задай адреса на Vertex AI сървъра.'); return; }
+    button.disabled = true;
+    status.textContent = L('Изпращане…');
+    const queued = window.BingOFeedback && window.BingOFeedback.enqueueFeedback({ endpoint, data: { text, app: 'BingO', lang: appLang(), theme: st.theme } });
+    if (!queued) { button.disabled = false; status.textContent = L('Съобщението не може да се запази.'); return; }
+    try {
+      const ok = await window.BingOFeedback.flushFeedback();
+      if (ok) { status.textContent = L('Благодаря! Обратната връзка е изпратена.'); setTimeout(closeFeedback, 1200); }
+      else { status.textContent = L('Запазено е офлайн. Ще се изпрати автоматично.'); setTimeout(closeFeedback, 1600); }
+    } catch (e) {
+      status.textContent = L('Запазено е офлайн. Ще се изпрати автоматично.');
+      setTimeout(closeFeedback, 1600);
+    } finally {
+      button.disabled = false;
+      el.querySelector('[data-fb-text]').value = '';
+    }
+  };
   el.addEventListener('click', async e => {
     const b = e.target.closest('.seg button');
     if (b) { st[b.parentNode.dataset.key] = b.dataset.v; APP.settings.theme = st.theme; APP.settings.lang = st.lang; saveState(); applySettings(); return refresh(); }
     const w = e.target.closest('[data-sw]');
-    if (w) { st.sound = !st.sound; APP.settings.sound = st.sound; saveState(); w.classList.toggle('on'); return; }
+    if (w) { const key = w.dataset.sw; st[key] = !st[key]; APP.settings[key] = st[key]; saveState(); w.classList.toggle('on'); if (key === 'glass') applySettings(); return; }
+    if (e.target.closest('[data-feedback]')) return openFeedback();
+    if (e.target.closest('[data-fb-cancel]') || e.target.closest('[data-fb-overlay]') === e.target) return closeFeedback();
+    if (e.target.closest('[data-fb-send]')) return sendFeedback();
     if (e.target.closest('[data-setup]')) {
       if (demoBackupExists()) { restoreFromDemo(); onboardingRestart(); }
       else onboardingRestart({ clearLearnerData: true });
