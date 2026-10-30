@@ -2,6 +2,7 @@
 (function boot() {
   root = document.getElementById('app');
   loadState(); applySettings(); buildBanks();
+  initFirebase();
   history.replaceState({ d: 1 }, '');
   NAV.push({ screen: onboardingNeeded() ? 'onboarding' : 'home', params: {} });
   render();

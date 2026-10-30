@@ -1,0 +1,11 @@
+{
+  "projectId": "bingo-matura-dev",
+  "firebaseConfig": {
+    "apiKey": "PLACEHOLDER_API_KEY",
+    "authDomain": "bingo-matura-dev.firebaseapp.com",
+    "projectId": "bingo-matura-dev",
+    "storageBucket": "bingo-matura-dev.appspot.com",
+    "messagingSenderId": "000000000000",
+    "appId": "1:000000000000:web:placeholder"
+  }
+}
