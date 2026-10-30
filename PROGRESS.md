@@ -24,7 +24,7 @@
 - Focus and one-topic sessions keep their length: a twin takes the next planned place. The diagnostic still adds one more task where the first was wrong, as documented.
 - МОН's grade scale stays 30 / 41 / 62,5 / 84 (checked against МОН's announcement); feedback-1623-s16's 95-point Отличен was not taken.
 - The streak counts days with a finished session (`S.sessionDays`); older saves start from the days with answers.
-- “Сказуемо определение” is the correct grammatical term and is used in the b:art3 explanation.
+- "Сказуемно определение" is kept as the term (textbook term, used by the typical-mistake labels).
 - Firestore: only staff read /questions (it holds correctAnswer); students get questions from `startAttempt`.
 
 ## Left
