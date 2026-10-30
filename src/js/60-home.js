@@ -29,6 +29,8 @@ SCREENS.home = async el => {
   const list = sm.list.slice().sort((a, b) => (a.status === 'strong') - (b.status === 'strong') || b.lost - a.lost);
   const kept = 1 - sm.lost / sm.total, started = sm.answered > 0;
   const weakest = list.find(x => x.status !== 'strong');
+  /* the button must promise the same number of tasks the focus session will actually create */
+  const focusCount = planSession(subj, 8).plan.length;
   el.innerHTML = `
     <header class="apphead">
       <div class="brand bingo">Bing<span>O</span></div>
@@ -47,7 +49,7 @@ SCREENS.home = async el => {
             : `<h1>${L('Къде губиш точки?')}</h1><p class="muted">${L('Кратка диагностика (≈5 мин): по една задача за всяка тема. После тренираш само слабото.')}</p>`}
         </div>
       </div>
-      ${started ? `<button class="btn accent big block" data-start="focus">${icon('target')}${L('Тренирай слабото · 8 задачи')}</button>
+      ${started ? `<button class="btn accent big block" data-start="focus">${icon('target')}${L('Тренирай слабото · {n} задачи', { n: focusCount })}</button>
         ${weakest ? `<p class="muted small center">${L('Започваме от <b>{s}</b> — там губиш най-много.', { s: esc(L(weakest.sk.name)) })}</p>` : `<p class="muted small center">${L('Всички теми са силни. Направи пробна матура в Shelly!')}</p>`}`
         : `<button class="btn accent big block" data-start="diag">${icon('play')}${L('Започни диагностика')}</button>
            <button class="btn ghost block demo-btn" data-demo>${icon('eye')}${L('Покажи с демо ученик')}</button>
@@ -76,14 +78,14 @@ function skillSheet(subj, id) {
   sheet({
     title: L(sk.name), body: `<div class="sk-detail">
       <p><span class="stchip s-${status}">${L(STATUS_LABEL[status])}</span> ${L('Овладяно ≈ <b>{p}</b> · {ok}/{n} верни · губиш ≈ <b>{lost}</b> от {w} т.', { p: pctTxt(st.p), ok: st.ok, n: st.n, lost: fmt1(pointsLost(sk, st)), w: sk.weight })}</p>
-      ${spark ? `<div class="spark">${spark}<small class="muted">${L('как се променя увереността с всеки отговор')}</small></div>` : ''}
+      ${spark ? `<p class="spark">${spark}<small class="muted">${L('как се променя увереността с всеки отговор')}</small></p>` : ''}
       ${miscs.length ? `<h3>${L('Твоите типични грешки')}</h3><ul class="misclist">${miscs.map(([k, n]) => `<li><span class="rt">${richInline(miscLabel(k))}</span><b>×${n}</b></li>`).join('')}</ul>` : (st.n > st.ok ? `<p class="muted">${L(st.n - st.ok === 1 ? '{k} грешен отговор, но без разпозната типична грешка — виж обясненията след задачите.' : '{k} грешни отговора, но без разпозната типична грешка — виж обясненията след задачите.', { k: st.n - st.ok })}</p>` : `<p class="muted">${st.n ? L('Още няма грешки в тази тема.') : L('Още няма отговори в тази тема.')}</p>`)}
       <p class="muted small">${L('„Овладяно“ е вероятността да решиш вярно нова задача от темата (Bayesian Knowledge Tracing). Тежестта {w} т. е приблизителна оценка за демото.', { w: sk.weight })}</p></div>`,
     actions: [{ id: 'x', label: 'Затвори' }, { id: 'go', label: 'Тренирай само това', kind: 'primary', icon: 'target' }]
   }).then(v => { if (v === 'go') go('session', { subj, mode: 'skill', skill: id }); });
 }
 function sparkline(vals) {
-  const w = 280, hgt = 54, n = vals.length, x = i => 4 + i * (w - 8) / Math.max(1, n - 1), y = v => hgt - 4 - v * (hgt - 8);
+  const w = 280, hgt = 54, n = vals.length, x = i => 4 + i * (w - 8) / Math.max(1, n - 1), y = v => hgt - 4 - v * (hgt - 8) / 100;
   const pts = vals.map((v, i) => `${roundTo(x(i), 1)},${roundTo(y(v), 1)}`).join(' ');
   return `<svg viewBox="0 0 ${w} ${hgt}" class="sparksvg" aria-hidden="true"><line x1="0" x2="${w}" y1="${y(BKT.strong)}" y2="${y(BKT.strong)}" class="sp-strong"/><line x1="0" x2="${w}" y1="${y(BKT.weak)}" y2="${y(BKT.weak)}" class="sp-weak"/><polyline points="${pts}" class="sp-line"/><circle cx="${x(n - 1)}" cy="${y(vals[n - 1])}" r="4" class="sp-dot"/></svg>`;
 }
