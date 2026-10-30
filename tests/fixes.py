@@ -316,6 +316,15 @@ with sync_playwright() as pw:
     mode['v'] = 'ok'; p.evaluate("BingOFeedback.flushFeedback()"); p.wait_for_timeout(400)
     ok('feedback: sent and removed', p.evaluate("JSON.parse(localStorage.getItem('bingo.feedback.v1')).length") == 0)
     ctx.close()
+
+    # 26. essay / ЛИС: a 30-point task has real criteria; an empty answer cannot be self-graded
+    ctx, p = fresh(b, state=DONE)
+    rub = p.evaluate("essayRubric({ type: 'open', points: 30 })")
+    ok('essay: default rubric has four criteria', len(rub) == 4, str(rub))
+    ok('essay: default rubric totals 30', sum(r['points'] for r in rub) == 30)
+    ok('essay: empty answer scores 0', p.evaluate("scoreTask({ type: 'open', points: 30 }, { text: '   ', marks: [30] }, 'bg')") == {'points': 0, 'max': 30, 'status': 'empty'})
+    ok('essay: own rubric kept', p.evaluate("essayRubric({ type: 'open', points: 30, rubric: [{ text: 'x', points: 30 }] }).length") == 1)
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')

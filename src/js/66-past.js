@@ -27,9 +27,6 @@ buildBanks = function () { _buildBanksBase(); buildPast(); };
 /* the learner's exam from the setup (58-onboarding.js); before the setup asked, it was the ДЗИ */
 const myExam = () => (EXAMS[S.profile.exam] ? S.profile.exam : 'dzi12');
 const pastView = m => (m && appLang() === 'en' && PAST_EN[m.id]) || m;
-/* In English mode, pastView() swaps in the English module, so its exam title, part titles and
-   instructions supply the UI chrome. Tasks, options, solutions, explanations and rubrics stay in
-   their original language. */
 const pastFor = (subj, exam) => PAST.filter(m => m.past.subj === subj && m.past.exam === exam).map(pastView);
 const pastById = id => pastView(PAST.find(m => m.id === id));
 const pastTasks = m => m.exams[0].parts.flatMap(p => p.tasks.map(t => ({ task: t, part: p })));
@@ -71,18 +68,10 @@ function pastSheet(subj) {
   }).then(v => { if (v && v !== 'x' && pastById(v)) go('pastexam', { id: v }); });
 }
 
-/* A clear fallback rubric for a 30-point essay / ЛИС when the exam file does not provide one. */
-const ESSAY_RUBRIC_30 = [
-  { text: 'Съдържание и аргументация: отговаря на темата, има ясна позиция и подкрепящи примери.', points: 10 },
-  { text: 'Структура и свързаност: въведение, развитие и заключение; логични връзки между частите.', points: 7 },
-  { text: 'Езикова грамотност: правопис, пунктуация, словообразуване и подходящ речников запас.', points: 7 },
-  { text: 'Формат и изисквания: обем, стил и съответствие с поставената задача.', points: 6 }
-];
-
 SCREENS.pastexam = async (el, { id }, nav) => {
   const m = pastById(id); if (!m) return back();
   const sub = SUBJECTS[m.past.subj], x = m.exams[0], Q = pastTasks(m);
-  el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', m.lang || 'bg'); const lg = appLang();
+  el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(SUBJECTS[m.past.subj].color)); el.setAttribute('lang', m.lang || 'bg'); const lg = appLang();
   const P = { i: 0, phase: 'answer', done: false, touched: false, got: [] };
   el.innerHTML = `<header class="playbar"><button class="iconbtn" data-back aria-label="${L('Затвори')}">${icon('close')}</button>${bar(0, 'pbar')}<span class="pcount"></span></header>
     <main class="playmain"></main>
@@ -113,8 +102,9 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     const fb = view.el.querySelector('.fb');
     if (task.type === 'open') {
       const answer = view.get();
+      /* An empty essay cannot be self-graded: it stays at 0 points. */
       if (!String(answer.text || '').trim()) { toast(L('Напиши отговор, преди да се оцениш.'), 'bad'); return; }
-      if (task.points >= 30 && (!Array.isArray(task.rubric) || !task.rubric.length)) task.rubric = ESSAY_RUBRIC_30;
+      task.rubric = essayRubric(task);
       P.phase = 'next'; P.touched = true;
       view.show({ status: 'ungraded' });
       /* pictures that belong to the official solution (a drawing in the key), shown only after the answer */
