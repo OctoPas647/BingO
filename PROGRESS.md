@@ -49,4 +49,5 @@
 - Build and test the Android APK after this wrapper cleanup: open the app, switch System/Light/Dark/AMOLED themes, import a module, export CSV, and test Android Back.
 
 ## Bugs
+- Fix: quadratic equations at level 2 always have real roots. `MATH_GEN.quad` now picks two integer roots first and builds `b = -a(x1 + x2)`, `c = a*x1*x2`, so the discriminant is always non-negative; `tests/fixes.py` checks 1000 seeds for `D >= 0` and correct Vieta answers.
 - The fast-tap history edge case is addressed by 67-history-sync.js, but still needs a manual test on web and APK.
