@@ -6,12 +6,24 @@ SCREENS.insights = async el => {
   sm.list.forEach(x => Object.entries(x.st.misc).forEach(([k, n]) => miscs.push({ k, n, sk: x.sk })));
   miscs.sort((a, b) => b.n - a.n);
   const mine = S.log.filter(r => r.subject === sub.title), acc = mine.length ? mine.filter(r => r.correct).length / mine.length : 0;
+  const feedbackInsights = Object.entries(S.feedback.insights)
+    .sort((a, b) => (b[1].at || 0) - (a[1].at || 0)).slice(0, 5);
+  const gradingHistory = [...S.feedback.grading].reverse().slice(0, 10);
+  const statusLabel = { right: 'Вярно', partial: 'Частично', wrong: 'Грешно', empty: 'Празно', ungraded: 'Неоценено' };
   el.innerHTML = `${topbar(L('Грешки и данни'))}<div class="pad settings">
     ${subjectTabs(subj)}
     <section class="card"><h3>${icon('target')}${L('Типичните ти грешки · {s}', { s: esc(L(sub.title)) })}</h3>
       ${miscs.length ? `<ol class="misclist big">${miscs.slice(0, 8).map(x => `<li><div><span class="rt">${richInline(miscLabel(x.k))}</span><small class="muted">${esc(L(x.sk.name))}</small></div><b>×${x.n}</b></li>`).join('')}</ol>
         <p class="muted small">${L('Всяка грешна опция в задачите идва от една конкретна типична грешка, затова виждаме не само <i>че</i> грешиш, а <i>как</i>.')}</p>` : `<p class="muted">${mine.some(r => !r.correct) ? L('Имаш грешни отговори, но без разпозната типична грешка — виж обясненията след задачите.') : mine.length ? L('Още няма грешки.') : L('Още няма отговори. Направи диагностика.')}</p>`}
       <p class="muted small">${L('{a} отговора · {b} верни', { a: mine.length, b: pctTxt(acc) })}</p></section>
+    <section class="card"><h3>${icon('chart')}${L('Обратна връзка от сесиите')}</h3>
+      ${feedbackInsights.length ? `<div class="rows">${feedbackInsights.map(([id, x]) => `<div class="row"><span><b>${L('Усвояване')}</b> <span class="muted small">${new Date(x.at || Date.now()).toLocaleString('bg-BG')}</span></span><b>${isNum(x.mastery) ? x.mastery + '%' : '—'}</b></div>
+        ${x.weak.length ? `<div class="row"><span class="muted small">${L('Слаби теми')}</span><b class="small">${esc(x.weak.map(id2 => L(skillDef(subj, id2)?.name || id2)).join(', '))}</b></div>` : ''}
+        ${x.strong.length ? `<div class="row"><span class="muted small">${L('Силни теми')}</span><b class="small">${esc(x.strong.map(id2 => L(skillDef(subj, id2)?.name || id2)).join(', '))}</b></div>` : ''}`).join('')}</div>` : `<p class="muted">${L('Още няма записани обобщения от сесии. Завърши диагностика или тренировка.')}</p>`}
+    </section>
+    <section class="card"><h3>${icon('list')}${L('Последни оценки')}</h3>
+      ${gradingHistory.length ? `<div class="rows">${gradingHistory.map(x => `<div class="row"><span><b>${esc(L(skillDef(subj, x.skill)?.name || x.skill))}</b> <span class="muted small">${new Date(x.at || Date.now()).toLocaleString('bg-BG')}</span></span><b>${x.pct}% · ${esc(L(statusLabel[x.status] || x.status))}</b></div>`).join('')}</div>` : `<p class="muted">${L('Още няма записани оценки от задачи.')}</p>`}
+    </section>
     <section class="card"><h3>${L('✦ План за седмицата от Gemini')}</h3>
       <div class="aiplan"><p class="muted small">${aiOn() ? L('Gemini прави 5-дневен план само върху слабите места, по 20 минути на ден.') : L('Включи Gemini в настройките, за да получиш план.')}</p></div>
       ${aiOn() ? `<button class="btn accent block" data-plan>${L('Направи план')}</button>` : `<button class="btn ghost block" data-go="settings">${icon('settings')}${L('Настройки')}</button>`}</section>
