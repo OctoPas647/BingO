@@ -42,11 +42,21 @@ function isFullSentence(str) {
   return hasVerb || /[.!?]$/.test(s);
 }
 
+/* Compares strict answers after normalization, ignoring harmless trailing punctuation and
+   surrounding quotation marks. Sentence structure is still checked separately. */
+function strictAnswerKey(str) {
+  return normalizeTextAnswer(str)
+    .replace(/^["']+/, '')
+    .replace(/["']+$/, '')
+    .replace(/[\s.,;:!?…]+$/u, '')
+    .trim();
+}
+
 function textMatches(given, accepted, lang, strict) {
   const list = arr(accepted), cyr = list.some(hasCyr);
   if (strict) {
-    const g = normalizeTextAnswer(given);
-    return g !== '' && isFullSentence(given) && list.some(a => normalizeTextAnswer(a) === g);
+    const g = strictAnswerKey(given);
+    return g !== '' && isFullSentence(given) && list.some(a => strictAnswerKey(a) === g);
   }
   const g = normText(given, lang, strict, cyr);
   return g !== '' && list.some(a => normText(a, lang, strict, cyr) === g);
