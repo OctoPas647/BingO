@@ -17,8 +17,9 @@ def fresh(b, state=None, raw=None):
     return ctx, p
 
 def open_settings(p):
-    p.click('[data-tab="profile"]'); p.wait_for_selector('.profhead')
-    p.click('[data-go="settings"]'); p.wait_for_selector('.settings')
+    p.wait_for_selector('.profhead')
+    p.click('[data-go="settings"]')
+    p.wait_for_selector('.settings')
 
 DONE = {'onboarding': {'done': True, 'step': 0}, 'profile': {'name': 'Тест', 'cls': '12а', 'id': 'u1'}}
 
@@ -39,7 +40,7 @@ with sync_playwright() as pw:
 
     # 3. browser back: settings -> back returns home, next back leaves (no stuck presses)
     ctx, p = fresh(b, state=DONE)
-    open_settings(p)
+    p.click('[data-tab="profile"]'); open_settings(p)
     p.click('[data-back]'); p.wait_for_timeout(200)            # in-app back to Profile
     p.click('[data-tab="home"]'); p.wait_for_timeout(300)        # home() pops the rest
     hl = p.evaluate('history.length')
@@ -91,20 +92,21 @@ with sync_playwright() as pw:
 
     # 6. demo learner asks first when there is real progress; restore brings it back
     ctx, p = fresh(b, state={**DONE, 'sessions': 2, 'log': [{'t': 1, 'timestamp': '2026-10-01T10:00:00Z', 'student_id': 'u1', 'subject': 'Математика', 'task_id': 'x', 'correct': 1}]})
-    open_settings(p); p.click('[data-demo]'); p.wait_for_timeout(300)
+    p.click('[data-tab="profile"]'); open_settings(p); p.click('[data-demo]'); p.wait_for_timeout(300)
     ok('demo: confirmation shown', p.locator('.sheet-title', has_text='демо').count() == 1)
     p.click('[data-act="no"]'); p.wait_for_timeout(300)
     ok('demo: cancel keeps real progress', p.evaluate("S.sessions") == 2 and p.evaluate("S.log.length") == 1)
     p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard')
     ok('demo: loaded after yes', p.evaluate("S.profile.name") == 'Демо ученик')
-    open_settings(p); p.wait_for_selector('[data-restore]')
+    p.click('[data-tab="profile"]'); open_settings(p)
+    p.wait_for_selector('[data-restore]')
     p.click('[data-restore]'); p.wait_for_selector('.losscard')
     ok('demo: restore brings real data back', p.evaluate("S.sessions") == 2 and p.evaluate("S.profile.name") == 'Тест')
     ctx.close()
 
     # 7. settings refuse invalid values
     ctx, p = fresh(b, state=DONE)
-    open_settings(p)
+    p.click('[data-tab="profile"]'); open_settings(p)
     p.fill('[data-f="settings.sheetUrl"]', 'https://example.com/x')
     ok('settings: bad Sheet URL shows an error', p.locator('.fld-err:not([hidden])').count() == 1)
     ok('settings: bad Sheet URL not saved', p.evaluate("S.settings.sheetUrl") == '')

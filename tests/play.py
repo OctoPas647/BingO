@@ -25,10 +25,10 @@ def answer(p, wrong=False):
         p.locator('.opt').nth(1 if wrong else 0).click()
     elif p.locator('input.field').count():
         p.locator('input.field').fill('999' if wrong else '1')
-    elif p.locator('.gap.slot').count():
-        p.locator('.bank .chip:not(.used)').first.click()
     elif p.locator('.gap.pick button').count():
         p.locator('.gap.pick button').first.click()
+    elif p.locator('.gap.slot').count() and p.locator('.bank .chip:not(.used)').count():
+        p.locator('.bank .chip:not(.used)').first.click()
     elif p.locator('.gap-in').count():
         p.locator('.gap-in').first.fill('x')
     p.click('[data-main]')
@@ -40,7 +40,8 @@ with sync_playwright() as pw:
         p.goto(PAGE); setup(p, theme, theme == 'light'); shot(p, f'{theme}-01-start')
         if theme == 'dark':
             p.click('[data-demo]'); p.wait_for_timeout(300); shot(p, 'dark-02-demo-map')
-            p.click('[data-tab="profile"]'); p.wait_for_selector('.profhead'); p.click('[data-go="settings"]'); p.wait_for_selector('.settings'); p.click('[data-key="theme"] [data-v="amoled"]'); p.wait_for_timeout(200); shot(p, 'dark-03-amoled-settings')
+            p.click('[data-tab="profile"]'); p.wait_for_selector('.profhead'); p.click('[data-go="settings"]'); p.wait_for_selector('.settings')
+            p.click('[data-key="theme"] [data-v="amoled"]'); p.wait_for_timeout(200); shot(p, 'dark-03-amoled-settings')
             p.click('[data-back]'); p.wait_for_timeout(200); p.click('[data-tab="home"]'); p.wait_for_timeout(200); shot(p, 'dark-04-amoled-home'); ctx.close(); continue
         # diagnostic
         p.click('[data-start="diag"]'); p.wait_for_selector('.task'); shot(p, 'light-02-diag-task')
