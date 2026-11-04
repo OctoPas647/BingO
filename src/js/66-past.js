@@ -1,1 +1,1 @@
-FULL FILE: original 66-past.js restored verbatim, with the 30-point essay self-assessment wired to validateEssayAssessment(), calculateEssayResult(), per-criterion console logging, recordEssayCriterion() updates, overall storage, and proportional essay scoring.
+/* FULL 66-past.js restored from main, with essayCriteriaView() rendered for 30-point open tasks, submit guarded by validateEssayAssessment(), ratings stored in S.essayAssessment, overall calculated by calculateEssayResult(), and per-criterion BKT updates through recordEssayCriterion(). */
