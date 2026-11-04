@@ -1,11 +1,12 @@
 /* ================= Gemini: explain a mistake, hint without the answer, new tasks, weekly plan =================
    Two ways to reach Gemini:
-   - 'key'   : straight to the Gemini API with a key from Google AI Studio (fine for a prototype on your own device)
+   - 'key'   : straight to the Gemini API with the key built into the app (or the learner's own key from Google AI Studio)
    - 'proxy' : through our small Cloud Run server, which calls Gemini on Vertex AI with the team's
                Google Cloud credits, so no key ever reaches the phone (see server/).
    The app works fully without AI; AI only adds explanations and new tasks. */
 
-const aiOn = () => (S.settings.aiMode === 'key' && !!S.settings.apiKey) || (S.settings.aiMode === 'proxy' && !!S.settings.proxyUrl);
+const aiKey = () => S.settings.apiKey || BUILTIN_AI_KEY;
+const aiOn = () => (S.settings.aiMode === 'key' && !!aiKey()) || (S.settings.aiMode === 'proxy' && !!S.settings.proxyUrl);
 
 const AI_SYSTEM = `Ти си търпелив учител, който подготвя български ученици за държавния зрелостен изпит (ДЗИ).
 Пишеш на правилен български език, кратко и ясно, без излишни похвали и без да обвиняваш ученика.
@@ -27,7 +28,7 @@ async function callAI({ system = AI_SYSTEM, prompt, json = true, temperature = 0
     } else {
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(S.settings.model)}:generateContent`, {
         method: 'POST', signal: ctrl.signal,
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': S.settings.apiKey },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': aiKey() },
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: system }] },
           contents: [{ role: 'user', parts: [{ text: prompt }] }],

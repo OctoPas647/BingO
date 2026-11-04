@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.1
+- **Gemini works out of the box**: the build puts the team's Gemini key into the app (from the `GEMINI_API_KEY` secret on GitHub, or `tools/ai-key.txt` on your own PC — never in the code), so every AI feature — checking written answers, explaining mistakes, hints, new tasks and the week plan — is on from the first start. Installs that had AI off get it switched on once; a learner can still turn it off or use their own key in Settings
+
 ## 0.5.0
 Everything from the 64 open branches in one version.
 

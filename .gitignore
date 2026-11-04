@@ -10,4 +10,5 @@ ui-debug.log
 *serviceAccount*.json
 service-account*.json
 .env
+tools/ai-key.txt
 .env.*

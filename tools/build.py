@@ -48,8 +48,20 @@ def content_js():
             f'window.PAST_EXAMS_EN_JSON = {json.dumps(past_en, ensure_ascii=False)};\n'
             f'window.SHELLY_MEDIA = {json.dumps(media)};\n')
 
+def ai_key():
+    """The Gemini key every build ships with, so AI works for everyone without setup.
+    From the BINGO_GEMINI_KEY environment variable (the GEMINI_API_KEY secret on GitHub Actions) or,
+    for builds on your own PC, from tools/ai-key.txt (git-ignored). Never put the key in the code."""
+    k = os.environ.get('BINGO_GEMINI_KEY', '').strip()
+    f = ROOT / 'tools/ai-key.txt'
+    if not k and f.exists(): k = f.read_text(encoding='utf-8').strip()
+    return k if re.fullmatch(r'[\w.\-]{10,200}', k or '') else ''
+
 def js_bundle():
-    head = f'const APP_NAME = {json.dumps(CFG["appName"])}, APP_VERSION = {json.dumps(CFG["version"])};\n' + content_js()
+    key = ai_key()
+    say(f'ai key   {"built in" if key else "none (AI stays off until a learner adds a key)"}')
+    head = (f'const APP_NAME = {json.dumps(CFG["appName"])}, APP_VERSION = {json.dumps(CFG["version"])};\n'
+            f'globalThis.BINGO_BUILTIN_AI_KEY = {json.dumps(key)};\n') + content_js()
     parts = [head, '/* ==== engine/vendor/katex.min.js ==== */\n' + read('engine/vendor/katex.min.js')]
     parts += [f'/* ==== {f.relative_to(ROOT).as_posix()} ==== */\n' + read(f) for f in js_files()]
     return '\n;\n'.join(parts)
