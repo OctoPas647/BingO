@@ -10,15 +10,18 @@
      (a new variant, a Gemini question made from the mistake, or another question of the skill), never the same one
    - every answer updates the skill map and goes to the log (Google Sheets / Looker Studio) */
 
-const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема', similar: 'Подобни на грешките' };
+const MODE_TITLE = { diag: 'Диагностика', focus: 'Тренировка на слабото', skill: 'Една тема', similar: 'Подобни на грешките', assigned: 'Домашно от учителя' };
 
-SCREENS.session = async (el, { subj, mode, skill, similar }, nav) => {
+SCREENS.session = async (el, { subj, mode, skill, similar, skills, size, assignmentId }, nav) => {
   const sub = SUBJECTS[subj], m = fakeModule(subj), sessionId = uid();
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', 'bg');
   const startMap = subjectSummary(subj), before = Object.fromEntries(startMap.list.map(x => [x.sk.id, x.st.p]));
   const planned = mode === 'diag' ? { plan: planDiagnostic(subj) }
     : mode === 'skill' ? { plan: Array.from({ length: 6 }, () => ({ skill, why: 'focus' })) }
     : mode === 'similar' ? { plan: arr(similar).map(x => ({ skill: x.task.skill, why: 'similar', like: x })) }
+    /* homework from the teacher (73-class-student.js): the skills the teacher picked, or the class's weakest */
+    : mode === 'assigned' && arr(skills).some(s => skillDef(subj, s)) ? { plan: Array.from({ length: size || 10 }, (_, i) => { const ok = arr(skills).filter(s => skillDef(subj, s)); return { skill: ok[i % ok.length], why: 'focus' }; }) }
+    : mode === 'assigned' ? planSession(subj, size || 10)
     : planSession(subj, 8);
   const Q = planned.plan.map(p => ({ ...p })), P = { i: 0, phase: 'answer', done: false, touched: false, answers: [], used: new Set(), extraDiag: new Set(), tried: null };
   if (!Q.length) { toast('Всички теми са силни — няма какво да тренираме'); return back(); }
@@ -178,6 +181,8 @@ SCREENS.session = async (el, { subj, mode, skill, similar }, nav) => {
     P.done = true; S.sessions++;
     const day = localDay(); if (!S.sessionDays.includes(day)) { S.sessionDays.push(day); S.sessionDays = S.sessionDays.slice(-400); }
     saveState(true); flushToSheet();
+    if (assignmentId && typeof classPracticeDone === 'function') classPracticeDone(assignmentId, subj, P.answers);   /* homework from the teacher */
+    if (typeof cloudSyncProgress === 'function') cloudSyncProgress();   /* the skill map for the teacher */
     const endMap = subjectSummary(subj), touched = [...new Set(P.answers.map(a => a.skill))];
     const right = P.answers.filter(a => a.correct).length, gained = startMap.lost - endMap.lost;
     const rows = touched.map(id => { const x = endMap.list.find(y => y.sk.id === id); return x && { x }; }).filter(Boolean);

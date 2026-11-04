@@ -255,7 +255,7 @@ SCREENS.onboarding = async el => {
     if (a.dataset.ob === 'skip') { onboardingSkip(); return refresh(); }
     const res = onboardingNext(d);
     if (!res.ok) { errors = res.errors; return draw(); }
-    if (res.done) return go('home', {}, { replace: true });
+    if (res.done) { const [scr, params] = typeof afterOnboarding === 'function' ? afterOnboarding() : ['home', {}]; return go(scr, params, { replace: true }); }
     refresh();
   });
   el.addEventListener('input', e => { const i = e.target.closest('[data-k]'); if (i) d[i.dataset.k] = i.value; });

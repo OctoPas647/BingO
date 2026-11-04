@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
     ValueCallback<Uri[]> pickCallback;
     File outFile;
     Uri pendingIncoming;
+    GoogleAuthBridge auth;
     volatile boolean pageReady = false;
 
     @Override
@@ -77,6 +78,8 @@ public class MainActivity extends Activity {
         web.addJavascriptInterface(new FilesBridge(), "AndroidFiles");
         /* Gemini Nano on the device (ML Kit GenAI); only built in by the Gradle build */
         try { web.addJavascriptInterface(new NanoBridge(this, web), "AndroidNano"); } catch (Throwable t) { }
+        /* BingO for classes: Google sign-in with the phone's account picker (Google blocks its sign-in page in a WebView) */
+        try { auth = new GoogleAuthBridge(this, web); web.addJavascriptInterface(auth, "AndroidAuth"); } catch (Throwable t) { auth = null; }
 
         web.setWebViewClient(new WebViewClient() {
             @Override
@@ -112,7 +115,9 @@ public class MainActivity extends Activity {
                 pickCallback = callback;
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.addCategory(Intent.CATEGORY_OPENABLE);
-                i.setType("*/*");
+                String[] types = params != null ? params.getAcceptTypes() : null;
+                String type = types != null && types.length == 1 && types[0] != null && !types[0].isEmpty() ? types[0] : "*/*";
+                i.setType(type.contains(",") ? "*/*" : type);
                 try { startActivityForResult(Intent.createChooser(i, null), REQ_PICK); }
                 catch (ActivityNotFoundException e) { pickCallback = null; return false; }
                 return true;
@@ -217,6 +222,7 @@ public class MainActivity extends Activity {
     /* ---------- results from the file picker and "save as" ---------- */
     @Override
     protected void onActivityResult(int req, int result, Intent data) {
+        if (auth != null && auth.onActivityResult(req, result, data)) return;
         if (req == REQ_PICK) {
             if (pickCallback != null) {
                 Uri u = result == RESULT_OK && data != null ? data.getData() : null;
@@ -252,8 +258,9 @@ public class MainActivity extends Activity {
         } catch (Exception e) { finish(); }
     }
 
-    @Override protected void onPause() { super.onPause(); web.onPause(); }
-    @Override protected void onResume() { super.onResume(); web.onResume(); hideNavigationBar(); }
+    /* a running class test learns when the student leaves the app (73-class-student.js, anti-cheat) */
+    @Override protected void onPause() { js("window.__appPaused && window.__appPaused()"); super.onPause(); web.onPause(); }
+    @Override protected void onResume() { super.onResume(); web.onResume(); hideNavigationBar(); js("window.__appResumed && window.__appResumed()"); }
     @Override protected void onDestroy() { web.destroy(); super.onDestroy(); }
 
     /* System bars follow the app theme */
@@ -278,6 +285,23 @@ public class MainActivity extends Activity {
     class UiBridge {
         @JavascriptInterface
         public boolean night() { return systemNight(); }
+
+        /* during a class test: no screenshots or screen recording */
+        @JavascriptInterface
+        public void secure(final boolean on) {
+            runOnUiThread(new Runnable() { @Override public void run() {
+                if (on) getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE);
+                else getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE);
+            }});
+        }
+
+        /* during a class test: pin the screen to BingO (Android asks the student once) */
+        @JavascriptInterface
+        public void pin(final boolean on) {
+            runOnUiThread(new Runnable() { @Override public void run() {
+                try { if (on) startLockTask(); else stopLockTask(); } catch (Exception ignored) { }
+            }});
+        }
 
         @JavascriptInterface
         public void bars(final String hex, final boolean dark) {

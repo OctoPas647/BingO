@@ -9,7 +9,7 @@ let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, sh
 
 const DEFAULT_STATE = () => ({
   v: 1,
-  profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
+  profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', role: '', school: '', classCode: '', id: uid() },
   /* No API key is ever typed in or stored: Gemini runs on BingO's own server (54-ai.js), Gemini Nano on the device.
      ai / nano only switch them off for a learner who does not want them. */
   settings: { ai: true, nano: true, sheetUrl: '', theme: 'auto', glass: true, motion: true, sound: true, lang: 'bg' },
@@ -25,7 +25,8 @@ const DEFAULT_STATE = () => ({
   aiFlags: [],           /* AI-made tasks a learner reported as wrong */
   pastResults: {},       /* past exam id -> { pts, max, at }: the last result (66-past.js) */
   aiCache: {},           /* AI-made tasks kept for offline use and "train similar": "subj.skill" -> [task] (54-ai.js) */
-  glassV6: true
+  glassV6: true,
+  cloud: null           /* BingO for classes (71-cloud.js): { signedIn, uid } so the app reconnects to Firebase on start */
 });
 
 let S = DEFAULT_STATE();
@@ -70,6 +71,7 @@ function cleanProfile(p, d) {
     age: isStr(age) && /^\d{1,2}$/.test(age) ? age : '',
     exam: EXAM_IDS.includes(p.exam) ? p.exam : '',
     track: id(p.track), extra: id(p.extra),
+    role: ['student', 'teacher'].includes(p.role) ? p.role : '', school: text(p.school, 120), classCode: text(p.classCode, 12),
     id: isStr(p.id) && p.id ? p.id : d.profile.id
   };
 }
@@ -108,6 +110,7 @@ function sanitizeState(v) {
   out.glassV6 = true;
   /* the Sheet's retry state (55-sync.js): without it a restart forgets failed sends */
   if (isObj(v.sync)) out.sync = { fails: isNum(v.sync.fails) ? Math.max(0, Math.floor(v.sync.fails)) : 0, lastError: isStr(v.sync.lastError) ? v.sync.lastError.slice(0, 200) : '', lastOk: isNum(v.sync.lastOk) ? v.sync.lastOk : 0, unverified: !!v.sync.unverified };
+  if (isObj(v.cloud) && v.cloud.signedIn === true) out.cloud = { signedIn: true, uid: isStr(v.cloud.uid) ? v.cloud.uid.slice(0, 128) : '' };
   return out;
 }
 /* math, БЕЛ and the maturas imported from МОН's exams (content/subjects.json) */
@@ -176,7 +179,8 @@ applySettings = function () {
 /* Shelly's media loader, reading the few pictures that the build embeds (window.SHELLY_MEDIA: "module id\npath" -> data URL) */
 function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
-    const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
+    /* a picture in a teacher's question is an https address (Firebase Storage), not a file of a bundled module */
+    const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media] || (/^https:\/\//.test(el.dataset.media) ? el.dataset.media : ''); el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
     if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
   });

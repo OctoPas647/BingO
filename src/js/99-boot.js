@@ -3,7 +3,7 @@
   root = document.getElementById('app');
   loadState(); applySettings(); buildBanks();
   history.replaceState({ d: 1 }, '');
-  NAV.push({ screen: onboardingNeeded() ? 'onboarding' : 'home', params: {} });
+  NAV.push({ screen: onboardingNeeded() ? 'onboarding' : (typeof startScreen === 'function' ? startScreen() : 'home'), params: {} });
   render();
   if (STATE_NOTICE) sheet({
     title: 'Запазените данни не можаха да се прочетат',
@@ -12,5 +12,6 @@
   });
   scheduleFlush();
   nanoInit();   /* is Gemini Nano on this device? (54c-nano.js) */
+  if (typeof cloudBoot === 'function') cloudBoot();   /* BingO for classes: reconnect to Firebase if signed in (71-cloud.js) */
   if (window.AndroidFiles && window.AndroidFiles.ready) window.AndroidFiles.ready();
 })();

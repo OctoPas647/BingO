@@ -1,0 +1,10 @@
+{
+  "name": "bingo-emulator-tests",
+  "private": true,
+  "type": "module",
+  "description": "BingO for classes: backend and UI tests against the Firebase emulators",
+  "devDependencies": {
+    "firebase": "10.14.1",
+    "firebase-tools": "13.29.1"
+  }
+}

@@ -65,6 +65,8 @@ jobs:
         env:
           # the address of BingO's AI server on Cloud Run (server/README.md); the Gemini key itself stays on the server
           BINGO_AI_SERVER: ${{ vars.BINGO_AI_SERVER || secrets.BINGO_AI_SERVER }}
+          # BingO for classes: the Firebase web config as JSON (docs/firebase.md); without it the class features say "not connected"
+          BINGO_FIREBASE: ${{ vars.BINGO_FIREBASE }}
         run: |
           chmod +x platforms/android/gradlew
           python3 tools/build.py android

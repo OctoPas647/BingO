@@ -198,7 +198,7 @@ E('resetState(false)');
   const fs = require('fs'), path = require('path'), dir = path.join(__dirname, '../src/js'), EN = E('EN_UI'), keys = new Set();
   const unq = x => x.replace(/\\'/g, "'").replace(/\\\\/g, '\\');
   for (const f of fs.readdirSync(dir)) {
-    if (f === '49-lang.js') continue;
+    if (f === '49-lang.js' || f === '49b-lang-classes.js' || f === '69-qrcode.js') continue;
     const src = fs.readFileSync(path.join(dir, f), 'utf8');
     for (const re of [/\bL\('((?:[^'\\]|\\.)*)'/g, /\btoast\('((?:[^'\\]|\\.)*)'/g, /\blabel: '((?:[^'\\]|\\.)*)'/g, /L\(\w+ [=!<>]+[^?]+\? '((?:[^'\\]|\\.)*)' : '((?:[^'\\]|\\.)*)'/g])
       for (const m of src.matchAll(re)) for (const k of m.slice(1)) if (k && /[А-Яа-я]/.test(k)) keys.add(unq(k));
@@ -219,6 +219,14 @@ E('resetState(false)');
   E("S.settings.lang = 'bg'");
   if (E("L('Начало')") !== 'Начало') fail('English UI: Bulgarian changed');
   console.log(`English UI: ${keys.size} texts, ${missing.length} without translation`);
+}
+
+/* 10. BingO for classes: Cloud Functions grade with a copy of the app's checking (tools/sync-functions.js), which must be current */
+{
+  const fs = require('fs'), sync = require('./sync-functions');
+  if (!fs.existsSync(sync.OUT) || fs.readFileSync(sync.OUT, 'utf8') !== sync.build()) fail('functions/shared/edu.js is out of date: run node tools/sync-functions.js');
+  const edu = E('({ g: eduGrade(17, 20, { scale: "bg6" }).value, e: eduGrade(17, 20, { scale: "bg6exact" }).value, s: eduStrip([{ id: "a", type: "choice", prompt: "x", options: ["1", "2"], answer: 1 }], "s").pub[0].answer })');
+  if (edu.g !== 5 || edu.e !== 5.4 || edu.s !== undefined) fail('class grading rules', edu);
 }
 
 console.log(`${n} tasks checked, ${fails} problems`);

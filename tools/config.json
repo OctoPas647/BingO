@@ -1,9 +1,11 @@
 {
   "appName": "BingO",
-  "version": "0.6.0",
-  "androidVersionCode": 10,
+  "version": "0.7.0",
+  "androidVersionCode": 11,
   "androidPackage": "app.bingo",
   "androidMinSdk": 24,
   "androidTargetSdk": 34,
-  "aiServer": ""
+  "aiServer": "",
+  "firebase": {},
+  "webUrl": "https://preotkrivanegk.com/bingo/"
 }

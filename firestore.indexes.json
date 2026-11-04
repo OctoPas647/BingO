@@ -1,29 +1,17 @@
 {
   "indexes": [
-    {
-      "collectionGroup": "attempts",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "studentId", "order": "ASCENDING" },
-        { "fieldPath": "createdAt", "order": "DESCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "attempts",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "classId", "order": "ASCENDING" },
-        { "fieldPath": "createdAt", "order": "DESCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "results",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "studentId", "order": "ASCENDING" },
-        { "fieldPath": "createdAt", "order": "DESCENDING" }
-      ]
-    }
+    { "collectionGroup": "assignments", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "opensAt", "order": "ASCENDING" }] },
+    { "collectionGroup": "assignments", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "closesAt", "order": "ASCENDING" }] },
+    { "collectionGroup": "assignments", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "classId", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" }] },
+    { "collectionGroup": "assignments", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "teacherIds", "arrayConfig": "CONTAINS" }, { "fieldPath": "createdAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "attempts", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "assignmentId", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" }] },
+    { "collectionGroup": "attempts", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "deadline", "order": "ASCENDING" }] },
+    { "collectionGroup": "attempts", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "teacherIds", "arrayConfig": "CONTAINS" }, { "fieldPath": "assignmentId", "order": "ASCENDING" }] },
+    { "collectionGroup": "results", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "teacherIds", "arrayConfig": "CONTAINS" }, { "fieldPath": "assignmentId", "order": "ASCENDING" }] },
+    { "collectionGroup": "results", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "teacherIds", "arrayConfig": "CONTAINS" }, { "fieldPath": "classId", "order": "ASCENDING" }] },
+    { "collectionGroup": "results", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "teacherIds", "arrayConfig": "CONTAINS" }, { "fieldPath": "studentId", "order": "ASCENDING" }] },
+    { "collectionGroup": "results", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "teacherIds", "arrayConfig": "CONTAINS" }, { "fieldPath": "gradedAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "assignments", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "teacherIds", "arrayConfig": "CONTAINS" }, { "fieldPath": "classId", "order": "ASCENDING" }] }
   ],
   "fieldOverrides": []
 }

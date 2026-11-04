@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- **0.7.0** BingO for classes (teacher's part, "Клас" tab, Firebase backend). Files: `src/js/70-edu-core.js` (shared grading rules, also in `functions/shared/edu.js`), `71-cloud.js` (Firebase, Google sign-in, Google API tokens), `72-class.js` (setup role step, joining), `73-class-student.js`, `74-teacher.js` … `79-teacher-more.js`, `src/css/zzz-class.css`, `functions/index.js` + `functions/ai.js`, `firestore.rules`, `storage.rules`, `platforms/android/java/app/shelly/GoogleAuthBridge.java`. Checks: tools/check.js 0 problems; tests/emulator/backend.test.mjs 50/50; tests/emulator/ui_classes.py clean (teacher + student, live test, quiz); fixes.py 71/71, play.py, ai_mock.py clean; Gradle APK builds.
 - **0.6.0** (claude/ios-redesign-ai-matura): iOS redesign with Liquid glass as the navigation layer and spring motion (zz-ios.css, 68-motion.js); no typed API key anywhere — Gemini through BingO's server, key only on the server; Gemini Nano on the device (54c-nano.js, NanoBridge.java, Gradle build with ML Kit GenAI); every matura from МОН's PDFs (tools/import_dzi.py, content/subjects.json) and an English bank from BrainBurst/BandUP; every past-exam question in training (66b-past-bank.js); four options on every closed question; math topics Функции/Тригонометрия/Планиметрия/Статистика with MON-style generators; second try, "Не знам", mistake review and "Тренирай подобни" (61-session.js, 61b-review.js). Checks: tools/check.js 0 problems; tests fixes.py 71/71, play.py and ai_mock.py clean; Gradle APK builds.
 - Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
   - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
@@ -29,6 +30,9 @@
 - Firestore: only staff read /questions (it holds correctAnswer); students get questions from `startAttempt`.
 
 ## Left
+- BingO for classes: create the Firebase project and set the `BINGO_FIREBASE` GitHub variable, add the Android app's SHA-1, deploy rules and functions (docs/firebase.md). Test Google sign-in on the Xiaomi (needs the SHA-1).
+- Classroom/Forms/Drive/Calendar need those APIs enabled and teachers added as test users until Google verifies the app.
+- Not done from Shkolo on purpose (scope: tests and homework): absences, remarks, parents' accounts, messages.
 - Deploy `server/` on Cloud Run with the Gemini key and set the `BINGO_AI_SERVER` GitHub variable (until then the app runs without cloud AI; Gemini Nano still works on phones/browsers that have it).
 - Try Gemini Nano on the Xiaomi 17 Ultra: its Bulgarian may be weak; it is only used for hints, first estimates and checks.
 - More of the Drive folder: only the newest 4 exams per subject were imported (≈70 of ≈230 PDFs); run tools/import_dzi.py on the rest.

@@ -60,11 +60,26 @@ def ai_server():
     u = (os.environ.get('BINGO_AI_SERVER') or CFG.get('aiServer') or '').strip().rstrip('/')
     return u if re.fullmatch(r'https://[\w.\-]+(:\d+)?(/[\w.\-/]*)?', u) else ''
 
+def firebase_cfg():
+    """The Firebase web config for BingO for classes (not secret: it only names the project; the security rules protect the data).
+    From the BINGO_FIREBASE environment variable (JSON, a GitHub Actions variable) or tools/config.json "firebase".
+    Keys: apiKey, authDomain, projectId, storageBucket, appId, messagingSenderId, and webClientId (the OAuth "Web client" id, for sign-in on Android)."""
+    raw = os.environ.get('BINGO_FIREBASE') or ''
+    try: c = json.loads(raw) if raw.strip() else (CFG.get('firebase') or {})
+    except ValueError: sys.exit('BINGO_FIREBASE is not valid JSON')
+    keep = ['apiKey', 'authDomain', 'projectId', 'storageBucket', 'appId', 'messagingSenderId', 'webClientId', 'region']
+    c = {k: str(v) for k, v in (c or {}).items() if k in keep and isinstance(v, str) and re.fullmatch(r'[\w.:\-/]+', v)}
+    return c if c.get('apiKey') and c.get('projectId') else None
+
 def js_bundle():
     srv = ai_server()
+    fb = firebase_cfg()
+    say(f'classes  {"Firebase project " + fb["projectId"] if fb else "not connected (set firebase in tools/config.json or BINGO_FIREBASE)"}')
     say(f'ai server {srv or "none (set aiServer in tools/config.json or BINGO_AI_SERVER; on-device AI still works)"}')
     head = (f'const APP_NAME = {json.dumps(CFG["appName"])}, APP_VERSION = {json.dumps(CFG["version"])};\n'
-            f'globalThis.BINGO_AI_SERVER = globalThis.BINGO_AI_SERVER_OVERRIDE || {json.dumps(srv)};\n') + content_js()
+            f'globalThis.BINGO_AI_SERVER = globalThis.BINGO_AI_SERVER_OVERRIDE || {json.dumps(srv)};\n'
+            f'globalThis.BINGO_FIREBASE = {json.dumps(fb)};\n'
+            f'globalThis.BINGO_WEB_URL = {json.dumps(CFG.get("webUrl") or "https://preotkrivanegk.com/bingo/")};\n') + content_js()
     parts = [head, '/* ==== engine/vendor/katex.min.js ==== */\n' + read('engine/vendor/katex.min.js')]
     parts += [f'/* ==== {f.relative_to(ROOT).as_posix()} ==== */\n' + read(f) for f in js_files()]
     return '\n;\n'.join(parts)

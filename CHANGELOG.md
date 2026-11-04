@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.7.0
+BingO for classes: a teacher's part and a "Клас" tab for students. Setup: docs/firebase.md.
+
+- **Teacher or student**: the first-run setup asks. A teacher signs in with Google and gets the teacher's part (a sidebar on a laptop, a tab bar on a phone); a student can type a class code. Anyone can choose "Учител" for now; the backend can also limit teachers to a list of emails/domains, a school code or admin approval (no app update needed)
+- **Classes**: join with a 6-letter code, a QR code, an email invitation or a CSV list; import classes and students from Google Classroom; co-teachers; archive
+- **Tests**: every question type (one or several right answers, short answer, number, fill the gaps, order, match, open answer, photo of a handwritten solution), pictures and math in questions; from BingO's banks and past НВО/ДЗИ exams, from Gemini on a topic, from a PDF / photo / text / Google Doc, or from a Google Forms quiz; Gemini can improve one task; preview as a student
+- **Giving a test**: homework, a test or a live test, to several classes at once; open and close times, a time limit, attempts, late work; shuffled questions and answers per student; no going back; grading per test (2–6 by thresholds, 2–6 with decimals, МОН matura scale, percent or points); what students see afterwards and when
+- **Anti-cheating**: an alert when a student leaves the test or the app, copy/paste blocked, full screen on a computer, the phone pinned to BingO and screenshots blocked on Android, automatic lock after N alerts
+- **Live test**: a grid of the class — the question each student is on, what they are writing now, right/wrong so far, time on the question, online or not, every alert; start, pause, +5 min for all or one student, lock, kick, end
+- **Projector quiz**: one question at a time on the big screen, coloured answers on the phones, countdown, answer chart, leaderboard and podium
+- **Grading**: closed questions are checked on the server (the answers never reach a student's phone); open answers and photos are graded by Gemini — suggested for approval or fully automatic — with the teacher's rubric and "what to look for"; every time the teacher changes Gemini's points it becomes an example, so Gemini grades more like that teacher
+- **Results and analysis**: per student and per question (how many got it right, the most common wrong answer, average time), grade distribution, a gradebook per class, a student's history and BingO skill map, the class's weakest skills from everyday practice, Gemini's analysis of a test; export to CSV, Excel, PDF or a Google Sheet
+- **Schedule**: a calendar of tests and homework, recurring homework (e.g. every Monday: BingO practice on the class's weakest skills, or random tasks from a test), Google Calendar invitations with reminders, in-app notifications
+- **Gemini assistant for teachers**: chat about your classes; it can make a test you open in the editor
+- **Students**: the "Клас" tab with live tests, homework and results; homework that is a BingO practice session; results and right answers when the teacher allows
+- Firebase: Firestore rules, Storage rules, Cloud Functions (`functions/`), emulator tests (`tests/emulator/`); Android: Google sign-in with the phone's account picker
+
 ## 0.6.0
 A native-feeling redesign, Google AI behind almost everything, and every matura.
 

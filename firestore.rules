@@ -1,80 +1,125 @@
 rules_version = '2';
 
+/* BingO for classes. The app reads and writes only what is safe here; everything else (roles, joining a class,
+   the answer key, starting and grading an attempt, live control) goes through Cloud Functions (functions/index.js).
+   Roles are custom claims (request.auth.token.role), set only by the functions. */
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function signedIn() {
-      return request.auth != null;
-    }
+    function signedIn() { return request.auth != null; }
+    function me() { return request.auth.uid; }
+    function isTeacher() { return signedIn() && request.auth.token.get('role', 'student') in ['teacher', 'admin']; }
+    function isAdmin() { return signedIn() && request.auth.token.get('role', 'student') == 'admin'; }
+    function onlyChanges(keys) { return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys); }
+    function cls(cid) { return get(/databases/$(database)/documents/classes/$(cid)).data; }
 
-    function isSelf(uid) {
-      return signedIn() && request.auth.uid == uid;
-    }
+    /* a profile: its owner; role and class lists are written by the functions */
+    match /users/{uid} {
+      allow read: if signedIn() && (me() == uid || isAdmin());
+      allow update: if signedIn() && me() == uid && onlyChanges(['name', 'lang', 'subjects', 'school', 'settings', 'updatedAt']);
+      allow create, delete: if false;
 
-    function hasRole(role) {
-      return signedIn()
-        && request.auth.token.role == role;
-    }
-
-    function isAdmin() {
-      return hasRole('admin');
-    }
-
-    function isTeacher() {
-      return hasRole('teacher');
-    }
-
-    // A student profile can be created by its owner on first sign-in.
-    // Role is controlled by custom claims / admin callable, not by clients.
-    match /users/{userId} {
-      allow read: if isSelf(userId) || isTeacher() || isAdmin();
-      allow create: if isSelf(userId)
-        && request.resource.data.role == 'student'
-        && request.resource.data.uid == userId;
-      allow update: if isSelf(userId)
-        && request.resource.data.role == resource.data.role
-        && request.resource.data.uid == resource.data.uid;
-      allow delete: if isAdmin();
-    }
-
-    // Classes are managed by teachers/admins.
-    match /classes/{classId} {
-      allow read: if signedIn();
-      allow create, update, delete: if isTeacher() || isAdmin();
-    }
-
-    // Question banks hold the correct answers, so only staff read them directly.
-    // Students get a test's questions without answers from the startAttempt function.
-    match /questions/{questionId} {
-      allow read: if isTeacher() || isAdmin();
-      allow create, update, delete: if isTeacher() || isAdmin();
-    }
-
-    // Attempts and answers are created and graded only by callable Functions.
-    // Students and teachers can read according to the rules below.
-    match /attempts/{attemptId} {
-      allow read: if isSelf(resource.data.studentId)
-        || isTeacher()
-        || isAdmin();
-      allow create, update, delete: if false;
-
-      match /answers/{answerId} {
-        allow read: if isSelf(get(/databases/$(database)/documents/attempts/$(attemptId)).data.studentId)
-          || isTeacher()
-          || isAdmin();
-        allow create, update, delete: if false;
+      /* reminders and new tests for a student */
+      match /inbox/{id} {
+        allow read, delete: if signedIn() && me() == uid;
+        allow update: if signedIn() && me() == uid && onlyChanges(['read']);
+        allow create: if false;
       }
     }
 
-    // Final results are readable by the student and their teachers.
-    match /results/{resultId} {
-      allow read: if isSelf(resource.data.studentId)
-        || isTeacher()
-        || isAdmin();
+    /* admin-only settings: who may become a teacher */
+    match /config/{d} { allow read: if isAdmin(); allow write: if false; }
+    match /schoolCodes/{c} { allow read: if isAdmin(); allow write: if false; }
+    match /teacherRequests/{u} { allow read: if isAdmin() || (signedIn() && me() == u); allow write: if false; }
+    match /codes/{c} { allow read, write: if false; }
+    match /aiUsage/{d} { allow read, write: if false; }
+
+    /* classes: teachers and students of the class read; teachers change the name and the look */
+    match /classes/{cid} {
+      allow read: if signedIn() && (me() in resource.data.teacherIds || me() in resource.data.studentIds);
+      allow update: if signedIn() && me() in resource.data.teacherIds
+        && onlyChanges(['name', 'subject', 'grade', 'color', 'archived', 'notes', 'calendarId', 'classroomId', 'updatedAt']);
+      allow create, delete: if false;
+
+      match /members/{uid} {
+        allow read: if signedIn() && (me() == uid || me() in cls(cid).teacherIds);
+        allow write: if false;
+      }
+    }
+
+    /* a teacher's test bank (with the answers): only its owner and the teachers it is shared with */
+    match /tests/{tid} {
+      allow read, delete: if isTeacher() && (resource.data.ownerId == me() || me() in resource.data.get('sharedWith', []));
+      allow create: if isTeacher() && request.resource.data.ownerId == me();
+      allow update: if isTeacher() && (resource.data.ownerId == me() || me() in resource.data.get('sharedWith', []))
+        && request.resource.data.ownerId == resource.data.ownerId;
+    }
+
+    /* recurring homework: the teacher of the class */
+    match /schedules/{sid} {
+      allow read, delete: if isTeacher() && resource.data.ownerId == me();
+      allow create: if isTeacher() && request.resource.data.ownerId == me() && me() in cls(request.resource.data.classId).teacherIds;
+      allow update: if isTeacher() && resource.data.ownerId == me() && request.resource.data.ownerId == me()
+        && me() in cls(request.resource.data.classId).teacherIds;
+    }
+
+    /* a test given to a class: the tasks inside have no answers; the key is a separate document for teachers */
+    match /assignments/{aid} {
+      allow read: if signedIn() && (me() in resource.data.teacherIds || me() in resource.data.studentIds);
+      allow write: if false;
+      match /key/{k} {
+        allow read: if signedIn() && me() in resource.data.teacherIds;
+        allow write: if false;
+      }
+    }
+
+    /* one student's work on one assignment. Started by the startAttempt function; the student then writes
+       answers, the question they are on and the "left the app" events — only while it is running, not locked,
+       and before the deadline (+2 minutes for a slow connection). Quiz answers can be added, never changed. */
+    match /attempts/{atid} {
+      allow read: if signedIn() && (resource.data.studentId == me() || me() in resource.data.teacherIds);
+      allow create, delete: if false;
+      allow update: if signedIn() && resource.data.studentId == me()
+        && resource.data.status == 'in_progress' && resource.data.locked != true
+        && request.time < resource.data.deadline + duration.value(2, 'm')
+        && onlyChanges(['responses', 'current', 'answered', 'timeOn', 'events', 'flags', 'lastSeen', 'quiz', 'photos', 'updatedAt', 'device', 'focus', 'draft', 'practice', 'curSince'])
+        && request.resource.data.quiz.diff(resource.data.quiz).changedKeys().size() == 0
+        && request.resource.data.quiz.diff(resource.data.quiz).removedKeys().size() == 0
+        && request.resource.data.flags >= resource.data.flags
+        && request.resource.data.events.size() >= resource.data.events.size();
+
+      match /history/{h} {
+        allow read: if signedIn() && (get(/databases/$(database)/documents/attempts/$(atid)).data.studentId == me()
+          || me() in get(/databases/$(database)/documents/attempts/$(atid)).data.teacherIds);
+        allow write: if false;
+      }
+    }
+
+    /* results and the answer review: teachers always; the student once the teacher's setting allows it ("visible", set by the functions) */
+    match /results/{rid} {
+      allow read: if signedIn() && (me() in resource.data.teacherIds || (resource.data.studentId == me() && resource.data.visible == true));
+      allow write: if false;
+    }
+    match /reviews/{rid} {
+      allow read: if signedIn() && (me() in resource.data.teacherIds || (resource.data.studentId == me() && resource.data.visible == true));
       allow write: if false;
     }
 
-    // Default deny.
+    /* everyday BingO practice (skill map), shared with the student's teachers */
+    match /progress/{uid} {
+      allow read: if signedIn() && (me() == uid || me() in resource.data.get('teacherIds', []));
+      allow create: if signedIn() && me() == uid && request.resource.data.get('teacherIds', []).size() == 0 && request.resource.data.get('classIds', []).size() == 0;
+      allow update: if signedIn() && me() == uid
+        && request.resource.data.get('teacherIds', []) == resource.data.get('teacherIds', [])
+        && request.resource.data.get('classIds', []) == resource.data.get('classIds', []);
+    }
+
+    /* how a teacher grades (examples AI learns from): the teacher can see and remove them */
+    match /aiExamples/{uid}/items/{id} {
+      allow read, delete: if signedIn() && me() == uid;
+      allow create, update: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
