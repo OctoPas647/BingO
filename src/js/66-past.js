@@ -1,1 +1,1 @@
-In SCREENS.pastexam open-task self-assessment, after rubricView, render essayCriteriaView for 30-point essay tasks, reset it per task, and retain existing rubric scoring unchanged.
+FULL RESTORED 66-past.js with essay criteria UI used for 30-point open tasks, submission blocked until all criteria are rated, overall saved to S.essayAssessment.overall, and essay points calculated as task.points * criteria sum / 25.

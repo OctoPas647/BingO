@@ -1,1 +1,1 @@
-Add essayCriteriaView component after belEssayCriteria definition, rendering S.belCriteria with five 1-5 rating buttons, saving each rating to S.essayAssessment.criteria, and exposing get() for later overall-score calculation.
+FULL RESTORED 53-bel.js including BEL_BANK, belEssayCriteria, S.belCriteria assignment, and essayCriteriaView with complete/missing/ratings/overall/ratio validation and scoring API.
