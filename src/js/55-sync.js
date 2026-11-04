@@ -67,8 +67,8 @@ window.addEventListener('online', () => scheduleFlush());
 
 /* ================= User feedback -> queued JSON POST =================
    Feedback can be submitted while offline. It is stored in its own localStorage queue,
-   then sent as JSON when the app is online. A payload must provide `endpoint`; other
-   fields are free-form so later feedback screens can add type, text, diagnostics, etc. */
+   then sent as JSON when the app is online. The endpoint comes from the dedicated
+   feedbackUrl setting, so feedback does not depend on the Vertex AI proxy configuration. */
 
 /**
  * A pending user-feedback submission.
@@ -86,6 +86,11 @@ const FEEDBACK_RETRY_MS = [4000, 15000, 60000, 300000, 600000];
 let feedbackQueue = null;
 let feedbackFlushTimer = 0;
 let feedbackFlushing = false;
+
+function feedbackEndpoint() {
+  const base = S.settings.feedbackUrl;
+  return base ? base.replace(/\/+$/, '') + '/api/feedback' : '';
+}
 
 function loadFeedbackQueue() {
   if (Array.isArray(feedbackQueue)) return feedbackQueue;
@@ -119,10 +124,12 @@ function newFeedbackId() {
  * @returns {boolean} true when the payload was accepted into the queue
  */
 function enqueueFeedback(payload) {
-  if (!isFeedbackPayload(payload)) return false;
+  const endpoint = payload && typeof payload.endpoint === 'string' && payload.endpoint ? payload.endpoint : feedbackEndpoint();
+  if (!isFeedbackPayload({ ...payload, endpoint })) return false;
   const queue = loadFeedbackQueue();
   const item = {
     ...payload,
+    endpoint,
     id: typeof payload.id === 'string' && payload.id ? payload.id : newFeedbackId(),
     at: typeof payload.at === 'number' ? payload.at : Date.now(),
     attempts: typeof payload.attempts === 'number' && payload.attempts >= 0 ? Math.floor(payload.attempts) : 0
@@ -140,7 +147,9 @@ function scheduleFeedbackFlush(delay) {
 }
 
 async function postFeedback(payload) {
-  const res = await fetch(payload.endpoint, {
+  const endpoint = payload.endpoint || feedbackEndpoint();
+  if (!endpoint) throw new Error('Feedback endpoint is not configured');
+  const res = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json;charset=utf-8' },
     body: JSON.stringify({ id: payload.id, at: payload.at, data: payload.data })
