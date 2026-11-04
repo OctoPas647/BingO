@@ -18,7 +18,7 @@ function checkTask(t, where) {
   /* two signs in a row ("25--24", "3+-2") read as a typo; a negative number after an operator needs brackets */
   for (const s of [t.prompt, t.explain, ...(t.options || [])]) for (const m of String(s || '').match(/\$[^$]+\$/g) || []) if (/[-+]\s*[-+]/.test(m.replace(/\\pm/g, '±'))) fail(where + ' double sign ' + m, t);
   if (t.type === 'choice') {
-    if (t.options.length < 2) fail(where + ' few options', t);
+    if (t.options.length < 4 && !/верно|грешно|Richtig|True|Vrai/i.test(t.options.join(' '))) fail(where + ' fewer than four options', t);
     if (new Set(t.options).size !== t.options.length) fail(where + ' duplicate options', t);
     if (!(t.answer >= 0 && t.answer < t.options.length)) fail(where + ' answer index', t);
     if (t.misc && t.misc[t.answer] !== null) fail(where + ' misc on right answer', t);
@@ -167,10 +167,12 @@ const box = E("reviewUpdate('math.quad', true, 0); reviewUpdate('math.quad', tru
 if (E("reviewUpdate('math.quad', false, 0).box") !== 0) fail('review: a wrong answer should go back to box 0');
 
 /* 6. broken or old saved data must not stop the app, and must not be overwritten silently (50-state.js) */
-const bad = E(`sanitizeState({ subject: 'chem', log: null, queue: 'x', skills: { 'math.quad': { p: 'a', n: -3, misc: null, hist: 5 }, junk: 1 }, settings: { theme: 'neon', model: 'a b', proxyUrl: 'http://x', sheetUrl: 'https://example.com', sound: 'yes' }, review: { 'math.quad': { box: 99, due: 1 } }, onboarding: 'x', aiFlags: {} })`);
+const bad = E(`sanitizeState({ subject: 'alchemy', log: null, queue: 'x', skills: { 'math.quad': { p: 'a', n: -3, misc: null, hist: 5 }, junk: 1 }, settings: { theme: 'neon', apiKey: 'AIza-secret', aiMode: 'key', model: 'a b', proxyUrl: 'http://x', ai: 'yes', sheetUrl: 'https://example.com', sound: 'yes' }, review: { 'math.quad': { box: 99, due: 1 } }, onboarding: 'x', aiFlags: {} })`);
 if (bad.subject !== 'math' || !Array.isArray(bad.log) || !Array.isArray(bad.queue) || bad.onboarding !== null || !Array.isArray(bad.aiFlags)) fail('state: broken top-level fields not repaired');
 if (bad.skills['math.quad'].p !== 0.3 || bad.skills['math.quad'].n !== 0 || !Array.isArray(bad.skills['math.quad'].hist) || 'junk' in bad.skills) fail('state: broken skill not repaired', bad.skills);
-if (bad.settings.theme !== 'auto' || bad.settings.model !== 'gemini-3.8-flash' || bad.settings.proxyUrl !== '' || bad.settings.sheetUrl !== '' || bad.settings.sound !== true) fail('state: invalid settings kept', bad.settings);
+if (bad.settings.theme !== 'auto' || bad.settings.ai !== true || bad.settings.sheetUrl !== '' || bad.settings.sound !== true) fail('state: invalid settings kept', bad.settings);
+/* 0.6.0: a key typed into an older version is dropped on load and never saved again */
+if ('apiKey' in bad.settings || 'aiMode' in bad.settings || 'proxyUrl' in bad.settings || 'model' in bad.settings) fail('state: an old API key setting survived', bad.settings);
 if (bad.review['math.quad'].box !== 5) fail('state: review box not clamped');
 const warn = console.warn; console.warn = () => { }; /* the expected "state not loaded" warning */
 E(`localStorage.setItem(STORE_KEY, '{"skills": {broken'); STATE_NOTICE = null; loadState()`);

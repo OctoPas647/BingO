@@ -72,8 +72,43 @@ function buildPastBank() {
   }
   for (const t of window.ENGLISH_BANK_JSON || []) BANK.en.push({ points: 1, media: [], ...t, src: 'bank' });
 }
+/* Every closed question has four options (А–Г). A bank question with two or three gets more from questions
+   of the same skill, keeping its polarity: "which is right?" gets wrong options of other questions, "where is
+   the mistake?" gets right options (the right answers) of others, so exactly one option stays right.
+   A number question gets a near number instead. */
+const NEG_PROMPT = /грешк|неправилно|НЕ\b|не е\b|\*\*не\*\*/i;
+function padToFour(list) {
+  for (const t of list) {
+    if (t.type !== 'choice' || t.options.length >= 4 || t.src === 'past') continue;
+    const neg = NEG_PROMPT.test(t.prompt || ''), have = new Set(t.options.map(o => o.trim()));
+    const same = list.filter(x => x !== t && x.skill === t.skill && x.type === 'choice');
+    const pool = neg ? same.map(x => x.options[x.answer]) : same.flatMap(x => x.options.filter((_, i) => i !== x.answer));
+    const R = seedRng('pad:' + t.id), add = [];
+    while (t.options.length + add.length < 4 && pool.length) {
+      const o = pool.splice(Math.floor(R.f() * pool.length), 1)[0];
+      if (o && !have.has(o.trim()) && o.length < 220) { have.add(o.trim()); add.push(o); }
+    }
+    if (t.options.length + add.length < 4) { const n = nearNumberOption(t.options); if (n && !have.has(n)) add.push(n); }
+    if (!add.length) continue;
+    t.options = t.options.concat(add);
+    if (Array.isArray(t.misc)) t.misc = t.misc.concat(add.map(() => (neg ? null : t.misc.find(Boolean) || null)));
+    if (Array.isArray(t.why)) t.why = t.why.concat(add.map(() => null));
+    /* the added options go to random places; the right answer moves with its text */
+    const right = t.options[t.answer], order = shuffledIdx(t.options.length, 'pad4:' + t.id);
+    const mix = a => (Array.isArray(a) && a.length === t.options.length ? order.map(i => a[i]) : a);
+    t.misc = mix(t.misc); t.why = mix(t.why); t.options = order.map(i => t.options[i]); t.answer = t.options.indexOf(right);
+    if (Array.isArray(t.misc)) t.misc[t.answer] = null;
+  }
+}
+function nearNumberOption(opts) {
+  const nums = opts.map(o => String(o).match(/^\$?\s*(-?\d+(?:\{,\}\d+|,\d+)?)\s*\$?(.*)$/)).filter(Boolean);
+  if (nums.length !== opts.length) return null;
+  const v = nums.map(m => parseFloat(m[1].replace('{,}', '.').replace(',', '.'))), step = Math.max(1, Math.round((Math.max(...v) - Math.min(...v)) / 3) || 1);
+  const x = roundTo(Math.max(...v) + step, 4), txt = String(x).replace('.', '{,}');
+  return opts[0].trim().startsWith('$') ? `$${txt}$${nums[0][2].replace(/^\$/, '')}` : txt + nums[0][2];
+}
 const _buildBanksPast = buildBanks;
-buildBanks = function () { _buildBanksPast(); buildPastBank(); };
+buildBanks = function () { _buildBanksPast(); buildPastBank(); for (const list of Object.values(BANK)) padToFour(list); };
 
 /* a bank task belongs to one exam (НВО 4 / 7 / 10 / ДЗИ 12) when it comes from a past exam */
 const forMyExam = t => !t.exam || t.exam === currentExamKey();
