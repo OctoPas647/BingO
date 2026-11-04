@@ -11,15 +11,19 @@
 .subj-select:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 2px; }
 .foot { margin-top: 22px; }
 
-/* Essay / ЛИС self-assessment */
+/* Essay / ЛИС self-assessment: rubric grid and validation states */
 .essay-assessment { display: grid; gap: 12px; margin-top: 14px; padding: 14px; border-radius: var(--r); background: var(--surface); box-shadow: var(--shadow); }
 .essay-assessment h3 { margin: 0; font-size: 1.08rem; }
 .essay-hint { margin: 0; color: var(--ink-2); font-size: .9rem; }
-.essay-criterion { display: grid; gap: 6px; font-weight: 700; font-size: .92rem; }
+.essay-rubric { display: grid; gap: 12px; }
+.essay-criterion { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); font-weight: 700; font-size: .92rem; }
+.essay-criterion > span { grid-column: 1 / -1; }
 .essay-criterion output { color: var(--ink-2); font-variant-numeric: tabular-nums; }
-.essay-score { width: 100%; accent-color: var(--accent); }
+.essay-score { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); }
+.essay-score:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 2px; }
+.essay-assessment.invalid .essay-criterion { border: 1px solid color-mix(in srgb, var(--bad) 45%, transparent); }
 .essay-total { margin: 2px 0 0; font-weight: 800; }
-.essay-error { margin: 0; color: var(--bad); font-weight: 700; font-size: .9rem; }
+.essay-error { margin: 0; padding: 9px 12px; border-radius: 12px; background: var(--bad-bg); color: var(--bad); font-weight: 700; font-size: .9rem; }
 .essay-assessment .btn:disabled { opacity: .55; cursor: not-allowed; }
 
 /* the loss card */

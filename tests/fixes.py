@@ -316,6 +316,20 @@ with sync_playwright() as pw:
     mode['v'] = 'ok'; p.evaluate("BingOFeedback.flushFeedback()"); p.wait_for_timeout(400)
     ok('feedback: sent and removed', p.evaluate("JSON.parse(localStorage.getItem('bingo.feedback.v1')).length") == 0)
     ctx.close()
+
+    # 26. essay/ЛИС self-assessment: text and criterion validation, scoring and existing scoring
+    ctx, p = fresh(b, state=DONE)
+    ok('essay: whitespace-only text is invalid', p.evaluate("validateEssay(' ')") is False)
+    ok('essay: short text is invalid', p.evaluate("validateEssay('кратко')") is False)
+    ok('essay: valid text passes', p.evaluate("validateEssay('Това е достатъчно дълъг отговор.')") is True)
+    ok('essay: partial criteria sum correctly', p.evaluate("scoreEssay({ content: 2.5, structure: 1.5, language: 3, compliance: 0.5 })") == 7.5)
+    ok('essay: full criteria cap at 30', p.evaluate("scoreEssay({ content: 7.5, structure: 7.5, language: 7.5, compliance: 7.5 })") == 30)
+    ok('essay: missing criterion blocks scoring', p.evaluate("scoreEssay({ content: 5, structure: 5, language: 5 })") is None)
+    ok('essay: empty text blocks submission', p.evaluate("canSubmitEssay('', { content: 5, structure: 5, language: 5, compliance: 5 })") is False)
+    ok('essay: incomplete criteria block submission', p.evaluate("canSubmitEssay('Достатъчно дълъг отговор за проверка.', { content: 5, structure: 5, language: 5 })") is False)
+    ok('essay: valid text and criteria allow submission', p.evaluate("canSubmitEssay('Достатъчно дълъг отговор за проверка.', { content: 5, structure: 5, language: 5, compliance: 5 })") is True)
+    ok('existing strict gap scoring still works', p.evaluate("scoreTask({ type: 'gaps', points: 1, strict: true, gaps: [{ answer: 'Директорът' }] }, ['директорът'], 'bg').status") == 'wrong')
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')

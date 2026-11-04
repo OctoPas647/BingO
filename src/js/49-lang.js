@@ -18,12 +18,24 @@ const EN_UI = {
   /* subjects, skills, statuses */
   'Математика': 'Mathematics', 'БЕЛ': 'Bulgarian', 'Матем.': 'Math',
   'Квадратни уравнения': 'Quadratic equations', 'Проценти': 'Percentages', 'Степени и корени': 'Powers and roots',
-  'Линейни неравенства': 'Linear inequalities', 'Правоъгълен триъгълник': 'Right triangle', 'Аритметична прогресия': 'Arithmetic progression',
+  'Линейни неравенства': 'Linear inequalities', 'Правоъгълнен триъгълник': 'Right triangle', 'Аритметична прогресия': 'Arithmetic progression',
   'Вероятности': 'Probability', 'Пълен и кратък член': 'Full and short article', 'Запетая': 'Commas',
   'Слято, полуслято, разделно': 'Joined, hyphenated, separate', 'Литература: Дебелянов': 'Literature: Debelyanov',
   'Малко данни': 'Little data', 'Слабо': 'Weak', 'Почти': 'Almost', 'Силно': 'Strong',
   'Нов вариант': 'New variant', 'От Shelly': 'From Shelly', 'Банка задачи': 'Task bank', 'Създадена от ИИ': 'Made by AI',
   '{n} т.': '{n} pts',
+
+  /* essay / ЛИС self-assessment */
+  'Самооценка на есе/ЛИС': 'Essay / free-response self-assessment',
+  'Оцени своя отговор по всеки критерий от 0 до 7,5 точки.': 'Rate your answer against each criterion from 0 to 7.5 points.',
+  'Съдържание и аргументация': 'Content and argumentation',
+  'Структура и свързаност': 'Structure and coherence',
+  'Език и стил': 'Language and style',
+  'Съответствие с задачата': 'Fit to the task',
+  'Общо:': 'Total:',
+  'Добави поне 10 символа текст и оцени всички критерии.': 'Add at least 10 characters of text and rate every criterion.',
+  'Запази самооценката': 'Save self-assessment',
+  'Запазено: {n} / 30 т.': 'Saved: {n} / 30 pts',
 
   /* bottom menu */
   'Начало': 'Home', 'Статистики': 'Stats', 'Профил': 'Profile', 'Основно меню': 'Main menu',
@@ -112,11 +124,11 @@ const EN_UI = {
   'Gemini прави 5-дневен план само върху слабите места, по 20 минути на ден.': 'Gemini makes a 5-day plan on your weak spots only, 20 minutes a day.',
   'Включи Gemini в настройките, за да получиш план.': 'Turn on Gemini in Settings to get a plan.', 'Направи план': 'Make a plan', 'Нов план': 'New plan',
   'Данни за учителя (Looker Studio)': 'Data for the teacher (Looker Studio)',
-  'Всеки отговор е един ред: ученик, клас, тема, вярно/грешно, типична грешка, време, увереност преди и след. Учителят вижда целия клас в Looker Studio.': 'Every answer is one row: learner, class, topic, right/wrong, typical mistake, time, mastery before and after. The teacher sees the whole class in Looker Studio.',
+  'Всеки отговор е един ред: ученик, клас, тема, вярно/грешно, типична грешка, време, увереност преди и след. Учителят вижда целия клас в Looker Studio.': 'Every answer becomes a row: learner, class, topic, right/wrong, typical mistake, time, confidence before and after. The teacher sees the whole class in Looker Studio.',
   '{n} чакат': '{n} waiting', 'изпратено': 'sent', 'не е свързан': 'not connected', 'Изпрати сега': 'Send now',
   'Примерен клас от 28 ученика (CSV)': 'Sample class of 28 learners (CSV)', 'Отвори Looker Studio': 'Open Looker Studio',
   'Докладвани ИИ задачи': 'Reported AI tasks', '{n} задачи чакат проверка от учител.': '{n} tasks are waiting for a teacher to check.', 'Изтегли (JSON)': 'Download (JSON)',
-  'В Looker Studio: <b>Create → Data source → Google Sheets</b> (или File upload за CSV), после таблица „умение × ученик“ със средно <code>mastery_after</code> и стълбова диаграма на <code>misconception</code>. Подробно — в README.': 'In Looker Studio: <b>Create → Data source → Google Sheets</b> (or File upload for a CSV), then a "skill × learner" table with the average <code>mastery_after</code> and a bar chart of <code>misconception</code>. Details in the README.',
+  'В Looker Studio: <b>Create → Data source → Google Sheets</b> (или File upload за CSV), после таблица „умение × ученик“ със средно <code>mastery_after</code> и стълбова диаграма на <code>misconception</code>. Подробно — в README.': 'In Looker Studio: <b>Create → Data source → Google Sheets</b> (or File upload for CSV), then a "skill × learner" table with average <code>mastery_after</code> and a bar chart of <code>misconception</code>. Details in the README.',
   'Изпратено към Google Sheets': 'Sent to Google Sheets', 'Няма връзка — ще опитаме пак': 'Could not send — we will try again',
 
   /* settings */
@@ -159,7 +171,7 @@ const EN_UI = {
 
   /* first-run setup */
   'Добре дошъл в BingO': 'Welcome to BingO',
-  'Няколко кратки въпроса и приложението е готово. Всичко може да се промени по-късно в Профил и Настройки.': 'A few short questions and the app is ready. Everything can be changed later in Profile and Settings.',
+  'Няколко кратки въпроса и приложението е готово. Всичко може да се променя по-късно в Профил и Настройки.': 'A few short questions and the app is ready. Everything can be changed later in Profile and Settings.',
   'Кой си ти?': 'Who are you?', 'Името и класът са по желание. Учителят ги вижда само ако свържеш Google Sheets.': 'Name and class are optional. The teacher sees them only if you connect Google Sheets.',
   'Най-много 40 знака': 'At most 40 characters', 'Адресът трябва да е от script.google.com': 'The address must be on script.google.com', 'Най-много 10 знака': 'At most 10 characters',
   /* past exams (66-past.js) */

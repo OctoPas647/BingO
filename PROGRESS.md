@@ -1,6 +1,13 @@
 # Progress
 
 ## Done
+- **Самооценката на есе/ЛИС (30 т.) е без критерии и позволява пълен брой точки на празен текст** (feature/feedback-20261030-1157-s37).
+  - Rubric: four criteria — съдържание и аргументация, структура и свързаност, език и стил, съответствие с задачата — each worth up to 7.5 points, for a maximum of 30.
+  - Validation: empty or whitespace-only essay text and text under 10 characters cannot be submitted; every criterion must have a valid score.
+  - Scoring: the total is the sum of criterion scores, capped at 30; partial criteria sum correctly and missing/invalid criteria block submission.
+  - UI: four criterion range inputs, live total, disabled submit until valid, Bulgarian labels and validation message.
+  - Files: `src/js/53-bel.js`, `src/js/50-state.js`, `src/js/48-scoring.js`, `src/js/57-review.js`, `src/css/bingo.css`, `src/js/49-lang.js`, `tests/fixes.py`.
+  - Test: open an essay/ЛИС assessment, try an empty or short answer (submission stays disabled), fill only some criteria (still disabled), then fill all criteria and confirm the displayed total equals their sum and is at most 30. Run `python tests/fixes.py` after `python tools/build.py web`; test 26 covers the new checks, while earlier tests cover existing БЕЛ and math scoring.
 - Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
   - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
   - Scope: UI only. Questions, answer options, solutions, explanations and rubrics stay in their original language.
@@ -11,6 +18,7 @@
 - **Оценката на усвояването се мени прекалено рязко**: `bktUpdate` in 51-skills.js no longer adds learning after a wrong answer, `guessOf` uses a 0.2 default for non-choice tasks, and `bktStep` keeps a conservative maximum jump (0.05 below two answers, 0.10 below four) and a 0.25 learning multiplier until `st.n >= 3`. This stabilizes the weak/mid/strong classification and matches the new smoothing logic.
 
 ## Decisions
+- Essay/ЛИС self-assessment uses four equally weighted criteria rather than one unrestricted 30-point field. The rubric schema lives in `53-bel.js`; criterion scores live in `S.essay.criterionScores`.
 - Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
 - Skill progress is kept per exam (`math.quad@nvo7`). Keys without an exam move to the current exam the first time they are read (`skillState` in 51-skills.js); the demo learner writes keys for the current exam.
@@ -32,4 +40,4 @@
 - Maybe add more variants to the small math generators.
 
 ## Bugs
-- None known. tests/fixes.py covers the 0.5.0 fixes (tests 11–25).
+- None known. tests/fixes.py covers the 0.5.0 fixes (tests 11–26).
