@@ -3,7 +3,6 @@
    names its mistake), plus the lesson tasks of Shelly's two matura modules, plus new tasks from
    Gemini when AI is switched on. */
 
-/* Standardized criteria for БЕЛ essay self-assessment. */
 const belEssayCriteria = [
   { id: 'thesis', label: 'Теза и основна идея' },
   { id: 'structure', label: 'Структура и логическа връзка' },
@@ -69,7 +68,6 @@ function essayCriteriaView() {
   return el;
 }
 
-/* ---------- литература: Дебелянов ---------- */
 Object.assign(MISC, { 'lit.text': 'Невнимателен прочит на текста', 'lit.term': 'Сбъркан литературен термин', 'lit.author': 'Факт за автора и творчеството му' });
 const mixOptions = t => { const o = shuffledIdx(t.options.length, t.id); return { ...t, options: o.map(i => t.options[i]), misc: o.map(i => t.misc[i]), answer: o.indexOf(t.answer) }; };
 BEL_BANK.push(...[
