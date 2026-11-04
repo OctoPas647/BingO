@@ -117,11 +117,32 @@ jobs:
             exit 0
           fi
           DIR="${FTP_DIR#/}"; DIR="${DIR%/}"
-          URL="ftp://$FTP_HOST/${DIR:+$DIR/}index.html"
+          # The FTP server's certificate must be issued for the host we connect to (curl exit 60 otherwise).
+          # On shared hosting (cPanel) it is often issued for the server's own name or the bare domain, not
+          # ftp.<domain>. Read the names on the certificate and connect to one of them; verification stays on.
+          NAMES=$(timeout 20 openssl s_client -starttls ftp -connect "$FTP_HOST:21" -servername "$FTP_HOST" </dev/null 2>/dev/null \
+            | openssl x509 -noout -ext subjectAltName -subject 2>/dev/null | grep -oE '(DNS:|CN ?= ?)[^,[:space:]]+' | sed -E 's/^(DNS:|CN ?= ?)//' | sort -u)
+          HOST=$(FTP_HOST="$FTP_HOST" NAMES="$NAMES" python3 - <<'PY'
+          import os, fnmatch
+          h, names = os.environ['FTP_HOST'].lower(), [n.lower() for n in os.environ['NAMES'].split()]
+          ok = lambda n: n == h or (n.startswith('*.') and fnmatch.fnmatch(h, n) and h.count('.') == n.count('.'))
+          if not names or any(ok(n) for n in names): print(h)
+          else:
+              # a name on the certificate that is the same domain (preotkrivanegk.com for ftp.preotkrivanegk.com), else the first real one
+              base = '.'.join(h.split('.')[-2:])
+              pick = next((n for n in names if not n.startswith('*') and n.endswith(base)), None) or next((n for n in names if not n.startswith('*')), h)
+              print(pick)
+          PY
+          )
+          if [ "$HOST" != "$(echo "$FTP_HOST" | tr '[:upper:]' '[:lower:]')" ]; then
+            echo "::warning::The FTP server's certificate is not issued for FTP_HOST. Using '$HOST' from the certificate instead. Set the FTP_HOST secret to '$HOST' to silence this."
+          fi
+          echo "Certificate names: $(echo $NAMES)"
+          URL="ftp://$HOST/${DIR:+$DIR/}index.html"
           # FTPS (encrypted); the folder is created if it doesn't exist yet
           curl --fail --silent --show-error --ssl-reqd --ftp-create-dirs --retry 3 \
             --user "$FTP_USER:$FTP_PASSWORD" -T dist/web/index.html "$URL"
-          echo "Uploaded BingO ${{ steps.ver.outputs.version }} to $FTP_HOST/${DIR:+$DIR/}index.html"
+          echo "Uploaded BingO ${{ steps.ver.outputs.version }} to $HOST/${DIR:+$DIR/}index.html"
 
       - name: Remove signing key
         if: always()
