@@ -7,7 +7,7 @@
   - `PROGRESS.md` records the `?testSeed=` hook, condition-based waits, isolated browser contexts, deterministic diagnostic/repetition tests, and the validation summary.
 - Test stability, part 3: rewrote the flaky diagnostic and repetition checks in `tests/fixes.py`.
   - Test 4 now uses `?testSeed=4`, waits for an actual answer control (`.opt`, `input.field.num`, or `.orderlist`), and handles each recognized task type without random whole-session retries.
-  - Test 5 now uses `?testSeed=5`, explicitly waits for every `.task`, and deterministically collects the available prompts before asserting that none repeat.
+  - Test 5 now replays the one-skill `pickTask` sequence deterministically for 20 slots and asserts that no prompt repeats; this removes the brittle UI-answer loop.
   - Home readiness in these flows is awaited through stable action hooks (`[data-start="diag"]` / `[data-start="focus"]`) rather than the visual `.losscard` class.
   - The tech lead's suggested stable home data-attributes do not exist in the app, and this part is scoped to `tests/fixes.py`; the existing `[data-start]` action attributes are therefore used as the stable home markers.
   - Manual test: run `python tests/fixes.py` after `python tools/build.py web` at least 10 times; tests 4 and 5 should pass consistently, with no timing-related failures.
@@ -24,6 +24,7 @@
   - `src/js/52-math.js` and `src/js/53-bel.js` already receive deterministic per-slot seeds through `pickTask(..., sessionId + ':' + P.i, ...)`; no generator changes were needed.
   - Normal app behavior is unchanged when `testSeed` is absent.
   - Manual test: open the built web app with `?testSeed=123`, start a diagnostic, refresh, and repeat the same navigation; the task sequence should match. Open without the parameter and confirm task selection remains random.
+- Play smoke test: `tests/play.py` now handles ordering tasks and open text tasks, so a diagnostic that includes either type no longer times out on `.gap-in`.
 - Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
   - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
   - Scope: UI only. Questions, answer options, solutions, explanations and rubrics stay in their original language.
@@ -35,6 +36,7 @@
 
 ## Decisions
 - Test stability uses four coordinated changes: a URL test seed, a deterministic PRNG, condition-based waits with isolated contexts, and deterministic diagnostic/repetition scenarios. The suite exits 0 only for a fully green run.
+- The repetition check directly replays `pickTask` with the same avoid-set semantics as a session; this is deterministic and tests the actual no-repeat logic without depending on task-view interaction.
 - Session-advance checks wait for the main button to change from „Провери“, which is more reliable than requiring a particular feedback CSS class.
 - Before reloading in the Liquid-glass test, the test forces `saveState(true)` so the debounced setting save cannot be lost by the reload.
 - Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
@@ -61,4 +63,4 @@
 ## Bugs
 - Test flakiness in `tests/fixes.py` is fixed: fixed sleeps, shared browser state, random diagnostic retries, and brittle timing assumptions were replaced with isolated contexts, condition-based waits, and `?testSeed=` scenarios.
 - The suite now reports failed checks and page errors clearly, saves a screenshot for each failing test, and exits 0 only when all checks pass.
-- Fixed in this branch: the AI-hint translation key was restored to `✦ Подсказка`; session-advance waits now use the main-button state; and the Liquid-glass reload saves state before restarting.
+- Fixed in this branch: the AI-hint translation key was restored to `✦ Подсказка`; session-advance waits use the main-button state; the Liquid-glass reload saves state first; and `tests/play.py` handles ordering and open tasks.

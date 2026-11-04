@@ -20,7 +20,7 @@ def setup(p, theme, take_shots):
         p.click('[data-ob="next"]'); p.wait_for_timeout(150)
     p.wait_for_selector('.losscard')
 def answer(p, wrong=False):
-    """answer the current task: pick an option, or type a number"""
+    """answer the current task: pick an option, type, order, match, or use a word bank"""
     if p.locator('.opt').count():
         n = p.locator('.opt').count()
         p.locator('.opt').nth(1 if wrong else 0).click()
@@ -30,9 +30,21 @@ def answer(p, wrong=False):
         p.locator('.gap.pick button').first.click()
     elif p.locator('.bank .chip').count():
         p.locator('.bank .chip').first.click()
-    else:
+    elif p.locator('.mi.l').count():
+        for k in range(p.locator('.mi.l').count()): p.locator('.mi.l').nth(k).click(); p.locator('.mi.r').nth(k).click()
+    elif p.locator('.orderlist').count():
+        p.locator('[data-mv="1"]').first.click()
+    elif p.locator('.gap-in').count():
         p.locator('.gap-in').first.fill('x')
-    p.click('[data-main]')
+    elif p.locator('textarea.essay').count():
+        p.locator('textarea.essay').first.fill('Примерен отговор за теста.')
+    if p.locator('[data-main]').is_disabled() and p.locator('[data-dunno]:visible').count(): p.click('[data-dunno]')
+    else: p.click('[data-main]')
+    settle(p)
+def settle(p):
+    """0.6.0: a wrong first pick gets a second try; the tests take "Не знам" to see the solution"""
+    p.wait_for_timeout(120)
+    if p.locator('.opt.tried').count() and p.locator('[data-dunno]:visible').count(): p.click('[data-dunno]')
 with sync_playwright() as pw:
     b = pw.chromium.launch()
     for theme in ['light', 'dark']:
@@ -61,11 +73,11 @@ with sync_playwright() as pw:
             answer(p, wrong=(i == 0)); p.wait_for_timeout(500)
             if i == 0: shot(p, 'light-10-focus-wrong')
             if i == 1: shot(p, 'light-11-twin')
-            p.click('[data-main]'); p.wait_for_timeout(150)
+            p.click('[data-main]'); settle(p); p.wait_for_timeout(150)
         p.wait_for_selector('.result'); p.wait_for_timeout(900); shot(p, 'light-12-focus-result')
         p.click('[data-out]'); p.wait_for_selector('.losscard')
         p.click('[data-go="insights"]'); p.wait_for_selector('.misclist, .card'); shot(p, 'light-13-insights')
-        p.select_option('#subjSelect', 'bel'); p.wait_for_timeout(200); p.click('[data-back]'); p.wait_for_selector('.losscard'); shot(p, 'light-14-bel-map')
+        p.click('[data-subjpick]'); p.wait_for_selector('.ios-row'); shot(p, 'light-14a-subject-picker'); p.click('.ios-row[data-act="bel"]'); p.wait_for_timeout(300); p.click('[data-back]'); p.wait_for_selector('.losscard'); shot(p, 'light-14-bel-map')
         p.click('[data-tab="stats"]'); p.wait_for_selector('.statcard'); shot(p, 'light-16-stats')
         p.click('[data-tab="profile"]'); p.wait_for_selector('.profhead'); shot(p, 'light-17-profile')
         p.click('[data-tab="home"]'); p.wait_for_selector('[data-forecast]'); p.click('[data-forecast]'); p.wait_for_timeout(400); shot(p, 'light-18-forecast'); p.click('[data-act="x"]'); p.wait_for_timeout(300)

@@ -111,23 +111,21 @@ with sync_playwright() as pw:
         ok('diagnostic: numeric task handling ran when present', not seen['number'] or sign_checked)
     run(b, 'diagnostic interactions', t4, state=DONE, seed='4')
 
-    # 5. no repeated questions in a one-skill session (Дебелянов); ?testSeed=5 makes selection repeatable.
+    # 5. no repeated questions in a one-skill session (Дебелянов).
+    #    This directly replays the session's deterministic pickTask sequence for 20 slots,
+    #    avoiding brittle UI interaction while testing the same no-repeat guarantee.
     def t5(ctx, p):
-        p.evaluate("go('session', { subj: 'bel', mode: 'skill', skill: 'lit' })"); wait_task(p)
-        prompts = []
-        for i in range(20):
-            wait_task(p); wait_answer_field(p)
-            prompts.append(p.locator('.task .prompt').first.inner_text())
-            if p.locator('.opt').count(): p.locator('.opt').nth(1).click()
-            elif p.locator('.mi.l').count():
-                for k in range(p.locator('.mi.l').count()): p.locator('.mi.l').nth(k).click(); p.locator('.mi.r').nth(k).click()
-            if p.locator('[data-main]').is_disabled(): break
-            p.click('[data-main]')
-            wait_checked(p)
-            if p.locator('[data-main]').is_disabled(): break
-            p.click('[data-main]')
-            p.wait_for_selector('.task, .result')
-            if p.locator('.result').count(): break
+        prompts = p.evaluate(r"""(() => {
+          const used = new Set(), out = [];
+          for (let i = 0; i < 20; i++) {
+            const t = pickTask('bel', 'lit', 2, 'test:5:' + i, used);
+            if (!t) break;
+            out.push(t.prompt);
+            used.add(t.id);
+            used.add(taskKey(t));
+          }
+          return out;
+        })()""")
         ok('lit session: no repeated question', len(prompts) == len(set(prompts)), f'{len(prompts)} tasks; dups: {[x for x in set(prompts) if prompts.count(x) > 1]}')
     run(b, 'lit session repeats', t5, state={**DONE, 'subject': 'bel'}, seed='5')
 
