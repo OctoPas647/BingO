@@ -23,6 +23,7 @@ def wait_result(p): p.wait_for_selector('.result')
 def wait_state(p, expr): p.wait_for_function(f'() => !!({expr})')
 def wait_answer_field(p): p.wait_for_selector('.opt, input.field.num, .orderlist, .mi.l')
 def home_ready(p): p.wait_for_selector('[data-start="diag"], [data-start="focus"]')
+def wait_checked(p): p.wait_for_function("() => { const b = document.querySelector('[data-main]'); return !!b && b.textContent !== 'Провери'; }")
 
 def run(b, name, fn, state=None, raw=None, seed='123'):
     ctx = p = None
@@ -121,7 +122,8 @@ with sync_playwright() as pw:
             elif p.locator('.mi.l').count():
                 for k in range(p.locator('.mi.l').count()): p.locator('.mi.l').nth(k).click(); p.locator('.mi.r').nth(k).click()
             if p.locator('[data-main]').is_disabled(): break
-            p.click('[data-main]'); wait_feedback(p)
+            p.click('[data-main]')
+            wait_checked(p)
             if p.locator('[data-main]').is_disabled(): break
             p.click('[data-main]')
             p.wait_for_selector('.task, .result')
@@ -281,7 +283,7 @@ with sync_playwright() as pw:
             elif p.locator('input.field').count() and p.locator('input.field').first.is_editable(): p.fill('input.field', '12345')
             elif p.locator('.bank .chip:not(.used)').count(): p.locator('.bank .chip:not(.used)').first.click()
             if p.locator('[data-main]').is_disabled(): break
-            p.locator('[data-main]').click(); wait_feedback(p)
+            p.locator('[data-main]').click(); wait_checked(p)
             if p.locator('[data-main]').is_disabled(): break
             p.locator('[data-main]').click()
             p.wait_for_selector('.task, .result')
@@ -350,6 +352,7 @@ with sync_playwright() as pw:
         bg = p.evaluate("getComputedStyle(document.querySelector('.card')).backgroundColor")
         ok('glass: cards keep a see-through background', bg.startswith('rgba(') and not bg.endswith(', 0)'), bg)
         p.screenshot(path=str(SHOTS / 'settings-glass.png'), full_page=True)
+        p.evaluate("saveState(true)")
         p.reload(); home_ready(p)
         p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-sw="glass"]')
         wait_state(p, "document.documentElement.dataset.glass === '1'")

@@ -35,6 +35,8 @@
 
 ## Decisions
 - Test stability uses four coordinated changes: a URL test seed, a deterministic PRNG, condition-based waits with isolated contexts, and deterministic diagnostic/repetition scenarios. The suite exits 0 only for a fully green run.
+- Session-advance checks wait for the main button to change from „Провери“, which is more reliable than requiring a particular feedback CSS class.
+- Before reloading in the Liquid-glass test, the test forces `saveState(true)` so the debounced setting save cannot be lost by the reload.
 - Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
 - Skill progress is kept per exam (`math.quad@nvo7`). Keys without an exam move to the current exam the first time they are read (`skillState` in 51-skills.js); the demo learner writes keys for the current exam.
@@ -59,4 +61,4 @@
 ## Bugs
 - Test flakiness in `tests/fixes.py` is fixed: fixed sleeps, shared browser state, random diagnostic retries, and brittle timing assumptions were replaced with isolated contexts, condition-based waits, and `?testSeed=` scenarios.
 - The suite now reports failed checks and page errors clearly, saves a screenshot for each failing test, and exits 0 only when all checks pass.
-- Fixed in this branch: the AI-hint translation key was restored to `✦ Подсказка`, matching its English entry; demo/restore and Liquid-glass tests now wait on app state or navigate after reload instead of assuming a settings control is already visible.
+- Fixed in this branch: the AI-hint translation key was restored to `✦ Подсказка`; session-advance waits now use the main-button state; and the Liquid-glass reload saves state before restarting.
