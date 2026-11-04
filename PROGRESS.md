@@ -1,6 +1,13 @@
 # Progress
 
 ## Done
+- Test stability, part 1: added a `?testSeed=` hook for repeatable task sequences.
+  - `src/index.template.html` reads `testSeed` from the URL before app scripts run.
+  - `src/js/99-boot.js` installs a deterministic PRNG in place of `Math.random` only when `?testSeed=` is present.
+  - `src/js/61-session.js` uses a stable session id under `?testSeed=`, because `uid()` otherwise mixes the current time into every generated-task seed.
+  - `src/js/52-math.js` and `src/js/53-bel.js` already receive deterministic per-slot seeds through `pickTask(..., sessionId + ':' + P.i, ...)`; no generator changes were needed.
+  - Normal app behavior is unchanged when `testSeed` is absent.
+  - Manual test: open the built web app with `?testSeed=123`, start a diagnostic, refresh, and repeat the same navigation; the task sequence should match. Open without the parameter and confirm task selection remains random.
 - Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
   - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
   - Scope: UI only. Questions, answer options, solutions, explanations and rubrics stay in their original language.
@@ -19,12 +26,12 @@
 - Focus and one-topic sessions keep their length: a twin takes the next planned place. The diagnostic still adds one more task where the first was wrong, as documented.
 - МОН's grade scale stays 30 / 41 / 62,5 / 84 (checked against МОН's announcement); feedback-1623-s16's 95-point Отличен was not taken.
 - The streak counts days with a finished session (`S.sessionDays`); older saves start from the days with answers.
-- "Сказуемно определение" is kept as the term (textbook term, used by the typical-mistake labels).
+- "Сказуемо определение" is kept as the term (textbook term, used by the typical-mistake labels).
 - Firestore: only staff read /questions (it holds correctAnswer); students get questions from `startAttempt`.
 
 ## Left
 - Exams the bot could not upload (its branches held placeholder text, nothing was taken): НВО 4 БЕЛ 2007–2016, ДЗИ Математика (общообразователна) 2022-08, English НВО 10 Математика 2025 and 2026, integrated НВО 10 samples (БЕЛ, математика).
-- НВО 4 Математика 2007–2016: 25 drawing questions are missing (2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14; 2013 q9 and q17; 2014 q13,14,15; 2015 q9 and q17; 2016 q13,14,18), and the formulas rebuilt from the key (2012 q9, 2013 q9 and q17, 2015 q9 and q17) should be checked against the PDFs.
+- НВО 4 Математика 2007–2016: 25 drawing questions are missing (2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q13,14,16; 2012 q9, 2013 q9 and q17; 2015 q9 and q17; 2016 q13,14,18), and the formulas rebuilt from the key should be checked against the PDFs.
 - The website upload in the Build workflow fails: curl cannot verify the FTP server's certificate (exit code 60). The FTP_HOST secret must be a host name the server's certificate is issued for. The APK and the GitHub release are not affected.
 - Firebase is not wired into the app yet (functions, rules and docs only); the Gemini free-text grading (54b-ai-grade.js) is not on a screen yet.
 - НВО profiles reuse the matura generators; НВО-specific tasks (especially for НВО 4) and weights checked against МОН's specification are still to do.
