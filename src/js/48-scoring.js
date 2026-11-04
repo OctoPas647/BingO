@@ -35,10 +35,12 @@ scoreTask = function (t, r, lang) {
 
 /* ================= Essay / ЛИС self-assessment =================
    An essay needs meaningful text and a score for every rubric criterion before it can be
-   submitted. The total is calculated from the four criterion scores and can never exceed 30. */
+   submitted. The total is calculated from the four criterion scores and can never exceed 30.
+   These constants have scoring-specific names because 50-state.js already defines the shared
+   ESSAY_CRITERIA and ESSAY_CRITERION_MAX constants in the concatenated bundle. */
 const ESSAY_MIN_LENGTH = 10;
-const ESSAY_CRITERIA = ['content', 'structure', 'language', 'compliance'];
-const ESSAY_CRITERION_MAX = 7.5;
+const ESSAY_SCORE_CRITERIA = ['content', 'structure', 'language', 'compliance'];
+const ESSAY_SCORE_CRITERION_MAX = 7.5;
 const ESSAY_MAX_POINTS = 30;
 
 /* Empty, whitespace-only and under-10-character answers cannot be self-assessed. */
@@ -50,9 +52,9 @@ function validateEssay(text) {
 function scoreEssay(criterionScores) {
   if (!criterionScores || typeof criterionScores !== 'object') return null;
   let total = 0;
-  for (const id of ESSAY_CRITERIA) {
+  for (const id of ESSAY_SCORE_CRITERIA) {
     const value = criterionScores[id];
-    if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > ESSAY_CRITERION_MAX) return null;
+    if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > ESSAY_SCORE_CRITERION_MAX) return null;
     total += value;
   }
   return Math.min(total, ESSAY_MAX_POINTS);
