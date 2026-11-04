@@ -1,11 +1,14 @@
 # Progress
 
 ## Done
+- **API ключът е в чист текст и в резервните копия — part 4/4: backups exclude secret fields** (`feature/feedback-20261104-1445-s13`).
+  - Added `stripSecrets()` and `safeStateForBackup()` in `src/js/56-demo.js`.
+  - The demo backup now stores a sanitized copy of state with credential-like fields removed recursively, including `apiKey`, tokens, secrets, passwords, and credentials that may remain in older local saves.
+  - The server-side AI proxy endpoint (`POST /api/ai/generate`) was completed in part 2; no further server changes were needed for this part.
 - **API ключът е в чист текст и в резервните копия — part 3/4: client AI calls use the server proxy** (`feature/feedback-20261104-1445-s13`).
   - `callAI()` in `src/js/54-ai.js` now sends every request to `SERVER_AI_URL + '/api/ai/generate'`.
   - Removed the direct Gemini API request path and all use of `S.settings.apiKey`; the browser no longer sends a credential to Google AI.
   - AI is enabled when `SERVER_AI_URL` is configured; the server holds the Gemini/Vertex credential.
-  - Remaining part: exclude credentials from backups/exports.
 - **API ключът е в чист текст и в резервните копия — part 2/4: server-side AI proxy endpoint** (`feature/feedback-20261104-1445-s13`).
   - Added `POST /api/ai/generate` in `server/index.js`; it accepts `{ model, system, prompt, json, temperature }` and returns `{ text, model }`.
   - The endpoint uses `GEMINI_API_KEY` when provided, otherwise the existing Vertex AI service-account configuration. The legacy `/generate` route still works.
@@ -37,6 +40,7 @@
 - The client must not store Gemini/Vertex credentials; `SERVER_AI_URL` is deployment-supplied and the backend proxy holds the credential.
 - The server prefers the Cloud Run Vertex service account; `GEMINI_API_KEY` is a local-development fallback. `/api/ai/generate` is the canonical client route, while `/generate` remains compatible.
 - The client uses only the server proxy for AI; there is no direct Gemini API fallback.
+- Backup copies are sanitized and recursively stripped of credential-like fields before being written.
 
 ## Left
 - Exams the bot could not upload (its branches held placeholder text, nothing was taken): НВО 4 БЕЛ 2007–2016, ДЗИ Математика (общообразователна) 2022-08, English НВО 10 Математика 2025 and 2026, integrated НВО 10 samples (БЕЛ, математика).
@@ -46,7 +50,6 @@
 - НВО profiles reuse the matura generators; НВО-specific tasks (especially for НВО 4) and weights checked against МОН's specification are still to do.
 - Manual test on web and APK: Liquid glass on a real phone (blur performance), Android font size, feedback form against a deployed server.
 - Maybe add more variants to the small math generators.
-- Finish the final part of **API ключът е в чист текст и в резервните копия**: keep credentials out of backups/exports.
 
 ## Bugs
 - None known. tests/fixes.py covers the 0.5.0 fixes (tests 11–25).

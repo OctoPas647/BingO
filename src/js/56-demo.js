@@ -45,7 +45,7 @@ function simulateLearner({ truth = DEMO_TRUE, name = 'Демо ученик', cl
 
 /* A class of 28 learners with different strengths, for the teacher's Looker Studio dashboard */
 function simulateClass(n = 28, seed = 'class') {
-  const r = seedRng(seed), names = ['Мария', 'Георги', 'Иван', 'Елена', 'Никола', 'Виктория', 'Александър', 'Йоана', 'Мартин', 'Габриела', 'Даниел', 'Симона', 'Петър', 'Десислава', 'Калоян', 'Рая', 'Стефан', 'Божидара', 'Христо', 'Теодора', 'Борис', 'Ивета', 'Кристиян', 'Николета', 'Радослав', 'Цветелина', 'Васил', 'Михаела'];
+  const r = seedRng(seed), names = ['Мария', 'Георги', 'Иван', 'Елена', 'Никола', 'Виктория', 'Александър', 'Йоана', 'Мартин', 'Георги', 'Даниел', 'Симона', 'Петър', 'Десислава', 'Калоян', 'Рая', 'Стефан', 'Божидара', 'Христос', 'Ивета', 'Кристиан', 'Николета', 'Радослав', 'Цветелина', 'Васил', 'Михаела'];
   const out = [];
   for (let i = 0; i < n; i++) {
     const truth = {};
@@ -64,6 +64,24 @@ const DEMO_BACKUP_KEY = STORE_KEY + '.before-demo';
 const stateHasRealProgress = s => !s.demo && (s.sessions > 0 || s.log.some(r => r.student_id !== 'demo'));
 const hasRealProgress = () => stateHasRealProgress(S);
 const demoBackupExists = () => { try { return !!localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return false; } };
+
+/* Backup copies must never contain credentials. This removes secret-looking fields at every level,
+   including values left in an older local save; sanitizeState() also drops fields that are no longer
+   part of the current state shape. */
+const SECRET_FIELD_RE = /(^|_)(api[_-]?key|token|secret|password|credential|private[_-]?key)$/i;
+function stripSecrets(value) {
+  if (Array.isArray(value)) return value.map(stripSecrets);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value)
+      .filter(([k]) => !SECRET_FIELD_RE.test(k))
+      .map(([k, v]) => [k, stripSecrets(v)]));
+  }
+  return value;
+}
+function safeStateForBackup(state) {
+  return stripSecrets(sanitizeState(state));
+}
+
 /* the kept copy, read and checked; null when there is none or it is not a real learner's data */
 function demoBackup() {
   let raw = null; try { raw = localStorage.getItem(DEMO_BACKUP_KEY); } catch (e) { return null; }
@@ -76,7 +94,7 @@ async function loadDemoLearner() {
     const ok = await confirmBox(L('Да заредим ли демо ученик?'), L('Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.'), L('Зареди демото'));
     if (!ok) return false;
     if (!demoBackupHasRealData()) {
-      try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S)); }
+      try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(safeStateForBackup(S))); }
       catch (e) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
     }
   }
