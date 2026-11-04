@@ -1,6 +1,7 @@
 # Progress
 
 ## Done
+- Content text accuracy (fix/content-text-accuracy): corrected imprecise wording in `content/shelly-modules/matura-bel.json` — clarified that possessive pronouns have full and short forms, changed the poem dating to “написано през 1914 г.”, and made the ДЗИ structure description explicit about one argumentative text. Cleaned inconsistent accepted-answer wording in `content/shelly-modules/matura-math.json` and removed the malformed `,75` accepted answer. Reviewed the remaining user-facing text in both demo modules; no further factual errors found.
 - Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
   - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
   - Scope: UI only. Questions, answer options, solutions, explanations and rubrics stay in their original language.
