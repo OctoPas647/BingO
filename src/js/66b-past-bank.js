@@ -66,7 +66,7 @@ function buildPastBank() {
         if (all[m.id + '\n' + b.src]) all[modId + '\n' + key] = all[m.id + '\n' + b.src];
         return { ...b, src: key };
       });
-      BANK[subj].push({ ...task, media, id: 'past:' + m.id + ':' + task.id, skill, level: 2, src: 'past', exam: m.past.exam,
+      BANK[subj].push({ ...task, media, id: 'past:' + m.id + ':' + task.id, skill, level: 2, src: 'past', exam: ['math', 'bel'].includes(subj) ? m.past.exam : undefined,
         passage: task.passage ? m.id + '/' + task.passage : undefined, from: pastTitle(m) + ' · ' + L('задача {n}', { n: String(task.id).replace(/^q/, '') }), pastPart: part.title });
     }
   }

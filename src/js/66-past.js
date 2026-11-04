@@ -25,12 +25,13 @@ const _buildBanksBase = buildBanks;
 buildBanks = function () { _buildBanksBase(); buildPast(); };
 
 /* the learner's exam from the setup (58-onboarding.js); before the setup asked, it was the ДЗИ */
-const myExam = () => (EXAMS[S.profile.exam] ? S.profile.exam : 'dzi12');
+const myExam = () => (!['math', 'bel'].includes(S.subject) ? 'dzi12' : EXAMS[S.profile.exam] ? S.profile.exam : 'dzi12');
 const pastView = m => (m && appLang() === 'en' && PAST_EN[m.id]) || m;
 /* In English mode, pastView() swaps in the English module, so its exam title, part titles and
    instructions supply the UI chrome. Tasks, options, solutions, explanations and rubrics stay in
    their original language. */
-const pastFor = (subj, exam) => PAST.filter(m => m.past.subj === subj && m.past.exam === exam).map(pastView);
+/* math and БЕЛ have past exams for every НВО and the ДЗИ; the other maturas only exist as a ДЗИ */
+const pastFor = (subj, exam) => PAST.filter(m => m.past.subj === subj && (m.past.exam === exam || !['math', 'bel'].includes(subj))).map(pastView);
 const pastById = id => pastView(PAST.find(m => m.id === id));
 const pastTasks = m => m.exams[0].parts.flatMap(p => p.tasks.map(t => ({ task: t, part: p })));
 /* the MON scale (65-forecast.js) is for 100 points and holds for НВО 7, НВО 10 and ДЗИ */
@@ -53,7 +54,7 @@ SCREENS.home = async (el, ...rest) => {
   await _homePastBase(el, ...rest);
   const list = pastFor(S.subject, myExam()), sec = el.querySelector('.sec-title');
   if (!list.length || !sec) return;
-  sec.insertAdjacentHTML('beforebegin', `<button class="btn ghost block" data-past>${icon('text')}${L('Изпити от минали години')} · ${esc(L(EXAMS[myExam()]))}</button>`);
+  sec.insertAdjacentHTML('beforebegin', `<button class="btn ghost block" data-past>${icon('text')}${L('Изпити от минали години')} <small class="btn-sub">${list.length}</small></button>`);
   el.querySelector('[data-past]').onclick = () => pastSheet(S.subject);
 };
 
@@ -83,7 +84,7 @@ SCREENS.pastexam = async (el, { id }, nav) => {
   const m = pastById(id); if (!m) return back();
   const sub = SUBJECTS[m.past.subj], x = m.exams[0], Q = pastTasks(m);
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); el.setAttribute('lang', m.lang || 'bg'); const lg = appLang();
-  const P = { i: 0, phase: 'answer', done: false, touched: false, got: [] };
+  const P = { i: 0, phase: 'answer', done: false, touched: false, got: [], resp: [] };
   el.innerHTML = `<header class="playbar"><button class="iconbtn" data-back aria-label="${L('Затвори')}">${icon('close')}</button>${bar(0, 'pbar')}<span class="pcount"></span></header>
     <main class="playmain"></main>
     <footer class="checkbar"><div class="verdict"></div><button class="btn accent big" data-main></button></footer>`;
@@ -122,6 +123,21 @@ SCREENS.pastexam = async (el, { id }, nav) => {
       rubric = rubricView(task, null);
       fb.hidden = false; fb.appendChild(rubric.el);
       verdict.innerHTML = `${icon('info')}<span><b>${L('Оцени се сам')}</b><small>${L('по официалния отговор и критериите')}</small></span>`;
+      /* Gemini checks the answer against the official answer (Gemini Nano gives a first guess at once) */
+      if (aiOn() && task.answer) {
+        fb.insertAdjacentHTML('beforeend', `<button class="btn ghost block" data-aigrade>${L('✦ Gemini да провери отговора ми')}</button><div class="aibox" hidden></div>`);
+        const gb = fb.querySelector('[data-aigrade]'), box = gb.nextElementSibling;
+        gb.onclick = async () => {
+          gb.disabled = true; box.hidden = false; box.innerHTML = '<div class="spinner"></div>';
+          nanoPreGrade(task, answer.text).then(s => { if (s != null && box.querySelector('.spinner')) box.insertAdjacentHTML('beforeend', `<p class="muted small">${L('Първа оценка на устройството: ≈ {p}%', { p: Math.round(s * 100) })}</p>`); }).catch(() => { });
+          try {
+            const v = await aiGrade(m.past.subj, { ...task, skill: task.skill || 'read' }, answer.text);
+            const pts = roundTo(v.score * task.points, 1);
+            box.innerHTML = `<b>${esc(aiBadge())} · ${L('≈ {a} от {b} т.', { a: fmtPts(pts, lg), b: fmtPts(task.points, lg) })}</b><div class="rt">${rich(v.feedback || '')}</div><p class="muted small">${L('Това е подсказка за оценката — крайната оценка е твоя.')}</p>`;
+            P.aiPts = P.aiPts || {}; P.aiPts[P.i] = pts; gb.remove();
+          } catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; gb.disabled = false; }
+        };
+      }
     } else {
       P.phase = 'next'; P.touched = true;
       const res = scoreTask(task, view.get(), m.lang || 'bg'), right = res.status === 'right';
@@ -136,7 +152,8 @@ SCREENS.pastexam = async (el, { id }, nav) => {
 
   btn.addEventListener('click', () => {
     if (P.phase === 'answer') return check();
-    if (rubric) P.got[P.i] = sum(rubric.get());
+    if (rubric) P.got[P.i] = sum(rubric.get()) || (P.aiPts && P.aiPts[P.i]) || 0;
+    if (P.phase === 'next') P.resp[P.i] = view.get();
     if (++P.i < Q.length) showTask(); else finish();
   });
   main.addEventListener('submit-answer', () => { if (P.phase === 'answer' && !btn.disabled) check(); });
@@ -145,7 +162,9 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     P.done = true;
     const pts = roundTo(sum(P.got.map(v => v || 0)), 2), max = x.max, grade = pastGrade(m, pts, max);
     (S.pastResults || (S.pastResults = {}))[id] = { pts, max, at: Date.now() }; saveState(true);
-    const wrong = Q.map((q, i) => (q.task.type === 'choice' && (P.got[i] || 0) < q.task.points ? i + 1 : 0)).filter(Boolean);
+    /* the missed closed questions, with the skill the training bank gave them (66b-past-bank.js) */
+    const missed = Q.map((q, i) => ({ q, i })).filter(({ q, i }) => q.task.type === 'choice' && (P.got[i] || 0) < q.task.points)
+      .map(({ q, i }) => { const b = (BANK[m.past.subj] || []).find(t => t.id === 'past:' + m.id + ':' + q.task.id); return { task: b || { ...q.task, skill: SUBJECTS[m.past.subj].skills[0].id }, mod: b ? fakeModule(m.past.subj) : m, resp: P.resp[i] ?? null, skipped: P.resp[i] == null, correct: false }; });
     if (pts / max >= 0.7) { sound('done'); confetti(); }
     el.querySelector('.playbar').outerHTML = topbar(esc(pastTitle(m)), { noBack: true, right: `<button class="iconbtn" data-close aria-label="${esc(L('Затвори'))}">${icon('close')}</button>` });
     el.querySelector('[data-close]').onclick = () => home();
@@ -154,8 +173,9 @@ SCREENS.pastexam = async (el, { id }, nav) => {
       <div class="res-hero">${ring(pts / max, Math.round(pts / max * 100) + '%', 'big')}
         <h1>${L('{a} от {b} т.', { a: fmtPts(pts, lg), b: fmtPts(max, lg) })}</h1>
         <p class="res-main">${grade ? `${L('По скалата на МОН:')} <b>${esc(grade)}</b>` : esc(pastTitle(m))}</p></div>
-      ${wrong.length ? `<div class="card strongnote">${icon('target')}<div><b>${L('Сгрешени задачи с избор:')}</b><br><span class="muted">${wrong.join(', ')}</span></div></div>` : ''}
+      ${reviewHTML(missed)}
       <div class="res-actions"><button class="btn ghost" data-out>${L('Към картата')}</button><button class="btn accent" data-again>${icon('reset')}${L('Отначало')}</button></div></div>`;
+    mountReview(main, m.past.subj, m, missed);
     main.querySelector('[data-out]').onclick = () => home();
     main.querySelector('[data-again]').onclick = () => go('pastexam', { id }, { replace: true });
   }

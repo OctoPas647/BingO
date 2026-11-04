@@ -95,7 +95,8 @@ SCREENS.stats = async el => {
 SCREENS.profile = async el => {
   setAccent(el);
   const p = S.profile, act = activity(), mine = myLog(), total = mine.length;
-  const subs = Object.values(SUBJECTS).map(s => ({ s, sm: subjectSummary(s.id) }));
+  const planned = myMatura().map(x => x.id);
+  const subs = Object.values(SUBJECTS).filter(s => planned.includes(s.id) || subjectSummary(s.id).answered).map(s => ({ s, sm: subjectSummary(s.id) }));
   const strongN = sum(subs.map(x => x.sm.list.filter(y => y.status === 'strong').length)), skillN = sum(subs.map(x => x.sm.list.length));
   const initials = (name => name.trim().split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase() || L('Ученик')[0]);
   el.innerHTML = `<header class="apphead"><div class="brand bingo">Bing<span>O</span></div>

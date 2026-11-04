@@ -26,7 +26,6 @@ SCREENS.insights = async el => {
       <a class="btn ghost block" href="https://lookerstudio.google.com/" target="_blank" rel="noopener">${icon('next')}${L('Отвори Looker Studio')}</a></section>
     ${S.aiFlags.length ? `<section class="card"><h3>${icon('flag')}${L('Докладвани ИИ задачи')}</h3><p class="small">${L('{n} задачи чакат проверка от учител.', { n: S.aiFlags.length })}</p><button class="btn ghost block" data-flags>${icon('download')}${L('Изтегли (JSON)')}</button></section>` : ''}
   </div>`;
-  el.onchange = e => { const s = e.target.closest('#subjSelect'); if (s && SUBJECTS[s.value]) { S.subject = s.value; saveState(); refresh(); } };
   el.addEventListener('click', async e => {
     if (e.target.closest('[data-go]')) return go('settings');
     if (e.target.closest('[data-csv]')) return downloadText(`bingo-${slug(S.profile.name || 'uchenik')}-${todayKey()}.csv`, logCSV());

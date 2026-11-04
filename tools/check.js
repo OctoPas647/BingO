@@ -141,14 +141,16 @@ if (E('extraOptions("math").some(o => o[0] === "math" || o[0] === "prof")') || E
 if (E('onboardingNext({ extra: "math" }).ok')) fail('onboarding: own profile accepted as the extra matura');
 E('onboardingNext({ extra: "nat" })');
 if (E('S.profile.extra') !== 'nat' || !E('examPlanFull("dzi12", "math", "nat")').includes('Допълнителна: природни науки')) fail('onboarding: extra matura not saved or not shown');
-if (E('subjectOptions("music", "maths").map(o => o[0]).join()') !== 'bel,,math') fail('onboarding: mathematics as extra matura should be selectable with a non-math profile');
+if (E('(S.profile.exam = "dzi12", subjectOptions("music", "maths").map(o => o[0]).join())') !== 'bel,music,math') fail('onboarding: music profile + mathematics as extra matura', E('subjectOptions("music", "maths")'));
 E('onboardingBack()');
 if (E('S.profile.track') !== 'math' || !E('examPlan("dzi12", "math")').includes('информатика')) fail('onboarding: profile not saved or not used');
 E('onboardingBack(); onboardingBack(); onboardingNext({ exam: "nvo7" })');
 if (E('obStep().id') !== 'subject' || E('S.profile.track') !== '') fail('onboarding: 7th grade should skip the profile');
 if (E('onboardingBack().step') !== ONB_EXAM) fail('onboarding: back from the subject should pass over the skipped profile');
-if (E('subjectOptions("math")[0][0]') !== 'bel' || E('subjectOptions("math")[1][1]') !== '🧮 Математически') fail('onboarding: БЕЛ first, then the profile');
-if (!E('subjectOptions("music")[1][2]')) fail('onboarding: a profile without mathematics should not be selectable yet');
+/* 0.6.0: every matura has tasks, so every profile subject can be picked (7th grade: БЕЛ and mathematics) */
+if (E('subjectOptions("math").map(o => o[0]).join()') !== 'bel,math') fail('onboarding: 7th grade gets БЕЛ and mathematics', E('subjectOptions("math")'));
+if (E('plannedSubjects("dzi12", "nat", "").join()') !== 'bel,bio,chem,phys,math') fail('onboarding: natural sciences profile subjects', E('plannedSubjects("dzi12", "nat", "")'));
+if (E('plannedSubjects("dzi12", "lang", "").join()') !== 'bel,en,de,ru,fr,es,itl') fail('onboarding: languages profile lists every language matura');
 E('onboardingNext({ exam: "dzi12" }); onboardingNext({ track: "prof" }); onboardingNext({ extra: "maths" })');
 if (E('S.subject') !== 'bel') fail('onboarding: a profile without mathematics should start with БЕЛ');
 if (E('onboardingNext({ subject: "xx" }).ok')) fail('onboarding: unknown subject accepted');

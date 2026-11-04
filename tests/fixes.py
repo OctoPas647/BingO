@@ -7,8 +7,14 @@ SHOTS = ROOT / 'build/shots'; SHOTS.mkdir(parents=True, exist_ok=True)
 results, errors = [], []
 def ok(name, cond, extra=''): results.append((name, bool(cond), extra)); print(('PASS ' if cond else 'FAIL ') + name, extra)
 
-def fresh(b, state=None, raw=None):
+def settle(p):
+    """0.6.0: a wrong first pick gets a second try; the tests take "Не знам" to see the solution"""
+    p.wait_for_timeout(120)
+    if p.locator('.opt.tried').count() and p.locator('[data-dunno]:visible').count(): p.click('[data-dunno]')
+
+def fresh(b, state=None, raw=None, server=None):
     ctx = b.new_context(viewport={'width': 412, 'height': 860}, locale='bg-BG')
+    if server: ctx.add_init_script(f"window.BINGO_AI_SERVER_OVERRIDE = {json.dumps(server)};")
     if state is not None or raw is not None:
         val = raw if raw is not None else json.dumps(state)
         ctx.add_init_script(f"try {{ if (!sessionStorage.getItem('seeded')) {{ localStorage.setItem('bingo.v1', {json.dumps(val)}); sessionStorage.setItem('seeded','1'); }} }} catch(e) {{}}")
@@ -68,9 +74,9 @@ with sync_playwright() as pw:
             elif p.locator('input.field').count() and not p.input_value('input.field'): p.fill('input.field', '1')
             if p.locator('[data-main]').is_disabled(): break
             before = p.locator('.pcount').inner_text()
-            p.locator('[data-main]').dblclick(); p.wait_for_timeout(150)
+            p.locator('[data-main]').dblclick(); p.wait_for_timeout(150); settle(p)
             if i == 0 and first:
-                ok('double tap: feedback still shown', p.locator('.checkbar.good, .checkbar.bad').count() == 1 and p.locator('.pcount').inner_text() == before, before)
+                ok('double tap: feedback still shown', p.locator('.checkbar.good, .checkbar.bad, .checkbar.meh').count() == 1 and p.locator('.pcount').inner_text() == before, before)
                 p.screenshot(path=str(SHOTS / 'double-tap.png'))
             p.wait_for_timeout(500); p.click('[data-main]'); p.wait_for_timeout(150)
             if p.locator('.result').count(): break
@@ -88,7 +94,7 @@ with sync_playwright() as pw:
         if p.locator('.opt').count(): p.locator('.opt').nth(1).click()
         elif p.locator('.mi.l').count():
             for k in range(p.locator('.mi.l').count()): p.locator('.mi.l').nth(k).click(); p.locator('.mi.r').nth(k).click()
-        p.click('[data-main]'); p.wait_for_timeout(500); p.click('[data-main]'); p.wait_for_timeout(150)
+        p.click('[data-main]'); settle(p); p.wait_for_timeout(500); p.click('[data-main]'); p.wait_for_timeout(150)
     ok('lit session: no repeated question', len(prompts) == len(set(prompts)), f'{len(prompts)} tasks; dups: {[x for x in set(prompts) if prompts.count(x) > 1]}')
     ctx.close()
 
@@ -233,7 +239,7 @@ with sync_playwright() as pw:
         elif p.locator('input.field').count() and p.locator('input.field').first.is_editable(): p.fill('input.field', '12345')
         elif p.locator('.bank .chip:not(.used)').count(): p.locator('.bank .chip:not(.used)').first.click()
         if p.locator('[data-main]').is_disabled(): break
-        p.locator('[data-main]').click(); p.wait_for_timeout(500)
+        p.locator('[data-main]').click(); settle(p); p.wait_for_timeout(500)
         p.locator('[data-main]').click(); p.wait_for_timeout(200)
         if p.locator('.pcount').count() and '/ 8' not in p.locator('.pcount').inner_text(): stable = False; break
     ok('weak practice: counter stays / 8 after answers', stable)
@@ -276,17 +282,18 @@ with sync_playwright() as pw:
     # 22. Stats shows every planned matura; one without tasks yet says "Скоро"
     ctx, p = fresh(b, state={**DONE, 'profile': {**DONE['profile'], 'exam': 'dzi12', 'track': 'hum', 'extra': 'maths'}})
     p.click('[data-tab="stats"]'); p.wait_for_selector('.statcard')
-    ok('planned matura: БЕЛ, Хуманитарни (скоро), Математика', p.locator('.statcard').count() == 3 and p.locator('.statcard button[disabled]').count() == 1, str(p.locator('.statcard h3').all_inner_texts()))
+    names = p.locator('.statcard h3').all_inner_texts()
+    ok('planned matura: БЕЛ, the humanities subjects and Математика, none "скоро" (0.6.0)', any('История' in n for n in names) and any('Математика' in n for n in names) and p.locator('.statcard button[disabled]').count() == 0, str(names))
     p.screenshot(path=str(SHOTS / 'stats-planned.png'), full_page=True)
     ctx.close()
 
     # 23. НВО: the exam from the setup picks the skill map and the difficulty
     ctx, p = fresh(b, state={**DONE, 'subject': 'math', 'profile': {**DONE['profile'], 'exam': 'nvo4'}})
-    ok('НВО 4: three math skills', p.evaluate("subjectSummary('math').list.map(x => x.sk.id).join()") == 'pct,rtri,prob')
+    ok('НВО 4: numbers, measures, shapes, word problems', p.evaluate("subjectSummary('math').list.map(x => x.sk.id).join()") == 'num,meas,geom,word')
     ok('НВО 4: no level 3 tasks', p.evaluate("genMathTask('pct', 3, 1).level") == 2)
     ok('НВО 4: Home says НВО', 'НВО' in p.locator('.losscard .kicker').first.inner_text())
     p.evaluate("S.profile.exam = 'dzi12'")
-    ok('ДЗИ: the matura skill map', p.evaluate("subjectSummary('math').list.length") == 7)
+    ok('ДЗИ: the matura skill map', p.evaluate("subjectSummary('math').list.length") == 11)
     ctx.close()
 
     # 24. Liquid glass: the switch turns the look on and off, and cards keep a background
@@ -304,7 +311,7 @@ with sync_playwright() as pw:
     ctx.close()
 
     # 25. feedback: kept on the phone when the server fails, sent when it answers
-    ctx, p = fresh(b, state={**DONE, 'settings': {'aiMode': 'proxy', 'proxyUrl': 'https://bingo.example.run.app'}})
+    ctx, p = fresh(b, state=DONE, server='https://bingo.example.run.app')
     mode = {'v': 'error'}
     def fb(route):
         if mode['v'] == 'error': route.fulfill(status=502, body='{}')

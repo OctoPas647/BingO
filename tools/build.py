@@ -64,7 +64,7 @@ def js_bundle():
     srv = ai_server()
     say(f'ai server {srv or "none (set aiServer in tools/config.json or BINGO_AI_SERVER; on-device AI still works)"}')
     head = (f'const APP_NAME = {json.dumps(CFG["appName"])}, APP_VERSION = {json.dumps(CFG["version"])};\n'
-            f'globalThis.BINGO_AI_SERVER = {json.dumps(srv)};\n') + content_js()
+            f'globalThis.BINGO_AI_SERVER = globalThis.BINGO_AI_SERVER_OVERRIDE || {json.dumps(srv)};\n') + content_js()
     parts = [head, '/* ==== engine/vendor/katex.min.js ==== */\n' + read('engine/vendor/katex.min.js')]
     parts += [f'/* ==== {f.relative_to(ROOT).as_posix()} ==== */\n' + read(f) for f in js_files()]
     return '\n;\n'.join(parts)
@@ -72,6 +72,7 @@ def js_bundle():
 def inline_fonts(css):
     def rep(m):
         f = ROOT / 'engine/fonts' / pathlib.Path(m.group(1)).name
+        if not f.exists(): f = ROOT / 'src/fonts' / pathlib.Path(m.group(1)).name   # BingO's own fonts (Inter, for the iOS look)
         return f'url(data:font/woff2;base64,{base64.b64encode(f.read_bytes()).decode()})' if f.exists() else m.group(0)
     return re.sub(r'url\((?:fonts/)?([^)]+\.woff2)\)', rep, css)
 
