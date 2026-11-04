@@ -18,6 +18,17 @@ function subjectPicker() {
 }
 document.addEventListener('click', e => { if (e.target.closest('[data-subjpick]')) subjectPicker(); });
 
+/* БЕЛ combined literature filter.
+   It deliberately stores only S.bel.combined. It never writes S.bel.author or S.bel.work,
+   so choosing the combined option cannot auto-select either individual field. */
+function belCombinedFilter() {
+  const combined = S.bel && S.bel.combined || '';
+  return `<label class="subj-pick"><span class="kicker">${L('Литературен филтър')}</span><span class="selwrap"><select class="field" id="belCombinedFilter" aria-label="${L('Избери автор с произведение')}">
+    <option value=""${combined === '' ? ' selected' : ''}>${L('Всички')}</option>
+    <option value="authorWork"${combined === 'authorWork' ? ' selected' : ''}>${L('Автор с произведение')}</option>
+  </select></span></label>`;
+}
+
 function skillRow(subj, x) {
   const top = Object.entries(x.st.misc).sort((a, b) => b[1] - a[1])[0];
   return `<button class="skrow st-${x.status}" data-skill="${x.sk.id}">
@@ -45,6 +56,7 @@ SCREENS.home = async el => {
     </header>
     <section class="pad">
       ${subjectTabs(subj)}
+      ${subj === 'bel' ? belCombinedFilter() : ''}
       <div class="card losscard">
         ${ring(started ? kept : 0, started ? '−' + fmt1(sm.lost) : '?', 'big')}
         <div><span class="kicker">${nvoGrade() && ['math', 'bel'].includes(subj) ? `${esc(L(EXAMS[S.profile.exam]))} · ${esc(L(sub.title))}` : L('Матура · {s}', { s: esc(L(sub.title)) })}</span>
@@ -56,7 +68,7 @@ SCREENS.home = async el => {
         ${weakest ? `<p class="muted small center">${L('Започваме от <b>{s}</b> — там губиш най-много.', { s: esc(L(weakest.sk.name)) })}</p>` : `<p class="muted small center">${L('Всички теми са силни. Направи пробна матура в Shelly!')}</p>`}`
         : `<button class="btn accent big block" data-start="diag">${icon('play')}${L('Започни диагностика')}</button>
            <button class="btn ghost block demo-btn" data-demo>${icon('eye')}${L('Покажи с демо ученик')}</button>
-           <p class="muted small center">${L('Демо ученикът е примерен ученик с генерирани отговори — показва как работи картата на уменията.')}</p>`}
+           <p class="muted small center">${L('Демо ученикът е примерен ученик с история от 6 дни — виж как работи картата на уменията.')}</p>`}
       <h2 class="sec-title">${L('Карта на уменията')}</h2>
       <div class="sklist">${list.map(x => skillRow(subj, x)).join('')}</div>
       ${started ? `<button class="btn ghost block" data-start="diag">${icon('reset')}${L('Нова диагностика')}</button>` : ''}
@@ -67,6 +79,13 @@ SCREENS.home = async el => {
     const st = e.target.closest('[data-start]'); if (st) return go('session', { subj, mode: st.dataset.start });
     if (e.target.closest('[data-demo]')) { if (await loadDemoLearner()) { toast('Зареден е демо ученик с история от 6 дни'); refresh(); } return; }
     const k = e.target.closest('[data-skill]'); if (k) return skillSheet(subj, k.dataset.skill);
+  });
+  el.addEventListener('change', e => {
+    const f = e.target.closest('#belCombinedFilter'); if (!f) return;
+    S.bel = S.bel || {};
+    /* Update only the dedicated combined filter key. Do not assign S.bel.author or S.bel.work. */
+    S.bel.combined = f.value;
+    saveState();
   });
 };
 
@@ -86,6 +105,6 @@ function skillSheet(subj, id) {
 }
 function sparkline(vals) {
   const w = 280, hgt = 54, n = vals.length, x = i => 4 + i * (w - 8) / Math.max(1, n - 1), y = v => hgt - 4 - v * (hgt - 8);
-  const pts = vals.map((v, i) => `${roundTo(x(i), 1)},${roundTo(y(v), 1)}`).join(' ');
-  return `<svg viewBox="0 0 ${w} ${hgt}" class="sparksvg" aria-hidden="true"><line x1="0" x2="${w}" y1="${y(BKT.strong)}" y2="${y(BKT.strong)}" class="sp-strong"/><line x1="0" x2="${w}" y1="${y(BKT.weak)}" y2="${y(BKT.weak)}" class="sp-weak"/><polyline points="${pts}" class="sp-line"/><circle cx="${x(n - 1)}" cy="${y(vals[n - 1])}" r="4" class="sp-dot"/></svg>`;
+  const pts = vals.map((_, i) => `${roundTo(x(i), 1)},${roundTo(y(vals[i]), 1)}`);
+  return `<svg viewBox="0 0 ${w} ${hgt}" class="sparksvg" aria-hidden="true"><line x1="0" x2="${w}" y1="${y(BKT.strong)}" y2="${y(BKT.strong)}" class="sp-strong"/><line x1="0" x2="${w}" y1="${y(BKT.weak)}" y2="${y(BKT.weak)}" class="sp-weak"/><polyline points="${pts.join(' ')}" class="sp-line"/><circle cx="${x(n - 1)}" cy="${y(vals[n - 1])}" r="4" class="sp-dot"/></svg>`;
 }
