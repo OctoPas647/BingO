@@ -128,10 +128,15 @@ jobs:
           ok = lambda n: n == h or (n.startswith('*.') and fnmatch.fnmatch(h, n) and h.count('.') == n.count('.'))
           if not names or any(ok(n) for n in names): print(h)
           else:
-              # a name on the certificate that is the same domain (preotkrivanegk.com for ftp.preotkrivanegk.com), else the first real one
+              # a name on the certificate that exists in DNS: the same domain first (preotkrivanegk.com for ftp.preotkrivanegk.com),
+              # then the hosting server's own name, the shortest one (web.example.com, not autoconfig.web.example.com)
+              import socket
+              def resolves(n):
+                  try: socket.gethostbyname(n); return True
+                  except OSError: return False
               base = '.'.join(h.split('.')[-2:])
-              pick = next((n for n in names if not n.startswith('*') and n.endswith(base)), None) or next((n for n in names if not n.startswith('*')), h)
-              print(pick)
+              real = sorted((n for n in names if not n.startswith('*')), key=lambda n: (not n.endswith(base), n.count('.'), len(n)))
+              print(next((n for n in real if resolves(n)), h))
           PY
           )
           if [ "$HOST" != "$(echo "$FTP_HOST" | tr '[:upper:]' '[:lower:]')" ]; then
