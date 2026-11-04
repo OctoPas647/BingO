@@ -6,7 +6,28 @@
    the answer chart and a leaderboard. */
 
 const ONLINE_MS = 40000;
-const EVENT_LABEL = { start: 'започна', left: 'излезе от теста', back: 'се върна', blur: 'смени прозореца', copy: 'копира', cut: 'изряза', paste: 'опита да постави текст', fullscreen: 'излезе от цял екран' };
+const EVENT_LABEL = { start: 'започна', left: 'излезе от теста', back: 'се върна', blur: 'смени прозореца', copy: 'копира', cut: 'изряза', paste: 'опита да постави текст', fullscreen: 'излезе от цял екран',
+  gap: 'изчезна (без връзка или спрян)', offline: 'прекъсна за малко', split: 'отвори разделен екран или плаващ прозорец', unpin: 'откачи екрана', pinned: 'закачи екрана', nopin: 'не закачи екрана',
+  recording: 'записва екрана', cast: 'показва екрана на друг дисплей', device: 'влезе от друго устройство', tamper: 'махна името си от теста', a11y: 'включи приложение, което чете екрана',
+  adb: 'включи USB отстраняване на грешки', print: 'опита да разпечата', screenshot: 'направи снимка на екрана', monitors: 'има втори монитор', resize: 'смали прозореца до половин екран',
+  devtools: 'отвори инструментите за разработчици', photo: 'снима решение с камерата', warned: 'получи предупреждение', locked: 'беше заключен', unlocked: 'беше отключен', submitted: 'тестът беше предаден' };
+/* one event as a line for the teacher (also in 77-teacher-results.js) */
+function evLine(e) {
+  let label = L(EVENT_LABEL[e.type] || e.type);
+  if (e.type === 'screenshot' && e.blocked) label = L('опита снимка на екрана (спряна)');
+  if (e.type === 'left' && e.info === 'exit') label = L('затвори теста');
+  if (e.type === 'locked' && e.info === 'auto') label = L('беше заключен автоматично');
+  if (e.type === 'submitted' && e.info === 'auto') label = L('тестът беше предаден автоматично');
+  const extra = [e.q && !['locked', 'unlocked', 'warned', 'submitted'].includes(e.type) ? L('въпрос {n}', { n: e.q }) : '', e.secs ? L('{n} с', { n: e.secs }) : '', e.type === 'warned' && e.info ? L('остават {n}', { n: e.info }) : '', ['cast', 'a11y', 'device', 'resize'].includes(e.type) && e.info ? e.info : ''].filter(Boolean);
+  return `<div class="t-ev ev-${esc(e.type)}${e.strike ? ' strike' : ''}"><small>${fmtTime(e.t)}</small><span>${e.strike ? '<b class="t-strike">!</b> ' : ''}${esc(label)}${extra.length ? ' · ' + esc(extra.join(' · ')) : ''}</span></div>`;
+}
+/* the device a student took the test on */
+function deviceLine(a) {
+  const d = a.device || {}; if (!d.platform) return '';
+  const what = d.platform === 'android' ? [d.model, d.os, d.app ? 'BingO ' + d.app : ''] : [d.browser, d.os];
+  const iv = { ok: L('потвърдено от Google Play'), skipped: '', off: '' }[d.integrity];
+  return [...what, d.ip ? 'IP ' + d.ip : '', iv == null ? L('Google Play: {v}', { v: d.integrity }) : iv, (a.devicesSeen || []).length > 1 ? L('{n} устройства', { n: a.devicesSeen.length }) : ''].filter(Boolean).join(' · ');
+}
 
 /* right / wrong / pending / empty for every task, from the key (teacher's copy) */
 function liveMarks(key, at) {
@@ -54,7 +75,8 @@ SCREENS.tLive = async (el, { aid }, nav) => {
   }
   const header = () => {
     const Lv = A.live || {}, st = Lv.state || 'lobby';
-    el.querySelector('.t-titles').innerHTML = `<span class="kicker">${esc(A.className || '')} · ${A.mode === 'quiz' ? L('Куиз на проектора') : L('Тест на живо')}</span><h1>${esc(A.title)} <span class="t-liveclock"></span></h1>`;
+    el.querySelector('.t-titles').innerHTML = `<span class="kicker">${esc(A.className || '')} · ${A.mode === 'quiz' ? L('Куиз на проектора') : A.kind === 'live' ? L('Тест на живо') : L('Монитор')}</span><h1>${esc(A.title)} <span class="t-liveclock"></span></h1>`;
+    if (A.kind !== 'live') { el.querySelector('.t-actions').innerHTML = `<button class="btn accent small" data-results>${icon('chart')}${L('Резултати')}</button>`; return; }
     const b = (act, ic, label, kind = 'ghost') => `<button class="btn ${kind} small" data-ctl="${act}">${icon(ic)}${label}</button>`;
     el.querySelector('.t-actions').innerHTML = (st === 'lobby' ? b('start', 'play', L('Започни'), 'accent')
       : st === 'running' ? (A.mode === 'quiz' ? '' : b('addTime', 'clock', L('+5 мин')) + b(Lv.lockedAll ? 'unlockAll' : 'lockAll', Lv.lockedAll ? 'unlock' : 'lock', Lv.lockedAll ? L('Отключи всички') : L('Заключи всички'))) + b('pause', 'pause', L('Пауза')) + b('end', 'stop', L('Край'))
@@ -71,7 +93,7 @@ SCREENS.tLive = async (el, { aid }, nav) => {
     const rows = atts.map(a => ({ a, marks: liveMarks(key, a), ans: Object.values(a.responses || {}).filter(v => v != null).length }));
     rows.sort((x, y) => sortBy === 'alerts' ? (y.a.flags || 0) - (x.a.flags || 0) : sortBy === 'progress' ? y.ans - x.ans : (x.a.studentName || '').localeCompare(y.a.studentName || '', 'bg'));
     const missing = members.filter(m => !byUid[m.id] && !(A.live && (A.live.kicked || []).includes(m.id)));
-    const events = atts.flatMap(a => (a.events || []).filter(e => FLAG_EVENTS.includes(e.type) || e.type === 'back').map(e => ({ ...e, name: a.studentName, uid: a.studentId }))).sort((x, y) => y.t - x.t).slice(0, 40);
+    const events = atts.flatMap(a => (a.events || []).filter(e => FLAG_EVENTS.includes(e.type) || ['back', 'locked', 'submitted'].includes(e.type)).map(e => ({ ...e, name: a.studentName, uid: a.studentId }))).sort((x, y) => y.t - x.t).slice(0, 40);
     const right = rows.map(r => Object.values(r.marks).filter(s => s === 'right').length);
     body.innerHTML = `<div class="t-livebar"><span><b>${joined}</b>/${total} ${L('влезли')}</span><span><b>${done}</b> ${L('предали')}</span><span><b>${rows.length ? pct(avg(rows.map(r => r.ans / Math.max(1, order.length)))) : '–'}</b> ${L('напредък')}</span><span><b>${rows.length ? pct(avg(right.map(x => x / Math.max(1, order.length)))) : '–'}</b> ${L('верни досега')}</span><span class="${flagsN ? 'warn' : ''}"><b>${flagsN}</b> ${L('сигнала')}</span>
         <div class="seg t-sort">${[['name', 'Име'], ['progress', 'Напредък'], ['alerts', 'Сигнали']].map(([k, l]) => `<button data-sort="${k}" class="${sortBy === k ? 'on' : ''}">${L(l)}</button>`).join('')}</div></div>
@@ -79,7 +101,7 @@ SCREENS.tLive = async (el, { aid }, nav) => {
       <div class="t-live">
         <div class="t-stugrid">${rows.map(({ a, marks, ans }) => stuCard(a, marks, ans, order)).join('') || emptyBox('users', L('Още никой не е влязъл'), '')}
           ${missing.length ? `<div class="t-missing"><b>${L('Не са влезли ({n})', { n: missing.length })}</b> ${missing.map(m => `<span>${esc(m.name || m.email)}</span>`).join('')}</div>` : ''}</div>
-        <aside class="card t-feed"><h3>${icon('alert')}${L('Сигнали')}</h3>${events.length ? events.map(e => `<div class="t-ev ev-${e.type}" data-stu="${esc(e.uid)}"><small>${fmtTime(e.t)}</small><span><b>${esc(e.name || '')}</b> ${esc(L(EVENT_LABEL[e.type] || e.type))}${e.q ? ' · ' + L('въпрос {n}', { n: e.q }) : ''}${e.secs ? ' · ' + L('{n} с', { n: e.secs }) : ''}</span></div>`).join('') : `<p class="muted small">${L('Няма сигнали.')}</p>`}</aside>
+        <aside class="card t-feed"><h3>${icon('alert')}${L('Сигнали')}</h3>${events.length ? events.map(e => evLine(e).replace('<div class="t-ev', `<div data-stu="${esc(e.uid)}" class="t-ev`).replace('<span>', `<span><b>${esc(e.name || '')}</b> `)).join('') : `<p class="muted small">${L('Няма сигнали.')}</p>`}</aside>
       </div>`;
     paintTimes();
   };
@@ -87,10 +109,11 @@ SCREENS.tLive = async (el, { aid }, nav) => {
     const cur = (a.order || [])[a.current || 0], t = (A.tasks || []).find(x => x.id === cur), k = key[cur];
     const doneSt = a.status !== 'in_progress';
     const recentFlag = (a.events || []).some(e => FLAG_EVENTS.includes(e.type) && Date.now() - e.t < 30000);
-    const leftNow = (() => { const ev = (a.events || []).filter(e => ['left', 'back'].includes(e.type)).sort((x, y) => x.t - y.t).pop(); return ev && ev.type === 'left'; })();
+    const leftNow = (() => { const ev = (a.events || []).filter(e => ['left', 'back', 'start'].includes(e.type)).sort((x, y) => x.t - y.t).pop(); return ev && ev.type === 'left'; })();
+    const ac = acRules(A), strikes = (a.strikes || 0) - (a.forgiven || 0);
     const resp = t ? responseText(t, k, (a.responses || {})[cur]) : '';
     return `<button class="t-stu ${doneSt ? 'done' : ''} ${a.locked ? 'locked' : ''} ${recentFlag || leftNow ? 'flag' : ''}" data-stu="${esc(a.studentId)}" data-seen="${tsMs(a.lastSeen) || 0}">
-      <div class="t-stu-top"><b>${esc(a.studentName || '')}</b>${a.flags ? `<span class="t-flag">⚠ ${a.flags}</span>` : ''}${a.locked ? icon('lock') : ''}${doneSt ? `<span class="cl-pill p-done">${L('Предаде')}</span>` : leftNow ? `<span class="cl-pill p-missed">${L('Извън теста')}</span>` : ''}</div>
+      <div class="t-stu-top"><b>${esc(a.studentName || '')}</b>${a.flags ? `<span class="t-flag" title="${L('Сигнали')}">⚠ ${a.flags}</span>` : ''}${ac.onLeave !== 'log' && strikes > 0 && !doneSt ? `<span class="t-strikes" title="${L('Излизания / позволени')}">${strikes}/${ac.allowedLeaves + 1}</span>` : ''}${a.locked ? icon('lock') : ''}${a.device && a.device.platform ? `<span class="t-dev" title="${esc(deviceLine(a))}">${icon(a.device.platform === 'android' ? 'phone' : 'tv')}</span>` : ''}${doneSt ? `<span class="cl-pill p-done">${L('Предаде')}</span>` : a.locked && a.lockReason === 'left' ? `<span class="cl-pill p-missed">${L('Заключен')}</span>` : leftNow ? `<span class="cl-pill p-missed">${L('Извън теста')}</span>` : ''}</div>
       <div class="t-dots">${order.map((id, n) => `<i class="d-${marks[id] || 'empty'} ${id === cur && !doneSt ? 'cur' : ''}" title="${n + 1}"></i>`).join('')}</div>
       <div class="t-stu-now">${doneSt ? `<span class="muted">${L('{a} от {b} отговора', { a: ans, b: order.length })}</span>` : `<span>${L('Въпрос {a} от {b}', { a: (a.current || 0) + 1, b: order.length })}</span><span class="t-since" data-since="${tsMs(a.curSince) || tsMs(a.startedAt) || 0}"></span>`}</div>
       ${!doneSt && resp ? `<div class="t-stu-resp">${esc(resp)}</div>` : ''}</button>`;
@@ -100,18 +123,20 @@ SCREENS.tLive = async (el, { aid }, nav) => {
     const marks = liveMarks(key, a);
     sheet({ title: a.studentName, wide: true, body: `<div class="t-stu-detail">
         <div class="t-stu-qs">${(A.tasks || []).map((t, n) => { const r = (a.responses || {})[t.id]; return `<div class="t-sq m-${marks[t.id] || 'empty'}"><b>${n + 1}.</b><span class="rt">${richInline(String(t.prompt || t.text || '').slice(0, 90))}</span><span class="t-sq-a">${esc(responseText(t, key[t.id], r)) || '<span class="muted">—</span>'}</span><small>${a.timeOn && a.timeOn[t.id] ? fmtClock(a.timeOn[t.id]) : ''}</small></div>`; }).join('')}</div>
-        <h3>${L('Събития')}</h3><div class="t-evlist">${(a.events || []).slice().sort((x, y) => x.t - y.t).map(e => `<div class="t-ev ev-${e.type}"><small>${fmtTime(e.t)}</small><span>${esc(L(EVENT_LABEL[e.type] || e.type))}${e.q ? ' · ' + L('въпрос {n}', { n: e.q }) : ''}${e.secs ? ' · ' + L('{n} с', { n: e.secs }) : ''}</span></div>`).join('') || `<p class="muted">${L('Няма')}</p>`}</div></div>`,
-      actions: a.status === 'in_progress' ? [{ id: 'time', label: L('+5 мин'), icon: 'clock' }, { id: a.locked ? 'unlock' : 'lock', label: a.locked ? L('Отключи') : L('Заключи'), icon: a.locked ? 'unlock' : 'lock' }, { id: 'kick', label: L('Изключи'), kind: 'danger' }] : [{ id: 'grade', label: L('Към оценката'), kind: 'primary' }] }).then(act => {
+        ${deviceLine(a) ? `<p class="muted small t-devline">${icon(a.device.platform === 'android' ? 'phone' : 'tv')} ${esc(deviceLine(a))}</p>` : ''}
+        <h3>${L('Събития')}</h3><div class="t-evlist">${(a.events || []).slice().sort((x, y) => x.t - y.t).map(evLine).join('') || `<p class="muted">${L('Няма')}</p>`}</div></div>`,
+      actions: a.status === 'in_progress' ? [...(A.kind === 'live' ? [{ id: 'time', label: L('+5 мин'), icon: 'clock' }] : []), { id: a.locked ? 'unlock' : 'lock', label: a.locked ? L('Отключи') : L('Заключи'), icon: a.locked ? 'unlock' : 'lock' }, ...(!a.locked && (a.strikes || 0) > (a.forgiven || 0) ? [{ id: 'forgive', label: L('Прости излизанията') }] : []), A.kind === 'live' ? { id: 'kick', label: L('Изключи'), kind: 'danger' } : { id: 'submit', label: L('Предай сега'), kind: 'danger' }] : [{ id: 'grade', label: L('Към оценката'), kind: 'primary' }] }).then(act => {
+      const pc = action => busy(null, () => callFn('proctorControl', { assignmentId: aid, uid, action }));
       if (act === 'time') ctl('addTime', { uid, seconds: 300 });
-      if (act === 'lock' || act === 'unlock') ctl(act, { uid });
+      if (act === 'lock' || act === 'unlock' || act === 'forgive') pc(act).then(() => act === 'unlock' && toast(L('{n} е отключен; предупрежденията започват отначало', { n: a.studentName })));
+      if (act === 'submit') confirmBox(L('Да предам ли теста на {n}?', { n: a.studentName }), L('Предава се това, което е написал дотук.'), L('Предай'), true).then(ok => ok && pc('submit'));
       if (act === 'kick') confirmBox(L('Да изключа ли {n}?', { n: a.studentName }), L('Работата му се предава веднага и не може да влезе отново.'), L('Изключи'), true).then(ok => ok && ctl('kick', { uid }));
       if (act === 'grade') go('tGrade', { attemptId: `${aid}_${uid}` });
     });
   };
-  /* the teacher's screen locks a student who passes the alert limit */
+  /* a student the server locked a moment ago (the teacher's rule) — the server does the locking, even with this screen closed */
   const autoLock = () => {
-    const n = ((A.settings || {}).antiCheat || {}).autoLockAfter || 0; if (!n || !A.live || A.live.state !== 'running') return;
-    for (const a of atts) if (a.status === 'in_progress' && !a.locked && (a.flags || 0) >= n && !autoLocked.has(a.studentId)) { autoLocked.add(a.studentId); ctl('lock', { uid: a.studentId }); toast(L('{n} е заключен автоматично ({k} сигнала)', { n: a.studentName, k: a.flags }), 'bad'); }
+    for (const a of atts) if (a.status === 'in_progress' && a.locked && a.lockReason === 'left' && !autoLocked.has(a.studentId)) { autoLocked.add(a.studentId); if (Date.now() - (tsMs(a.lockedAt) || 0) < 60000) toast(L('{n} е заключен автоматично (излезе от теста)', { n: a.studentName }), 'bad'); }
   };
 
   /* ---------- the projector quiz ---------- */

@@ -129,6 +129,62 @@ function eduQuizPoints(status, ms, limitMs) {
   return Math.round((status === 'partial' ? 0.5 : 1) * (500 + 500 * speed));
 }
 
+/* ---------- Protection during a test (anti-cheat) ----------
+   One set of rules for the teacher's settings, the student's phone and the server (proctorReport in functions/index.js).
+   Events the student's device reports:
+     strike   leaving the test: counts towards the limit, then the test is locked or handed in (the teacher's choice)
+     flag     suspicious, shown to the teacher, never locks
+     info     start, back, pinned, photo …
+   A test or a live test is protected by default; homework and practice only log when the student leaves. */
+const EDU_AC_STRIKE = ['left', 'gap', 'split', 'unpin', 'fullscreen', 'recording', 'cast', 'device', 'tamper', 'a11y', 'adb', 'print'];
+const EDU_AC_FLAG = ['blur', 'copy', 'cut', 'paste', 'screenshot', 'monitors', 'resize', 'devtools', 'nopin', 'offline'];
+const EDU_AC_EVENTS = [...EDU_AC_STRIKE, ...EDU_AC_FLAG, 'start', 'back', 'pinned', 'photo', 'warned', 'locked', 'unlocked', 'submitted'];
+const EDU_AC_ACTIONS = ['log', 'lock', 'submit'];
+const EDU_AC_SWITCHES = ['detectLeave', 'blockCopy', 'fullscreen', 'lockApp', 'secure', 'noOverlays', 'watermark', 'deviceCheck', 'blockA11y', 'integrity', 'appOnly'];
+const EDU_AC_BLUR_STRIKE_S = 3;     /* another window over the test (PC) or the notification shade (phone) for at least 3 s counts as leaving */
+const EDU_AC_GAP_STRIKE_S = 60;     /* no sign of life from the test for a minute (offline, or the page was stopped) counts as leaving */
+
+function eduAcDefaults(kind, mode) {
+  const on = (kind === 'test' || kind === 'live') && mode !== 'quiz';
+  const out = { onLeave: on ? 'lock' : 'log', allowedLeaves: 1 };
+  for (const k of EDU_AC_SWITCHES) out[k] = on;
+  out.detectLeave = true;           /* homework still tells the teacher when the student left, it just never interrupts */
+  out.appOnly = false;              /* the teacher decides whether the web version is allowed */
+  out.integrity = false;            /* needs BingO on Google Play (docs/test-security.md) */
+  return out;
+}
+
+/* the teacher's settings, checked (old tests had autoLockAfter: lock after N alerts) */
+function eduAcClean(anti, kind, mode) {
+  anti = anti && typeof anti === 'object' ? anti : {};
+  const d = eduAcDefaults(kind, mode), out = {};
+  for (const k of EDU_AC_SWITCHES) out[k] = typeof anti[k] === 'boolean' ? anti[k] : d[k];
+  const old = Math.floor(Number(anti.autoLockAfter) || 0);
+  out.onLeave = EDU_AC_ACTIONS.includes(anti.onLeave) ? anti.onLeave : old > 0 ? 'lock' : d.onLeave;
+  const al = Number.isFinite(Number(anti.allowedLeaves)) && anti.allowedLeaves !== null && anti.allowedLeaves !== '' ? Math.floor(Number(anti.allowedLeaves)) : old > 0 ? old - 1 : d.allowedLeaves;
+  out.allowedLeaves = clamp(al, 0, 10);
+  if (!out.detectLeave) out.onLeave = 'log';
+  return out;
+}
+
+/* does this event count as leaving the test? */
+function eduAcStrike(e) {
+  if (!e || typeof e !== 'object') return false;
+  if (e.type === 'blur') return (Number(e.secs) || 0) >= EDU_AC_BLUR_STRIKE_S;
+  if (e.type === 'gap') return (Number(e.secs) || 0) >= EDU_AC_GAP_STRIKE_S;
+  if (e.type === 'screenshot') return e.blocked === false;      /* a screenshot that Android blocked is only an attempt */
+  return EDU_AC_STRIKE.includes(e.type);
+}
+const eduAcFlagged = e => !!e && (EDU_AC_STRIKE.includes(e.type) || EDU_AC_FLAG.includes(e.type));
+
+/* what happens after one more strike: null (nothing), 'warn', 'lock' or 'submit' */
+function eduAcVerdict(ac, strikes, forgiven) {
+  const n = (strikes || 0) - (forgiven || 0);
+  if (n <= 0) return null;
+  if (ac.onLeave === 'log') return null;
+  return n > ac.allowedLeaves ? ac.onLeave : 'warn';
+}
+
 /* Class codes: 6 letters and digits without look-alikes (no 0/O, 1/I/L) */
 const EDU_CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 function eduCode(rand) { let s = ''; for (let i = 0; i < 6; i++) s += EDU_CODE_CHARS[Math.floor((rand || Math.random)() * EDU_CODE_CHARS.length)]; return s; }
@@ -152,4 +208,5 @@ function eduTaskProblem(t) {
   }
 }
 
-if (typeof module !== 'undefined' && module.exports) Object.assign(module.exports, { EDU_TASK_TYPES, EDU_AUTO_TYPES, EDU_SCALES, EDU_BG6_DEFAULT, EDU_GRADE_NAMES, eduGrade, eduGradeName, eduStrip, eduStripTask, eduUnmix, eduScore, eduScoreAll, eduQuizPoints, eduCode, eduCodeOk, eduTaskProblem, eduPoints });
+if (typeof module !== 'undefined' && module.exports) Object.assign(module.exports, { EDU_TASK_TYPES, EDU_AUTO_TYPES, EDU_SCALES, EDU_BG6_DEFAULT, EDU_GRADE_NAMES, eduGrade, eduGradeName, eduStrip, eduStripTask, eduUnmix, eduScore, eduScoreAll, eduQuizPoints, eduCode, eduCodeOk, eduTaskProblem, eduPoints,
+  EDU_AC_STRIKE, EDU_AC_FLAG, EDU_AC_EVENTS, EDU_AC_ACTIONS, EDU_AC_SWITCHES, EDU_AC_BLUR_STRIKE_S, EDU_AC_GAP_STRIKE_S, eduAcDefaults, eduAcClean, eduAcStrike, eduAcFlagged, eduAcVerdict });

@@ -110,6 +110,8 @@ def run(pw):
     T.click('[data-publish]'); T.wait_for_selector('.t-publish', timeout=30000)
     T.click(f'[data-cls]'); T.click('[data-kind="live"]')
     shot(T, '07-publish')
+    T.locator('.t-ac').scroll_into_view_if_needed(); shot(T, '07b-publish-protection')
+    ok(T.locator('.t-ac [data-onleave="lock"].on').count() == 1, 'a live test locks after a warning by default')
     T.click('[data-go]'); T.wait_for_selector('.t-livebar', timeout=30000)
 
     S.wait_for_selector('.cl-livebanner', timeout=20000); shot(S, '11-student-live-banner')
@@ -125,11 +127,23 @@ def run(pw):
         elif S.locator('input.field').count(): S.fill('input.field', '3,5')
         S.wait_for_timeout(1200)
         S.click('[data-next]'); S.wait_for_timeout(500)
-    S.evaluate('window.dispatchEvent(new Event("blur"))'); S.wait_for_timeout(1500)
+    # test security: another window in front for a moment (an alert), then the student leaves the test (a warning)
+    S.evaluate('window.dispatchEvent(new Event("blur"))'); S.wait_for_timeout(300)
+    ok(S.locator('.cl-shield:not([hidden])').count() == 1, 'the test is hidden while another window is in front')
+    S.wait_for_timeout(1200); S.evaluate('window.dispatchEvent(new Event("focus"))'); S.wait_for_timeout(300)
+    ok(S.locator('.cl-shield:not([hidden])').count() == 0, 'the test shows again')
+    S.evaluate('''() => { Object.defineProperty(document, "hidden", { configurable: true, get: () => true }); document.dispatchEvent(new Event("visibilitychange"));
+      setTimeout(() => { Object.defineProperty(document, "hidden", { configurable: true, get: () => false }); document.dispatchEvent(new Event("visibilitychange")); }, 1500); }''')
+    S.wait_for_selector('.cl-acwarn:not([hidden])', timeout=20000); shot(S, '13b-student-warning')
+    ok(S.locator('[data-acwarntext]').inner_text().strip() != '', 'the student is warned')
+    S.click('[data-acok]')
+    ok(S.locator('.cl-watermark').count() == 1, 'the student\'s name is over the test')
     T.wait_for_function('document.querySelector(".t-stu .t-dots i.d-right, .t-stu .t-dots i.d-wrong, .t-stu .t-dots i.d-pending")', timeout=20000)
     T.wait_for_selector('.t-flag', timeout=20000)
     shot(T, '09-live-monitor')
     ok(T.locator('.t-ev').count() >= 1, 'teacher sees the alert')
+    T.wait_for_selector('.t-strikes', timeout=20000)
+    ok(T.locator('.t-strikes').first.inner_text().strip() == '1/2', 'teacher sees 1 of 2 allowed exits')
     T.click('.t-stu'); T.wait_for_selector('.t-stu-detail'); shot(T, '09b-live-student-detail'); T.keyboard.press('Escape'); T.click('.overlay', position={'x': 5, 'y': 5}); T.wait_for_timeout(300)
 
     # the student hands in, the teacher ends and grades

@@ -71,6 +71,12 @@ def firebase_cfg():
     c = {k: str(v) for k, v in (c or {}).items() if k in keep and isinstance(v, str) and re.fullmatch(r'[\w.:\-/]+', v)}
     return c if c.get('apiKey') and c.get('projectId') else None
 
+def play_project():
+    """Google Play Integrity for class tests (docs/test-security.md): the Cloud project NUMBER linked in Play Console.
+    From the BINGO_PLAY_PROJECT environment variable (a GitHub Actions variable) or tools/config.json "playProject". Not secret."""
+    v = str(os.environ.get('BINGO_PLAY_PROJECT') or CFG.get('playProject') or '').strip()
+    return v if re.fullmatch(r'\d{6,20}', v) else ''
+
 def js_bundle():
     srv = ai_server()
     fb = firebase_cfg()
@@ -79,7 +85,8 @@ def js_bundle():
     head = (f'const APP_NAME = {json.dumps(CFG["appName"])}, APP_VERSION = {json.dumps(CFG["version"])};\n'
             f'globalThis.BINGO_AI_SERVER = globalThis.BINGO_AI_SERVER_OVERRIDE || {json.dumps(srv)};\n'
             f'globalThis.BINGO_FIREBASE = {json.dumps(fb)};\n'
-            f'globalThis.BINGO_WEB_URL = {json.dumps(CFG.get("webUrl") or "https://preotkrivanegk.com/bingo/")};\n') + content_js()
+            f'globalThis.BINGO_WEB_URL = {json.dumps(CFG.get("webUrl") or "https://preotkrivanegk.com/bingo/")};\n'
+            f'globalThis.BINGO_PLAY_PROJECT = {json.dumps(play_project())};\n') + content_js()
     parts = [head, '/* ==== engine/vendor/katex.min.js ==== */\n' + read('engine/vendor/katex.min.js')]
     parts += [f'/* ==== {f.relative_to(ROOT).as_posix()} ==== */\n' + read(f) for f in js_files()]
     return '\n;\n'.join(parts)

@@ -50,6 +50,7 @@ public class MainActivity extends Activity {
     File outFile;
     Uri pendingIncoming;
     GoogleAuthBridge auth;
+    SecureBridge secure;
     volatile boolean pageReady = false;
 
     @Override
@@ -80,6 +81,8 @@ public class MainActivity extends Activity {
         try { web.addJavascriptInterface(new NanoBridge(this, web), "AndroidNano"); } catch (Throwable t) { }
         /* BingO for classes: Google sign-in with the phone's account picker (Google blocks its sign-in page in a WebView) */
         try { auth = new GoogleAuthBridge(this, web); web.addJavascriptInterface(auth, "AndroidAuth"); } catch (Throwable t) { auth = null; }
+        /* BingO for classes: protection during a teacher's test (no screenshots, no overlays, leaving the test) */
+        try { secure = new SecureBridge(this, web); web.addJavascriptInterface(secure, "AndroidSecure"); } catch (Throwable t) { secure = null; }
 
         web.setWebViewClient(new WebViewClient() {
             @Override
@@ -147,6 +150,7 @@ public class MainActivity extends Activity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) hideNavigationBar();
+        if (secure != null) secure.onFocus(hasFocus);
     }
 
     void openOutside(Uri u) { try { startActivity(new Intent(Intent.ACTION_VIEW, u)); } catch (ActivityNotFoundException ignored) { } }
@@ -259,9 +263,11 @@ public class MainActivity extends Activity {
     }
 
     /* a running class test learns when the student leaves the app (73-class-student.js, anti-cheat) */
-    @Override protected void onPause() { js("window.__appPaused && window.__appPaused()"); super.onPause(); web.onPause(); }
-    @Override protected void onResume() { super.onResume(); web.onResume(); hideNavigationBar(); js("window.__appResumed && window.__appResumed()"); }
-    @Override protected void onDestroy() { web.destroy(); super.onDestroy(); }
+    @Override protected void onPause() { if (secure != null) secure.onPause(); js("window.__appPaused && window.__appPaused()"); super.onPause(); web.onPause(); }
+    @Override protected void onResume() { super.onResume(); web.onResume(); hideNavigationBar(); js("window.__appResumed && window.__appResumed()"); if (secure != null) secure.onResume(); }
+    @Override protected void onDestroy() { if (secure != null) secure.stop(); web.destroy(); super.onDestroy(); }
+    /* split screen or a floating window during a test */
+    @Override public void onMultiWindowModeChanged(boolean on, Configuration c) { super.onMultiWindowModeChanged(on, c); if (secure != null) secure.onMultiWindow(on); }
 
     /* System bars follow the app theme */
     /* the phone's light/dark setting, for the app's "System" theme */

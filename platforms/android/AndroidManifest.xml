@@ -4,8 +4,27 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- a light haptic tick on right and wrong answers (68-motion.js) -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- class tests (SecureBridge.java): hide other apps' floating windows over a test (Android 12+),
+         notice a screenshot (Android 14+) or screen recording (Android 15+). No dialog asks the student for these. -->
+    <uses-permission android:name="android.permission.HIDE_OVERLAY_WINDOWS" />
+    <uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE" />
+    <uses-permission android:name="android.permission.DETECT_SCREEN_RECORDING" />
     <queries>
         <intent><action android:name="android.intent.action.VIEW" /><data android:scheme="https" /></intent>
+        <!-- root and hooking tools: a protected test does not start on a phone that has them (SecureBridge.java) -->
+        <package android:name="com.topjohnwu.magisk" />
+        <package android:name="io.github.vvb2060.magisk" />
+        <package android:name="io.github.huskydg.magisk" />
+        <package android:name="eu.chainfire.supersu" />
+        <package android:name="com.koushikdutta.superuser" />
+        <package android:name="com.noshufou.android.su" />
+        <package android:name="me.weishu.kernelsu" />
+        <package android:name="me.bmax.apatch" />
+        <package android:name="com.kingroot.kinguser" />
+        <package android:name="de.robv.android.xposed.installer" />
+        <package android:name="org.lsposed.manager" />
+        <package android:name="org.meowcat.edxposed.manager" />
+        <package android:name="com.saurik.substrate" />
     </queries>
     <application
         android:label="@string/app_name"

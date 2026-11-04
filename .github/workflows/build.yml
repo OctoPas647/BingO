@@ -67,6 +67,8 @@ jobs:
           BINGO_AI_SERVER: ${{ vars.BINGO_AI_SERVER || secrets.BINGO_AI_SERVER }}
           # BingO for classes: the Firebase web config as JSON (docs/firebase.md); without it the class features say "not connected"
           BINGO_FIREBASE: ${{ vars.BINGO_FIREBASE }}
+          # Google Play Integrity for class tests: the Cloud project number linked in Play Console (docs/test-security.md)
+          BINGO_PLAY_PROJECT: ${{ vars.BINGO_PLAY_PROJECT }}
         run: |
           chmod +x platforms/android/gradlew
           python3 tools/build.py android

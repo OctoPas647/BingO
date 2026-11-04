@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.8.0
+Test security for teacher-set tests. Setup and details: docs/test-security.md.
+
+- **Leaving the test is enforced by the server**: switching app or tab, split screen, floating windows, unpinning, leaving full screen, going offline, a second device. The teacher picks what happens per test: only an alert, **warn then lock** (the default for tests: 1 warning) or **warn then hand in** (like SmarTest). Locking works even when the teacher's monitor is closed; the teacher unlocks (or forgives) from the monitor, and the warnings start over
+- **Students can't hide or clear it**: only the new `proctorReport` function writes events, alerts and the device. A 10-second heartbeat catches airplane mode and stopped pages, and answers are only saved while the heartbeat is alive
+- **Android, like banking and streaming apps** (`SecureBridge.java`): no screenshots, recording or casting, and no preview in Recents; other apps' floating windows are hidden (Android 12+); taps through overlays are ignored; content is hidden from apps that read the screen (Android 14+); screenshot attempts (Android 14+) and screen recording (Android 15+) are reported; the screen stays on; screen pinning is required, and unpinning counts as leaving
+- **Safe devices only** (optional per test): no start on rooted phones, hooking tools, emulators, with USB debugging on, or with non-system apps that read the screen; **Google Play Integrity** (when set up); **Android app only** (the web version refuses the test)
+- **Browser**: full screen on computers, the test hidden while another window is in front, and reports for PrintScreen, print, developer tools, a second monitor and a half-screen window
+- **The student's name as a moving watermark** over the test, so photos taken with another phone can be traced
+- **Teacher's monitor for ordinary tests too**: exits as 1/2, the device (model or browser, IP, Play check), every event with exits in red; lock, unlock, forgive the exits, hand in now
+- Protection is on by default for tests and live tests; homework only logs. Old tests' "lock after N alerts" setting carries over
+- Tests: `tests/proctor_rules.test.js` (29), backend emulator tests 81/81 (31 new), UI test with the warning and the monitor
+
 ## 0.7.0
 BingO for classes: a teacher's part and a "Клас" tab for students. Setup: docs/firebase.md.
 

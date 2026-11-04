@@ -328,9 +328,11 @@ SCREENS.tPublish = async (el, { testId, classIds = [], kind: kind0, practice }, 
   const st = {
     classIds: new Set(classIds.filter(Boolean)), kind: practice ? 'practice' : kind0 || 'homework', mode: 'normal',
     opensNow: true, opensAt: now + 3600000, closesAt: practice ? now + 3 * 864e5 : now + 7 * 864e5, noClose: false, timeLimitMin: 0,
-    settings: { shuffleQ: true, shuffleOpts: true, oneByOne: false, attempts: 1, lateAllowed: false, antiCheat: { detectLeave: true, blockCopy: true, fullscreen: false, lockApp: false, secure: false, autoLockAfter: 0 }, feedback: { show: 'score', when: 'now' }, grading: { scale: 'bg6', thresholds: EDU_BG6_DEFAULT.slice() }, aiGrading: 'ai_review', aiInstructions: '', quizSeconds: 20, practice: { subject: S.subject, skills: [], size: 10, weakest: true } },
-    calendar: false, classroom: false
+    settings: { shuffleQ: true, shuffleOpts: true, oneByOne: false, attempts: 1, lateAllowed: false, antiCheat: eduAcDefaults(practice ? 'practice' : kind0 || 'homework', 'normal'), feedback: { show: 'score', when: 'now' }, grading: { scale: 'bg6', thresholds: EDU_BG6_DEFAULT.slice() }, aiGrading: 'ai_review', aiInstructions: '', quizSeconds: 20, practice: { subject: S.subject, skills: [], size: 10, weakest: true } },
+    calendar: false, classroom: false, acTouched: false
   };
+  /* protection follows the kind of assignment (on for tests and live tests) until the teacher changes it */
+  const acFollow = () => { if (!st.acTouched) st.settings.antiCheat = eduAcDefaults(st.kind, st.mode); };
   if (st.kind === 'test' || st.kind === 'live') { st.timeLimitMin = 40; st.settings.feedback.when = 'close'; }
   const hasOpen = test && test.tasks.some(t => t.type === 'open' || t.type === 'photo');
   const sw = (path, on, label, sub = '') => `<div class="row"><span class="row-text"><b>${label}</b>${sub ? `<small class="muted">${sub}</small>` : ''}</span><button class="switch${on ? ' on' : ''}" data-sw="${path}" role="switch" aria-checked="${!!on}"><i></i></button></div>`;
@@ -351,8 +353,22 @@ SCREENS.tPublish = async (el, { testId, classIds = [], kind: kind0, practice }, 
         <div class="rows">${sw('lateAllowed', s.lateAllowed, L('Приемай закъснели'), L('отбелязани като закъснели'))}</div></div>`}
       ${practice || quiz ? (quiz ? `<div class="card"><label class="fld"><span>${L('Секунди за въпрос')}</span><input class="field" type="number" min="5" max="240" data-quizsec value="${s.quizSeconds}"></label></div>` : '') : `<div class="card"><h3>${icon('clock')}${L('Време и опити')}</h3><div class="t-inline"><label class="fld"><span>${L('Минути (0 = без ограничение)')}</span><input class="field" type="number" min="0" max="600" data-limit value="${st.timeLimitMin}"></label><label class="fld"><span>${L('Опити')}</span><input class="field" type="number" min="1" max="10" data-attempts value="${s.attempts}"></label></div>
         <div class="rows">${sw('shuffleQ', s.shuffleQ, L('Разбъркай въпросите'), L('всеки ученик ги вижда в различен ред'))}${sw('shuffleOpts', s.shuffleOpts, L('Разбъркай отговорите'))}${sw('oneByOne', s.oneByOne, L('Без връщане назад'))}</div></div>
-      <div class="card"><h3>${icon('lock')}${L('Против преписване')}</h3><div class="rows">${sw('antiCheat.detectLeave', ac.detectLeave, L('Сигнал, ако ученикът излезе от теста'), L('смяна на приложение или раздел'))}${sw('antiCheat.blockCopy', ac.blockCopy, L('Без копиране и поставяне'))}${sw('antiCheat.fullscreen', ac.fullscreen, L('Цял екран (компютър)'))}${sw('antiCheat.lockApp', ac.lockApp, L('Закачи телефона към BingO (Android)'), L('ученикът не може да отвори друго приложение'))}${sw('antiCheat.secure', ac.secure, L('Без снимки на екрана (Android)'))}</div>
-        <label class="fld"><span>${L('Заключи автоматично след … сигнала (0 = не)')}</span><input class="field" type="number" min="0" max="20" data-autolock value="${ac.autoLockAfter}"></label></div>`}
+      <div class="card t-ac"><h3>${icon('lock')}${L('Против преписване')}</h3>
+        <p class="muted small">${st.kind === 'homework' ? L('За домашно само следим кога ученикът излиза. Включете защитата, ако е нужна.') : L('Включено за тестове. Ученикът вижда правилата, преди да започне.')}</p>
+        ${ac.detectLeave ? `<span class="t-lab">${L('Когато ученикът излезе от теста')}</span><div class="seg t-mt">${[['log', 'Само сигнал'], ['lock', 'Заключи'], ['submit', 'Предай']].map(([k, l]) => `<button data-onleave="${k}" class="${ac.onLeave === k ? 'on' : ''}">${L(l)}</button>`).join('')}</div>
+        ${ac.onLeave === 'log' ? `<p class="muted small">${L('Тестът продължава; вие виждате всяко излизане.')}</p>` : `<label class="fld"><span>${L('Предупреждения преди това (0 = веднага)')}</span><input class="field" type="number" min="0" max="10" data-allowed value="${ac.allowedLeaves}"></label>
+          <p class="muted small">${ac.onLeave === 'lock' ? L('Заключеният ученик чака; вие го отключвате от монитора.') : L('Предава се това, което ученикът е написал дотук.')}</p>`}` : ''}
+        <div class="rows">${sw('antiCheat.detectLeave', ac.detectLeave, L('Следи кога ученикът излиза'), L('друго приложение или раздел, разделен екран, плаващ прозорец, без интернет'))}
+          ${sw('antiCheat.secure', ac.secure, L('Без снимки, запис и споделяне на екрана'), L('Android; в браузър снимките само се засичат'))}
+          ${sw('antiCheat.noOverlays', ac.noOverlays, L('Без други приложения над теста'), L('плаващи прозорци, балончета на чатове, разделен екран'))}
+          ${sw('antiCheat.lockApp', ac.lockApp, L('Закачи телефона към BingO'), L('Android: другите приложения не се отварят до края на теста'))}
+          ${sw('antiCheat.fullscreen', ac.fullscreen, L('Цял екран на компютър'))}
+          ${sw('antiCheat.blockCopy', ac.blockCopy, L('Без копиране и поставяне'))}
+          ${sw('antiCheat.watermark', ac.watermark, L('Името на ученика върху теста'), L('снимка с друг телефон показва чий е тестът'))}
+          ${sw('antiCheat.deviceCheck', ac.deviceCheck, L('Само на сигурен телефон'), L('не на телефон с root, на емулатор или с включено USB отстраняване на грешки'))}
+          ${sw('antiCheat.blockA11y', ac.blockA11y, L('Без приложения, които четат екрана'), L('TalkBack и другите вградени в телефона са разрешени'))}
+          ${sw('antiCheat.appOnly', ac.appOnly, L('Само в приложението за Android'), L('уеб версията не отваря този тест'))}
+          ${sw('antiCheat.integrity', ac.integrity, L('Проверка от Google Play'), L('истинското BingO от Google Play на истински телефон (нужна е настройка)'))}</div></div>`}
       ${practice ? '' : `<div class="card"><h3>${icon('trophy')}${L('Оценяване')}</h3><select class="field" data-scale>${EDU_SCALES.map(k => `<option value="${k}" ${s.grading.scale === k ? 'selected' : ''}>${esc(L(SCALE_LABEL[k]))}</option>`).join('')}</select>
         ${s.grading.scale === 'bg6' ? `<div class="t-thresh">${[3, 4, 5, 6].map((g, k) => `<label class="fld"><span>${esc(L(EDU_GRADE_NAMES[g]))} ${g} ${L('от')} %</span><input class="field" type="number" min="0" max="100" data-th="${k}" value="${s.grading.thresholds[k]}"></label>`).join('')}</div>` : ''}
         ${hasOpen ? `<label class="fld"><span>${L('Отворени отговори и снимки')}</span><select class="field" data-aigr><option value="ai_review" ${s.aiGrading === 'ai_review' ? 'selected' : ''}>${L('Gemini предлага, аз одобрявам')}</option><option value="ai_auto" ${s.aiGrading === 'ai_auto' ? 'selected' : ''}>${L('Изцяло от Gemini')}</option><option value="manual" ${s.aiGrading === 'manual' ? 'selected' : ''}>${L('Само аз')}</option></select></label>
@@ -366,9 +382,10 @@ SCREENS.tPublish = async (el, { testId, classIds = [], kind: kind0, practice }, 
   const getPath = path => { const ks = path.split('.'); let o = ['opensNow', 'noClose', 'calendar', 'classroom'].includes(ks[0]) ? st : st.settings; for (const k of ks) o = o[k]; return o; };
   body.addEventListener('click', e => {
     const c = e.target.closest('[data-cls]'); if (c) { st.classIds.has(c.dataset.cls) ? st.classIds.delete(c.dataset.cls) : st.classIds.add(c.dataset.cls); return draw(); }
-    const k = e.target.closest('[data-kind]'); if (k) { st.kind = k.dataset.kind; if (st.kind !== 'homework' && !st.timeLimitMin) st.timeLimitMin = 40; if (st.kind === 'live') st.settings.feedback.when = 'close'; return draw(); }
-    const m = e.target.closest('[data-mode]'); if (m) { st.mode = m.dataset.mode; return draw(); }
-    const s = e.target.closest('[data-sw]'); if (s) { setPath(s.dataset.sw, !getPath(s.dataset.sw)); return draw(); }
+    const k = e.target.closest('[data-kind]'); if (k) { st.kind = k.dataset.kind; if (st.kind !== 'homework' && !st.timeLimitMin) st.timeLimitMin = 40; if (st.kind === 'live') st.settings.feedback.when = 'close'; acFollow(); return draw(); }
+    const m = e.target.closest('[data-mode]'); if (m) { st.mode = m.dataset.mode; acFollow(); return draw(); }
+    const s = e.target.closest('[data-sw]'); if (s) { if (s.dataset.sw.startsWith('antiCheat.')) st.acTouched = true; setPath(s.dataset.sw, !getPath(s.dataset.sw)); return draw(); }
+    const ol = e.target.closest('[data-onleave]'); if (ol) { st.acTouched = true; st.settings.antiCheat.onLeave = ol.dataset.onleave; return draw(); }
     const g = e.target.closest('[data-go]'); if (g) return busy(g, publish);
   });
   body.addEventListener('change', e => {
@@ -376,7 +393,7 @@ SCREENS.tPublish = async (el, { testId, classIds = [], kind: kind0, practice }, 
     if (x.dataset.dt) st[x.dataset.dt] = fromLocalInput(x.value);
     if (x.matches('[data-limit]')) st.timeLimitMin = Math.max(0, +x.value || 0);
     if (x.matches('[data-attempts]')) s.attempts = clamp(+x.value || 1, 1, 10);
-    if (x.matches('[data-autolock]')) s.antiCheat.autoLockAfter = clamp(+x.value || 0, 0, 20);
+    if (x.matches('[data-allowed]')) { st.acTouched = true; s.antiCheat.allowedLeaves = clamp(Math.floor(+x.value || 0), 0, 10); }
     if (x.matches('[data-quizsec]')) s.quizSeconds = clamp(+x.value || 20, 5, 240);
     if (x.matches('[data-scale]')) { s.grading.scale = x.value; draw(); }
     if (x.dataset.th != null) s.grading.thresholds[+x.dataset.th] = clamp(+x.value || 0, 0, 100);

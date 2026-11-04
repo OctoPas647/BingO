@@ -52,4 +52,6 @@ dependencies {
     implementation 'androidx.credentials:credentials-play-services-auth:1.3.0'
     implementation 'com.google.android.libraries.identity.googleid:googleid:1.1.1'
     implementation 'com.google.android.gms:play-services-auth:21.2.0'
+    // BingO for classes: Google Play Integrity — a protected test can require the real BingO from Google Play on a real phone
+    implementation 'com.google.android.play:integrity:1.4.0'
 }

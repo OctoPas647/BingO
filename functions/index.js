@@ -14,6 +14,7 @@ const { getAuth } = require('firebase-admin/auth');
 const { getStorage } = require('firebase-admin/storage');
 const EDU = require('./shared/edu');
 const AI = require('./ai');
+const PROCTOR = require('./proctor');
 
 admin.initializeApp();
 setGlobalOptions({ region: 'europe-west1', maxInstances: 20 });
@@ -315,7 +316,7 @@ function cleanSettings(s, kind) {
     allowHints: !!s.allowHints && kind === 'homework',
     attempts: Math.min(10, Math.max(1, Math.floor(Number(s.attempts) || 1))),
     lateAllowed: !!s.lateAllowed,
-    antiCheat: { detectLeave: anti.detectLeave !== false, blockCopy: anti.blockCopy !== false, lockApp: !!anti.lockApp, secure: !!anti.secure, fullscreen: !!anti.fullscreen, autoLockAfter: Math.min(20, Math.max(0, Math.floor(Number(anti.autoLockAfter) || 0))) },
+    antiCheat: EDU.eduAcClean(anti, kind === 'live-quiz' ? 'live' : kind, kind === 'live-quiz' ? 'quiz' : 'normal'),
     feedback: { show: ['none', 'score', 'full'].includes(fb.show) ? fb.show : 'score', when: ['now', 'close', 'manual'].includes(fb.when) ? fb.when : 'now' },
     grading: { scale: EDU.EDU_SCALES.includes(gr.scale) ? gr.scale : 'bg6', thresholds: Array.isArray(gr.thresholds) && gr.thresholds.length === 4 && gr.thresholds.every(Number.isFinite) ? gr.thresholds : EDU.EDU_BG6_DEFAULT },
     aiGrading: ['manual', 'ai_review', 'ai_auto'].includes(s.aiGrading) ? s.aiGrading : 'ai_review',
@@ -405,7 +406,7 @@ exports.updateAssignment = onCall(async req => {
   if ('opensAt' in d && Number.isFinite(d.opensAt)) { upd.opensAt = ts(d.opensAt); if (a.data().status === 'scheduled' || a.data().status === 'open') upd.status = d.opensAt > now() + 1000 ? 'scheduled' : 'open'; }
   if ('closesAt' in d) upd.closesAt = Number.isFinite(d.closesAt) ? ts(d.closesAt) : null;
   if ('timeLimitMin' in d) upd.timeLimitMin = Number(d.timeLimitMin) > 0 ? Math.min(600, Number(d.timeLimitMin)) : 0;
-  if (d.settings) upd.settings = cleanSettings({ ...a.data().settings, ...d.settings }, a.data().kind);
+  if (d.settings) upd.settings = cleanSettings({ ...a.data().settings, ...d.settings }, a.data().kind === 'live' && a.data().mode === 'quiz' ? 'live-quiz' : a.data().kind);
   if (d.reopen) { upd.status = 'open'; if (!('closesAt' in d)) upd.closesAt = null; }
   if (d.close) { upd.status = 'closed'; if (!ms(a.data().closesAt) || ms(a.data().closesAt) > now()) upd.closesAt = Timestamp.fromMillis(now()); }
   await a.ref.update(upd);
@@ -436,12 +437,39 @@ function deadlineFor(a, startMs, extraSec) {
   return base + (extraSec || 0) * 1000;
 }
 
+/* the anti-cheat settings of an assignment (old assignments are cleaned the same way) */
+const acOf = A => EDU.eduAcClean((A.settings || {}).antiCheat, A.kind, A.mode);
+
+/* Play Integrity: the app asks for a one-time number first, then starts the test with a token made for it */
+exports.proctorChallenge = onCall(async req => {
+  const uid = uidOf(req);
+  const aid = str((req.data || {}).assignmentId, 80);
+  const nonce = PROCTOR.newNonce();
+  await db.doc(`proctorNonces/${aid}_${uid}`).set({ nonce, uid, at: Timestamp.fromMillis(now()) });
+  return { nonce, needed: PROCTOR.integrityConfigured() };
+});
+
 exports.startAttempt = onCall(async req => {
   const uid = uidOf(req);
   const aid = str((req.data || {}).assignmentId, 80);
   const a = await getDoc('assignments/' + aid, 'Тестът');
   const A = a.data();
   if (!(A.studentIds || []).includes(uid)) fail('permission-denied', 'Не си в този клас.');
+  /* protection: the device must be allowed for this test (web vs. app, root, USB debugging, apps that read the screen, Play Integrity) */
+  const ac = acOf(A);
+  const dev = PROCTOR.cleanDevice((req.data || {}).device, req);
+  const devId = str((req.data || {}).deviceId, 64);
+  const problem = PROCTOR.deviceProblem(ac, dev);
+  if (problem) fail('failed-precondition', problem);
+  let integrity = { verdict: 'off' };
+  if (ac.integrity && dev.platform === 'android') {
+    const nd = await db.doc(`proctorNonces/${aid}_${uid}`).get();
+    const fresh = nd.exists && now() - ms(nd.data().at) < 10 * 60000;
+    integrity = await PROCTOR.checkIntegrity(str((req.data || {}).integrityToken, 4000), fresh ? nd.data().nonce : '\u0000');
+    if (nd.exists) await nd.ref.delete();
+    if (!['ok', 'skipped'].includes(integrity.verdict)) fail('failed-precondition', 'Google Play не потвърди, че това е истинското приложение BingO на истински телефон (' + integrity.verdict + '). Инсталирай BingO от Google Play.');
+  }
+  dev.integrity = integrity.verdict;
   const t = now();
   if (A.kind !== 'live' && ms(A.opensAt) > t + 5000) fail('failed-precondition', 'Тестът още не е отворен.');
   if (A.status === 'closed') fail('failed-precondition', 'Тестът е затворен.');
@@ -451,7 +479,13 @@ exports.startAttempt = onCall(async req => {
   const cur = await ref.get();
   if (cur.exists) {
     const C = cur.data();
-    if (C.status === 'in_progress') return { attemptId: ref.id, resumed: true };
+    if (C.status === 'in_progress') {
+      /* continuing on another phone or computer is a strike (someone else may be taking the test) */
+      if (devId && C.deviceId && devId !== C.deviceId && !(C.devicesSeen || []).includes(devId)) {
+        await proctorApply(ref, A, [{ type: 'device', info: dev.platform + ' ' + (dev.model || dev.browser || ''), t }], { devId, device: dev });
+      }
+      return { attemptId: ref.id, resumed: true };
+    }
     const used = C.attemptNo || 1;
     if (used >= ((A.settings || {}).attempts || 1) || A.kind === 'live') return { attemptId: ref.id, finished: true };
     /* another try: the old result is kept in history */
@@ -467,6 +501,7 @@ exports.startAttempt = onCall(async req => {
     teacherIds: A.teacherIds || [], kind: A.kind, mode: A.mode || 'normal', order, optSeed: ref.id + ':' + t, responses: {}, current: 0, answered: 0, timeOn: {}, events: [], flags: 0,
     quiz: {}, photos: {}, status: 'in_progress', locked: false, attemptNo: cur.exists ? (cur.data().attemptNo || 1) + 1 : 1,
     startedAt: Timestamp.fromMillis(t), deadline: Timestamp.fromMillis(deadlineFor(A, t, extra)), lastSeen: Timestamp.fromMillis(t),
+    device: dev, deviceId: devId, devicesSeen: devId ? [devId] : [], lastBeat: Timestamp.fromMillis(t), strikes: 0, forgiven: 0,
     updatedAt: FieldValue.serverTimestamp(), createdAt: FieldValue.serverTimestamp()
   };
   await ref.set(attempt);
@@ -598,6 +633,96 @@ exports.submitAttempt = onCall({ timeoutSeconds: 300 }, async req => {
   return { ok: true, visible: !!(res && res.visible) };
 });
 
+/* ========================================================================
+   Protection during a test. The student's device reports what happens (left the app, split screen,
+   screenshot …) and sends a heartbeat every 10 s; only this function writes the events and the counts,
+   so a student cannot hide or clear them. A gap in the heartbeat is itself an event: a phone that went
+   offline or a page that was stopped cannot stay silent. After the teacher's number of warnings the
+   test is locked (until the teacher unlocks it) or handed in.
+   ======================================================================== */
+const MAX_EVENTS = 400;
+const GAP_FLAG_MS = 25000;
+
+async function proctorApply(ref, A, incoming, opts = {}) {
+  const ac = acOf(A);
+  const t = now();
+  const res = await db.runTransaction(async tx => {
+    const snap = await tx.get(ref);
+    if (!snap.exists) return { status: 'missing' };
+    const at = snap.data();
+    if (at.status !== 'in_progress') return { status: at.status };
+    const seenIds = new Set((at.events || []).map(e => e.id).filter(Boolean));
+    const evs = [];
+    for (const raw of incoming) { const e = PROCTOR.cleanEvent(raw, t); if (e && !(e.id && seenIds.has(e.id))) { evs.push(e); if (e.id) seenIds.add(e.id); } }
+    const upd = { lastSeen: Timestamp.fromMillis(t), updatedAt: FieldValue.serverTimestamp() };
+    /* a second device sending heartbeats for the same test */
+    if (opts.devId && at.deviceId && opts.devId !== at.deviceId && !(at.devicesSeen || []).includes(opts.devId) && !evs.some(e => e.type === 'device')) evs.push({ type: 'device', t, ts: t, info: opts.devInfo || '' });
+    if (opts.devId && !(at.devicesSeen || []).includes(opts.devId)) upd.devicesSeen = [...(at.devicesSeen || []), opts.devId].slice(-8);
+    if (opts.device) upd.device2 = opts.device;
+    /* the heartbeat: nothing heard for too long while the test was running */
+    const live = A.kind !== 'live' || (A.live && A.live.state === 'running');
+    if (opts.beat && (!opts.devId || !at.deviceId || opts.devId === at.deviceId)) {
+      const last = ms(at.lastBeat) || ms(at.startedAt) || t, gap = t - last;
+      /* already counted: this absence was reported (left, back, the camera), or the last thing heard was "left" */
+      const lastMove = (at.events || []).filter(e => ['left', 'back', 'photo'].includes(e.type)).pop();
+      const explained = evs.some(e => e.type === 'back' || e.type === 'left' || e.type === 'photo') || (lastMove && lastMove.type === 'left');
+      if (ac.detectLeave && live && !at.locked && gap > GAP_FLAG_MS && !explained) evs.push({ type: gap >= EDU.EDU_AC_GAP_STRIKE_S * 1000 ? 'gap' : 'offline', secs: Math.round(gap / 1000), t, ts: t });
+      upd.lastBeat = Timestamp.fromMillis(t);
+    }
+    let strikes = at.strikes || 0, flags = at.flags || 0, newStrikes = 0;
+    for (const e of evs) {
+      if (EDU.eduAcFlagged(e) && !(e.type === 'blur' && !EDU.eduAcStrike(e) && (e.secs || 0) < 1)) flags++;
+      if (ac.detectLeave && live && !at.locked && EDU.eduAcStrike(e)) { strikes++; newStrikes++; e.strike = true; }
+    }
+    let action = null;
+    if (newStrikes) action = EDU.eduAcVerdict(ac, strikes, at.forgiven || 0);
+    if (action === 'warn') evs.push({ type: 'warned', t, ts: t, info: String(ac.allowedLeaves - (strikes - (at.forgiven || 0)) + 1) });
+    if (action === 'lock') { upd.locked = true; upd.lockReason = 'left'; upd.lockedAt = Timestamp.fromMillis(t); evs.push({ type: 'locked', t, ts: t, info: 'auto' }); }
+    if (action === 'submit') evs.push({ type: 'submitted', t, ts: t, info: 'auto' });
+    if (evs.length) upd.events = [...(at.events || []), ...evs].slice(-MAX_EVENTS);
+    upd.strikes = strikes; upd.flags = flags;
+    tx.update(ref, upd);
+    return { status: 'in_progress', strikes, forgiven: at.forgiven || 0, allowed: ac.allowedLeaves, onLeave: ac.onLeave, action, locked: !!(upd.locked || at.locked), newStrikes };
+  });
+  if (res.action === 'submit') await finishAttempt(ref, 'left');
+  if (res.action === 'lock' && A.kind === 'live') await db.doc('assignments/' + ref.id.split('_')[0]).update({ 'live.locked': FieldValue.arrayUnion(ref.id.slice(ref.id.indexOf('_') + 1)) }).catch(() => { });
+  return res;
+}
+
+exports.proctorReport = onCall(async req => {
+  const uid = uidOf(req);
+  const d = req.data || {};
+  const aid = str(d.assignmentId, 80);
+  const ref = db.doc(`attempts/${aid}_${uid}`);
+  const a = await db.doc('assignments/' + aid).get();
+  if (!a.exists) fail('not-found', 'Тестът не съществува.');
+  const events = Array.isArray(d.events) ? d.events.slice(0, 30) : [];
+  const res = await proctorApply(ref, a.data(), events, { beat: !!d.beat, devId: str(d.deviceId, 64), devInfo: str(d.deviceInfo, 80) });
+  return { ...res, serverTime: now() };
+});
+
+/* the teacher: lock, unlock (the warnings start again), or hand in now — for any test, not only live ones */
+exports.proctorControl = onCall({ timeoutSeconds: 300 }, async req => {
+  const uid = requireTeacher(req);
+  const d = req.data || {};
+  const a = await assignmentFor(uid, d.assignmentId);
+  const target = str(d.uid, 128);
+  if (!target) fail('invalid-argument', 'Кой ученик?');
+  const ref = db.doc(`attempts/${a.id}_${target}`);
+  const at = (await getDoc(ref.path, 'Опитът')).data();
+  const t = now();
+  const ev = info => FieldValue.arrayUnion({ type: info, t, ts: t, info: 'teacher' });
+  switch (d.action) {
+    case 'lock': await ref.update({ locked: true, lockReason: 'teacher', lockedAt: Timestamp.fromMillis(t), events: ev('locked') }); break;
+    case 'unlock': await ref.update({ locked: false, lockReason: '', forgiven: at.strikes || 0, lastBeat: Timestamp.fromMillis(t), events: ev('unlocked') }); break;
+    case 'forgive': await ref.update({ forgiven: at.strikes || 0, events: ev('unlocked') }); break;
+    case 'submit': if (at.status === 'in_progress') await finishAttempt(ref, 'teacher'); break;
+    default: fail('invalid-argument', 'Непознато действие.');
+  }
+  if (a.data().kind === 'live' && (d.action === 'lock' || d.action === 'unlock')) await a.ref.update({ 'live.locked': d.action === 'lock' ? FieldValue.arrayUnion(target) : FieldValue.arrayRemove(target) });
+  return { ok: true };
+});
+
 async function finalizeAssignment(aRef, reason) {
   const q = await db.collection('attempts').where('assignmentId', '==', aRef.id).where('status', '==', 'in_progress').get();
   for (const d of q.docs) await finishAttempt(d.ref, reason || 'closed');
@@ -627,7 +752,7 @@ exports.liveControl = onCall({ timeoutSeconds: 300 }, async req => {
     case 'start':
       L.state = 'running'; L.startedAt = Timestamp.fromMillis(t); L.endsAt = durMs ? Timestamp.fromMillis(t + durMs) : null; L.pausedAt = null;
       if (A.mode === 'quiz') { L.current = 0; L.questionStartedAt = Timestamp.fromMillis(t); L.reveal = false; L.qStarts = { 0: t }; }
-      for (const x of await attemptsOf()) await x.ref.update({ deadline: Timestamp.fromMillis(deadlineFor({ ...A, live: L }, t, (L.extra || {})[x.data().studentId] || 0)), startedAt: Timestamp.fromMillis(t) });
+      for (const x of await attemptsOf()) await x.ref.update({ deadline: Timestamp.fromMillis(deadlineFor({ ...A, live: L }, t, (L.extra || {})[x.data().studentId] || 0)), startedAt: Timestamp.fromMillis(t), lastBeat: Timestamp.fromMillis(t) });
       break;
     case 'pause': if (L.state === 'running') { L.state = 'paused'; L.pausedAt = Timestamp.fromMillis(t); } break;
     case 'resume':
@@ -636,6 +761,7 @@ exports.liveControl = onCall({ timeoutSeconds: 300 }, async req => {
         if (ms(L.endsAt)) L.endsAt = Timestamp.fromMillis(ms(L.endsAt) + gap);
         if (A.mode === 'quiz' && ms(L.questionStartedAt)) { L.questionStartedAt = Timestamp.fromMillis(ms(L.questionStartedAt) + gap); L.qStarts = { ...(L.qStarts || {}), [L.current]: ms(L.questionStartedAt) }; }
         L.state = 'running'; L.pausedAt = null; await shiftDeadlines(gap);
+        for (const x of await attemptsOf()) await x.ref.update({ lastBeat: Timestamp.fromMillis(t) });
       }
       break;
     case 'addTime': {
@@ -650,9 +776,9 @@ exports.liveControl = onCall({ timeoutSeconds: 300 }, async req => {
     case 'kick': if (target) { L.kicked = [...new Set([...(L.kicked || []), target])]; const x = db.doc(`attempts/${a.id}_${target}`); if ((await x.get()).exists) await finishAttempt(x, 'kicked'); } break;
     case 'unkick': L.kicked = (L.kicked || []).filter(x => x !== target); break;
     case 'lock': if (target) { L.locked = [...new Set([...(L.locked || []), target])]; await db.doc(`attempts/${a.id}_${target}`).set({ locked: true }, { merge: true }); } break;
-    case 'unlock': if (target) { L.locked = (L.locked || []).filter(x => x !== target); await db.doc(`attempts/${a.id}_${target}`).set({ locked: false }, { merge: true }); } break;
+    case 'unlock': if (target) { L.locked = (L.locked || []).filter(x => x !== target); const x = await db.doc(`attempts/${a.id}_${target}`).get(); if (x.exists) await x.ref.update({ locked: false, lockReason: '', forgiven: x.data().strikes || 0, lastBeat: Timestamp.fromMillis(t) }); } break;
     case 'lockAll': for (const x of await attemptsOf()) await x.ref.update({ locked: true }); L.lockedAll = true; break;
-    case 'unlockAll': for (const x of await attemptsOf()) await x.ref.update({ locked: false }); L.lockedAll = false; L.locked = []; break;
+    case 'unlockAll': for (const x of await attemptsOf()) await x.ref.update({ locked: false, lockReason: '', forgiven: x.data().strikes || 0, lastBeat: Timestamp.fromMillis(t) }); L.lockedAll = false; L.locked = []; break;
     /* the projector quiz */
     case 'reveal': if (A.mode === 'quiz') { L.reveal = true; L.leaderboard = await quizBoard(a.ref, { ...A, live: L }, L.current); L.stats = await quizStats(a.ref, A, L.current); } break;
     case 'next':

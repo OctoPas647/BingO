@@ -84,10 +84,19 @@ const atId = st.attemptId;
 const att = (await getDoc(doc(A.db, 'attempts', atId))).data();
 ok(att.order.length === 4 && att.status === 'in_progress', 'attempt started');
 const mixed = asg.tasks[2].items, inv3 = ['едно', 'две', 'три'].map(x => mixed.indexOf(x));
-await updateDoc(doc(A.db, 'attempts', atId), { 'responses.q1': 1, 'responses.q2': '2,5', 'responses.q3': { order: inv3, moved: true }, 'responses.q4': { text: 'Защото 1/3 = 0,(3), а 3 по 1/3 е 1, значи 0,(9) = 1.' }, answered: 4, current: 3, lastSeen: serverTimestamp(), events: [{ t: Date.now(), type: 'left' }], flags: 1 });
+await updateDoc(doc(A.db, 'attempts', atId), { 'responses.q1': 1, 'responses.q2': '2,5', 'responses.q3': { order: inv3, moved: true }, 'responses.q4': { text: 'Защото 1/3 = 0,(3), а 3 по 1/3 е 1, значи 0,(9) = 1.' }, answered: 4, current: 3, lastSeen: serverTimestamp() });
+/* leaving the test goes through the server (test security): a test warns once, then locks */
+const rep1 = await A.call('proctorReport', { assignmentId: aid, deviceId: 'w-ani', events: [{ id: 'e1', t: Date.now(), type: 'left', q: 4 }], beat: true });
+ok(rep1.newStrikes === 1 && rep1.action === 'warn' && rep1.allowed === 1, 'first time out of a test: a warning ' + JSON.stringify(rep1));
+const rep1b = await A.call('proctorReport', { assignmentId: aid, deviceId: 'w-ani', events: [{ id: 'e1', t: Date.now(), type: 'left', q: 4 }], beat: true });
+ok(rep1b.newStrikes === 0 && rep1b.strikes === 1, 'the same event sent twice counts once');
 await denied(updateDoc(doc(A.db, 'attempts', atId), { status: 'graded' }), 'student cannot change the status');
 await denied(updateDoc(doc(A.db, 'attempts', atId), { flags: 0 }), 'student cannot clear flags');
 await denied(updateDoc(doc(A.db, 'attempts', atId), { events: [] }), 'student cannot clear the alert log');
+await denied(updateDoc(doc(A.db, 'attempts', atId), { events: [{ t: Date.now(), type: 'start' }] }), 'student cannot write events directly');
+await denied(updateDoc(doc(A.db, 'attempts', atId), { strikes: 0 }), 'student cannot reset the strikes');
+await denied(updateDoc(doc(A.db, 'attempts', atId), { lastBeat: serverTimestamp() }), 'student cannot fake the heartbeat');
+await denied(updateDoc(doc(A.db, 'attempts', atId), { device: { platform: 'android' } }), 'student cannot change the device record');
 await denied(getDoc(doc(B.db, 'attempts', atId)), 'another student cannot read my attempt');
 const live = (await getDocs(query(collection(T.db, 'attempts'), where('teacherIds', 'array-contains', T.uid), where('assignmentId', '==', aid)))).docs.map(d => d.data());
 ok(live.length === 1 && live[0].responses.q1 === 1 && live[0].flags === 1, 'teacher sees the work live');
@@ -174,6 +183,79 @@ ok(prac && prac.settings.practice.skills.includes('quad'), 'practice targets the
 const gen = await T.call('teacherAI', { action: 'generate', topic: 'събиране', n: 3 });
 ok(gen.tasks.length === 3 && gen.tasks[0].type === 'choice', 'AI makes a test');
 await denied(A.call('teacherAI', { action: 'generate', topic: 'x' }), 'students cannot use the teacher AI');
+
+/* ---------- test security ---------- */
+{
+  const tk = [{ id: 'p1', type: 'choice', prompt: '1 + 1 = ?', options: ['1', '2', '3', '4'], answer: 1, points: 1 }];
+  /* the default for a test: warn once, then lock; the teacher unlocks and the warnings start again */
+  const { assignmentIds: [pid] } = await T.call('publishAssignment', { classIds: [classId], title: 'Защитен тест', kind: 'test', tasks: tk, timeLimitMin: 20 });
+  const pa = (await getDoc(doc(A.db, 'assignments', pid))).data();
+  ok(pa.settings.antiCheat.onLeave === 'lock' && pa.settings.antiCheat.secure && pa.settings.antiCheat.lockApp && pa.settings.antiCheat.noOverlays && pa.settings.antiCheat.watermark && !pa.settings.antiCheat.appOnly, 'a test is protected by default ' + JSON.stringify(pa.settings.antiCheat));
+  await A.call('startAttempt', { assignmentId: pid, deviceId: 'w-ani', device: { platform: 'web', browser: 'Chrome/130' } });
+  const pref = doc(A.db, 'attempts', pid + '_' + A.uid);
+  const pat = (await getDoc(pref)).data();
+  ok(pat.device && pat.device.platform === 'web' && pat.deviceId === 'w-ani' && pat.strikes === 0, 'the device is recorded at the start');
+  const w = await A.call('proctorReport', { assignmentId: pid, deviceId: 'w-ani', events: [{ id: 's1', type: 'split' }] });
+  ok(w.action === 'warn', 'split screen: warning');
+  const b1 = await A.call('proctorReport', { assignmentId: pid, deviceId: 'w-ani', events: [{ id: 'b1', type: 'blur', secs: 1 }] });
+  ok(!b1.newStrikes, 'a 1-second blur is not leaving');
+  const ss = await A.call('proctorReport', { assignmentId: pid, deviceId: 'w-ani', events: [{ id: 'x1', type: 'screenshot', blocked: true }, { id: 'x2', type: 'copy' }] });
+  ok(!ss.newStrikes && !ss.locked, 'a blocked screenshot and a copy are only flags');
+  const lk = await A.call('proctorReport', { assignmentId: pid, deviceId: 'w-ani', events: [{ id: 'l2', type: 'left' }] });
+  ok(lk.action === 'lock' && lk.locked, 'second time out: locked ' + JSON.stringify(lk));
+  await denied(updateDoc(pref, { 'responses.p1': 1 }), 'a locked student cannot answer');
+  await denied(A.call('proctorControl', { assignmentId: pid, uid: A.uid, action: 'unlock' }), 'a student cannot unlock themself');
+  await T.call('proctorControl', { assignmentId: pid, uid: A.uid, action: 'unlock' });
+  await updateDoc(pref, { 'responses.p1': 1 });
+  const un = (await getDoc(pref)).data();
+  ok(!un.locked && un.forgiven === 2 && un.responses.p1 === 1, 'the teacher unlocks; answers are saved again');
+  const w2 = await A.call('proctorReport', { assignmentId: pid, deviceId: 'w-ani', events: [{ id: 'l3', type: 'left' }] });
+  ok(w2.action === 'warn', 'after unlocking the warnings start over');
+  /* another device joins the same test */
+  await A.call('startAttempt', { assignmentId: pid, deviceId: 'w-other', device: { platform: 'web' } });
+  const dv = (await getDoc(pref)).data();
+  ok(dv.locked && dv.events.some(e => e.type === 'device' && e.strike), 'a second device counts as leaving ' + dv.strikes);
+  /* the teacher hands it in */
+  await T.call('proctorControl', { assignmentId: pid, uid: A.uid, action: 'submit' });
+  ok((await getDoc(pref)).data().status !== 'in_progress', 'the teacher hands in a test');
+
+  /* hand in on leaving, no warnings */
+  const { assignmentIds: [sid] } = await T.call('publishAssignment', { classIds: [classId], title: 'Строг тест', kind: 'test', tasks: tk, timeLimitMin: 20, settings: { antiCheat: { onLeave: 'submit', allowedLeaves: 0 } } });
+  await B.call('startAttempt', { assignmentId: sid, deviceId: 'w-boris' });
+  const sb = await B.call('proctorReport', { assignmentId: sid, deviceId: 'w-boris', events: [{ id: 'g1', type: 'left' }] });
+  ok(sb.action === 'submit', 'leaving hands in the test');
+  const sat = (await getDoc(doc(B.db, 'attempts', sid + '_' + B.uid))).data();
+  ok(sat.status !== 'in_progress' && sat.submitReason === 'left', 'handed in because the student left ' + sat.submitReason);
+
+  /* homework only logs */
+  const { assignmentIds: [hid] } = await T.call('publishAssignment', { classIds: [classId], title: 'Домашно', kind: 'homework', tasks: tk });
+  await B.call('startAttempt', { assignmentId: hid, deviceId: 'w-boris' });
+  const hl = await B.call('proctorReport', { assignmentId: hid, deviceId: 'w-boris', events: [{ id: 'h1', type: 'left' }, { id: 'h2', type: 'left' }, { id: 'h3', type: 'left' }] });
+  ok(!hl.action && !hl.locked && hl.strikes === 3, 'homework never locks, the teacher still sees it');
+
+  /* the Android app only; a rooted phone; USB debugging; apps that read the screen */
+  const { assignmentIds: [oid] } = await T.call('publishAssignment', { classIds: [classId], title: 'Само в приложението', kind: 'test', tasks: tk, timeLimitMin: 20, settings: { antiCheat: { appOnly: true } } });
+  await denied(A.call('startAttempt', { assignmentId: oid, device: { platform: 'web' } }), 'app-only test refuses the web version');
+  await denied(A.call('startAttempt', { assignmentId: oid, device: { platform: 'android', checks: { root: true } } }), 'a rooted phone cannot start');
+  await denied(A.call('startAttempt', { assignmentId: oid, device: { platform: 'android', checks: { adb: true } } }), 'USB debugging must be off');
+  await denied(A.call('startAttempt', { assignmentId: oid, device: { platform: 'android', checks: { a11y: ['ScreenReaderX'] } } }), 'an app reading the screen must be off');
+  const okA = await A.call('startAttempt', { assignmentId: oid, deviceId: 'a-ani', device: { platform: 'android', model: 'Xiaomi 17 Ultra', checks: {} } });
+  ok(okA.started, 'a normal Android phone starts the app-only test');
+  /* Play Integrity: not configured in the emulator, so it is skipped and says so */
+  const { assignmentIds: [iid] } = await T.call('publishAssignment', { classIds: [classId], title: 'Google Play', kind: 'test', tasks: tk, timeLimitMin: 20, settings: { antiCheat: { integrity: true } } });
+  const ch = await A.call('proctorChallenge', { assignmentId: iid });
+  ok(ch.nonce && ch.needed === false, 'integrity challenge (not configured)');
+  await A.call('startAttempt', { assignmentId: iid, deviceId: 'a-ani', device: { platform: 'android', checks: {} }, integrityToken: '' });
+  ok((await getDoc(doc(A.db, 'attempts', iid + '_' + A.uid))).data().device.integrity === 'skipped', 'integrity marked as skipped');
+  /* a live test does not count leaving in the lobby */
+  const { assignmentIds: [lv2] } = await T.call('publishAssignment', { classIds: [classId], title: 'На живо 2', kind: 'live', tasks: tk, timeLimitMin: 10 });
+  await B.call('startAttempt', { assignmentId: lv2, deviceId: 'w-boris' });
+  const lob = await B.call('proctorReport', { assignmentId: lv2, deviceId: 'w-boris', events: [{ id: 'lb', type: 'left' }] });
+  ok(!lob.newStrikes, 'leaving in the lobby does not count');
+  await T.call('liveControl', { assignmentId: lv2, action: 'start' });
+  const run = await B.call('proctorReport', { assignmentId: lv2, deviceId: 'w-boris', events: [{ id: 'lr', type: 'left' }] });
+  ok(run.newStrikes === 1 && run.action === 'warn', 'leaving a running live test counts');
+}
 
 /* roles: whitelist policy */
 await denied(T.call('adminSetPolicy', { policy: 'whitelist' }), 'only admins change the policy');

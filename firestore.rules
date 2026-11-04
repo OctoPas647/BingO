@@ -74,19 +74,21 @@ service cloud.firestore {
     }
 
     /* one student's work on one assignment. Started by the startAttempt function; the student then writes
-       answers, the question they are on and the "left the app" events — only while it is running, not locked,
-       and before the deadline (+2 minutes for a slow connection). Quiz answers can be added, never changed. */
+       answers and the question they are on — only while it is running, not locked, and before the deadline
+       (+2 minutes for a slow connection). Quiz answers can be added, never changed.
+       Leaving the test, the warnings, the device and the heartbeat are written only by the proctorReport
+       function (test security), so a student cannot hide or clear them. Answers are accepted only while the
+       heartbeat is alive (90 s): a page that stops reporting also stops saving. */
     match /attempts/{atid} {
       allow read: if signedIn() && (resource.data.studentId == me() || me() in resource.data.teacherIds);
       allow create, delete: if false;
       allow update: if signedIn() && resource.data.studentId == me()
         && resource.data.status == 'in_progress' && resource.data.locked != true
         && request.time < resource.data.deadline + duration.value(2, 'm')
-        && onlyChanges(['responses', 'current', 'answered', 'timeOn', 'events', 'flags', 'lastSeen', 'quiz', 'photos', 'updatedAt', 'device', 'focus', 'draft', 'practice', 'curSince'])
+        && (!('lastBeat' in resource.data) || resource.data.kind == 'practice' || request.time < resource.data.lastBeat + duration.value(90, 's'))
+        && onlyChanges(['responses', 'current', 'answered', 'timeOn', 'lastSeen', 'quiz', 'photos', 'updatedAt', 'draft', 'practice', 'curSince'])
         && request.resource.data.quiz.diff(resource.data.quiz).changedKeys().size() == 0
-        && request.resource.data.quiz.diff(resource.data.quiz).removedKeys().size() == 0
-        && request.resource.data.flags >= resource.data.flags
-        && request.resource.data.events.size() >= resource.data.events.size();
+        && request.resource.data.quiz.diff(resource.data.quiz).removedKeys().size() == 0;
 
       match /history/{h} {
         allow read: if signedIn() && (get(/databases/$(database)/documents/attempts/$(atid)).data.studentId == me()
