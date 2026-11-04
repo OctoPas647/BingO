@@ -1,0 +1,128 @@
+{
+ "format": 1,
+ "id": "dzi12-itl-2025-05-23-b11-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Италиански език · 23 май 2025 · ниво B1.1 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "itl",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B1.1",
+  "profile": "профилирана",
+  "source": "2dzi25_ital_e_pp_nivo_b1.1_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B1.1 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Quando Giuseppe era adolescente",
+       "options": [
+        "ha fatto fatica a diventare cappellaio.",
+        "cuciva a macchina i primi cappelli.",
+        "ha imparato il mestiere di cappellaio.",
+        "Nessuna delle risposte"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Gli operai della fabbrica di Giuseppe",
+       "options": [
+        "hanno imparato il mestiere da un cappellaio.",
+        "lavoravano in modo molto preciso e solo a mano.",
+        "venivano istruiti personalmente da lui stesso.",
+        "Nessuna delle risposte"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q28",
+       "type": "choice",
+       "points": 1,
+       "prompt": "I cappelli prodotti dall’azienda di Giuseppe erano",
+       "options": [
+        "parzialmente fatti a machina.",
+        "fabbricati sempre a mano.",
+        "disegnati dagli operai della fabbrica.",
+        "Nessuna delle risposte"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Il famoso cappello che ha creato Giuseppe",
+       "options": [
+        "viene usato solo per feste ufficiali.",
+        "è un elegante accessorio maschile.",
+        "viene indossato soltanto da attori.",
+        "Nessuna delle risposte"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Quando Giuseppe muore",
+       "options": [
+        "i suoi affari in Italia vanno subito in rovina.",
+        "molti operai della sua azienda vengono licenziati.",
+        "il suo cappello riceve riconoscimento mondiale.",
+        "Nessuna delle risposte"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {
+  "p1": {
+   "title": "Text",
+   "text": "Testo 2 Leggete il testo e svolgete il compito segnalando nel foglio delle risposte l'affermazione corretta. Il Borsalino Il cappello da uomo più bello e più famoso del mondo è italiano e si chiama Borsalino. Tutti lo conoscono e lo apprezzano. È il simbolo dello stile e dell’eleganza italiana. La storia del famoso cappello ha inizio quando il suo creatore, Giuseppe Borsalino, a 13 anni comincia a lavorare in una bottega di Alessandria come apprendista cappellaio. Impara presto tutte le tecniche e i segreti della produzione dei cappelli che allora venivano fatti a mano. Nel 1857 apre ad Alessandria l'azienda «Borsalino» e comincia a produrre cappelli eleganti e di qualità. Giuseppe ama a tal punto la precisione e il lavoro fatto a mano che insegna personalmente il mestiere agli operai della sua fabbrica. Possiede macchine moderne ma una grande parte del lavoro finale viene fatta a mano. A quei tempi tutti indossano un cappello e il successo del Borsalino arriva subito. Il Borsalino è sopra ogni testa: di chi passeggia per strada, di chi va in ufficio, alle feste e agli eventi importanti. Giuseppe Borsalino muore ad Alessandria nel 1900, qualche mese dopo l'azienda vince il premio all’Esposizione Universale di Parigi, e il suo cappello diventa famoso in tutto il mondo. Durante il Novecento a indossare un Borsalino saranno decine di registi, attori, scrittori, politici e capi di Stato. Ogni uomo che conta indosserà un Borsalino, e questo nome diventerà negli anni sinonimo di cappello. Tra il 1970 e il 1980 il cappello viene usato sempre meno e l’azienda riduce produzione e numero di operai. Oggi esistono dieci negozi Borsalino in Italia e uno a Parigi."
+  }
+ }
+}

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.shelly">
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- a light haptic tick on right and wrong answers (68-motion.js) -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <queries>
         <intent><action android:name="android.intent.action.VIEW" /><data android:scheme="https" /></intent>
     </queries>

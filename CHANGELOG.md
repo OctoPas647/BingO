@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.6.0
+A native-feeling redesign, Google AI behind almost everything, and every matura.
+
+- **iOS look with Liquid glass**: system colours and type (SF on Apple devices, Inter elsewhere), grouped lists, large titles that shrink into the nav bar as you scroll, a floating glass tab bar that gets smaller while you read, a glass answer bar, glass sheets that lift the page behind them. Content stays on solid surfaces; glass is only the navigation layer, like iOS 26. "Liquid glass" is on by default (turn it off in Settings for solid bars)
+- **Apple-like motion**: spring curves everywhere; screens push and pop, questions and past exams come up like a modal, tabs cross-fade, sheets can be pulled down to close, the segmented control and the tab bar's lens slide, cards ease in as they scroll into view, buttons give under the finger, a light haptic tick on answers. "Анимации" in Settings (and the system's reduce motion) turns it off
+- **No typed API key anywhere**: the key field is gone from Settings and setup, and an old key saved on a phone is dropped. Gemini runs on BingO's own server (`server/`, Cloud Run), which holds the Gemini key or uses Vertex AI; the app only knows the server's address (`BINGO_AI_SERVER`). **Deploy the server** (see README) and set the GitHub variable `BINGO_AI_SERVER`
+- **Gemini for almost everything**: new questions for every subject in the real exam's style (real МОН questions of the same topic are the examples), questions similar to the ones you missed, hints, why an answer was wrong, checking open past-exam answers against the official answer, the week plan and a coach note after each session. AI questions are kept on the phone for offline use
+- **Gemini Nano on the device**: Android phones with Gemini Nano (ML Kit GenAI Prompt API / AICore, e.g. Xiaomi 17 Ultra) and Chrome's built-in model on the web give the first hint instantly, pre-check open answers, double-check Gemini's new questions and take over when there is no internet. Phones without it simply use the cloud
+- **Every matura**: История, Биология, Химия, Физика, География, Философия, ИТ, Информатика, Предприемачество, Изобразително изкуство, Музика and Английски, Немски, Руски, Френски, Испански, Италиански — imported from МОН's past exams with the official key (≈950 closed questions, plus past exams to solve). English also gets ≈400 questions from BrainBurst and BandUP. Pick any matura from Home; your profile's maturas come first
+- **Every question the app has is used**: all closed questions of all past exams now also train their topic (only for your own exam: no НВО 4 question for a ДЗИ learner)
+- **Four answers on every closed question**: bank questions get extra options from questions of the same topic; official three-option questions get a 4th (a near number, or "none of these"), never the right one
+- **Math like the real exam**: about every other training question is a real НВО / ДЗИ question; new topics Функции, Тригонометрия, Планиметрия, Статистика with generators worded like МОН's tasks; НВО 4 trains numbers, measures, shapes and word problems from its real exams
+- **Less punishing**: a wrong first pick gets a second try (the skill map still counts the first one), "Не знам" shows the solution without a red screen, a lost point is not shown as a falling number during practice
+- **Go over your mistakes**: at the end of a session or a past exam every missed question is listed with your answer, the right one and the solution; "Тренирай подобни" trains on similar questions — a new variant, a Gemini question made from that mistake or another real question of the topic — never the same one
+- **Android is built with Gradle** (for Gemini Nano): `python tools/build.py android` runs `platforms/android/gradlew`; Android 8.0+ (was 7.0+); the same signing key, so it installs over the old app
+
 ## 0.5.0
 Everything from the 64 open branches in one version.
 

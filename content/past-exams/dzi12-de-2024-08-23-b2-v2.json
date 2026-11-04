@@ -1,0 +1,128 @@
+{
+ "format": 1,
+ "id": "dzi12-de-2024-08-23-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Немски език · 23 август 2024 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "de",
+  "year": 2024,
+  "date": "2024-08-23",
+  "variant": 2,
+  "session": "август",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "nemski-ezik-nivo-v2-23-avgust-2024-g.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 август 2024 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Francesca Siclari …",
+       "options": [
+        "weckt nur ungern schlafende Menschen.",
+        "forscht an einer Schweizer Uni.",
+        "verlässt sich nicht auf Menschen.",
+        "muss immer wieder Probleme lösen."
+       ],
+       "answer": 1,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Während man einschläft, …",
+       "options": [
+        "verlangsamt sich der Puls.",
+        "sieht man erstmals nichts.",
+        "schläft man schon tief.",
+        "träumt man von der Arbeit."
+       ],
+       "answer": 0,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Unsere Träume …",
+       "options": [
+        "zeigen verschiedene Filme.",
+        "erinnern an konkrete Personen.",
+        "dauern mindestens eine Stunde.",
+        "haben unterschiedliche Phasen."
+       ],
+       "answer": 3,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Die Traumforschung ist …",
+       "options": [
+        "mit hohen Kosten verbunden.",
+        "sehr produktiv.",
+        "ausreichend finanziert.",
+        "nicht so anstrengend."
+       ],
+       "answer": 0,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Wenn wir schlafen, …",
+       "options": [
+        "träumen wir jede Nacht von den gleichen Motiven.",
+        "erinnern wir uns an alle Informationen.",
+        "tun wir etwas für unsere Gesundheit.",
+        "träumen wir nur von bekannten Personen."
+       ],
+       "answer": 2,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Das „Zentralinstitut für seelische Gesundheit“ …",
+       "options": [
+        "wird von Michael Schredl geleitet.",
+        "verfügt nur über einen Psychologen.",
+        "hat ein modernes Schlaflabor.",
+        "untersucht seit Langem die Träume."
+       ],
+       "answer": 3,
+       "passage": "p1",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {
+  "p1": {
+   "title": "Text",
+   "text": "Text 2\n\nLesen Sie zuerst den Text und die Aufgaben dazu. Kreuzen Sie danach die richtige Antwort auf dem Antwortblatt an. Haben Sie heute Nacht geträumt? Ja! Auch wenn Sie sich nicht erinnern können. Wir träumen, jede Nacht - ohne eine Ahnung zu haben, was wir da tun. Was dann in unseren Köpfen passiert, wenn wir schlafen, untersucht Francesca Siclari, Neurowissenschaftlerin an der Universität Lausanne in der Schweiz. Tausende Male schon hat sie schlafende Menschen im Labor aufgeweckt. Das große Problem der Traumforschung ist: Man kann den Traum nie direkt untersuchen. Man muss sich auf die verlassen, die einem davon erzählen. Noch. Denn Siclari arbeitet daran, unsere Träume sichtbar zu machen. Viele Nächte hat sie am Bildschirm die Gehirnareale der Probandinnen und Probanden angesehen. Wenn wir einschlafen, sehen wir die ersten Bilder, oft von dem Tag, dem Büro, dem Spaziergang. Das Herz schlägt langsamer. Der Atem wird ruhiger. Schließlich kommt der Tiefschlaf. In den verschiedenen Phasen des Schlafs erinnern unsere Träume mehr an spontane Fotos als an Filme. Die Menschen erzählen dann zum Beispiel von Konturen, von einem Gesicht. Sie wissen aber nicht, wer es war. Nach mehr als einer Stunde nach dem Einschlafen ist unser Gehirn zum Teil aktiver als am Tag, speziell in der Region für Erinnerung. Unsere Augen bewegen sich schnell hin und her.\n\nWenn der Tag naht, träumen wir am intensivsten. An diese Szenen können wir uns oft gut erinnern, wenn wir geweckt werden. Aber unser Gehirn baut sich in allen Phasen seine eigenen Welten. Die Erforschung dieser unterschiedlichen Träume ist mehr Arbeit als die Produktion eines Films. Sie ist teuer, und viel Forschungsgeld gibt es dafür nicht. Eines kann man über den Schlaf aber definitiv sagen: dass wir ihn brauchen, um zu leben. Wir schlafen ein Drittel unseres Lebens. In der Nacht bilden wir Antikörper, erneuern sich Zellen, und unser Gehirn verarbeitet Informationen. Wenn wir träumen ist eins sicher: Manche Traummotive wiederholen sich ziemlich oft. Die meisten Träume haben wir am nächsten Tag vergessen. Wir erinnern uns im Monat nur an vier bis sechs Träume. Mindestens die Hälfte der Menschen, die wir nachts treffen, kennen wir vom Tag. Im „Zentralinstitut für seelische Gesundheit“, das mit der Universität Mannheim kooperiert, erforscht man seit Jahrzehnten mit Umfragen und Tagebüchern unsere Träume. Auch der Leiter des Schlaflabors, Michael Schredl, notiert jeden Morgen seine Nacht. Mehr als 15 700 Träume hat er bis heute gesammelt – und ist erst beim Jahr 2016. Der Psychologe kann sagen, dass Träume von Schnee und Eis in seinem Leben seltener geworden sind. Vielleicht wegen der Klimakrise?"
+  }
+ }
+}

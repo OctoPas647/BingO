@@ -10,7 +10,7 @@ BingO build tool.
   python tools/build.py icons      launcher icons -> assets/icons/
 
 The engine (engine/) is Shelly's: module format, scoring, rich text, task views, Android wrapper.
-BingO's own code is in src/. Android needs a JDK 17+ and the Android SDK (build-tools 35, platform 34).
+BingO's own code is in src/. Android needs a JDK 17+, the Android SDK (platform 36, build-tools 35) and Gradle (platforms/android/gradlew).
 """
 import base64, functools, http.server, json, os, pathlib, re, shutil, socketserver, subprocess, sys, zipfile
 
@@ -44,12 +44,27 @@ def content_js():
         embed_media(media, j['id'], ROOT / 'content/past-exams/media' / f.stem)
     # English versions of past exams: same id and file name, same pictures (media/ of the Bulgarian original)
     past_en = [json.loads(read(f)) for f in sorted((ROOT / 'content/past-exams-en').glob('*.json'))]
+    # the other maturas (content/subjects.json, imported with tools/import_dzi.py) and the English bank (tools/import_english.js)
+    subjects = {k: v for k, v in json.loads(read('content/subjects.json')).items() if not k.startswith('_')}
+    for v in subjects.values():
+        for sk in v['skills']: sk.pop('words', None)
+    eng = json.loads(read('content/english-bank.json')) if (ROOT / 'content/english-bank.json').exists() else []
     return (f'window.SHELLY_MODULE_JSON = {json.dumps(mods, ensure_ascii=False)};\nwindow.PAST_EXAMS_JSON = {json.dumps(past, ensure_ascii=False)};\n'
             f'window.PAST_EXAMS_EN_JSON = {json.dumps(past_en, ensure_ascii=False)};\n'
+            f'window.SUBJECTS_JSON = {json.dumps(subjects, ensure_ascii=False)};\nwindow.ENGLISH_BANK_JSON = {json.dumps(eng, ensure_ascii=False)};\n'
             f'window.SHELLY_MEDIA = {json.dumps(media)};\n')
 
+def ai_server():
+    """The address of BingO's AI server (server/, on Cloud Run). The Gemini key lives only there, never in the app.
+    From the BINGO_AI_SERVER environment variable (a GitHub Actions variable or secret) or tools/config.json "aiServer"."""
+    u = (os.environ.get('BINGO_AI_SERVER') or CFG.get('aiServer') or '').strip().rstrip('/')
+    return u if re.fullmatch(r'https://[\w.\-]+(:\d+)?(/[\w.\-/]*)?', u) else ''
+
 def js_bundle():
-    head = f'const APP_NAME = {json.dumps(CFG["appName"])}, APP_VERSION = {json.dumps(CFG["version"])};\n' + content_js()
+    srv = ai_server()
+    say(f'ai server {srv or "none (set aiServer in tools/config.json or BINGO_AI_SERVER; on-device AI still works)"}')
+    head = (f'const APP_NAME = {json.dumps(CFG["appName"])}, APP_VERSION = {json.dumps(CFG["version"])};\n'
+            f'globalThis.BINGO_AI_SERVER = globalThis.BINGO_AI_SERVER_OVERRIDE || {json.dumps(srv)};\n') + content_js()
     parts = [head, '/* ==== engine/vendor/katex.min.js ==== */\n' + read('engine/vendor/katex.min.js')]
     parts += [f'/* ==== {f.relative_to(ROOT).as_posix()} ==== */\n' + read(f) for f in js_files()]
     return '\n;\n'.join(parts)
@@ -57,6 +72,7 @@ def js_bundle():
 def inline_fonts(css):
     def rep(m):
         f = ROOT / 'engine/fonts' / pathlib.Path(m.group(1)).name
+        if not f.exists(): f = ROOT / 'src/fonts' / pathlib.Path(m.group(1)).name   # BingO's own fonts (Inter, for the iOS look)
         return f'url(data:font/woff2;base64,{base64.b64encode(f.read_bytes()).decode()})' if f.exists() else m.group(0)
     return re.sub(r'url\((?:fonts/)?([^)]+\.woff2)\)', rep, css)
 
@@ -146,32 +162,8 @@ def run(cmd):
     if r.returncode != 0: print(r.stdout[-3000:], r.stderr[-3000:]); sys.exit(f'Step failed: {pathlib.Path(str(cmd[0])).name}')
     return r.stdout
 
-def build_android():
-    sdk = find_sdk()
-    bt = sorted((d for d in (sdk / 'build-tools').iterdir() if d.is_dir()), key=lambda d: vkey(d.name))[-1]
-    tgt = CFG['androidTargetSdk']
-    plats = sorted((d for d in (sdk / 'platforms').glob('android-*') if (d / 'android.jar').exists()), key=lambda d: vkey(d.name.split('-')[1]))
-    plat = next((d for d in plats if d.name == f'android-{tgt}'), plats[-1] if plats else None)
-    if not plat: sys.exit('No Android platform installed. Install "platforms;android-34" with sdkmanager.')
-    jar = plat / 'android.jar'; pa = ROOT / 'platforms/android'; b = BUILD / 'android'
-    if b.exists(): shutil.rmtree(b)
-    for d in ('res', 'assets', 'gen', 'classes', 'dex'): (b / d).mkdir(parents=True)
-    shutil.copytree(pa / 'res', b / 'res', dirs_exist_ok=True)
-    shutil.copytree(ROOT / 'assets/icons/android', b / 'res', dirs_exist_ok=True)
-    write(b / 'assets/index.html', page(pre_script='<script>\n' + read('platforms/android/bridge.js') + '\n</script>'))
-    pkg = CFG['androidPackage']
-    write(b / 'AndroidManifest.xml', read('platforms/android/AndroidManifest.xml').replace('package="app.shelly"', f'package="{pkg}"').replace('app.shelly.files', f'{pkg}.files'))
-    write(b / 'res/values/strings.xml', f'<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <string name="app_name">{CFG["appName"]}</string>\n</resources>\n')
-    say(f'android  SDK {sdk} · build-tools {bt.name} · {plat.name}')
-    run([tool(bt, 'aapt2'), 'compile', '--dir', b / 'res', '-o', b / 'res.zip'])
-    run([tool(bt, 'aapt2'), 'link', '-o', b / 'base.apk', '-I', jar, '--manifest', b / 'AndroidManifest.xml', '-R', b / 'res.zip', '--java', b / 'gen', '-A', b / 'assets',
-         '--min-sdk-version', CFG['androidMinSdk'], '--target-sdk-version', tgt, '--version-code', CFG['androidVersionCode'], '--version-name', CFG['version'], '--auto-add-overlay'])
-    java = sorted((pa / 'java').rglob('*.java')) + sorted((b / 'gen').rglob('*.java'))
-    run([java_tool('javac'), '-nowarn', '-Xlint:-options', '-encoding', 'UTF-8', '-source', '8', '-target', '8', '-bootclasspath', jar, '-classpath', jar, '-d', b / 'classes'] + java)
-    run([tool(bt, 'd8'), '--release', '--min-api', CFG['androidMinSdk'], '--lib', jar, '--output', b / 'dex'] + sorted((b / 'classes').rglob('*.class')))
-    unsigned = b / 'unsigned.apk'; shutil.copy2(b / 'base.apk', unsigned)
-    with zipfile.ZipFile(unsigned, 'a', zipfile.ZIP_DEFLATED) as zf: zf.write(b / 'dex' / 'classes.dex', 'classes.dex')
-    run([tool(bt, 'zipalign'), '-p', '-f', '4', unsigned, b / 'aligned.apk'])
+def ensure_signing(pa):
+    """platforms/android/signing/: the key every update must be signed with (made on the first build; never commit it)"""
     sj = pa / 'signing' / 'signing.json'
     if not sj.exists():
         import secrets
@@ -182,9 +174,36 @@ def build_android():
     if not ks.exists():
         run([java_tool('keytool'), '-genkeypair', '-keystore', ks, '-alias', sg['alias'], '-keyalg', 'RSA', '-keysize', '2048', '-validity', '10000',
              '-storepass', sg['storePassword'], '-keypass', sg['keyPassword'], '-dname', 'CN=BingO, O=BingO'])
+    return sg, ks
+
+def gradle_cmd(pa):
+    w = pa / ('gradlew.bat' if os.name == 'nt' else 'gradlew')
+    if w.exists(): return [str(w)]
+    g = shutil.which('gradle')
+    if not g: sys.exit('Gradle is needed for the Android build (platforms/android/gradlew, or Gradle 8.13+ on PATH).')
+    return [g]
+
+def build_android():
+    """The APK is built with Gradle (0.6.0): Gemini Nano needs Google's ML Kit GenAI library, which comes as a Gradle
+    dependency. This step writes the page, the manifest and the app name into build/android-gradle/ and runs
+    platforms/android (Gradle project) -> dist/android/BingO-<version>.apk"""
+    sdk = find_sdk()
+    pa = ROOT / 'platforms/android'; g = BUILD / 'android-gradle'
+    if g.exists(): shutil.rmtree(g)
+    write(g / 'assets/index.html', page(pre_script='<script>\n' + read('platforms/android/bridge.js') + '\n</script>'))
+    # the wrapper's manifest without a package attribute (Gradle sets namespace / applicationId), the provider per app id
+    man = read('platforms/android/AndroidManifest.xml').replace(' package="app.shelly"', '').replace('android:authorities="app.shelly.files"', 'android:authorities="${applicationId}.files"')
+    write(g / 'AndroidManifest.xml', man)
+    shutil.copytree(pa / 'res', g / 'res')   # the wrapper's resources, with BingO's name instead of Shelly's
+    write(g / 'res/values/strings.xml', f'<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <string name="app_name">{CFG["appName"]}</string>\n</resources>\n')
+    ensure_signing(pa)
+    write(pa / 'local.properties', f'sdk.dir={str(sdk).replace(chr(92), "/")}\n')
+    say(f'android  SDK {sdk} · Gradle')
+    r = subprocess.run(gradle_cmd(pa) + ['-p', str(pa), ':app:assembleRelease', '--console=plain', '-q'], cwd=pa)
+    if r.returncode: sys.exit('Gradle build failed.')
+    apk = pa / 'app/build/outputs/apk/release/app-release.apk'
     out = DIST / 'android' / f"{CFG['appName']}-{CFG['version']}.apk"; out.parent.mkdir(parents=True, exist_ok=True)
-    run([tool(bt, 'apksigner'), 'sign', '--ks', ks, '--ks-key-alias', sg['alias'], '--ks-pass', 'pass:' + sg['storePassword'], '--key-pass', 'pass:' + sg['keyPassword'], '--out', out, b / 'aligned.apk'])
-    run([tool(bt, 'apksigner'), 'verify', out])
+    shutil.copy2(apk, out)
     say(f'android  -> {out.relative_to(ROOT)}  ({out.stat().st_size // 1024} KB)'); return out
 
 if __name__ == '__main__':

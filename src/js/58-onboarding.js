@@ -73,46 +73,38 @@ function examPlan(exam, track) {
   return `На матурите: БЕЛ (задължителна) и втора по избор от профилиращите предмети: ${t.dzi.join(', ')}.`;
 }
 const examPlanFull = (exam, track, extra) => examPlan(exam, track) + (exam === 'dzi12' && extraText(extra) ? ` Допълнителна: ${extraText(extra)}.` : '');
-/* БЕЛ first (it is the 1st matura for everyone), then the learner's profile in the 2nd place. The app
-   only has mathematics besides БЕЛ, so a profile without mathematics is shown but can't be picked yet. */
+/* The ДЗИ subjects of a profile, as BingO's subject ids. Every matura of МОН is in the app now (0.6.0):
+   the ones besides Математика and БЕЛ come from МОН's past exams (content/subjects.json). */
+const DZI_SUBJ = {
+  'математика': 'math', 'информатика': 'infm', 'информационни технологии': 'it', 'физика и астрономия': 'phys',
+  'биология и здравно образование': 'bio', 'химия и опазване на околната среда': 'chem', 'география и икономика': 'geo',
+  'предприемачество': 'entr', 'български език и литература': 'bel', 'история и цивилизации': 'hist', 'философия': 'phil',
+  'изобразително изкуство': 'art', 'музика': 'music'
+};
+const LANG_SUBJ = ['en', 'de', 'ru', 'fr', 'es', 'itl'];
 const trackHasMath = track => !!TRACKS[track] && TRACKS[track].dzi.includes('математика');
+function trackSubjects(track) {
+  const t = TRACKS[track]; if (!t) return ['math'];
+  return t.dzi.flatMap(n => (n === 'чужд език' ? LANG_SUBJ : DZI_SUBJ[n] ? [DZI_SUBJ[n]] : [])).filter(id => SUBJECTS[id]);
+}
+/* БЕЛ first (it is the 1st matura for everyone), then the profile's subjects, then the extra matura */
+function plannedSubjects(exam, track, extra) {
+  if (exam !== 'dzi12') return ['bel', 'math'];
+  const ids = ['bel', ...trackSubjects(track)];
+  if (extra === EXTRA_MATH) ids.push('math'); else if (TRACKS[extra]) ids.push(...trackSubjects(extra));
+  return [...new Set(ids)];
+}
 function subjectOptions(track, extra) {
-  const bel = SUBJECTS.bel, math = SUBJECTS.math, t = TRACKS[track];
-  const second = !t ? [math.id, math.icon + ' ' + L(math.title)]
-    : trackHasMath(track) ? [math.id, t.icon + ' ' + L(t.title)] : ['', t.icon + ' ' + L(t.title) + L(' (скоро)'), true];
-  const opts = [[bel.id, bel.icon + ' ' + L(bel.title)], second];
-  /* the extra matura in the 3rd place; mathematics only once, so a math profile already covers it */
-  if (extra === EXTRA_MATH && second[0] !== math.id) opts.push([math.id, math.icon + ' ' + L(math.title)]);
-  else if (TRACKS[extra] && extra !== track) opts.push(trackHasMath(extra) && second[0] !== math.id ? [math.id, TRACKS[extra].icon + ' ' + L(TRACKS[extra].title)] : ['', TRACKS[extra].icon + ' ' + L(TRACKS[extra].title) + L(' (скоро)'), true]);
-  return opts;
+  return plannedSubjects(S.profile.exam || 'dzi12', track, extra).map(id => [id, SUBJECTS[id].icon + ' ' + L(SUBJECTS[id].title)]);
 }
 /* The extra (optional) ДЗИ: mathematics or one of the other profiles' subjects */
 const EXTRA_MATH = 'maths';
 const extraOptions = track => [[EXTRA_MATH, '📐 ' + L('Математика')], ...Object.entries(TRACKS).filter(([id]) => id !== track && id !== 'prof').map(([id, t]) => [id, t.icon + ' ' + L(t.title)])];
 const extraText = extra => (extra === EXTRA_MATH ? 'математика' : TRACKS[extra] ? TRACKS[extra].title.toLowerCase() + ' (профилиращ предмет)' : '');
 
-/* The matura the learner plans to take: БЕЛ, the profile's second one and the optional extra one.
-   `ready` is true only for subjects that already have tasks in the app (БЕЛ and mathematics);
-   the others are shown as "скоро" instead of being hidden. Used by Home and Stats. */
+/* The maturas the learner plans to take (Home and Stats). Every one has tasks now, so all are ready. */
 function myMatura() {
-  const list = [{ id: 'bel', label: SUBJECTS.bel.title, ready: true }];
-  const add = (id, label, ready) => { if (label && !list.some(x => x.label === label)) list.push({ id, label, ready }); };
-  const t = TRACKS[S.profile.track];
-  if (S.profile.exam === 'dzi12' && t) {
-    if (trackHasMath(S.profile.track)) add('math', SUBJECTS.math.title, true);
-    else add('', t.title, false);
-  } else {
-    add('math', SUBJECTS.math.title, true);
-  }
-  const extra = S.profile.extra;
-  if (S.profile.exam === 'dzi12' && extra) {
-    if (extra === EXTRA_MATH) add('math', SUBJECTS.math.title, true);
-    else if (TRACKS[extra] && extra !== S.profile.track) {
-      const et = TRACKS[extra];
-      add(trackHasMath(extra) ? 'math' : '', et.title, trackHasMath(extra));
-    }
-  }
-  return list;
+  return plannedSubjects(S.profile.exam || 'dzi12', S.profile.track, S.profile.extra).map(id => ({ id, label: SUBJECTS[id].title, ready: true }));
 }
 const obText = v => (typeof v === 'function' ? v() : v);
 const obTitle = step => obText(step.title);
@@ -161,7 +153,7 @@ function obApply(step, d) {
   if (step.id === 'theme') { APP.settings.theme = S.settings.theme; applySettings(); }
   if (step.id === 'exam' && !needsTrack(S.profile.exam)) S.profile.track = '';
   if (step.id === 'exam' && !needsTrack(S.profile.exam)) S.profile.extra = '';
-  if (step.id === 'track' && !trackHasMath(S.profile.track)) S.subject = 'bel';   /* its 2nd matura has no tasks here yet */
+  if (step.id === 'track' && !plannedSubjects(S.profile.exam, S.profile.track, S.profile.extra).includes(S.subject)) S.subject = 'bel';
   if (step.id === 'track' && S.profile.extra === S.profile.track) S.profile.extra = '';
   if (step.id === 'profile') S.profile.exam = examFromAge(S.profile.age) || S.profile.exam || '';  /* the next step suggests the exam for this age */
   if (step.id === 'welcome') { APP.settings.lang = S.settings.lang; applySettings(); }

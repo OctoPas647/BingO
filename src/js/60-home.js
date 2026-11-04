@@ -3,15 +3,20 @@ const fmt1 = x => fmtNum(roundTo(x, 1), appLang(), 1);
 const pctTxt = p => Math.round(p * 100) + '%';
 const SRC_LABEL = { gen: 'Нов вариант', shelly: 'От Shelly', bank: 'Банка задачи', ai: 'Създадена от ИИ' };
 
+/* The subject is picked from an iOS-style list: the learner's own maturas first, then every other matura */
 function subjectTabs(cur) {
-  /* show the matura the learner plans to take; keep the current one visible even if it has no tasks yet */
-  const planned = myMatura().filter(m => m.ready || m.id === cur);
-  const opts = planned.map(m => {
-    const s = SUBJECTS[m.id];
-    return `<option value="${s.id}"${s.id === cur ? ' selected' : ''}>${s.icon} ${esc(L(s.title))}</option>`;
-  }).join('');
-  return `<label class="subj-pick"><span class="kicker">${L('Предмет за матура')}</span><span class="selwrap"><select class="field subj-select" id="subjSelect" aria-label="${L('Избери предмет за матура')}">${opts}</select></span></label>`;
+  const s = SUBJECTS[cur];
+  return `<button class="subj-pick" data-subjpick aria-haspopup="dialog"><span class="sp-icon" style="--c:${s.color}">${s.icon}</span><span class="sp-text"><span class="kicker">${L('Предмет за матура')}</span><b>${esc(L(s.title))}</b></span><span class="sp-chev">${icon('down')}</span></button>`;
 }
+function subjectPicker() {
+  const mine = myMatura().map(x => x.id), rest = Object.keys(SUBJECTS).filter(id => !mine.includes(id));
+  const row = id => { const s = SUBJECTS[id], n = (BANK[id] || []).length; return `<button class="ios-row${id === S.subject ? ' on' : ''}" data-act="${id}"><span class="sp-icon" style="--c:${s.color}">${s.icon}</span><span class="ios-row-text"><b>${esc(L(s.title))}</b><small>${n ? L('{n} задачи', { n }) : L('задачи от Gemini')}${pastFor(id, myExam()).length ? ' · ' + L('{n} изпита', { n: pastFor(id, myExam()).length }) : ''}</small></span>${id === S.subject ? icon('check', 'ios-check') : ''}</button>`; };
+  return sheet({
+    title: L('Матура'), body: `<div class="ios-group-title">${L('Твоите матури')}</div><div class="ios-group">${mine.map(row).join('')}</div>
+      <div class="ios-group-title">${L('Всички матури')}</div><div class="ios-group">${rest.map(row).join('')}</div>`
+  }).then(v => { if (v && SUBJECTS[v] && v !== S.subject) { S.subject = v; saveState(); refresh(); } });
+}
+document.addEventListener('click', e => { if (e.target.closest('[data-subjpick]')) subjectPicker(); });
 
 function skillRow(subj, x) {
   const top = Object.entries(x.st.misc).sort((a, b) => b[1] - a[1])[0];
@@ -42,7 +47,7 @@ SCREENS.home = async el => {
       ${subjectTabs(subj)}
       <div class="card losscard">
         ${ring(started ? kept : 0, started ? '−' + fmt1(sm.lost) : '?', 'big')}
-        <div><span class="kicker">${nvoGrade() && subj === 'math' ? `${esc(L(EXAMS[S.profile.exam]))} · ${esc(L(sub.title))}` : L('Матура · {s}', { s: esc(L(sub.title)) })}</span>
+        <div><span class="kicker">${nvoGrade() && ['math', 'bel'].includes(subj) ? `${esc(L(EXAMS[S.profile.exam]))} · ${esc(L(sub.title))}` : L('Матура · {s}', { s: esc(L(sub.title)) })}</span>
           ${started ? `<h1>${L('Губиш ≈ {a} от {b} т.', { a: fmt1(sm.lost), b: sm.total })}</h1><p class="muted">${L('в тези теми на ДЗИ. Тренираме само там, където губиш най-много — силното не го повтаряме.')}</p>`
             : `<h1>${L('Къде губиш точки?')}</h1><p class="muted">${L('Кратка диагностика (≈5 мин): по една задача за всяка тема. После тренираш само слабото.')}</p>`}
         </div>
@@ -55,11 +60,8 @@ SCREENS.home = async el => {
       <h2 class="sec-title">${L('Карта на уменията')}</h2>
       <div class="sklist">${list.map(x => skillRow(subj, x)).join('')}</div>
       ${started ? `<button class="btn ghost block" data-start="diag">${icon('reset')}${L('Нова диагностика')}</button>` : ''}
-      <p class="muted small center foot">${aiOn() ? L('✦ Gemini е включен') : L('Без ИИ · включи Gemini в настройките')} · ${S.settings.sheetUrl ? L('данните отиват в Google Sheets') : L('данните остават на устройството')}</p>
+      <p class="muted small center foot">${cloudOn() ? L('✦ Gemini е включен') : aiOn() ? L('✦ Gemini Nano на устройството') : L('Без ИИ')}${nanoReady() && cloudOn() ? ' + Nano' : ''} · ${S.settings.sheetUrl ? L('данните отиват в Google Sheets') : L('данните остават на устройството')}</p>
     </section>`;
-  el.onchange = e => {
-    const s = e.target.closest('#subjSelect'); if (s && SUBJECTS[s.value]) { S.subject = s.value; saveState(); return refresh(); }
-  };
   el.addEventListener('click', async e => {
     const g = e.target.closest('[data-go]'); if (g) return go(g.dataset.go);
     const st = e.target.closest('[data-start]'); if (st) return go('session', { subj, mode: st.dataset.start });

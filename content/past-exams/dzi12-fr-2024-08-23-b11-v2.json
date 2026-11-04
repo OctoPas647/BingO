@@ -1,0 +1,128 @@
+{
+ "format": 1,
+ "id": "dzi12-fr-2024-08-23-b11-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Френски език · 23 август 2024 · ниво B1.1 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "fr",
+  "year": 2024,
+  "date": "2024-08-23",
+  "variant": 2,
+  "session": "август",
+  "level": "B1.1",
+  "profile": "профилирана",
+  "source": "frenski-ezik-nivo-v1.1-23-avgust-2024-g.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 август 2024 · ниво B1.1 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Le volontariat est :",
+       "options": [
+        "une expérience à vivre avant le bac.",
+        "une découverte de la culture nationale.",
+        "un travail payé.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "prompt": "L’objectif du volontariat international est :",
+       "options": [
+        "de poursuivre ses études post-bac à l’étranger.",
+        "de recevoir un diplôme international.",
+        "de faire un travail au profit de la société.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q28",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Les volontaires de solidarité internationale peuvent partir en mission :",
+       "options": [
+        "en Amérique du Nord.",
+        "en Europe de l’Ouest.",
+        "en Asie.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Les actions de solidarité réalisées dans le cadre du Volontariat de solidarité internationale (VSI) :",
+       "options": [
+        "proposent des missions éducatives.",
+        "sont organisées uniquement par le Ministère des Affaires étrangères.",
+        "ne peuvent pas être prolongées.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Le candidat au Volontariat de solidarité internationale (VSI) NE doit PAS :",
+       "options": [
+        "être âgé de moins de 18 ans.",
+        "avoir d’expérience professionnelle.",
+        "être à la retraite.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {
+  "p1": {
+   "title": "Text",
+   "text": "Texte № 2 Lisez le texte et les questions, puis cochez la bonne réponse sur la feuille de réponses. Partir en volontariat international Vous êtes lycéen, étudiant et vous voulez vivre une expérience humaine riche et découvrir une nouvelle culture. Vous voulez faire une année de pause après le bac ou au cours de vos études post-bac. Avez-vous pensé au volontariat international ? Le volontariat, c’est un engagement personnel pour être au service des autres. Contrairement au bénévolat non rémunéré, le volontariat est une forme d’engagement civique qui peut être rémunérée. Vous recevrez une somme mensuelle, payée par l’institution partenaire, allant de 100 à 800 euros. Vous souhaitez travailler pour une ONG, une association ou une fondation à l’étranger ? Le Volontariat de solidarité internationale (VSI) permet de participer à des actions de solidarité en Afrique, en Amérique latine, en Asie ou en Europe de l’Est telles que missions de santé, d’éducation, de formation et de développement rural ou urbain. En 2020, environ 1 600 personnes sont parties dans le cadre du programme. Les principaux pays d’accueil du VSI sont le Cambodge, Madagascar et les Philippines. 29 associations françaises officiellement reconnues par les institutions européennes et le Ministère des Affaires étrangères proposent des missions. Les contrats VSI ont une durée maximale de 2 ans (renouvelable 6 ans maximum). Le VSI est ouvert à toute personne âgée de plus de 18 ans, mais la plupart des associations exigent que les candidats soient plus âgés (21 ans). Si tu es jeune diplômé, jeune salarié, professionnel expérimenté ou retraité, tu as toutes tes chances ! Il faut faire preuve de motivation et avoir un sens de l’engagement au service de la solidarité ! Si vous souhaitez être accompagné(e) dans un projet de volontariat, le blog CoWin Coaching vous aidera dans la mise en place de votre projet !"
+  }
+ }
+}

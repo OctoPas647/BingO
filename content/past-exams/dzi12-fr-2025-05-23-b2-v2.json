@@ -1,0 +1,138 @@
+{
+ "format": 1,
+ "id": "dzi12-fr-2025-05-23-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Френски език · 23 май 2025 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "fr",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "2dzi25_fe_pp_nivo_b2_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "En France, le phénomène des boîtes à livres :",
+       "options": [
+        "n’existe que dans les villes.",
+        "connaît un véritable essor.",
+        "est une initiative de l’Etat.",
+        "peine à se développer."
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Les boîtes à livres :",
+       "options": [
+        "rivalisent de forme et d’originalité.",
+        "se trouvent loin des quartiers d’habitation.",
+        "sont toujours installées à ciel ouvert.",
+        "respectent des horaires fixes."
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Déposer un livre dans une boîte à livres est un geste :",
+       "options": [
+        "irresponsable.",
+        "individualiste.",
+        "lucratif.",
+        "éco-responsable."
+       ],
+       "answer": 3,
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Les boîtes à livres sont un phénomène :",
+       "options": [
+        "qui est une simple mode de passage.",
+        "qui rend le livre accessible à tous.",
+        "qui entrave la communication entre les gens.",
+        "qui suscite l’indifférence des gens."
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Grâce aux boîtes à livres :",
+       "options": [
+        "les enfants lisent beaucoup plus.",
+        "les livres vont de main en main.",
+        "on favorise le gaspillage.",
+        "les gens N’achètent PLUS de livres."
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "La grande majorité des utilisateurs des boîtes à livres :",
+       "options": [
+        "NE se rendent JAMAIS à la bibliothèque.",
+        "sont les plus jeunes et les plus âgés.",
+        "N’ont PAS de bibliothèques personnelles.",
+        "ont fait des études à l’université."
+       ],
+       "answer": 3,
+       "skill": "read"
+      }
+     ]
+    },
+    {
+     "title": "Част 2 · свободен отговор",
+     "tasks": [
+      {
+       "id": "q44",
+       "type": "open",
+       "points": 2,
+       "prompt": "Lisez le sujet et rédigez une lettre officielle (120 – 130 mots), en traitant les points proposés. Vous êtes élève en classe terminale. Le conseil des élèves de votre lycée voudrait organiser une collecte de dons en faveur des élèves d’une région touchée par de graves inondations. En tant que représentant du conseil des élèves, vous décidez d’écrire une lettre au proviseur dе votre lycée afin de solliciter son soutien et son autorisation. Dans cette lettre :  vous présentez brièvement la situation des élèves concernés ;  vous expliquez l’importance de leur venir en aide ;  vous proposez une démarche pour collecter les dons. Il ne faut pas utiliser d’information personnelle qui pourrait briser l’anonymat car vous risquez que la copie soit annulée. Signez votre lettre Victor / Victoria. Писмен текст под 65 думи, както и текст, изцяло несъответстващ на темата, се оценява с 0 (нула) точки.",
+       "answer": "Максимален брой точки – 20.\n0-5: Съдържателно съответствие с темата, смислова свързаност и логическа\nпоследователност (вкл. и спазване на регистъра);\n0-3: Структура на текста (вкл. и спазване на зададения обем и формат);\n0-5: Правилна и адекватна употреба на лексиката, лексикално богатство;\n0-5: Граматическа правилност (морфологична и синтактична правилност);\n0-2: Правопис.",
+       "skill": "read"
+      },
+      {
+       "id": "q45",
+       "type": "open",
+       "points": 2,
+       "prompt": "Lisez le sujet et rédigez un essai dans lequel vous devez exprimer votre opinion sur le sujet proposé (200-220 mots). L’écrivain français Jean Giono dit « Le bonheur n’est pas dans la possession des choses, mais dans la jouissance des petites choses. »  La richesse matérielle suffit-elle à garantir le bonheur ?  Les petites choses du quotidien peuvent-elles être source de bonheur ?  En quoi réside le vrai bonheur pour vous ? Писмен текст под 110 думи, както и текст, изцяло несъответстващ на темата, се оценява с 0 (нула) точки. ФРЕНСКИ ЕЗИК 23 май 2025 г. НИВО В2",
+       "answer": "Максимален брой точки – 30.\n0-8: Съдържателно съответствие с темата, смислова свързаност и логическа\nпоследователност (умение за представяне на факти, за формулиране на позиция);\n0-2: Структура на текста (вкл. и спазване на зададения обем и формат);\n0-9: Правилна и адекватна употреба на лексиката, лексикално богатство;\n0-9: Граматическа правилност (морфологична и синтактична правилност);\n0-2: Правопис.",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

@@ -1,0 +1,256 @@
+{
+ "format": 1,
+ "id": "dzi12-infm-2026-08-24-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Информатика · 24 август 2026 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "infm",
+  "year": 2026,
+  "date": "2026-08-24",
+  "variant": 2,
+  "session": "август",
+  "level": null,
+  "profile": "профилирана",
+  "source": "2dzi_pp_informatika_v2otgovori.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "24 август 2026 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Кое от следните твърдения е вярно за статичните членове на клас?",
+       "options": [
+        "Достъпни са само чрез обект от класа.",
+        "Винаги са публични, не могат да бъдат частни.",
+        "Принадлежат на класа и са общи за всички обекти.",
+        "Съществуват само след създаване на инстанция на класа."
+       ],
+       "answer": 2,
+       "skill": "oop"
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Какво ще се изведе на стандартния изход след извикването на метода Mystery(5) (за C#) / mystery(5) (за Java)? C# Java static void Mystery(int n) static void mystery(int n) { { if (n <= 0) return; if (n <= 0) return; System.out.print(n + \" \"); Console.Write(n + \" \"); mystery(n - 2); Mystery(n - 2); System.out.print(n + \" \"); Console.Write(n + \" \"); } }",
+       "options": [
+        "5 3 1 1 3 5",
+        "5 4 3 2 1",
+        "5 3 1",
+        "1 3 5"
+       ],
+       "answer": 0,
+       "skill": "oop"
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Какво ще се изведе на стандартния изход след изпълнение на програмния фрагмент: C# Java int sum = 0; int sum = 0; for (int i = 1; i <= 10; i++) for (int i = 1; i <= 10; i++) { { if (i / 2 == 0) { if (i / 2 == 0) sum += i; { } sum += i; } } System.out.println(sum); } Console.WriteLine(sum);",
+       "options": [
+        "55",
+        "2",
+        "0",
+        "1"
+       ],
+       "answer": 3,
+       "skill": "oop"
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Кое твърдение за програмния фрагмент е вярно? C# int[] numbers = {10, 20, 30}; int sum = 0; for (int i = 0; i <= numbers.Length; i++) { sum += numbers[i]; } Console.WriteLine(sum / numbers.Length); Java int[] numbers = {10, 20, 30}; int sum = 0; for (int i = 0; i <= numbers.length; i++) { sum += numbers[i]; } System.out.println(\"Средна стойност: \" + sum / numbers.length);",
+       "options": [
+        "Програмният фрагмент съдържа синтактична грешка и няма да се компилира.",
+        "Програмният фрагмент ще се изпълни, но ще даде логически грешен резултат.",
+        "Програмният фрагмент ще се компилира, но ще прекъсне по време на изпълнение.",
+        "Програмният фрагмент ще се изпълни коректно."
+       ],
+       "answer": 2,
+       "skill": "oop"
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Разгледайте последователността от операции, описани словесно: 1. Дефиниране на абстрактна структура от данни 2. Добавяне на елементите 4, 5, 5, 4 в нея (в дадения ред) 3. Премахване на два елемента от структурата, като се освобождава използваната от тях памет 4. Добавяне на елементите 4, 5, 4 в нея (в дадения ред) 5. Последователно изваждане на всички елементи от структурата, като се извеждат на стандартния изход, разделени с интервал. След изпълнение на описания алгоритъм, на изхода се получава следният резултат: 4 5 4 5 4 Кой вид абстрактна структура от данни е описана?",
+       "options": [
+        "статичен масив",
+        "опашка",
+        "стек",
+        "приоритетна опашка"
+       ],
+       "answer": 2,
+       "skill": "alg"
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Какво ще бъде изведено на стандартния изход при изпълнение на следния програмен фрагмент? C# List<string> cities = new List<string>(); cities.Add(\"Paris\"); cities.Add(\"London\"); cities.Add(\"Rome\"); cities.Insert(2, \"Berlin\"); cities.Remove(\"Paris\"); Console.WriteLine(cities.Count + \" - \" + cities[1]); Java List<String> cities = new ArrayList<>(); cities.add(\"Paris\"); cities.add(\"London\"); cities.add(\"Rome\"); cities.add(2, \"Berlin\"); cities.remove(\"Paris\"); System.out.println(cities.size()+ \" - \" + cities.get(1));",
+       "options": [
+        "2 - Berlin",
+        "3 - Berlin",
+        "2 - Rome",
+        "3 – Rome"
+       ],
+       "answer": 1,
+       "skill": "oop"
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Посочете какъв вид алгоритъм е реализиран в следната програма. C# using System; class Program { static void Main() { int n = int.Parse(Console.ReadLine()); int[] data = new int[n]; int i, p, x; for (i = 0; i < n; i++) data[i] = int.Parse(Console.ReadLine()); x = int.Parse(Console.ReadLine()); i = 0; p = n - 1; while (i <= p) { if (data[i] == x || data[p] == x) break; else { i++; p--; } } Console.WriteLine($\"The positions are {i} and {p}\"); } } Java import java.util.Scanner; public class Main { public static void main(String[] args) { Scanner scan = new Scanner(System.in); int n = scan.nextInt(); int[] data = new int[n]; int i, p, x; for (i = 0; i < n; i++) data[i] = scan.nextInt(); x = scan.nextInt(); i = 0; p = n - 1; while (i <= p){ if (data[i] == x || data[p] == x) break; else{ i++; p--; } } System.out.printf(\"The positions are %d and %d\\n\", i, p); } }",
+       "options": [
+        "двоично търсене",
+        "линейно търсене",
+        "сортиране",
+        "реверсиране"
+       ],
+       "answer": 1,
+       "skill": "alg"
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Кой етап от жизненият цикъл на информационна система включва моделиране на системата с UML?",
+       "options": [
+        "Анализ",
+        "Проектиране",
+        "Реализация",
+        "Поддръжка"
+       ],
+       "answer": 1,
+       "skill": "oop"
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Коя промяна в описанието на дадения клас Account би нарушила принципа на капсулация, без да се променят модификаторите за достъп? C# class Account { private List<Transaction> transactions = new List<Transaction>(); public List<Transaction> GetTransactions() { return new List<Transaction>(transactions); } } Java class Account { private List<Transaction> transactions = new ArrayList<>(); public List<Transaction> getTransactions() { return new ArrayList<>(transactions); } }",
+       "options": [
+        "Методът GetTransactions() (за C#) / getTransactions() (за Java) да връща директно списъка transactions, а не негово копие.",
+        "Добавяне на метод за връщане на броя транзакции.",
+        "Промяна на името на полето transactions.",
+        "Добавяне на метод за добавяне на транзакция с валидация на стойности."
+       ],
+       "answer": 0,
+       "skill": "oop"
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Коя от графичните компоненти се използва за групиране на други графични компоненти? C# Java",
+       "options": [
+        "TextBox А) JTextField",
+        "Label Б) JLabel",
+        "ComboBox В) JComboBox",
+        "Panel Г) JPanel"
+       ],
+       "answer": 3,
+       "skill": "oop"
+      },
+      {
+       "id": "q16",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Какви ще са стойностите на променливите a и b след изпълнението на програмния фрагмент? C# List<int> list = new List<int>(); list.Add(3); list.Add(1); list.Add(4); list.Add(2); list.Sort(); Stack<int> stack = new Stack<int>(); Queue<int> queue = new Queue<int>(); foreach (int x in list) { if (x % 2 == 0) stack.Push(x); else queue.Enqueue(x); } int a = stack.Pop(); int b = queue.Dequeue(); Java List<Integer> list = new ArrayList<>(); list.add(3); list.add(1); list.add(4); list.add(2); Collections.sort(list); Stack<Integer> stack = new Stack<>(); Queue<Integer> queue = new LinkedList<>(); for (int x : list) { if (x % 2 == 0) stack.push(x); else queue.add(x); } int a = stack.pop(); int b = queue.remove();",
+       "options": [
+        "a = 4, b = 1",
+        "a = 2, b = 1",
+        "a = 1, b = 4",
+        "a = 4, b = 3 Отговорите на задачите от 17. до 24. включително запишете в полетата за отговори!"
+       ],
+       "answer": 0,
+       "skill": "oop"
+      }
+     ]
+    },
+    {
+     "title": "Част 2 · свободен отговор",
+     "tasks": [
+      {
+       "id": "q18",
+       "type": "open",
+       "points": 2,
+       "prompt": "В кода е описана йерархия от класове. В полетата за отговори срещу съответния номер запишете класовете, които са свързани: (1) – с връзка наследственост и (2) – с връзка композиция. C# public class Person {...} public class Client : Person {...} public class ElectricalCompany { private List<Client> clients; } Java public class Person {...} public class Client extends Person {...} public class ElectricalCompany { private List<Client> clients; }",
+       "answer": "Client и Person\nElectricalCompany и Client",
+       "skill": "oop"
+      },
+      {
+       "id": "q20",
+       "type": "open",
+       "points": 3,
+       "prompt": "В полетата за отговори срещу всеки от номерата запишете какъв ще е резултата от изпълнението на програмния фрагмент при следните входни данни: (1) -12 (2) AlaBala (3) 20 Приема се, че всички необходими библиотеки са включени. C# try { int age = int.Parse(Console.ReadLine()); if (age < 0 || age > 120) { throw new ArgumentException(\"Invalid age!\"); } Console.WriteLine(\"Age is valid.\"); } catch (FormatException e) { Console.WriteLine(\"Input is not a integer number!\"); } catch (ArgumentException e) { Console.WriteLine(e.Message); } finally { Console.WriteLine(\"Validation sequence ended.\"); } Java try { Scanner sc = new Scanner(System.in); int age = Integer.parseInt(sc.nextLine()); if (age < 0 || age > 120) { throw new IllegalArgumentException(\"Invalid age!\"); } System.out.println(\"Age is valid.\"); } catch (NumberFormatException e) { System.out.println(\"Input is not a integer number!\"); } catch (IllegalArgumentException e) { System.out.println(e.getMessage()); } finally { System.out.println(\"Validation sequence ended.\"); }",
+       "answer": "(1) Invalid age!\n Validation sequence ended.\n(2) Input is not a integer number!\n Validation sequence ended.\n(3) Age is valid.\n Validation sequence ended.",
+       "skill": "oop"
+      },
+      {
+       "id": "q21",
+       "type": "open",
+       "points": 3,
+       "prompt": "В полетата за отговор запишете какво ще бъде изведено на стандартния изход след изпълнението на програмния фрагмент. Запишете отговора, като спазите стриктно регистъра на буквите, броя на интервалите и последователността на извеждане. НЕ добавяйте допълнителни символи или коментари. Гарантирано е , че необходимите библиотеки са включени. C# Java string s = \"Black Eagle\"; String s = \"Black Eagle\"; StringBuilder sb = new StringBuilder sb = new StringBuilder(\"Golden Eagle\"); StringBuilder(\"Golden Eagle\"); int pos = s.LastIndexOf('a'); int pos = s.lastIndexOf('a'); s.Replace(\"Black\", \"Small\"); s.replace(\"Black\", \"Small\"); sb.Remove(0, 7); sb.delete(0, 7); Console.WriteLine(pos); System.out.println(pos); Console.WriteLine(s); System.out.println(s); Console.WriteLine(sb); System.out.println(sb);",
+       "answer": "Black Eagle\nEagle",
+       "skill": "oop"
+      },
+      {
+       "id": "q23",
+       "type": "open",
+       "points": 3,
+       "prompt": "С програмния фрагмент се намира индекса на елемент със стойност target в сортиран масив от цели числа, като се използва библиотечен метод. В полетата за отговор срещу (1), (2) и (3) запишете съответно: (1) името на библиотечния метода, който трябва да се използва; (2) булевия израз, с който се проверява дали стойността target се среща в масива; (3) резултата от изпълнението на фрагмента, който ще се изведе на стандартния изход. C# int[] numbers = { 5, 12, 18, 23, 35, 47, 56, 68, 79, 84 }; int target = 47; int index = Array.___(1)___(numbers, target); if (___(2)___) Console.WriteLine(\"Намерен на позиция: \" + index); else Console.WriteLine(\"Не е намерен\"); Java int[] numbers = { 5, 12, 18, 23, 35, 47, 56, 68, 79, 84 }; int target = 47; int index = Arrays.___(1)___(numbers, target); if (___(2)___) System.out.println(\"Намерен на позиция: \" + index); else System.out.println(\"Не е намерен\");",
+       "answer": "(1) IndexOf или BinarySearch (за C#) / binarySearch (за Java)\n(2) index >= 0\n(3) Намерен на позиция: 5",
+       "skill": "oop"
+      },
+      {
+       "id": "q24",
+       "type": "open",
+       "points": 3,
+       "prompt": "Даден е програмният фрагмент. В полетата за отговори срещу съответните номера запишете метод от класа Math, който: (1) ще превърне стойността на result1 в 3.7. (2) ще закръгли стойността на b до най-близкото цяло число, което ненадвишава b. (3) ще закръгли стойността на a до най-близкото цяло число, което не е по-малко от a. double a = -3.7; double b = 2.4; double result1 = Math.___(1)___(a); double result2 = Math. ___(2)___(b) + Math. ___(3)___(a);",
+       "answer": "За C# За Java\n (1) Abs abs\n (2) Floor floor\n (3) Ceiling ceil",
+       "skill": "oop"
+      },
+      {
+       "id": "q25",
+       "type": "open",
+       "points": 3,
+       "prompt": "Даденият програмен фрагмент трябва да провери дали три реални числа a, b и c могат да бъдат страни на триъгълник и ако триъгълника съществува да изчисли лицето му. В кода има допуснати грешки. В полето за отговор напишете: номера на реда с грешката и предложение за корекция на кода. Забележка: Лицето на триъгълник по три страни се пресмята като квадратен корен от произведеннието на полупериметъра му с разкиките на полупериметъра с всяка от страните. C# 1 if (a >= 0 && b >= 0 && c >= 0) 2 if (a + b > c || a + c > b || b + c > a ) { 3 double p = a + b + c / 2; 4 double s = Math.Sqrt((p) * (p - a) * (p - b) * (p - c)); } Java 1 if (a >= 0 && b >= 0 && c >= 0) 2 if (a + b > c || a + c > b || b + c > a){ 3 double p = a + b + c / 2; 4 double s = Math.sqrt((p) * (p - a) * (p - b) * (p - c)); } 24 август 2026 г. ЧАСТ 2 (Време за работа: 150 минути) Файловете с отговорите на задачите от 26. до 28. включително, качете в изпитната система, като спазите указанията в условието на задачата! Внимание! Имената на работните файлове, които прикачвате в изпитната система НЕ трябва да съдържат текстове или символи, които могат да доведат до нарушаване на анонимността на изпитната Ви работа!",
+       "answer": "1 if (a > 0 && b > 0 && c > 0)\n2 if (a + b > c && a + c > b && b + c > a){\n3 double p = (a + b + c) / 2;",
+       "skill": "oop"
+      },
+      {
+       "id": "q26",
+       "type": "open",
+       "points": 15,
+       "prompt": "В компания за всеки търговски представител се отчитат месечните му продажби за една година и е въведена следната система за бонуси и санкции: − ако продажбите за текущия месец надхвърлят досегашния най-голям брой продажби, служителят получава бонус; − ако продажбите за текущия месец са по-малко от досегашния най-малък брой продажби, служителят получава санкция. За първия месец не се получава бонус или санкция. Създайте приложение с име Zad26, което при зададен брой продажби по месеци и сумите на еднократен бонус и санкция, пресмята броя бонуси, броя санкции и крайната сума, получена като разлика от общата сума на бонусите и общата сума на санкциите. ВХОД: От първия ред на стандартния вход се четат 12 цели числа, разделени с интервал – месечните продажби на конкретен търговски представител. От следващите два реда на стандартния вход се четат по едно цяло число, съответно сумата на еднократен бонус и сумата на еднократна санкция. ОГРАНИЧЕНИЯ: Всички числа са между 1 и 1000. Гарантирано е, че входните данни са коректни. ИЗХОД: На първия ред на стандартния изход се извеждат две числа, разделени с интервал – броят на бонусите и броят на санкциите. На втория ред на стандартния изход се извежда крайната сума. Пример: Вход: 200 150 210 160 155 230 120 220 140 250 150 280 500 100 Изход: 1800 Обяснение: През 3ти, 6ти, 10ти и 12ти месеци са постигнати нови максимални продажби = 4 бонуса През 2ри и 7ми месец са отчетени нови минимални продажби = 2 санкции Крайна сума = 4 * 500 – 2 * 100 = 1800. Приемат се и решения с графичен потребителски интерфейс (ГПИ), в които данните се въвеждат в подходящи контроли, а резултатът се извежда в етикет или нередактируемо текстово поле. Прикачете в изпитната система архив с име zad26.zip, съдържащ файловете с Вашето решение.",
+       "answer": "Примерно решение:\nЗа C#\nnamespace DZI2026\n{\n internal class Task26\n {\n static void Main()\n {\n //въвеждат се броя продажби по месеци\n int[] sales =\nConsole.ReadLine().Split().Select(int.Parse).ToArray();\n int bonusValue = int.Parse(Console.ReadLine()); //сумата\nна еднократен бонус\n int sanctionValue = int.Parse(Console.ReadLine()); //\nсумата на еднократна санкция\n int maxSale = sales[0]; //текуща максимална продажба\n int minSale = sales[0]; //текуща минимална продажба\n int bonusCount = 0; //брояч - бонуси\n int sanctionCount = 0; //брояч - санкции\n for (int i = 1; i < 12; i++)\n {\n if (sales[i] > maxSale)\n {\n maxSale = sales[i];\n bonusCount++;\n }\n else if (sales[i] < minSale)\n {\n minSale = sales[i];\n sanctionCount++;\n }\n }\n int finalSum = bonusCount * bonusValue - sanctionCount *\nsanctionValue;\n Console.WriteLine($\"{bonusCount} {sanctionCount}\");\n Console.WriteLine(finalSum);\n }\n }\n}\nЗа Jav",
+       "skill": "other"
+      },
+      {
+       "id": "q28",
+       "type": "open",
+       "points": 25,
+       "prompt": "Създайте приложение за управление на вендинг машина за напитки и снаксове с име Zad28. Приложението да имплементира следните класове: А) Абстрактен клас Product със следните полета: - barcode – баркод на продукт (символен низ с дължина 10 знака) - name – наименование на продукт (символен низ) - quantity – количество (цяло число) - price – цена (реално число) Низовете НЕ съдържат интервали и табулатори. Класът трябва да предоставя възможност за валидиране на полетата: - barcode – ако е с дължина, различна от 10 символа, да се генерира изключение със съобщение: Invalid barcode! - quantity – трябва да е неотрицателно число, в противен случай да се генерира изключение със съобщение: Invalid quantity! Класът трябва да притежава следните методи: - конструктор с параметри, който задава стойности на всички полета. - предефиниран метод ToString (за C#) / toString (за Java), който да връща низа: \"<barcode> <name> - <quantity>; <price> eur\" Цената трябва да се изведе с два знака след десетичния разделител. Б) Клас Drink – наследник на Product със собствено поле: - volume – обем в милилитри (цяло число) Класът трябва да притежава следните методи: - конструктор с параметри, който задава стойности на всички полета, включително от базовия клас. - предефиниран метод ToString (за C#) / toString (за Java), който да връща низа: <barcode> <name> - <quantity>; <price> eur; <volume> ml. Цената трябва да се изведе с два знака след десетичния разделител. В) Клас Snack – наследник на Product със собствено поле: - weight– тегло в грамове (цяло число) Класът трябва да притежава следните методи: - конструктор с параметри, който задава стойности на всички полета, включително от базовия клас. - предефиниран метод ToString (за C#) / toString (за Java), който да връща низа: <barcode> <name> - <quantity>; <price> eur; <weight> gr. Цената трябва да се изведе с два знака след десетичния разделител. Г) Клас VendingMachine с поле: - products – списък с продукти Класът трябва да притежава следните методи: - конструктор без параметри, който инициализира списъка с продукти. - метод AddProduct (за C#) / addProduct (за Java), който получава като входен параметър обект от класа Product. Ако продукт с този код съществува в списъка, да се генерира изключение със съобщение: \"Product with this code already exists.\", а ако не съществува – да се добави в списъка. - метод BuyProduct (за C#) / buyProduct (за Java), който получава като входен параметър баркод на съществуващ продукт. Ако количеството му е 0,…",
+       "answer": "Примерно решение\nЗа C#\nnamespace DZI2026\n{\n internal abstract class Product\n {\n private string barcode;\n private string name;\n private int quantity;\n private double price;\n public string Barcode\n {\n get { return barcode; }\n set\n {\n if (value.Length != 10)\n {\n throw new Exception(\"Invalid barcode!\");\n }\n barcode = value;\n }\n }\n public string Name\n {\n get { return name; }\n set { name = value; }\n }\n public int Quantity\n {\n get { return quantity; }\n set\n {\n if (value < 0)\n {\n throw new Exception(\"Invalid quantity!\");\n }\n quantity = value;\n }\n }\n public double Price\n {\n get { return price; }\n set { price = value; }\n }\n public Product(string barcode, string name, int quantity,\ndouble price)\n {\n Barcode = barcode;\n Name = name;\n Quantity = quantity;\n Price = price;\n }\n public override string ToString()\n {\n return $\"{Barcode} {Name} - {Quantity}; {Price:F2} eur\";\n }\n }\n internal class Drink : Pr",
+       "skill": "oop"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

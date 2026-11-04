@@ -1,0 +1,128 @@
+{
+ "format": 1,
+ "id": "dzi12-de-2025-05-23-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Немски език · 23 май 2025 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "de",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "2dzi25_ne_pp_nivo_b2_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Die Kinder von Familie Mohs …",
+       "options": [
+        "fahren immer gerne mit dem Auto.",
+        "lieben nasses und kaltes Wetter.",
+        "sind manchmal schlechter Laune.",
+        "sind lieber zu Fuß unterwegs."
+       ],
+       "answer": 2,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "In Deutschland …",
+       "options": [
+        "gebären Hochschulabsolventinnen sehr selten Kinder.",
+        "ist die Zahl der Geburten in den letzten Jahren gestiegen.",
+        "hatten Eltern früher genauso viele Probleme wie jetzt.",
+        "werden nicht in allen Bundesländern Kinder geboren."
+       ],
+       "answer": 1,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Charlotte Mohs …",
+       "options": [
+        "konzentrierte sich nach dem Studium zuerst auf ihre Karriere.",
+        "studierte hauptsächlich in der Bundesrepublik Kunstgeschichte.",
+        "investierte viel Zeit aber wenig Geld in ihr Studium.",
+        "erzielte während des Studiums ausgezeichnete Ergebnisse."
+       ],
+       "answer": 3,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Die 30-Jährige …",
+       "options": [
+        "ist zurzeit nicht berufstätig.",
+        "möchte überhaupt nicht arbeiten.",
+        "wohnt in der Mainzer Innenstadt.",
+        "vermisst die guten Karrieremöglichkeiten."
+       ],
+       "answer": 0,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Die Söhne von Familie Mohs …",
+       "options": [
+        "besuchen eine kostenlose Elterninitiative.",
+        "verbringen nicht den ganzen Tag in der Elterninitiative.",
+        "haben auch einen städtischen Kindergarten besucht.",
+        "sind nicht jeden Morgen in der Elterninitiative."
+       ],
+       "answer": 1,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Mattias Mohs …",
+       "options": [
+        "will sich überhaupt nicht mit dem Baby beschäftigen.",
+        "hat nach der Geburt von Merle weitergearbeitet.",
+        "war nach der Geburt von Merle lange Zeit arbeitslos.",
+        "bewertet die Zeit mit den Kindern als etwas Wichtiges."
+       ],
+       "answer": 3,
+       "passage": "p1",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {
+  "p1": {
+   "title": "Text",
+   "text": "Text 2\n\nLesen Sie zuerst den Text und die Aufgaben dazu. Kreuzen Sie danach die richtige Antwort auf dem Antwortblatt an. Familien in Deutschland\n\nIm Auto von Familie Mohs ist gerade richtig Leben: Der 4-jährige Frieder springt auf seinem Sitz lachend. Anders als er haben seine kleinen Geschwister - der zweijährige Elmar und Baby Merle heute aber überhaupt keine Lust aufs Fahren. ,,Mal sind die Kleinen nicht gut gelaunt, mal ist das der Ältere\", schätzt Charlotte Mohs diese Situation. Bei schönem Wetter ist sie mit ihren Kindern lieber zu Fuß unterwegs, aber heute ist es nass und kalt.\n\nProbleme wie diese haben jeden Morgen Millionen Eltern in Deutschland. Und es wird noch mehr Probleme geben. Denn die Deutschen bekommen so viele Kinder wie seit vielen Jahren nicht mehr. Schon seit fünf Jahren gibt es im ganzen Land einen starken Trend zu mehr Kindern. Inzwischen entscheiden sich auch Akademikerinnen wieder öfter für ein Kind.\n\nEin Beispiel dafür ist Charlotte Mohs. Sie hat in Deutschland, Frankreich und Italien Kunstgeschichte studiert, viel Zeit und Geld in ihre Ausbildung investiert, mit exzellenten Resultaten. Mohs hätte direkt nach dem Ende ihres Studiums ihre Karriere beginnen können. Aber sie hat sich für einen anderen Weg entschieden.\n\nMit ihrem Mann Matthias und ihren drei Kindern lebt die 30-Jährige heute in einem Randbezirk von Mainz. Sie ist trotz guter Karrieremöglichkeiten komplett als Mutter beschäftigt. „Berufstätig zu sein vermisse ich aber manchmal“, sagt Charlotte.\n\nFür die Jungs hat Familie Mohs nach langer Suche zwei Plätze im Kindergarten einer privat organisierten Elterninitiative gefunden - von morgens um neun bis nachmittags um zwei werden sie dort betreut. Danach übernimmt Charlotte die Betreuung. In den Kindergärten der Stadt waren alle Plätze schon weg. Die Stadt zahlt aber wenigstens einen Großteil der Kosten für die Betreuung in der Elterninitiative.\n\nMatthias Mohs arbeitet als Lehrer. Dieses Schuljahr hat er aber weniger Unterrichtsstunden. Für ihn zählt etwas anderes. ,,Ich will das Leben meiner Kinder richtig kennen - dafür brauche ich viel Zeit mit ihnen\", erklärt er. Er hat deshalb nach Merles Geburt vier Monate Elternzeit genommen, um sich um die Söhne zu kümmern, während seine Frau mit dem Baby beschäftigt war. „Nicht, dass ich keine Lust habe, mich um das Baby zu kümmern. Frauen kennen sich aber mit Babys besser aus“."
+  }
+ }
+}

@@ -1,0 +1,117 @@
+{
+ "format": 1,
+ "id": "dzi12-en-2025-05-23-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Английски език · 23 май 2025 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "en",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "2dzi25_ae_pp_nivo_b2_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Years ago, Bobbie was most known for his ...",
+       "options": [
+        "remarkable intellect.",
+        "poor memory.",
+        "quick temper.",
+        "lack of common sense."
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "The narrator’s attitude to marriage …",
+       "options": [
+        "is really positive and encouraging.",
+        "is that it is a scaring experience.",
+        "is that it should be based on a romance.",
+        "is not very clear from the passage."
+       ],
+       "answer": 3,
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "The narrator thought that Mary Anthony was …",
+       "options": [
+        "too tall for Bobbie.",
+        "too ordinary for Bobbie.",
+        "a good match for Bobbie.",
+        "merely a gold digger."
+       ],
+       "answer": 2,
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "The “quiet dinner” …",
+       "options": [
+        "proved Mary an exquisite hostess.",
+        "made the narrator feel uncomfortable.",
+        "turned out to be an evening of much noise and screams.",
+        "was a totally enjoyable experience for all."
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Mary was angry because she …",
+       "options": [
+        "she had no proper dress for a night out.",
+        "she wanted just an ordinary quiet evening with Bobbie.",
+        "she would not set foot in either the Savoy or Covent Garden.",
+        "her husband had forgotten their wedding anniversary."
+       ],
+       "answer": 3,
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "The tone of the story would best be described as …",
+       "options": [
+        "tragic.",
+        "humorous.",
+        "cheerful.",
+        "melancholy."
+       ],
+       "answer": 1,
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

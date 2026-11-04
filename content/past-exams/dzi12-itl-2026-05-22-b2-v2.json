@@ -1,0 +1,128 @@
+{
+ "format": 1,
+ "id": "dzi12-itl-2026-05-22-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Италиански език · 22 май 2026 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "itl",
+  "year": 2026,
+  "date": "2026-05-22",
+  "variant": 2,
+  "session": "май",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "2dzi_ite_nivo-b2_v2otgovori.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "22 май 2026 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Due scienziati italiani",
+       "options": [
+        "hanno creato l’intelligenza artificiale.",
+        "hanno pubblicato una rivista scientifica.",
+        "hanno perfezionato un’intelligenza artificiale.",
+        "sono stati premiati da una rivista specializzata."
+       ],
+       "answer": 2,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "L’intelligenza artificiale che è modellata sulle reti neurali biologiche",
+       "options": [
+        "può dormire da sola come fanno gli esseri umani.",
+        "ha una memoria inferiore a quella dell’uomo.",
+        "ricorda tutto senza nessuna difficoltà.",
+        "funziona esattamente come il cervello umano."
+       ],
+       "answer": 1,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Durante il sonno, il sistema",
+       "options": [
+        "elimina ciò che è superfluo.",
+        "aggiunge nuove informazioni.",
+        "salva le informazioni raccolte.",
+        "blocca ogni tipo di attività."
+       ],
+       "answer": 0,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Dopo il sonno",
+       "options": [
+        "la memoria peggiora drasticamente.",
+        "NON si osserva nessun cambiamento.",
+        "le informazioni si perdono.",
+        "la memoria mantiene le informazioni validi."
+       ],
+       "answer": 3,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "L’intelligenza artificiale è in grado di",
+       "options": [
+        "cancellare le false notizie.",
+        "comprendere le emozioni umane.",
+        "sognare come gli esseri umani.",
+        "accumulare dati ed informazioni."
+       ],
+       "answer": 3,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "I codici dell’intelligenza artificiale vengono mantenuti segreti perché",
+       "options": [
+        "lo esige il codice etico degli informatici.",
+        "NON funzionano ancora in modo corretto.",
+        "potrebbero essere usati per scopi illeciti.",
+        "sono troppo difficili da capire anche per gli esperti."
+       ],
+       "answer": 2,
+       "passage": "p1",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {
+  "p1": {
+   "title": "Text",
+   "text": "Testo 2 Leggete il testo e svolgete il compito segnalando nel foglio delle risposte l'affermazione corretta. L’Intelligenza Artificiale riesce a dormire? Sembra davvero assurdo, ma ora l'intelligenza artificiale riesce a dormire. Due scienziati italiani, Alberto Fachechi e Adriano Barra, hanno messo a punto un'intelligenza artificiale che riesce a passare da uno stato di veglia, dove assorbe informazioni come noi esseri umani, a uno stato di sonno. Lo studio dei due scienziati italiani è stato pubblicato su una rinomata rivista scientifica. L'intelligenza artificiale che si ispira alle reti neurali biologiche, non è in grado di dormire in modo automatico e istintivo e ha un grado di memorizzazione delle informazioni di gran lunga minore rispetto al cervello umano. Perciò i ricercatori italiani ne hanno programmata un’estensione, ispirata ai meccanismi del sonno e del sogno nei cervelli di mammiferi, che può passare da uno stato \"di veglia\", in cui il sistema è sveglio e assorbe informazioni, come noi umani, a uno stato di sonno, in cui cancella le informazioni assorbite da sveglio, ma solo quelle inutili. Quelle utili invece le rende più \"forti\" memorizzandole. I due ricercatori hanno scoperto che senza la fase di sonno, il numero massimo di bit immagazzinati in ogni neurone di questo tipo di intelligenza artificiale è pari a 0,14 bit; dopo il ciclo di sonno invece la nuova intelligenza artificiale ha immagazzinato 1 bit per neurone. Alcuni si domandano se l’intelligenza artificiale riesce a sognare. La risposta è negativa, per ora l'intelligenza artificiale utilizza il sonno \"solo\" per memorizzare le informazioni raccolte durante la veglia, come facciamo noi. Gli studi però sono in corso anche nel campo dei sogni. Poco tempo fa il ricercatore Elon Musk aveva creato un'intelligenza artificiale in grado di scrivere notizie, proprio come farebbe un essere umano. Potrebbe essere usato per scopi illegali, come, per esempio, quello di generare notizie false o recensioni negative. Per questo motivo i codici di questo tipo di intelligenza sono super segreti, in attesa di capire come potrebbe essere utilizzata a scopo... benefico!"
+  }
+ }
+}

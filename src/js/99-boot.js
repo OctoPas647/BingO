@@ -11,5 +11,6 @@
     actions: [{ id: 'ok', label: 'Разбрах', kind: 'primary' }]
   });
   scheduleFlush();
+  nanoInit();   /* is Gemini Nano on this device? (54c-nano.js) */
   if (window.AndroidFiles && window.AndroidFiles.ready) window.AndroidFiles.ready();
 })();

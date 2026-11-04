@@ -1,0 +1,128 @@
+{
+ "format": 1,
+ "id": "dzi12-de-2025-05-23-b11-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Немски език · 23 май 2025 · ниво B1.1 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "de",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B1.1",
+  "profile": "профилирана",
+  "source": "2dzi25_ne_pp_nivo_b1.1_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B1.1 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Bei den Olympischen Winterspielen 2014 betrugen die Kosten …",
+       "options": [
+        "etwa 12 Milliarden Dollar.",
+        "ca. 38 Milliarden Dollar mehr als geschätzt.",
+        "53 Milliarden Dollar.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Nach den Olympischen Spielen …",
+       "options": [
+        "sind viele Stadien in einem schlechten Zustand.",
+        "werden Stadien zu einem Treffpunkt junger Menschen.",
+        "werden Stadien renoviert und wieder benutzt.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q28",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Sarajevo ist der Ort …",
+       "options": [
+        "der ersten kommunistischen Spiele.",
+        "der ersten Winterolympiade in einem kommunistischen Land.",
+        "wurde 1984 durch den Bürgerkrieg stark zerstört.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Griechenland …",
+       "options": [
+        "war der erste Gastgeber der Olympischen Spiele der Neuzeit.",
+        "war vor genau 100 Jahren Organisator der ersten Olympischen Spiele der Antike.",
+        "hatte bei den Sommerspielen 2004 einen Gewinn von 15 Milliarden Dollar.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "prompt": "In letzter Zeit legen Bewerber mehr Wert auf …",
+       "options": [
+        "hochmoderne Soundsysteme.",
+        "zusӓtzlichen Luxus.",
+        "den Sinn der Spiele.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {
+  "p1": {
+   "title": "Text",
+   "text": "Text 2 Lesen Sie zuerst den Text und die Aufgaben dazu. Kreuzen Sie dann die richtige Antwort auf dem Antwortblatt an.\n\nEin Blick in die vergessenen Olympiastadien. Was bleibt zurück, wenn das Großereignis endet?\n\nAlle zwei Jahre bewerben sich Städte auf der ganzen Welt beim Internationalen Olympischen Komitee (IOC), um die Möglichkeit zu bekommen, die Olympischen Spiele zu organisieren. Der Gewinner wird in einem strengen Prozess ausgewählt. Für die Gastgeber lohnt sich das Risiko so viel Geld für die Olympischen Spiele auszugeben. Sie hoffen, dass mehr Touristen kommen, dass die Städte international bekannt werden und dass man die Stadien, die man extra für die Spiele baut, auch nach den Spielen weiter nutzen kann. Obwohl es noch immer als große Ehre gilt, als Gastgeber und Organisator der Olympischen Spiele ausgewählt zu werden, sind viele Städte mittlerweile unsicher, ob es das finanzielle Risiko wert ist – insbesondere für längere Zeit. Die Kosten der Olympischen Winterspiele 2014 in Sotschi wurden beispielsweise auf 12 Milliarden Dollar geschätzt. Am Ende betrugen sie etwa 50 Milliarden Dollar und Russland nahm insgesamt nur 53 Milliarden Dollar ein.\n\nViele der Stadien, Skisprungschanzen und andere Anlagen wurden nach den Spielen nicht mehr benutzt und verfallen. Die verlassenen Bauwerke stehen nun einsam in der Gegend herum und werden nur gelegentlich von Sprayern und Skatern besucht.\n\nIn Sarajevo, der Hauptstadt von Bosnien und Herzegowina, fanden 1984 die ersten Olympischen Winterspiele statt, die in einem kommunistischen Land durchgeführt wurden.\n\nKeine zehn Jahre später wurde Jugoslawien von einem Bürgerkrieg zerrissen. Die Stadt, die bei freundschaftlichem Wettstreit einst internationale Sporthöhepunkte feierte, diente nun als Operationsbasis für einen gewaltsamen Konflikt.\n\nDie Olympischen Spiele der Neuzeit begannen 1896 in Griechenland, wo 776 v. Chr. auch die Olympischen Spiele der Antike ihren Anfang nahmen. Erst mehr als 100 Jahre nach der Wiederbelebung der Spiele konnte Athen endlich selbst wieder den Gastgeber für das Ereignis spielen. In Vorbereitung auf die Olympischen Sommerspiele 2004 gab Griechenland 15 Milliarden Dollar für erstklassige Sportstätten für Softball und Beach Volleyball aus, die man heute nicht mehr benutzt.\n\nIn letzter Zeit legten die Bewerber bei ihren Ansprachen weniger Wert auf große Versprechungen von hochmodernen Soundsystemen und unnötigem Luxus, sondern betonen wieder die Idee der Spiele, Menschen zusammenzubringen."
+  }
+ }
+}

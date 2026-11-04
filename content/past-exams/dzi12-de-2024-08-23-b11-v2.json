@@ -1,0 +1,128 @@
+{
+ "format": 1,
+ "id": "dzi12-de-2024-08-23-b11-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Немски език · 23 август 2024 · ниво B1.1 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "de",
+  "year": 2024,
+  "date": "2024-08-23",
+  "variant": 2,
+  "session": "август",
+  "level": "B1.1",
+  "profile": "профилирана",
+  "source": "nemski-ezik-nivo-v1.1-23-avgust-2024-g-1.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 август 2024 · ниво B1.1 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Die Bloggerin Eva Tempelmann sagt, dass ...",
+       "options": [
+        "die Reisen durch Deutschland immer beliebter sind.",
+        "das Leben in einem Wohnmobil ein neues Hobby der Deutschen ist.",
+        "alle Leute ihre Erlebnisse im Wohnmobil dokumentieren.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Das Leben in einem Wohnmobil ist ...",
+       "options": [
+        "praktisch und bequem.",
+        "nur für kurze Zeit geeignet.",
+        "mit vielen Kosten verbunden.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q28",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Kurze Reisen im Wohnmobil sind ... passend.",
+       "options": [
+        "auch für Familien mit Kindern",
+        "nur für arbeitende Menschen",
+        "für Menschen ohne Pläne",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Die Bloggerin plant ...",
+       "options": [
+        "gleich das Leben im Wohnmobil auszuprobieren.",
+        "sich ein teures Wohnmobil zu kaufen.",
+        "nach Wohnmobilvermietungen zu recherchieren.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Ein Wohnmobil kann man ...",
+       "options": [
+        "nur online kaufen.",
+        "auch vermieten.",
+        "für Tage nicht mieten.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {
+  "p1": {
+   "title": "Text",
+   "text": "Text 2\n\nLesen Sie zuerst den Text und die Aufgaben dazu. Kreuzen Sie dann die richtige Antwort auf dem Antwortblatt an. In einem Camper zu reisen ist so beliebt wie noch nie Eva Tempelmann, eine Bloggerin, erzählt: „In den vergangenen Monaten habe ich ein neues Hobby gefunden. Ich schaue mir Dokumentationen über Menschen an, die in einem Wohnmobil leben: Singles, Paare, Familien. Sie reisen darin durch Deutschland, Europa und die Welt. Es gibt sehr viele dieser Dokumentationen. Entweder leben zurzeit sehr viele Leute im Wohnmobil oder es sind gar nicht so viele, aber alle filmen sich dabei. Es macht mir auf jeden Fall großen Spaß, diese kurzen Filme zu schauen. Sie zeigen Menschen, die für ein paar Wochen, Monate oder sogar Jahre in ein Haus auf Rädern ziehen. Sie wohnen so auf nur wenigen Quadratmetern. Aber sie haben alles, was sie zum Leben brauchen. Das sagen diese neuen Nomaden jedenfalls in den Sendungen. Und ich glaube es ihnen sofort. Denn was will man mehr, als so frei und unabhängig zu sein. Jeden Tag (wenn man möchte) an einem anderen Ort. Mitten in der Natur oder in unbekannten Städten. Dazu vielleicht ein bisschen arbeiten. Digitales Arbeiten wird ja gerade immer einfacher. Ganz viel Freizeit und niedrige Kosten. Aber nicht alle können oder wollen für eine so lange Zeit unterwegs sein. Darum werden auch kurze Reisen im Wohnmobil seit einigen Jahren immer beliebter. Das hat mehrere Gründe: Mit dem Camper ist man absolut unabhängig und kann flexibel planen: Wo soll es morgen hingehen? Oder bleiben wir einfach noch einen Tag? Man kann spontan an den schönsten Orten übernachten – direkt am Meer, am See, im Wald. Außerdem sind die Kinder den ganzen Tag an der frischen Luft. Und diese Art zu reisen ist sowohl klimafreundlich als auch entspannend:\n\nDenn statt mit dem Flugzeug in ferne Länder zu fliegen, fährt man einfach langsam und gemütlich los. Beim Schreiben dieser Gründe habe ich nun noch mehr Lust bekommen loszufahren. Aber ich habe (noch) keinen eigenen Camper. Zum Glück vermieten andere ihre Wohnmobile für Tage oder Wochen. Ich werde gleich mal im Internet nachschauen. Los geht’s!"
+  }
+ }
+}

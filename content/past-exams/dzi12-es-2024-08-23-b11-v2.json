@@ -1,0 +1,101 @@
+{
+ "format": 1,
+ "id": "dzi12-es-2024-08-23-b11-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Испански език · 23 август 2024 · ниво B1.1 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "es",
+  "year": 2024,
+  "date": "2024-08-23",
+  "variant": 2,
+  "session": "август",
+  "level": "B1.1",
+  "profile": "профилирана",
+  "source": "ispanski-ezik-nivo-v1.1-23-avgust-2024-g.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 август 2024 · ниво B1.1 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Según el texto, en Galicia …",
+       "options": [
+        "no hay un plato típico.",
+        "hay numerosos platos tradicionales.",
+        "hay un producto común en todos los platos.",
+        "Ninguna de las respuestas"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "prompt": "La cocina gallega cuenta con …",
+       "options": [
+        "una gran diversidad de preparar un producto.",
+        "similares sabores.",
+        "productos sencillos.",
+        "Ninguna de las respuestas"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Según el texto, en Galicia…",
+       "options": [
+        "el pescado se come frito.",
+        "no hay celebración sin pulpo.",
+        "el pulpo no se come en invierno.",
+        "Ninguna de las respuestas"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "prompt": "En el texto se dice que en Galicia…",
+       "options": [
+        "los dulces son lo mejor.",
+        "los quesos se comen con pasteles.",
+        "no se elaboran bebidas alcohólicas.",
+        "Ninguna de las respuestas"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

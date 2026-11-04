@@ -1,4 +1,6 @@
-# Checks BingO, builds the APK and the web page on every push to main.
+# Checks BingO, builds the APK (with Gradle, 0.6.0) and the web page on every push to main.
+# With the BINGO_AI_SERVER variable set (Settings → Secrets and variables → Actions → Variables), the app talks to
+# BingO's AI server on Cloud Run; no Gemini key is ever put into the app or the web page.
 # With the BINGO_SIGNING secret set (see README.md, "Signing"), each build is signed with your key
 # and published as a GitHub Release with the APK and the module files. Without it, the build still
 # runs and a test APK can be downloaded from the run's Artifacts, but nothing is published.
@@ -37,7 +39,7 @@ jobs:
       - name: Install Android SDK platform and build tools
         run: |
           SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
-          yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$SDK" "platforms;android-34" "build-tools;35.0.0" > /dev/null
+          yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$SDK" "platforms;android-36" "build-tools;35.0.0" > /dev/null
           echo "ANDROID_HOME=$SDK" >> "$GITHUB_ENV"
 
       - name: Check
@@ -59,8 +61,12 @@ jobs:
             echo "::warning::No BINGO_SIGNING secret: building a test APK with a temporary key. It won't install over the app on your phone, and no release is published."
           fi
 
-      - name: Build APK and web page
+      - name: Build APK (Gradle, with Gemini Nano) and web page
+        env:
+          # the address of BingO's AI server on Cloud Run (server/README.md); the Gemini key itself stays on the server
+          BINGO_AI_SERVER: ${{ vars.BINGO_AI_SERVER || secrets.BINGO_AI_SERVER }}
         run: |
+          chmod +x platforms/android/gradlew
           python3 tools/build.py android
           python3 tools/build.py web
 

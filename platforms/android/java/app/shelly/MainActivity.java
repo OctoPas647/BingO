@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
         web = new WebView(this);
         if (Build.VERSION.SDK_INT >= 26) web.setDefaultFocusHighlightEnabled(false);
         web.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        web.setBackgroundColor(Color.parseColor("#F6F3EC"));
+        web.setBackgroundColor(Color.parseColor("#F2F2F7"));
         root.addView(web, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         setContentView(root);
         hideNavigationBar();
@@ -75,6 +75,8 @@ public class MainActivity extends Activity {
 
         web.addJavascriptInterface(new UiBridge(), "AndroidUI");
         web.addJavascriptInterface(new FilesBridge(), "AndroidFiles");
+        /* Gemini Nano on the device (ML Kit GenAI); only built in by the Gradle build */
+        try { web.addJavascriptInterface(new NanoBridge(this, web), "AndroidNano"); } catch (Throwable t) { }
 
         web.setWebViewClient(new WebViewClient() {
             @Override

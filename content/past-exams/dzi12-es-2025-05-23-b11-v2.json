@@ -1,0 +1,118 @@
+{
+ "format": 1,
+ "id": "dzi12-es-2025-05-23-b11-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Испански език · 23 май 2025 · ниво B1.1 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "es",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B1.1",
+  "profile": "профилирана",
+  "source": "2dzi25_isp_e_pp_nivo_b1.1_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B1.1 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "prompt": "El autor cree que iniciamos las vacaciones sobre todo con…",
+       "options": [
+        "aprendizajes.",
+        "alegrías.",
+        "cansancio.",
+        "Ninguna de las respuestas"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Según el autor, durante las vacaciones, llegar al máximo es dejar…",
+       "options": [
+        "el móvil.",
+        "el uniforme.",
+        "al jefe.",
+        "Ninguna de las respuestas"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q28",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Según el texto, si una persona deja de hacer deporte…",
+       "options": [
+        "descansa.",
+        "se enferma.",
+        "disfruta.",
+        "Ninguna de las respuestas"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Según el autor, ponerse al sol para algunos es cuestión de tener…",
+       "options": [
+        "la cualidad.",
+        "el deseo.",
+        "la posibilidad.",
+        "Ninguna de las respuestas"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "prompt": "El autor recomienda ser…",
+       "options": [
+        "sentimental.",
+        "emocional.",
+        "comprensivo.",
+        "Ninguna de las respuestas"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

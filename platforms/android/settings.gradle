@@ -1,0 +1,9 @@
+// BingO's Android app: a WebView around the web page, plus Gemini Nano (ML Kit GenAI Prompt API).
+// tools/build.py android prepares build/android-gradle/ (page, manifest, names) and runs this build.
+pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories { google(); mavenCentral() }
+}
+rootProject.name = 'BingO'
+include ':app'

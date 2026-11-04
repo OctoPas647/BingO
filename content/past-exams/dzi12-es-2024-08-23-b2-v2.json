@@ -1,0 +1,117 @@
+{
+ "format": 1,
+ "id": "dzi12-es-2024-08-23-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Испански език · 23 август 2024 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "es",
+  "year": 2024,
+  "date": "2024-08-23",
+  "variant": 2,
+  "session": "август",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "ispanski-ezik-nivo-v2-23-avgust-2024-g.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 август 2024 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "¿Con qué actividad se compara la lectura en el texto?",
+       "options": [
+        "Cantar.",
+        "Bailar.",
+        "Andar.",
+        "Ver."
+       ],
+       "answer": 2,
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "La velocidad de leer en papel…",
+       "options": [
+        "hace más efectiva la lectura.",
+        "afecta sobre todo a la visión.",
+        "empeora la efectividad.",
+        "le resta el placer a la lectura."
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "¿En qué aspectos los libros digitales NO aventajan a los de papel?",
+       "options": [
+        "En consumo sostenible.",
+        "En comodidad.",
+        "En aspecto psicológico.",
+        "En aspecto económico."
+       ],
+       "answer": 2,
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Desde el punto de vista ecológico…",
+       "options": [
+        "los libros digitales contaminan más.",
+        "los libros digitales contaminan menos.",
+        "los libros en papel no contaminan.",
+        "los libros impresos contaminan tanto como los digitales."
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Según el texto, los lectores prefieren los libros en papel porque…",
+       "options": [
+        "su vida es larga y su manejo es sencillo.",
+        "son sostenibles y fáciles de transportar.",
+        "ofrecen un número restringido de consultas.",
+        "apenas se pueden conservar con los años."
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "¿Cómo influyen los libros digitales en el proceso de aprendizaje en comparación con los impresos?",
+       "options": [
+        "La motivación sube al usar la tecnología.",
+        "Ambos tipos de lectura no afectan a la motivación.",
+        "Los estudiantes tienden a usar los métodos tradicionales.",
+        "La motivación baja en todos los casos."
+       ],
+       "answer": 0,
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

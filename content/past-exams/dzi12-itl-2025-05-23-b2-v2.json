@@ -1,0 +1,128 @@
+{
+ "format": 1,
+ "id": "dzi12-itl-2025-05-23-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Италиански език · 23 май 2025 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "itl",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "2dzi25_ital_e_pp_nivo_b2_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "I bambini sviluppano il loro linguaggio",
+       "options": [
+        "tutti in termini uguali.",
+        "sempre secondo le aspettative della scienza.",
+        "secondo i propri tempi e le proprie capacità.",
+        "dipendentemente dalla loro nazionalità e genere."
+       ],
+       "answer": 2,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Il linguaggio",
+       "options": [
+        "comprende solo la produzione di parole.",
+        "è importante solo per lo sviluppo affettivo.",
+        "è l’unico modo di comunicazione.",
+        "è un insieme di diverse capacità."
+       ],
+       "answer": 3,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Subito dopo la nascita",
+       "options": [
+        "il neonato ha moltissimi modi di comunicare con gli altri.",
+        "i pianti sono uno dei modi di comunicazione del bambino.",
+        "NON riconosce ancora i volti e le voci dei genitori.",
+        "è troppo sensibile ai suoni che lo circondano."
+       ],
+       "answer": 1,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Dopo il terzo mese il bambino",
+       "options": [
+        "pronuncia le sue prime parole.",
+        "è in grado di emettere diversi suoni.",
+        "comincia a distinguere la voce umana.",
+        "cambia facilmente l’intonazione della voce."
+       ],
+       "answer": 1,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Tra l’ottavo e il decimo mese il bambino è in grado di",
+       "options": [
+        "indicare un oggetto desiderato.",
+        "rispondere ad una domanda.",
+        "riprodurre alcune parole.",
+        "comporre semplici frasi."
+       ],
+       "answer": 0,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Tra il dodicesimo e il diciottesimo mese il bambino",
+       "options": [
+        "amplifica il suo vocabolario.",
+        "comincia a fare frasi più complete.",
+        "non collega ancora la parola con l’oggetto.",
+        "non è pronto a comunicare verbalmente."
+       ],
+       "answer": 0,
+       "passage": "p1",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {
+  "p1": {
+   "title": "Text",
+   "text": "Testo 2 Leggete il testo e svolgete il compito segnalando nel foglio delle risposte l'affermazione corretta. Sviluppo del linguaggio nei bambini Lo sviluppo del linguaggio è un processo che può avvenire in tempi e modalità molto diverse da bambino a bambino. Tuttavia, ci sono alcune tappe fondamentali che gli esperti hanno individuato, dalla nascita al terzo anno di età, che costituiscono un indicatore di una crescita armonica delle competenze linguistiche e comunicative. Quando si parla di sviluppo del linguaggio, infatti, non si intende solo la produzione del linguaggio, ovvero ciò che il bimbo sa dire. Ci si riferisce a tutto il campo delle competenze espressive, incluse le abilità di ascolto, di riconoscimento di suoni diversi, le competenze motorie, quelle cognitive, e lo sviluppo affettivo. 0-3 mesi: Alla nascita, il bambino ha la capacità di distinguere tutti i suoni di ogni lingua naturale, si interessa ai volti (principalmente il volto materno) e comunica attraverso il pianto. 3-6 mesi: A partire dai 3 mesi le produzioni vocali non sono più legate esclusivamente al pianto ma emergono i primi vocalizzi e una varietà di suoni simili a cinguettii, gorgheggi, favoriti da una maggiore capacità di movimento della lingua. Il bambino grazie ad un aumento della percezione uditiva presta maggiore attenzione alla voce umana e alle sue diverse intonazioni. 8-10 mesi: Il bambino impara a utilizzare le prime forme di gestualità intenzionale (il gesto dell’indicazione per mostrare o richiedere, i gesti sociali come Fare ciao, Mandare un bacio), è in grado di comprendere singole parole e produrre una lallazione variata, cioè la ripetizione di sillabe composte da consonanti diverse. 12-18 mesi: Il vocabolario va ad arricchirsi gradualmente e raggiunge le 50 parole attorno ai 18 mesi. In questa fase ha inizio quella che viene definita esplosione del vocabolario: il bambino diventa consapevole della corrispondenza tra parola e oggetto e inizia a produrre parole-frase, ovvero parole singole che comunicano significati più ampi."
+  }
+ }
+}

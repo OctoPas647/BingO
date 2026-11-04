@@ -134,7 +134,7 @@ function buildBanks() {
   for (const t of BEL_BANK) BANK.bel.push({ points: 1, media: [], ...t, src: 'bank' });
 }
 /* The Shelly module the task views need (language, passages) */
-const fakeModule = subj => SHELLY_MODS[subj] || { id: 'bingo.' + subj, lang: 'bg', passages: {}, scales: {}, color: SUBJECTS[subj].color };
+let fakeModule = subj => SHELLY_MODS[subj] || { id: 'bingo.' + subj, lang: 'bg', passages: {}, scales: {}, color: SUBJECTS[subj].color };
 
 /* Pick a task for a skill: math prefers a fresh generated variant; БЕЛ uses the bank (and AI when on).
    Recently seen bank tasks are avoided so the same question does not come back in the same week. */
@@ -144,14 +144,15 @@ function seenRecently(id) { const cut = Date.now() - 5 * 24 * 3600 * 1000; retur
 const taskKey = t => (t.src === 'gen' ? 'q:' + t.skill + ':' + t.prompt : t.id);
 function pickTask(subj, skill, level, seed, avoid = new Set()) {
   if (subj === 'math' && MATH_GEN[skill]) {
-    const fromModule = BANK.math.filter(t => t.skill === skill && !avoid.has(t.id) && !seenRecently(t.id));
-    if (fromModule.length && seedRng(seed).chance(0.25)) return fromModule[Math.floor(seedRng(seed + ':m').f() * fromModule.length)];
+    /* real НВО / ДЗИ questions of this skill come about every other time, so training feels like the exam */
+    const fromModule = BANK.math.filter(t => t.skill === skill && forMyExam(t) && !avoid.has(t.id) && !seenRecently(t.id));
+    if (fromModule.length && seedRng(seed).chance(0.45)) return fromModule[Math.floor(seedRng(seed + ':m').f() * fromModule.length)];
     /* the asked level first, then the neighbouring ones */
     for (const lvl of [level, ...[1, 2, 3].filter(l => l !== level).sort((a, b) => Math.abs(a - level) - Math.abs(b - level))])
-      for (let k = 0; k < 24; k++) { const t = genMathTask(skill, lvl, k ? seed + ':' + k : seed); if (!avoid.has(taskKey(t))) return t; }
+      for (let k = 0; k < 24; k++) { const t = genMathTask(skill, lvl, k ? seed + ':' + k : seed); if (t && !avoid.has(taskKey(t))) return t; }
     return fromModule[0] || null;
   }
-  const pool = BANK[subj].filter(t => t.skill === skill && !avoid.has(t.id));
+  const pool = BANK[subj].filter(t => t.skill === skill && forMyExam(t) && !avoid.has(t.id) && !avoid.has(taskKey(t)));
   if (!pool.length) return null;
   const fresh = pool.filter(t => !seenRecently(t.id));
   const list = (fresh.length ? fresh : pool).slice().sort((a, b) => Math.abs((a.level || 2) - level) - Math.abs((b.level || 2) - level));

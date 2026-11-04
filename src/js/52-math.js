@@ -262,8 +262,139 @@ const MATH_GEN = {
   }
 };
 
+
+/* ---------- the rest of the ДЗИ syllabus (0.6.0), worded like МОН's tasks ---------- */
+Object.assign(MISC, {
+  'trig.swap': 'Разменени $\\sin$ и $\\cos$ на специалния ъгъл',
+  'trig.pyth': 'Забравено е $\\sin^2\\alpha+\\cos^2\\alpha=1$: косинусът не е равен на синуса',
+  'trig.sign': 'Знакът на тригонометричната функция в II квадрант',
+  'trig.inverse': 'Обърната дроб',
+  'func.order': 'Сбъркан ред на действията при заместване',
+  'func.sign': 'Знак при $x_0=-\\frac{b}{2a}$',
+  'func.half': 'Забравено делене на $2a$',
+  'func.axes': 'Разменени оси: пресечната точка с $Oy$ има $x=0$',
+  'geom.half': 'Лицето на триъгълник е $\\frac{a\\cdot h_a}{2}$ — забравена е половината',
+  'geom.circ': 'Объркани лице на кръг ($\\pi r^2$) и дължина на окръжност ($2\\pi r$)',
+  'geom.diam': 'Използван е диаметърът вместо радиуса',
+  'geom.sum': 'Сборът от вътрешните ъгли на $n$-ъгълник е $(n-2)\\cdot180^\\circ$',
+  'stat.median': 'Средно аритметично и медиана са разменени',
+  'stat.count': 'Делено е на грешен брой стойности',
+  'stat.even': 'При четен брой стойности медианата е средното на двете в средата',
+  'stat.order': 'Броени са наредени двойки, а изборът не зависи от реда'
+});
+const SPECIAL = [[30, '\\frac{1}{2}', '\\frac{\\sqrt{3}}{2}', 0.5, Math.sqrt(3) / 2], [45, '\\frac{\\sqrt{2}}{2}', '\\frac{\\sqrt{2}}{2}', Math.SQRT1_2, Math.SQRT1_2], [60, '\\frac{\\sqrt{3}}{2}', '\\frac{1}{2}', Math.sqrt(3) / 2, 0.5]];
+Object.assign(MATH_GEN, {
+  trig(r, lvl) {
+    if (lvl === 1) {
+      const [a, sa, ca] = r.pick(SPECIAL.filter(x => x[0] !== 45)), f = r.chance(0.5) ? 'sin' : 'cos';
+      const right = f === 'sin' ? sa : ca, wrong = f === 'sin' ? ca : sa;
+      return mcTask(r, {
+        prompt: `Стойността на $\\${f} ${a}^\\circ$ е:`,
+        right, wrong: [{ t: wrong, misc: 'trig.swap' }, { t: '-' + right, misc: 'trig.sign' }, { t: right === '\\frac{1}{2}' ? '2' : '\\frac{2}{\\sqrt{3}}', misc: 'trig.inverse' }],
+        explain: `От таблицата на специалните ъгли: $\\sin ${a}^\\circ=${sa}$, $\\cos ${a}^\\circ=${ca}$.`
+      });
+    }
+    if (lvl === 2) {
+      const [p, q, h] = r.pick([[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25]]);
+      return mcTask(r, {
+        prompt: `Ако $\\alpha$ е остър ъгъл и $\\sin\\alpha=\\frac{${p}}{${h}}$, то $\\cos\\alpha$ е равно на:`,
+        right: Fr(q, h), wrong: [{ t: Fr(p, h), misc: 'trig.pyth' }, { t: Fr(h, q), misc: 'trig.inverse' }, { t: '-' + Fr(q, h), misc: 'trig.sign' }],
+        explain: `$\\cos^2\\alpha=1-\\sin^2\\alpha=1-\\frac{${p * p}}{${h * h}}=\\frac{${q * q}}{${h * h}}$. Ъгълът е остър, затова $\\cos\\alpha>0$ и $\\cos\\alpha=${Fr(q, h)}$.`
+      });
+    }
+    const [a, sa, ca] = r.pick(SPECIAL), b = 180 - a, f = r.chance(0.5) ? 'sin' : 'cos';
+    const right = f === 'sin' ? sa : '-' + ca;
+    return mcTask(r, {
+      prompt: `Стойността на $\\${f} ${b}^\\circ$ е:`,
+      right, wrong: [{ t: f === 'sin' ? '-' + sa : ca, misc: 'trig.sign' }, { t: f === 'sin' ? ca : '-' + sa, misc: 'trig.swap' }, { t: f === 'sin' ? '-' + ca : sa, misc: 'trig.swap' }],
+      explain: `$${b}^\\circ=180^\\circ-${a}^\\circ$ е във II квадрант: $\\sin(180^\\circ-\\alpha)=\\sin\\alpha$, а $\\cos(180^\\circ-\\alpha)=-\\cos\\alpha$. Затова $\\${f} ${b}^\\circ=${right}$.`
+    });
+  },
+  func(r, lvl) {
+    if (lvl === 1) {
+      const a = r.nz(-5, 6), b = r.nz(-9, 9), x = r.nz(-4, 5), y = a * x + b;
+      return mcTask(r, {
+        prompt: `Дадена е функцията $f(x)=${poly([a, 'x'], [b, ''])}$. Стойността $f(${N(x)})$ е:`,
+        right: N(y), wrong: [{ t: N(a * (x + b)), misc: 'func.order' }, { t: N(a * x - b), misc: 'calc' }, { t: N(-a * x + b), misc: 'func.sign' }],
+        fill: [N(y + 1), N(y - 2)],
+        explain: `Заместваме $x=${N(x)}$: $f(${N(x)})=${a}\\cdot(${N(x)})${b < 0 ? '-' + -b : '+' + b}=${N(y)}$.`
+      });
+    }
+    if (lvl === 2) {
+      const x0 = r.nz(-5, 5), y0 = r.int(-9, 9), b = -2 * x0, c = x0 * x0 + y0;
+      const pt = (x, y) => `(${N(x)};\\,${N(y)})`;
+      return mcTask(r, {
+        prompt: `Координатите на върха на параболата $y=${poly([1, 'x^2'], [b, 'x'], [c, ''])}$ са:`,
+        right: pt(x0, y0), wrong: [{ t: pt(-x0, (-x0) ** 2 + b * -x0 + c), misc: 'func.sign' }, { t: pt(-b, b * b + b * -b + c), misc: 'func.half' }, { t: pt(y0, x0), misc: 'func.axes' }],
+        fill: [pt(x0, y0 + 1), pt(x0 + 1, y0)],
+        explain: `$x_0=-\\frac{b}{2a}=-\\frac{${b}}{2}=${N(x0)}$, $y_0=f(${N(x0)})=${N(y0)}$. Върхът е $${pt(x0, y0)}$.`
+      });
+    }
+    const a = r.nz(-4, 4), b = r.nz(-8, 8);
+    const pt = (x, y) => `(${x};\\,${y})`;
+    return mcTask(r, {
+      prompt: `Графиката на функцията $y=${poly([a, 'x'], [b, ''])}$ пресича оста $Oy$ в точката:`,
+      right: pt(0, N(b)), wrong: [{ t: pt(N(b), 0), misc: 'func.axes' }, { t: pt(0, N(a)), misc: 'calc' }, { t: pt(Fr(-b, a), 0), misc: 'func.axes' }],
+      explain: `На оста $Oy$ е $x=0$, затова $y=${a}\\cdot0${b < 0 ? '-' + -b : '+' + b}=${N(b)}$: точката е $${pt(0, N(b))}$.`
+    });
+  },
+  geom(r, lvl) {
+    if (lvl === 1) {
+      const a = r.int(4, 16), h = 2 * r.int(2, 9), S = a * h / 2;
+      return mcTask(r, {
+        prompt: `Страната на триъгълник е $${a}$ cm, а височината към нея е $${h}$ cm. Лицето на триъгълника е:`,
+        right: `${N(S)}\\text{ cm}^2`, wrong: [{ t: `${N(a * h)}\\text{ cm}^2`, misc: 'geom.half' }, { t: `${N(a + h)}\\text{ cm}^2`, misc: 'calc' }, { t: `${N(S / 2)}\\text{ cm}^2`, misc: 'calc' }],
+        explain: `$S=\\frac{a\\cdot h_a}{2}=\\frac{${a}\\cdot${h}}{2}=${N(S)}$ cm².`
+      });
+    }
+    if (lvl === 2) {
+      const rr = r.int(2, 9);
+      return mcTask(r, {
+        prompt: `Лицето на кръг с радиус $${rr}$ cm е:`,
+        right: `${rr * rr}\\pi\\text{ cm}^2`, wrong: [{ t: `${2 * rr}\\pi\\text{ cm}^2`, misc: 'geom.circ' }, { t: `${4 * rr * rr}\\pi\\text{ cm}^2`, misc: 'geom.diam' }, { t: `${rr}\\pi\\text{ cm}^2`, misc: 'calc' }],
+        explain: `$S=\\pi r^2=\\pi\\cdot${rr}^2=${rr * rr}\\pi$ cm². (Дължината на окръжността е $2\\pi r=${2 * rr}\\pi$ cm.)`
+      });
+    }
+    const n = r.pick([5, 6, 7, 8, 9, 10, 12]);
+    return mcTask(r, {
+      prompt: `Сборът от вътрешните ъгли на изпъкнал ${n}-ъгълник е:`,
+      right: `${(n - 2) * 180}^\\circ`, wrong: [{ t: `${n * 180}^\\circ`, misc: 'geom.sum' }, { t: `${(n - 1) * 180}^\\circ`, misc: 'geom.sum' }, { t: `360^\\circ`, misc: 'geom.sum' }],
+      explain: `Сборът е $(n-2)\\cdot180^\\circ=(${n}-2)\\cdot180^\\circ=${(n - 2) * 180}^\\circ$.`
+    });
+  },
+  stat(r, lvl) {
+    if (lvl === 1) {
+      let xs; do { xs = Array.from({ length: 5 }, () => r.int(2, 9)); } while (xs.reduce((a, b) => a + b) % 5);
+      const mean = xs.reduce((a, b) => a + b) / 5, med = xs.slice().sort((a, b) => a - b)[2];
+      return mcTask(r, {
+        prompt: `Средното аритметично на числата $${xs.join(';\\ ')}$ е:`,
+        right: N(mean), wrong: [{ t: N(med), misc: med === mean ? null : 'stat.median' }, { t: N(roundTo(xs.reduce((a, b) => a + b) / 4, 2)), misc: 'stat.count' }, { t: N(xs.reduce((a, b) => a + b)), misc: 'calc' }],
+        fill: [N(mean + 1), N(mean - 1)],
+        explain: `Сборът е $${xs.reduce((a, b) => a + b)}$, а числата са $5$: $${xs.reduce((a, b) => a + b)}:5=${N(mean)}$.`
+      });
+    }
+    if (lvl === 2) {
+      let xs; do { xs = Array.from({ length: 6 }, () => r.int(1, 20)).sort((a, b) => a - b); } while ((xs[2] + xs[3]) % 2 || xs[2] === xs[3]);
+      const med = (xs[2] + xs[3]) / 2, shown = xs.slice().sort(() => r.f() - 0.5);
+      return mcTask(r, {
+        prompt: `Медианата на данните $${shown.join(';\\ ')}$ е:`,
+        right: N(med), wrong: [{ t: N(xs[2]), misc: 'stat.even' }, { t: N(roundTo(xs.reduce((a, b) => a + b) / 6, 2)), misc: 'stat.median' }, { t: N(shown[2]), misc: 'stat.even' }],
+        fill: [N(xs[3]), N(med + 1)],
+        explain: `Подреждаме: $${xs.join(';\\ ')}$. Стойностите са $6$ (четен брой), затова медианата е средното на 3-тата и 4-тата: $\\frac{${xs[2]}+${xs[3]}}{2}=${N(med)}$.`
+      });
+    }
+    const n = r.int(5, 12), c = n * (n - 1) / 2;
+    return mcTask(r, {
+      prompt: `По колко начина от $${n}$ ученици могат да се изберат двама дежурни?`,
+      right: N(c), wrong: [{ t: N(n * (n - 1)), misc: 'stat.order' }, { t: N(2 * n), misc: 'calc' }, { t: N(n * n), misc: 'calc' }],
+      explain: `Редът на избора няма значение, затова това са комбинации: $C_{${n}}^2=\\frac{${n}\\cdot${n - 1}}{2}=${c}$.`
+    });
+  }
+});
+
 function genMathTask(skill, level, seed) {
   const g = nvoGrade(); if (g) level = Math.min(level, NVO_PROFILES.math[g].maxLevel);   /* НВО 4: never level 3 */
+  if (!MATH_GEN[skill] || (g === '4' && ['geom', 'func', 'trig', 'stat'].includes(skill))) return null;   /* НВО 4 uses its real exam tasks; skills without a generator (Планиметрия, НВО 4 …) use real exam tasks and Gemini */
   const r = seedRng(skill + ':' + level + ':' + seed);
   const t = MATH_GEN[skill](r, level);
   return { id: `g:${skill}:${level}:${seed}`, points: 1, media: [], ...t, skill, level, src: 'gen' };

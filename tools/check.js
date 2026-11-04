@@ -14,11 +14,11 @@ function mathOk(s) {
 function checkTask(t, where) {
   n++;
   for (const s of [t.prompt, t.explain, ...(t.options || [])]) { const bad = mathOk(s); if (bad) fail(where + ' katex ' + bad, t); }
-  if (!t.explain && t.src !== 'shelly') fail(where + ' no explain', t);
+  if (!t.explain && !['shelly', 'past'].includes(t.src)) fail(where + ' no explain', t);   /* official past-exam questions come with the key, not a worked solution */
   /* two signs in a row ("25--24", "3+-2") read as a typo; a negative number after an operator needs brackets */
   for (const s of [t.prompt, t.explain, ...(t.options || [])]) for (const m of String(s || '').match(/\$[^$]+\$/g) || []) if (/[-+]\s*[-+]/.test(m.replace(/\\pm/g, '±'))) fail(where + ' double sign ' + m, t);
   if (t.type === 'choice') {
-    if (t.options.length < 2) fail(where + ' few options', t);
+    if (t.options.length < 4 && !/верно|грешно|Richtig|True|Vrai/i.test(t.options.join(' '))) fail(where + ' fewer than four options', t);
     if (new Set(t.options).size !== t.options.length) fail(where + ' duplicate options', t);
     if (!(t.answer >= 0 && t.answer < t.options.length)) fail(where + ' answer index', t);
     if (t.misc && t.misc[t.answer] !== null) fail(where + ' misc on right answer', t);
@@ -40,13 +40,13 @@ const few = skills.flatMap(sk => [1, 2, 3].map(l => E(`genMathTask(${JSON.string
 if (few.length) console.log('note: choice tasks with fewer than 4 options:', few.map(t => t.id).join(', '));
 
 /* 2. banks pass Shelly's module checker */
-for (const subj of ['math', 'bel']) {
+for (const subj of E('Object.keys(SUBJECTS)')) {
   const tasks = E(`BANK.${subj}`);
   for (const t of tasks) checkTask(t, `bank ${subj} ${t.id}`);
-  const mod = { format: 1, id: 'bingo.check.' + subj, version: '1', lang: 'bg', title: 'x', passages: E(`SHELLY_MODS.${subj} ? SHELLY_MODS.${subj}.passages : {}`), exams: [{ id: 'x', title: 'x', parts: [{ title: 'x', tasks: JSON.parse(JSON.stringify(tasks)).map(t => { delete t.media; return t; }) }] }] };
+  const mod = { format: 1, id: 'bingo.check.' + subj, version: '1', lang: 'bg', title: 'x', passages: E(`fakeModule(${JSON.stringify(subj)}).passages`), exams: [{ id: 'x', title: 'x', parts: [{ title: 'x', tasks: JSON.parse(JSON.stringify(tasks)).map(t => { delete t.media; return t; }) }] }] };
   const { errors } = E(`checkModule(${JSON.stringify(mod)})`);
   errors.forEach(e => fail(`bank ${subj} module check: ${e.at} ${e.msg}`));
-  E('SUBJECTS.' + subj).skills.forEach(s => { if (!tasks.some(t => t.skill === s.id) && !(subj === 'math' && E(`!!MATH_GEN.${s.id}`))) fail(`no tasks for ${subj}.${s.id}`); });
+  E('SUBJECTS.' + subj).skills.forEach(s => { if (!s.aiOnly && !tasks.some(t => t.skill === s.id) && !(subj === 'math' && E(`!!MATH_GEN.${s.id}`))) fail(`no tasks for ${subj}.${s.id}`); });
 }
 
 /* 3. the knowledge model */
@@ -67,7 +67,7 @@ const sm = E("subjectSummary('math')"); console.log('demo learner loses ≈', sm
   for (const j of raw) {
     const at = 'past ' + j.id;
     if (!loaded.includes(j.id)) { fail(at + ' not loaded', E(`checkModule(${JSON.stringify(j)}).errors`)); continue; }
-    if (!E(`!!EXAMS[${JSON.stringify(j.past.exam)}]`) || !['math', 'bel'].includes(j.past.subj)) fail(at + ' unknown exam or subject', j.past);
+    if (!E(`!!EXAMS[${JSON.stringify(j.past.exam)}]`) || !E(`!!SUBJECTS[${JSON.stringify(j.past.subj)}]`)) fail(at + ' unknown exam or subject', j.past);
     const files = p => fsx.existsSync(px.join(dir, 'media', j.id, p));
     const texts = [...Object.values(j.passages || {}).map(p => p.text)];
     for (const part of j.exams[0].parts) {
@@ -141,14 +141,16 @@ if (E('extraOptions("math").some(o => o[0] === "math" || o[0] === "prof")') || E
 if (E('onboardingNext({ extra: "math" }).ok')) fail('onboarding: own profile accepted as the extra matura');
 E('onboardingNext({ extra: "nat" })');
 if (E('S.profile.extra') !== 'nat' || !E('examPlanFull("dzi12", "math", "nat")').includes('Допълнителна: природни науки')) fail('onboarding: extra matura not saved or not shown');
-if (E('subjectOptions("music", "maths").map(o => o[0]).join()') !== 'bel,,math') fail('onboarding: mathematics as extra matura should be selectable with a non-math profile');
+if (E('(S.profile.exam = "dzi12", subjectOptions("music", "maths").map(o => o[0]).join())') !== 'bel,music,math') fail('onboarding: music profile + mathematics as extra matura', E('subjectOptions("music", "maths")'));
 E('onboardingBack()');
 if (E('S.profile.track') !== 'math' || !E('examPlan("dzi12", "math")').includes('информатика')) fail('onboarding: profile not saved or not used');
 E('onboardingBack(); onboardingBack(); onboardingNext({ exam: "nvo7" })');
 if (E('obStep().id') !== 'subject' || E('S.profile.track') !== '') fail('onboarding: 7th grade should skip the profile');
 if (E('onboardingBack().step') !== ONB_EXAM) fail('onboarding: back from the subject should pass over the skipped profile');
-if (E('subjectOptions("math")[0][0]') !== 'bel' || E('subjectOptions("math")[1][1]') !== '🧮 Математически') fail('onboarding: БЕЛ first, then the profile');
-if (!E('subjectOptions("music")[1][2]')) fail('onboarding: a profile without mathematics should not be selectable yet');
+/* 0.6.0: every matura has tasks, so every profile subject can be picked (7th grade: БЕЛ and mathematics) */
+if (E('subjectOptions("math").map(o => o[0]).join()') !== 'bel,math') fail('onboarding: 7th grade gets БЕЛ and mathematics', E('subjectOptions("math")'));
+if (E('plannedSubjects("dzi12", "nat", "").join()') !== 'bel,bio,chem,phys,math') fail('onboarding: natural sciences profile subjects', E('plannedSubjects("dzi12", "nat", "")'));
+if (E('plannedSubjects("dzi12", "lang", "").join()') !== 'bel,en,de,ru,fr,es,itl') fail('onboarding: languages profile lists every language matura');
 E('onboardingNext({ exam: "dzi12" }); onboardingNext({ track: "prof" }); onboardingNext({ extra: "maths" })');
 if (E('S.subject') !== 'bel') fail('onboarding: a profile without mathematics should start with БЕЛ');
 if (E('onboardingNext({ subject: "xx" }).ok')) fail('onboarding: unknown subject accepted');
@@ -167,10 +169,12 @@ const box = E("reviewUpdate('math.quad', true, 0); reviewUpdate('math.quad', tru
 if (E("reviewUpdate('math.quad', false, 0).box") !== 0) fail('review: a wrong answer should go back to box 0');
 
 /* 6. broken or old saved data must not stop the app, and must not be overwritten silently (50-state.js) */
-const bad = E(`sanitizeState({ subject: 'chem', log: null, queue: 'x', skills: { 'math.quad': { p: 'a', n: -3, misc: null, hist: 5 }, junk: 1 }, settings: { theme: 'neon', model: 'a b', proxyUrl: 'http://x', sheetUrl: 'https://example.com', sound: 'yes' }, review: { 'math.quad': { box: 99, due: 1 } }, onboarding: 'x', aiFlags: {} })`);
+const bad = E(`sanitizeState({ subject: 'alchemy', log: null, queue: 'x', skills: { 'math.quad': { p: 'a', n: -3, misc: null, hist: 5 }, junk: 1 }, settings: { theme: 'neon', apiKey: 'AIza-secret', aiMode: 'key', model: 'a b', proxyUrl: 'http://x', ai: 'yes', sheetUrl: 'https://example.com', sound: 'yes' }, review: { 'math.quad': { box: 99, due: 1 } }, onboarding: 'x', aiFlags: {} })`);
 if (bad.subject !== 'math' || !Array.isArray(bad.log) || !Array.isArray(bad.queue) || bad.onboarding !== null || !Array.isArray(bad.aiFlags)) fail('state: broken top-level fields not repaired');
 if (bad.skills['math.quad'].p !== 0.3 || bad.skills['math.quad'].n !== 0 || !Array.isArray(bad.skills['math.quad'].hist) || 'junk' in bad.skills) fail('state: broken skill not repaired', bad.skills);
-if (bad.settings.theme !== 'auto' || bad.settings.model !== 'gemini-3.8-flash' || bad.settings.proxyUrl !== '' || bad.settings.sheetUrl !== '' || bad.settings.sound !== true) fail('state: invalid settings kept', bad.settings);
+if (bad.settings.theme !== 'auto' || bad.settings.ai !== true || bad.settings.sheetUrl !== '' || bad.settings.sound !== true) fail('state: invalid settings kept', bad.settings);
+/* 0.6.0: a key typed into an older version is dropped on load and never saved again */
+if ('apiKey' in bad.settings || 'aiMode' in bad.settings || 'proxyUrl' in bad.settings || 'model' in bad.settings) fail('state: an old API key setting survived', bad.settings);
 if (bad.review['math.quad'].box !== 5) fail('state: review box not clamped');
 const warn = console.warn; console.warn = () => { }; /* the expected "state not loaded" warning */
 E(`localStorage.setItem(STORE_KEY, '{"skills": {broken'); STATE_NOTICE = null; loadState()`);
@@ -185,7 +189,7 @@ for (const [subj, skill] of [['math', 'prob'], ['math', 'rtri'], ['bel', 'lit']]
 }
 
 /* 8. the forecast does not name a grade from a handful of answers (65-forecast.js) */
-E("SUBJECTS.math.skills.forEach((s, i) => recordAnswer('math', genMathTask(s.id, 1, i), i < 2, null))");
+E("SUBJECTS.math.skills.forEach((s, i) => recordAnswer('math', genMathTask(s.id, 1, i) || BANK.math.find(t => t.skill === s.id), i < 2, null))");
 if (E("forecast('math').conf") !== 'low' || !/след още/.test(E("gradeText(forecast('math'))"))) fail('forecast: a grade is shown after one answer per skill');
 E('resetState(false)');
 
@@ -208,7 +212,8 @@ E('resetState(false)');
     if (f.validate) { const m = f.validate('x'.repeat(60)); if (m) keys.add(m); }
   }); });
   const missing = [...keys].filter(k => EN[k] == null);
-  missing.forEach(k => fail('English UI: no translation for ' + JSON.stringify(k)));
+  missing.forEach(k => fail("English UI: no translation for " + JSON.stringify(k)));
+  if (process.env.MISSING_OUT) require("fs").writeFileSync(process.env.MISSING_OUT, JSON.stringify(missing, null, 1));
   E("S.settings.lang = 'en'");
   if (E("L('Начало')") !== 'Home' || E("L('Губиш ≈ {a} от {b} т.', { a: 3, b: 66 })") !== 'You lose ≈ 3 of 66 pts') fail('English UI: L() does not translate');
   E("S.settings.lang = 'bg'");
