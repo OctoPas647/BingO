@@ -3,7 +3,7 @@
 ## Done
 - **0.5.0**: all 64 open branches merged into one version (see CHANGELOG.md). Many branches fixed the same problem several times; each fix is in once, reviewed, without the unrelated edits the bot made on the way. Every merge commit message says what was taken from each branch and what was not, and why.
 - Earlier work (0.4.x): ДЗИ Математика 02.06.2020 вариант 2, НВО 4 Математика 2007–2016, Duolingo-style progress bar, browser-history fixes (67-history-sync.js and the tab-bar wrapper in 64-nav.js), confetti cleanup, no repeated question in a session, Android fullscreen-video code removed, no duplicate option values in generated tasks (`normalize()` in 52-math.js).
-- Activity-based streak: `S.streak`, `S.bestStreak` and `S.lastPracticeDay` count only completed sessions. `finish()` in `61-session.js` updates them once per local calendar day; opening the app does not extend the streak. Home shows the current streak in a 🔥 pill.
+- Activity-based streak fix: the cause was missing activity-based tracking, so the streak could be kept without completed tests. Added `S.streak`, `S.bestStreak` and `S.lastPracticeDay`, plus date-check logic in `finish()` in `61-session.js`; the streak increments only after a completed test/session, ignores app opens, continues after yesterday, resets after a gap, and counts one session per local day. Home shows the current streak in a 🔥 pill.
 
 ## Decisions
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
