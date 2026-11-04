@@ -4,13 +4,17 @@
 const STORE_KEY = 'bingo.v1';
 const APP_NAME_UI = 'BingO';
 
+/* The browser never stores or sees a Gemini/Vertex credential. AI requests go through the
+   backend proxy; its public URL is supplied by the deployment, not hardcoded here. */
+const SERVER_AI_URL = window.BINGO_SERVER_AI_URL || '';
+
 /* Shelly's 20-ui.js reads APP.settings (theme, sound, motion, lang) */
 let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, shuffle: false }, xp: 0, days: {} };
 
 const DEFAULT_STATE = () => ({
   v: 1,
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
-  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', glass: false, sound: true, lang: 'bg' },
+  settings: { aiMode: 'off', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', glass: false, sound: true, lang: 'bg' },
   subject: 'math',
   demo: false,           /* true while the simulated demo learner is loaded (56-demo.js) */
   skills: {},            /* "math.quad@dzi12" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] }: one map per exam */
@@ -34,8 +38,7 @@ let STATE_NOTICE = null;
 const isNum = x => typeof x === 'number' && Number.isFinite(x);
 const isStr = x => typeof x === 'string';
 const SETTING_OK = {
-  aiMode: v => ['off', 'key', 'proxy'].includes(v),
-  apiKey: v => isStr(v) && !/\s/.test(v) && v.length < 200,
+  aiMode: v => ['off', 'proxy'].includes(v),
   model: v => isStr(v) && /^[\w.\-]{1,80}$/.test(v),
   proxyUrl: v => v === '' || (isStr(v) && /^https:\/\/[^\s]+$/.test(v)),
   sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/script\.google\.com\/[^\s]+$/.test(v)),
@@ -72,7 +75,7 @@ function cleanProfile(p, d) {
 }
 function cleanPastResult(r) {
   if (!isObj(r) || !isNum(r.pts) || !isNum(r.max) || r.max <= 0 || r.pts < 0 || r.pts > r.max) return null;
-  return { pts: r.pts, max: r.max, at: isNum(r.at) ? r.at : 0 };
+  return { pts: isNum(r.pts) ? r.pts : 0, max: r.max, at: isNum(r.at) ? r.at : 0 };
 }
 function sanitizeState(v) {
   const d = DEFAULT_STATE();
@@ -113,7 +116,7 @@ const myLog = () => S.log.filter(r => r.student_id === S.profile.id || (S.demo &
 
 /* Skill progress belongs to one exam (НВО 4, НВО 7, НВО 10 or ДЗИ 12): switching exams starts
    that exam with a fresh skill map, and the old one stays saved for when the learner switches back.
-   Keys are "math.quad@dzi12"; keys without an exam come from older saves and the demo learner and
+   Keys are "math.quad@nvo7"; keys without an exam come from older saves and the demo learner and
    are moved to the current exam the first time they are read (51-skills.js). */
 const currentExamKey = () => (S.profile && EXAM_IDS.includes(S.profile.exam) ? S.profile.exam : 'dzi12');
 
@@ -168,6 +171,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const url2 = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (url2) el.poster = url2; el.removeAttribute('data-poster'); }
   });
 }
