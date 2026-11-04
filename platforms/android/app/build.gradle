@@ -1,0 +1,50 @@
+import groovy.json.JsonSlurper
+
+plugins { id 'com.android.application' }
+
+def root = rootProject.projectDir.parentFile.parentFile          // the repository
+def cfg = new JsonSlurper().parse(new File(root, 'tools/config.json'))
+def gen = new File(root, 'build/android-gradle')                 // written by tools/build.py android
+def signFile = new File(root, 'platforms/android/signing/signing.json')
+def sign = signFile.exists() ? new JsonSlurper().parse(signFile) : null
+
+android {
+    namespace 'app.shelly'                                       // the Java package of the wrapper (from Shelly)
+    compileSdk 36
+    defaultConfig {
+        applicationId cfg.androidPackage
+        minSdk 26                                                // ML Kit GenAI needs Android 8.0+
+        targetSdk 35
+        versionCode cfg.androidVersionCode as int
+        versionName cfg.version
+    }
+    sourceSets.main {
+        manifest.srcFile new File(gen, 'AndroidManifest.xml')
+        java.srcDirs = ['../java']
+        res.srcDirs = [new File(gen, 'res'), new File(root, 'assets/icons/android')]
+        assets.srcDirs = [new File(gen, 'assets')]
+    }
+    signingConfigs {
+        if (sign) release {
+            storeFile new File(signFile.parentFile, sign.keystore)
+            storePassword sign.storePassword
+            keyAlias sign.alias
+            keyPassword sign.keyPassword
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (sign) signingConfig signingConfigs.release
+        }
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    lint { abortOnError false; checkReleaseBuilds false }
+    packaging { resources { excludes += ['META-INF/*.kotlin_module', 'META-INF/AL2.0', 'META-INF/LGPL2.1'] } }
+}
+
+dependencies {
+    // Gemini Nano on the device (Android AICore). On phones without it the bridge reports "unavailable".
+    implementation 'com.google.mlkit:genai-prompt:1.0.0-beta5'
+    implementation 'com.google.guava:guava:33.4.0-android'
+}

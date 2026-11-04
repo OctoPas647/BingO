@@ -11,3 +11,6 @@ ui-debug.log
 service-account*.json
 .env
 .env.*
+platforms/android/.gradle/
+platforms/android/app/build/
+platforms/android/local.properties
