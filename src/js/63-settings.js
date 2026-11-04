@@ -9,9 +9,7 @@ SCREENS.settings = async el => {
   el.innerHTML = `${topbar(L('Настройки'))}<div class="pad settings">
     <section class="card"><h3>${icon('globe')}Език · Language</h3>${seg('lang', LANGS)}
       <p class="muted small">${L('Езикът сменя менютата и бутоните. Задачите остават на български.')}</p></section>
-    <section class="card"><h3>✦ Gemini</h3>${seg('aiMode', [['off', L('Изключен')], ['key', L('API ключ')], ['proxy', L('Vertex AI сървър')]])}
-      <div class="ai-key" ${st.aiMode === 'key' ? '' : 'hidden'}>${field('apiKey', L('Gemini API ключ'), L('от aistudio.google.com'), 'password')}
-        <p class="muted small">${L('Ключът стои само на това устройство. За прототип е добре; за истински ученици ползвай сървъра (Vertex AI).')}</p></div>
+    <section class="card"><h3>✦ Gemini</h3>${seg('aiMode', [['off', L('Изключен')], ['proxy', L('Vertex AI сървър')]])}
       <div class="ai-proxy" ${st.aiMode === 'proxy' ? '' : 'hidden'}>${field('proxyUrl', L('Адрес на сървъра (Cloud Run)'), 'https://bingo-ai-xxxx.run.app')}</div>
       <div ${st.aiMode === 'off' ? 'hidden' : ''}>${field('model', L('Модел'), 'gemini-3.8-flash')}<button class="btn ghost block" data-test>${icon('bolt')}${L('Провери връзката')}</button></div>
       <p class="muted small">${L('Gemini обяснява грешките, дава подсказки без отговора, прави нови задачи за слабите теми и седмичен план. Без него приложението работи изцяло.')}</p></section>
@@ -100,7 +98,6 @@ SCREENS.settings = async el => {
   /* A value is saved only when it is valid; otherwise the field says what is wrong and the last
      good value stays (the same rules the first-run setup and loadState use) */
   const SETTING_MSG = {
-    apiKey: 'Ключът не може да съдържа интервали',
     model: 'Само латински букви, цифри, точка и тире (напр. gemini-3.8-flash)',
     proxyUrl: 'Адресът трябва да започва с https://',
     sheetUrl: 'Адресът трябва да започва с https://script.google.com/'
