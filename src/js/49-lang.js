@@ -2,7 +2,7 @@
    Only the app around the tasks is translated: menus, buttons, screen titles, the skill map,
    the forecast and the first-run setup. Tasks, explanations and the names of typical mistakes
    stay in Bulgarian (they are matura content; their translation is a separate job).
-   The Bulgarian text is its own key: L('Начало') gives "Home" in English, and a missing
+   The Bulgarian text is its own key: L('Начало') gives \"Home\" in English, and a missing
    entry simply shows the Bulgarian text. Values like {n} are filled in from `vars`.
    tools/check.js fails when an L('…') in src/js has no English entry here. */
 const LANGS = [['bg', 'Български'], ['en', 'English']];
@@ -31,7 +31,7 @@ const EN_UI = {
   /* home */
   'Предмет за матура': 'Matura subject', 'Избери предмет за матура': 'Choose a matura subject',
   'Не се повтаря · ': 'Not repeated · ', 'Честа грешка: ': 'Common mistake: ', '{ok} от {n} верни': '{ok} of {n} right', 'Още не е измерено': 'Not measured yet',
-  'Отговори досега': 'Answers so far', 'Грешки и данни': 'Mistakes and data', 'Настройки': 'Settings',
+  'Отговори досега': 'Answers so far', 'Поредни дни с тренировка': 'Day streak', '{n} дена': '{n} days', 'Грешки и данни': 'Mistakes and data', 'Настройки': 'Settings',
   'Матура · {s}': 'Matura · {s}', 'Губиш ≈ {a} от {b} т.': 'You lose ≈ {a} of {b} pts',
   'в тези теми на ДЗИ. Тренираме само там, където губиш най-много — силното не го повтаряме.': 'on these matura topics. We train only where you lose the most — what you know well is not repeated.',
   'Къде губиш точки?': 'Where do you lose points?',
@@ -54,7 +54,7 @@ const EN_UI = {
   '{k} грешен отговор, но без разпозната типична грешка — виж обясненията след задачите.': '{k} wrong answer, but no typical mistake recognised — see the explanations after the tasks.',
   '{k} грешни отговора, но без разпозната типична грешка — виж обясненията след задачите.': '{k} wrong answers, but no typical mistake recognised — see the explanations after the tasks.',
   'Още няма грешки в тази тема.': 'No mistakes in this topic yet.', 'Още няма отговори в тази тема.': 'No answers in this topic yet.',
-  '„Овладяно“ е вероятността да решиш вярно нова задача от темата (Bayesian Knowledge Tracing). Тежестта {w} т. е приблизителна оценка за демото.': '"Mastered" is the chance that you solve a new task from this topic correctly (Bayesian Knowledge Tracing). The weight of {w} pts is a rough estimate for the demo.',
+  '„Овладяно“ е вероятността да решиш вярно нова задача от темата (Bayesian Knowledge Tracing). Тежестта {w} т. е приблизителна оценка за демото.': '\"Mastered\" is the chance that you solve a new task from this topic correctly (Bayesian Knowledge Tracing). The weight of {w} pts is a rough estimate for the demo.',
   'Затвори': 'Close', 'Тренирай само това': 'Train only this', 'Тренирай слабото': 'Train weak spots',
   'проверка днес': 'check today', 'проверка утре': 'check tomorrow', 'проверка след {d} дни': 'check in {d} days',
 
@@ -96,7 +96,7 @@ const EN_UI = {
   'Оценка — след още няколко отговора': 'Grade — after a few more answers', 'Прогнозен резултат · {s}': 'Forecast score · {s}', 'Прогноза': 'Forecast', 'Прогноза · {s}': 'Forecast · {s}',
   'Направи диагностика и ще видиш колко точки очакваш на матурата.': 'Do the diagnostic to see how many points you can expect on the matura.',
   'от 100 т.': 'of 100 pts', 'Диапазон {a}–{b} т. · {c} · натисни за подробности': 'Range {a}–{b} pts · {c} · tap for details',
-  '<b>≈ {n} т.</b> от 100 <span class="muted">(най-вероятно между {a} и {b})</span>': '<b>≈ {n} pts</b> of 100 <span class="muted">(most likely between {a} and {b})</span>',
+  '<b>≈ {n} т.</b> от 100 <span class=\"muted\">(най-вероятно между {a} и {b})</span>': '<b>≈ {n} pts</b> of 100 <span class=\"muted\">(most likely between {a} and {b})</span>',
   'Още е рано за оценка: имаш {a} отговора в {b} теми. След още няколко тренировки прогнозата ще покаже и оценка.': 'Too early for a grade: you have {a} answers in {b} topics. After a few more sessions the forecast will show a grade too.',
   'До <b>{g}</b> ти трябват още ≈ <b>{n} т.</b>': 'You need ≈ <b>{n} more pts</b> for <b>{g}</b>', 'Това е най-високата оценка.': 'This is the highest grade.',
   'Къде се печелят най-бързо точки': 'Where points are won fastest', 'Ако темата стане силна (≥ 90%).': 'If the topic becomes strong (≥ 90%).',
@@ -116,7 +116,7 @@ const EN_UI = {
   '{n} чакат': '{n} waiting', 'изпратено': 'sent', 'не е свързан': 'not connected', 'Изпрати сега': 'Send now',
   'Примерен клас от 28 ученика (CSV)': 'Sample class of 28 learners (CSV)', 'Отвори Looker Studio': 'Open Looker Studio',
   'Докладвани ИИ задачи': 'Reported AI tasks', '{n} задачи чакат проверка от учител.': '{n} tasks are waiting for a teacher to check.', 'Изтегли (JSON)': 'Download (JSON)',
-  'В Looker Studio: <b>Create → Data source → Google Sheets</b> (или File upload за CSV), после таблица „умение × ученик“ със средно <code>mastery_after</code> и стълбова диаграма на <code>misconception</code>. Подробно — в README.': 'In Looker Studio: <b>Create → Data source → Google Sheets</b> (or File upload for a CSV), then a "skill × learner" table with the average <code>mastery_after</code> and a bar chart of <code>misconception</code>. Details in the README.',
+  'В Looker Studio: <b>Create → Data source → Google Sheets</b> (или File upload за CSV), после таблица „умение × ученик“ със средно <code>mastery_after</code> и стълбова диаграма на <code>misconception</code>. Подробно — в README.': 'In Looker Studio: <b>Create → Data source → Google Sheets</b> (or File upload for a CSV), then a \"skill × learner\" table with the average <code>mastery_after</code> and a bar chart of <code>misconception</code>. Details in the README.',
   'Изпратено към Google Sheets': 'Sent to Google Sheets', 'Няма връзка — ще опитаме пак': 'Could not send — we will try again',
 
   /* settings */
@@ -128,7 +128,7 @@ const EN_UI = {
   'Адрес на Apps Script (Web app)': 'Apps Script address (Web app)',
   'Всеки отговор става ред в таблица на учителя. Как се прави — apps-script/Code.gs в проекта.': 'Every answer becomes a row in the teacher\'s Sheet. How to set it up: apps-script/Code.gs in the project.',
   'Тема': 'Theme', 'Системна': 'System', 'Светла': 'Light', 'Тъмна': 'Dark',
-  '„Системна“ следва светлата или тъмната тема на телефона.': '"System" follows the phone\'s light or dark theme.', 'Звуци': 'Sounds', 'Демо': 'Demo',
+  '„Системна“ следва светлата или тъмната тема на телефона.': '\"System\" follows the phone\'s light or dark theme.', 'Звуци': 'Sounds', 'Демо': 'Demo',
   'Зареди демо ученик': 'Load a demo learner', 'Върни моите отговори': 'Bring back my answers', 'Начална настройка отново': 'Run the first-time setup again',
   'Изчисти всичките ми отговори': 'Clear all my answers', 'За BingO': 'About BingO',
   'alpha · подготовка за матура без зубрене: работа върху слабите места, не повтаряне на силните.': 'alpha · matura prep without cramming: work on weak spots, don\'t repeat the strong ones.',
@@ -150,7 +150,7 @@ const EN_UI = {
 
   /* demo and saved data */
   'Да заредим ли демо ученик?': 'Load a demo learner?',
-  'Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.': 'The demo replaces your skill map and answers. We keep a copy of your data, and you can bring it back from Settings → "Bring back my answers".',
+  'Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.': 'The demo replaces your skill map and answers. We keep a copy of your data, and you can bring it back from Settings → \"Bring back my answers\".',
   'Зареди демото': 'Load the demo', 'Няма място за копие на данните ти — демото не е заредено.': 'No room for a copy of your data — the demo was not loaded.',
   'Запазените данни не можаха да се прочетат': 'Your saved data could not be read',
   'Файлът с отговорите ти на това устройство е повреден, затова BingO започва начисто.': 'The file with your answers on this device is damaged, so BingO starts fresh.',
