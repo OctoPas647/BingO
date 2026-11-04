@@ -11,6 +11,17 @@
 .subj-select:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 2px; }
 .foot { margin-top: 22px; }
 
+/* Essay / ЛИС self-assessment */
+.essay-assessment { display: grid; gap: 12px; margin-top: 14px; padding: 14px; border-radius: var(--r); background: var(--surface); box-shadow: var(--shadow); }
+.essay-assessment h3 { margin: 0; font-size: 1.08rem; }
+.essay-hint { margin: 0; color: var(--ink-2); font-size: .9rem; }
+.essay-criterion { display: grid; gap: 6px; font-weight: 700; font-size: .92rem; }
+.essay-criterion output { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.essay-score { width: 100%; accent-color: var(--accent); }
+.essay-total { margin: 2px 0 0; font-weight: 800; }
+.essay-error { margin: 0; color: var(--bad); font-weight: 700; font-size: .9rem; }
+.essay-assessment .btn:disabled { opacity: .55; cursor: not-allowed; }
+
 /* the loss card */
 .losscard { display: flex; gap: 16px; align-items: center; padding: 18px; }
 .losscard h1 { font-size: 1.45rem; margin: 4px 0 6px; }
