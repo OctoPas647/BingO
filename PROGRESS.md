@@ -1,6 +1,13 @@
 # Progress
 
 ## Done
+- Fix: "Върни моите отговори" could restore demo data instead of the real learner's answers.
+  - Issue: "Върни моите отговори" може да върне демо данните вместо истинските.
+  - Cause: the state had no demo flag. After the demo loaded, `S.sessions` stayed above 0, so `hasRealProgress()` treated the demo state as real progress. Loading the demo a second time then saved the demo state over the real backup.
+  - Fix: `src/js/50-state.js` adds `isDemo`, preserves profile age/exam/track/extra and past-exam results, and defines `hasRealProgress()`.
+  - Fix: `src/js/56-demo.js` marks demo state, refuses to overwrite a real backup with demo data, rejects demo-only backups on restore, and deletes the backup only after a successful restore.
+  - Fix: `src/js/63-settings.js` shows "Върни моите отговори" only for a real backup and checks the backup again before restoring.
+  - Test: `tests/fixes.py` case 6 loads the demo twice and restores twice; the real learner, sessions, answers, and non-demo state must return both times.
 - Removed the AI/API onboarding screen: the `ai` step in src/js/58-onboarding.js no longer appears during first-run setup. AI configuration is no longer shown at startup, but remains fully accessible via the Settings menu.
 - Fix: opening a screen right after closing a bottom sheet no longer breaks browser history.
   - Cause: `syncHistory()` removed the history trap with `history.back()`, but the sheet callback called `go()` before that back was processed. `render()` then pushed a new trap, which the queued back removed; browser Back could then leave the app.
@@ -19,6 +26,10 @@
 - Removed unused Android fullscreen-video wrapper code: `fullscreen`, `fullscreenDone`, `onShowCustomView`, `onHideCustomView`, the related `WindowManager` import, and the fullscreen branch in `onBackPressed`. Active theme and file bridges remain unchanged.
 
 ## Decisions
+- Demo restore: `hasRealProgress()` returns false while `isDemo` is true or when skills and log are both empty, so the demo learner is never mistaken for real progress.
+- Demo restore: a backup is treated as real only when it is readable, is not itself demo data, and has skills or answers.
+- Demo restore: Settings uses `demoBackupHasRealData()` rather than `hasRealProgress()`, because the restore button depends on the saved backup, not on the currently loaded state.
+- Demo restore: "Изчисти всичките ми отговори" still does not delete the `before-demo` backup, so the learner can still bring their answers back after a wipe.
 - The AI/API setup stays out of onboarding; users who want AI can configure it later from Settings.
 - The sheet history fix lives in BingO's own src/ (67-history-sync.js), not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync).
 - The old fix/browser-back branch and src/js/66-history.js are not reused: they assume one history entry per screen, while the current engine keeps one trap entry.
@@ -33,6 +44,10 @@
 - Android wrapper cleanup keeps `AndroidUI` and `AndroidFiles`: the web app uses `AndroidUI.night()`, `__systemTheme`, file import, and CSV export.
 
 ## Left
+- Manual test of the demo restore fix:
+  - Web: run `python tools/build.py web`, then `python tests/fixes.py`.
+  - Web: create real progress, load demo, load demo again, then use Настройки → "Върни моите отговори". The real learner and answers must return both times.
+  - APK: run `.\gradlew.bat assembleDebug`, install the debug APK, and repeat the same demo/restore flow.
 - Run `python tools/build.py check` for the new exam (not run when it was added), then look at the 5 figures on web and APK.
 - Manual test of the progress bar on web and APK. I did not run the build; I assumed Shelly's `bar()` renders `.bar.pbar > i`.
 - Past exams need no code change: tools/build.py loads every *.json in content/past-exams/.
