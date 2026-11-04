@@ -3,6 +3,16 @@
    names its mistake), plus the lesson tasks of Shelly's two matura modules, plus new tasks from
    Gemini when AI is switched on. */
 
+/* Standardized criteria for self-assessment of a БЕЛ essay. Each criterion has a stable id and a
+   Bulgarian label so the UI, saved assessment and future weak-spot detection stay consistent. */
+const belEssayCriteria = [
+  { id: 'thesis', label: 'Теза и основна идея' },
+  { id: 'structure', label: 'Структура и логическа връзка' },
+  { id: 'argumentation', label: 'Аргументация и примери' },
+  { id: 'language', label: 'Език, стил и правопис' },
+  { id: 'task', label: 'Съответствие с задачата' }
+];
+
 const BEL_BANK = [
   /* ---------- пълен и кратък член ---------- */
   { id: 'b:art1', skill: 'art', level: 1, type: 'choice', prompt: 'Изберете правилно написаното изречение.',
@@ -66,6 +76,10 @@ const BEL_BANK = [
     explain: 'Междинните посоки се пишат **слято**: *северозапад, югоизток*.' }
 ];
 
+/* Make the criteria available to the app state and later essay-assessment UI. */
+S.belCriteria = belEssayCriteria;
+console.log('S.belCriteria initialized:', S.belCriteria.length, 'criteria', S.belCriteria.map(c => ({ id: c.id, label: c.label })));
+
 /* ---------- литература: Дебелянов ----------
    Shelly's module has only 3 tasks for this skill, so a session ran out and repeated them.
    These use the same passage (the first stanza of „Да се завърнеш в бащината къща“). */
@@ -110,8 +124,8 @@ BEL_BANK.push(...[
 const EXPLAIN_FIX = {
   'math:q1': 'Търсим две числа със сбор $5$ и произведение $6$ (формули на Виет): това са $2$ и $3$. Проверка: $2^2-5\\cdot2+6=0$ и $3^2-5\\cdot3+6=0$.',
   'math:p2': '$20\\%$ от $50$ е $50\\cdot0{,}2=10$ лв., затова новата цена е $50+10=60$ лв. Или направо: $50\\cdot1{,}2=60$ лв.',
-  'math:p5': 'Увеличение с $25\\%$: новото е $100\\%+25\\%=125\\%$ от старото, т.е. умножаваме по $1{,}25$. Намаление с $25\\%$: остават $100\\%-25\\%=75\\%$, т.е. умножаваме по $0{,}75$.',
-  'math:g4': 'Срещу ъгъла $\\alpha$ е катетът $a$, до него е катетът $b$, а $c$ е хипотенузата. $\\sin\\alpha=\\frac{a}{c}$ (срещулежащ катет : хипотенуза), $\\cos\\alpha=\\frac{b}{c}$ (прилежащ катет : хипотенуза), $\\operatorname{tg}\\alpha=\\frac{a}{b}$ (срещулежащ : прилежащ).',
+  'math:p5': 'Увеличение с $25\\%$: новото е $100\\%+25\\%=125\\%$ от старото, т.е. умножаваме по $1{,}25$. Намаление с $25\\%$: остават $100\\%-25\\%=75\\%$ от старото, т.е. умножаваме по $0{,}75$.',
+  'math:g4': 'Срещу ъгъла $\\alpha$ е катетът $a$, до него е катетът $b$, а $c$ е хипотенузата. $\\sin\\alpha=\\frac{a}{c}$ (срещулежащ катет : хипотенуза), $\\cos\\alpha=\\frac{b}{c}$ (прилежащ катет : хипотенуза), $\\operatorname{tg}\\alpha=\\frac{a}{b}$ (прилежащ катет : хипотенуза).',
   'bel:c1': 'Подчиненото изречение „която ми подари“ е вмъкнато в главното („Книгата е много интересна“), затова се огражда със запетаи **от двете страни**: пред „която“ и след „подари“.',
   'bel:d1': '„Да се завърнеш…“ изразява **желано** действие — копнеж. Лирическият Аз мечтае за дома, но не е сигурно, че завръщането ще се случи.'
 };

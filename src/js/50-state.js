@@ -21,10 +21,12 @@ const DEFAULT_STATE = () => ({
   review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
   onboarding: null,      /* first-run setup progress (58-onboarding.js) */
   aiFlags: [],           /* AI-made tasks a learner reported as wrong */
-  pastResults: {}        /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  pastResults: {},       /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  essayAssessment: { criteria: {}, overall: null } /* current БЕЛ essay self-assessment ratings */
 });
 
 let S = DEFAULT_STATE();
+console.log('S.essayAssessment initialized:', S.essayAssessment);
 /* What went wrong while loading, shown once after start (99-boot.js): null | { backup: key } */
 let STATE_NOTICE = null;
 
@@ -157,8 +159,8 @@ applySettings = function () {
   _applyBase();
   const am = S.settings.theme === 'amoled', rootEl = document.documentElement;
   if (S.settings.theme === 'auto') rootEl.dataset.theme = systemDark() ? 'dark' : 'light';
+  if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete S.essayAssessment ? null : null;
   if (am) { rootEl.dataset.theme = 'dark'; rootEl.dataset.amoled = '1'; } else delete rootEl.dataset.amoled;
-  if (S.settings.glass) rootEl.dataset.glass = '1'; else delete rootEl.dataset.glass;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = am ? '#000000' : rootEl.dataset.theme === 'dark' ? '#121117' : '#F6F3EC';
 };
@@ -168,6 +170,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.src = poster; el.removeAttribute('data-poster'); }
   });
 }
