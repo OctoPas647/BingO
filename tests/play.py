@@ -6,7 +6,7 @@ PAGE = (ROOT / 'dist/web/index.html').as_uri(); SHOTS = ROOT / 'build/shots'; SH
 errors = []
 def shot(p, name): p.screenshot(path=str(SHOTS / f'{name}.png'), full_page=False)
 def setup(p, theme, take_shots):
-    """walk through the first-run setup"""
+    \"\"\"walk through the first-run setup\"\"\"
     p.wait_for_selector('.onboarding')
     for i in range(14):
         if p.locator('.losscard').count(): return
@@ -20,7 +20,9 @@ def setup(p, theme, take_shots):
         p.click('[data-ob="next"]'); p.wait_for_timeout(150)
     p.wait_for_selector('.losscard')
 def answer(p, wrong=False):
-    """answer the current task: pick an option, or type a number"""
+    \"\"\"answer the current task: pick an option, or type a number\"\"\"
+    # Wait for the task's real input: the DOM can still be changing when the next task appears.
+    p.wait_for_selector('.opt, input.field, .gap.pick button, .gap-in', timeout=30000)
     if p.locator('.opt').count():
         n = p.locator('.opt').count()
         p.locator('.opt').nth(1 if wrong else 0).click()
