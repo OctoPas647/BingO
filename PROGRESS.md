@@ -1,6 +1,11 @@
 # Progress
 
 ## Done
+- **API ключът е в чист текст и в резервните копия — part 2/4: server-side AI proxy endpoint** (`feature/feedback-20261104-1445-s13`).
+  - Added `POST /api/ai/generate` in `server/index.js`; it accepts `{ model, system, prompt, json, temperature }` and returns `{ text, model }`.
+  - The endpoint uses `GEMINI_API_KEY` when provided, otherwise the existing Vertex AI service-account configuration. The legacy `/generate` route still works.
+  - CORS continues to be controlled by `ALLOWED_ORIGINS`; credentials are never logged, persisted, or included in responses. Provider errors now return a generic message and log only a safe error summary.
+  - Remaining parts: update client AI calls to use `SERVER_AI_URL` and `/api/ai/generate`, remove remaining direct Gemini key usage, and exclude credentials from backups/exports.
 - **API ключът е в чист текст и в резервните копия — part 1/4: client-side API key storage removed** (`feature/feedback-20261104-1445-s13`).
   - Removed the Gemini API-key input and its `localStorage` persistence from Settings (`src/js/63-settings.js`).
   - Removed `apiKey` from default state and state validation, and removed the `key` AI mode (`src/js/50-state.js`). Existing saved `apiKey` values are dropped automatically by `sanitizeState()`.
@@ -27,6 +32,7 @@
 - "Сказуемно определение" is kept as the term (textbook term, used by the typical-mistake labels).
 - Firestore: only staff read /questions (it holds correctAnswer); students get questions from `startAttempt`.
 - The client must not store Gemini/Vertex credentials; `SERVER_AI_URL` is deployment-supplied and the backend proxy holds the credential.
+- The server prefers the Cloud Run Vertex service account; `GEMINI_API_KEY` is a local-development fallback. `/api/ai/generate` is the canonical client route, while `/generate` remains compatible.
 
 ## Left
 - Exams the bot could not upload (its branches held placeholder text, nothing was taken): НВО 4 БЕЛ 2007–2016, ДЗИ Математика (общообразователна) 2022-08, English НВО 10 Математика 2025 and 2026, integrated НВО 10 samples (БЕЛ, математика).
@@ -36,7 +42,7 @@
 - НВО profiles reuse the matura generators; НВО-specific tasks (especially for НВО 4) and weights checked against МОН's specification are still to do.
 - Manual test on web and APK: Liquid glass on a real phone (blur performance), Android font size, feedback form against a deployed server.
 - Maybe add more variants to the small math generators.
-- Finish the remaining three parts of **API ключът е в чист текст и в резервните копия**: route AI calls through `SERVER_AI_URL`, remove remaining direct Gemini key usage, and keep credentials out of backups/exports.
+- Finish the remaining two parts of **API ключът е в чист текст и в резервните копия**: route client AI calls through `SERVER_AI_URL` and `/api/ai/generate`, remove remaining direct Gemini key usage, and keep credentials out of backups/exports.
 
 ## Bugs
 - None known. tests/fixes.py covers the 0.5.0 fixes (tests 11–25).
