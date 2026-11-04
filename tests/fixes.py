@@ -296,18 +296,20 @@ with sync_playwright() as pw:
     ok('ДЗИ: the matura skill map', p.evaluate("subjectSummary('math').list.length") == 11)
     ctx.close()
 
-    # 24. Liquid glass: the switch turns the look on and off, and cards keep a background
+    # 24. Liquid glass (0.6.0): on by default; the bars and the tab bar are glass, content cards stay solid
     ctx, p = fresh(b, state=DONE)
+    ok('glass: on by default', p.evaluate("document.documentElement.dataset.glass") == '1' and p.evaluate("S.settings.glass") is True)
+    bf = p.evaluate("getComputedStyle(document.querySelector('.tabbar')).backdropFilter || getComputedStyle(document.querySelector('.tabbar')).webkitBackdropFilter")
+    ok('glass: the tab bar is frosted glass', 'blur' in (bf or ''), bf)
     p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-sw="glass"]')
     p.click('[data-sw="glass"]'); p.wait_for_timeout(200)
-    ok('glass: on', p.evaluate("document.documentElement.dataset.glass") == '1' and p.evaluate("S.settings.glass") is True)
-    bg = p.evaluate("getComputedStyle(document.querySelector('.card')).backgroundColor")
-    ok('glass: cards keep a see-through background', bg.startswith('rgba(') and not bg.endswith(', 0)'), bg)
-    p.screenshot(path=str(SHOTS / 'settings-glass.png'), full_page=True)
+    ok('glass: off', p.evaluate("document.documentElement.dataset.glass") is None and p.evaluate("S.settings.glass") is False)
     p.reload(); p.wait_for_timeout(300)
-    ok('glass: kept after restart', p.evaluate("document.documentElement.dataset.glass") == '1')
+    ok('glass: off is kept after restart', p.evaluate("document.documentElement.dataset.glass") is None)
     p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-sw="glass"]'); p.wait_for_timeout(200)
-    ok('glass: off again', p.evaluate("document.documentElement.dataset.glass") is None)
+    ok('glass: on again', p.evaluate("document.documentElement.dataset.glass") == '1')
+    p.screenshot(path=str(SHOTS / 'settings-glass.png'), full_page=True)
+    ok('no API key field anywhere in Settings', p.locator('input[type="password"], [data-f="settings.apiKey"]').count() == 0)
     ctx.close()
 
     # 25. feedback: kept on the phone when the server fails, sent when it answers
@@ -322,6 +324,35 @@ with sync_playwright() as pw:
     ok('feedback: kept when the server fails', p.evaluate("JSON.parse(localStorage.getItem('bingo.feedback.v1')).length") == 1)
     mode['v'] = 'ok'; p.evaluate("BingOFeedback.flushFeedback()"); p.wait_for_timeout(400)
     ok('feedback: sent and removed', p.evaluate("JSON.parse(localStorage.getItem('bingo.feedback.v1')).length") == 0)
+    ctx.close()
+    # 26. 0.6.0: going over the mistakes, then training on similar (not the same) questions
+    ctx, p = fresh(b, state={**DONE, 'subject': 'hist', 'profile': {**DONE['profile'], 'exam': 'dzi12', 'track': 'hum'}})
+    p.evaluate("go('session', { subj: 'hist', mode: 'skill', skill: 'mod' })"); p.wait_for_selector('.task')
+    asked = []
+    for i in range(8):
+        if p.locator('.result').count() or not p.locator('[data-main]').count(): break
+        asked.append(p.locator('.task .prompt').first.inner_text())
+        p.click('[data-dunno]'); p.wait_for_timeout(560); p.click('[data-main]'); p.wait_for_timeout(200)
+    p.wait_for_selector('.review-list')
+    ok('review: every missed question is listed', p.locator('.rv').count() == len(asked), f'{p.locator(".rv").count()} of {len(asked)}')
+    p.locator('.rv-row').first.click(); p.wait_for_timeout(300)
+    ok('review: a missed question opens with the right answer marked', p.locator('.rv-body .opt.right').count() == 1)
+    p.screenshot(path=str(SHOTS / 'review.png'), full_page=True)
+    p.click('[data-similar]'); p.wait_for_selector('.task'); p.wait_for_timeout(300)
+    first = p.locator('.task .prompt').first.inner_text()
+    ok('similar: a new question, not one already missed', first not in asked, first[:60])
+    ok('similar: the session is marked as similar questions', p.locator('.chips i.twin').count() == 1)
+    ctx.close()
+
+    # 27. 0.6.0: every matura can be picked, a non-math subject trains on real ДЗИ questions
+    ctx, p = fresh(b, state=DONE)
+    p.click('[data-subjpick]'); p.wait_for_selector('.ios-row')
+    n = p.locator('.ios-row').count()
+    ok('subject picker lists every matura', n >= 19, str(n))
+    p.click('.ios-row[data-act="phil"]'); p.wait_for_timeout(400)
+    ok('philosophy is now the subject', p.evaluate("S.subject") == 'phil')
+    p.click('[data-start="diag"]'); p.wait_for_selector('.task')
+    ok('philosophy diagnostic shows a real ДЗИ question with four options', p.locator('.opt').count() == 4 and 'вариант' in p.locator('.chips').inner_text(), p.locator('.chips').inner_text())
     ctx.close()
     b.close()
 

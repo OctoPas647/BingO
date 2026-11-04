@@ -25,24 +25,31 @@ BingO мери всяко умение от матурата поотделно,
 
 | Инструмент | За какво | Къде в кода |
 |---|---|---|
-| **Gemini API** | обяснение на грешка, подсказка без отговор, нова задача, седмичен план | `src/js/54-ai.js` |
-| **Vertex AI** (+ Cloud Run) | същото, но през сървър с кредитите на отбора — ключът не стига до телефона | `server/` |
+| **Gemini** (облак, през сървъра на BingO) | нови задачи за всеки предмет в стила на МОН, подобни на сгрешените, обяснение на грешка, подсказка без отговор, проверка на свободни отговори, седмичен план, бележка след тренировка | `src/js/54-ai.js`, `server/` |
+| **Gemini Nano** (на устройството) | мигновена подсказка, първа оценка на свободен отговор, проверка на задачите на Gemini, работа без интернет | `src/js/54c-nano.js`, `platforms/android/java/app/shelly/NanoBridge.java` |
+| **Cloud Run** (+ Gemini API ключ или Vertex AI) | държи ключа — той **никога** не е в приложението | `server/` |
 | **Google Sheets + Apps Script** | всеки отговор става ред в таблицата на учителя | `apps-script/Code.gs`, `src/js/55-sync.js` |
 | **Looker Studio** | табло за учителя върху таблицата | виж по-долу |
 
-### 1. Gemini с API ключ (най-бързо, за демото)
-1. Вземи ключ от [Google AI Studio](https://aistudio.google.com/).
-2. BingO → Настройки → Gemini → **API ключ** → постави ключа → „Провери връзката“.
-Моделът по подразбиране е `gemini-3.8-flash` (сменя се в настройките).
-
-### 2. Vertex AI сървър (Cloud Run) — за истински ученици
+### 1. Сървърът с Gemini (веднъж)
+В приложението **няма ключ** и ученикът никога не пише ключ. Ключът е само на сървъра:
 ```bash
+# ключът от Google AI Studio отива в Secret Manager, не в кода
+printf '%s' 'ТВОЯТ_GEMINI_КЛЮЧ' | gcloud secrets create gemini-api-key --data-file=-
 cd server
 gcloud run deploy bingo-ai --source . --region europe-west1 --allow-unauthenticated \
-  --set-env-vars GOOGLE_CLOUD_PROJECT=<проект>,GOOGLE_CLOUD_LOCATION=global,ALLOWED_ORIGINS=*
+  --set-secrets GEMINI_API_KEY=gemini-api-key:latest --set-env-vars ALLOWED_ORIGINS=*
 ```
-Дай на service account-а на Cloud Run ролята **Vertex AI User**. После в BingO → Настройки → Gemini → **Vertex AI сървър** → адреса на услугата.
-Сървърът има лимит 30 заявки/мин на IP и пуска само разрешените модели (`ALLOWED_MODELS`).
+(Без `GEMINI_API_KEY` сървърът ползва Vertex AI с правата на service account-а — дай му ролята **Vertex AI User** и добави `GOOGLE_CLOUD_PROJECT=<проект>`.)
+Сървърът има лимит 30 заявки/мин и 400 на ден за IP (`DAILY_LIMIT`), моделът се сменя с `GEMINI_MODEL`.
+
+После адресът на услугата (`https://bingo-ai-….run.app`) отива в build-а:
+- GitHub → Settings → Secrets and variables → Actions → **Variables** → `BINGO_AI_SERVER` = адреса, или
+- `tools/config.json` → `"aiServer": "https://bingo-ai-….run.app"` (за build на твоя компютър).
+
+### 2. Gemini Nano на устройството
+- **Android**: на телефони с Gemini Nano (AICore — напр. Xiaomi 17 Ultra, Pixel 9/10, Galaxy S25) BingO го ползва сам; ако моделът още не е свален, Настройки → Изкуствен интелект → „Изтегли Gemini Nano“. На телефони без Nano тази част просто не се показва.
+- **Уеб**: в Chrome с вградения Gemini Nano (Prompt API). В други браузъри — само облакът.
 
 ### 3. Google Sheets → Looker Studio
 1. Нова Google таблица → Extensions → Apps Script → постави `apps-script/Code.gs` → Deploy → Web app (Execute as: Me, Who has access: Anyone) → копирай адреса.
@@ -63,15 +70,26 @@ gcloud run deploy bingo-ai --source . --region europe-west1 --allow-unauthentica
 - **BandUp** — Duolingo-подобният ритъм: една задача, проверка, обратна връзка.
 - **SQL Practice** — стълбицата от подсказки (всяка подсказка намалява стойността на задачата).
 
+## Всички матури (0.6.0)
+Освен Математика и БЕЛ: История, Биология, Химия, Физика, География, Философия, ИТ, Информатика, Предприемачество, Изобразително изкуство, Музика и чуждите езици (английски, немски, руски, френски, испански, италиански — частта „четене“). Задачите са от изпитите на МОН (папката „dzi and other“ в Google Drive), с официалния ключ:
+```bash
+pdftotext -layout изпит.pdf изпит.txt                 # за всеки PDF
+python tools/import_dzi.py <папка с .txt>             # -> content/past-exams/dzi12-<предмет>-<дата>.json
+node tools/import_english.js ../BrainBurst ../BandUP  # -> content/english-bank.json
+```
+Темите (уменията) на всеки предмет са в `content/subjects.json`. Задачи с картинка, карта, схема или аудио се пропускат — приложението не може да ги покаже вярно.
+
 ## Структура
 ```
 engine/        Shelly (копие; commit в engine/SHELLY_COMMIT)
-src/js/        BingO: 50 state · 51 умения и модел · 52 генератори · 53 банка БЕЛ · 54 Gemini · 55 Sheets/CSV · 56 демо · 60–63 екрани
+src/js/        BingO: 50 state · 51 умения и модел · 52 генератори · 53 банка БЕЛ · 54 Gemini · 54c Gemini Nano · 55 Sheets/CSV · 56 демо · 60–66 екрани · 61b преговор на грешките · 66b всички задачи в тренировката · 68 анимации
+src/css/       стилове; zz-ios.css е iOS видът с Liquid glass
+src/fonts/     Inter (близо до SF на Apple, с кирилица)
 src/css/       стилове върху тези на Shelly
-content/       матурните модули на Shelly (математика, БЕЛ)
+content/       матурните модули на Shelly, изпитите от минали години (всички предмети), subjects.json, english-bank.json
 server/        Cloud Run + Vertex AI
 apps-script/   Google Sheets приемник
-platforms/     Android обвивка (WebView)
+platforms/     Android обвивка (WebView) — Gradle проект с Gemini Nano (ML Kit GenAI)
 tools/         build.py, check.js (3000+ генерирани задачи се проверяват при всеки build)
 tests/         play.py (играе приложението в браузър), fixes.py (поправките от 0.3.2 до 0.5.0), ai_mock.py (Gemini пътищата с фалшив Gemini)
 functions/     Firebase: роли и тестове с оценяване на сървъра (още не са в приложението, виж docs/firebase.md)
@@ -83,7 +101,7 @@ functions/     Firebase: роли и тестове с оценяване на �
 | Уеб страница | `python tools/build.py web` |
 | Преглед на живо | `python tools/build.py serve` → http://localhost:8000 |
 | Проверки | `python tools/build.py check` (Node 18+) |
-| APK | `python tools/build.py android` (JDK 17+, Android SDK: build-tools 35, platform 34) |
+| APK | `python tools/build.py android` (JDK 17+, Android SDK: platform 36, build-tools 35; Gradle идва с `platforms/android/gradlew`) |
 | Примерен клас | `python tools/build.py classcsv` |
 
 **Подписване на APK:** първият build създава ключ в `platforms/android/signing/`. Пази го и не го качвай в GitHub — всяко обновяване трябва да е подписано със същия ключ. За автоматичен build в GitHub: zip-ни `bingo.keystore` + `signing.json` в `signing.zip` и запиши base64 текста му като secret `BINGO_SIGNING`.
@@ -96,6 +114,7 @@ functions/     Firebase: роли и тестове с оценяване на �
 
 ## Честно за alpha-та
 - Тежестите на уменията (колко точки от ДЗИ зависят от всяко) са **приблизителни** и трябва да се сверят със спецификацията на МОН.
-- Математиката има 7 умения × 3 нива генератори; БЕЛ има ръчна банка (≈580 задачи: правопис, членуване, запетая) + задачите от Shelly + Gemini. Литературата засега идва от Shelly и Gemini.
+- Математиката има 11 умения (генератори + истински задачи от НВО/ДЗИ + Gemini); БЕЛ има ръчна банка + задачите от Shelly и от минали изпити + Gemini. Другите матури идват от изпитите на МОН и Gemini.
+- Темите на импортираните въпроси са определени по ключови думи (`content/subjects.json`) — някой въпрос може да е в съседна тема.
 - Задачите от Gemini са означени „Създадена от ИИ“ и имат бутон „Докладвай грешка“.
 - BingO не разпознава емоции, не оценява ученика официално и не решава нищо вместо учителя — оценката „владеене“ е видима и обяснена (в съответствие с AI Act).

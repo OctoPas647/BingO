@@ -4,7 +4,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The museum first opened its doors in \\_\\_\\_\\_\\_\\_ now holds more than 4,000 paintings.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The museum first opened its doors in ……… now holds more than 4,000 paintings.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "1902, it",
    "1902 it",
@@ -20,7 +20,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Some hummingbirds can beat their wings up to 80 times per \\_\\_\\_\\_\\_\\_ speed allows them to hover in place while they feed.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Some hummingbirds can beat their wings up to 80 times per ……… speed allows them to hover in place while they feed.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "second, this",
    "second this",
@@ -36,7 +36,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The engineers tested the bridge model in a wind \\_\\_\\_\\_\\_\\_ results were better than expected.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The engineers tested the bridge model in a wind ……… results were better than expected.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "tunnel, the",
    "tunnel; and the",
@@ -52,7 +52,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Solar panels can lower electricity bills over \\_\\_\\_\\_\\_\\_ the upfront cost of installing them remains too high for many households.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Solar panels can lower electricity bills over ……… the upfront cost of installing them remains too high for many households.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "time, however,",
    "time; however,",
@@ -68,7 +68,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Ada Lovelace wrote what many historians consider the first computer \\_\\_\\_\\_\\_\\_ 1843, she described how a mechanical engine could calculate a series of numbers.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Ada Lovelace wrote what many historians consider the first computer ……… 1843, she described how a mechanical engine could calculate a series of numbers.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "program, in",
    "program in",
@@ -84,7 +84,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The violin’s body is carved from spruce and \\_\\_\\_\\_\\_\\_ woods prized for the way they carry sound.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The violin’s body is carved from spruce and ……… woods prized for the way they carry sound.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "maple; woods",
    "maple, woods",
@@ -100,7 +100,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The expedition packed three essentials for the \\_\\_\\_\\_\\_\\_ water filters, solar chargers, and a satellite phone.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The expedition packed three essentials for the ……… water filters, solar chargers, and a satellite phone.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "desert;",
    "desert:",
@@ -116,7 +116,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The museum’s newest \\_\\_\\_\\_\\_\\_ a 2,000-year-old bronze mirror — arrived from Athens last week.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The museum’s newest ……… a 2,000-year-old bronze mirror — arrived from Athens last week.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "acquisition,",
    "acquisition —",
@@ -132,7 +132,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The tour stopped in Lagos, \\_\\_\\_\\_\\_\\_ Accra, Ghana; and Dakar, Senegal.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The tour stopped in Lagos, ……… Accra, Ghana; and Dakar, Senegal.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "Nigeria,",
    "Nigeria;",
@@ -148,7 +148,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Researchers examined several factors that affect sleep quality, \\_\\_\\_\\_\\_\\_ light exposure, caffeine, and exercise.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Researchers examined several factors that affect sleep quality, ……… light exposure, caffeine, and exercise.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "including:",
    "including;",
@@ -164,7 +164,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The chef’s famous stew uses only one unusual \\_\\_\\_\\_\\_\\_ smoked paprika.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The chef’s famous stew uses only one unusual ……… smoked paprika.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "ingredient;",
    "ingredient:",
@@ -180,7 +180,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Mount Kilimanjaro — the tallest mountain in \\_\\_\\_\\_\\_\\_ rises about 5,895 meters above sea level.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Mount Kilimanjaro — the tallest mountain in ……… rises about 5,895 meters above sea level.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "Africa,",
    "Africa —",
@@ -196,7 +196,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The Amazon River, which carries more water than any other river in the \\_\\_\\_\\_\\_\\_ empties into the Atlantic Ocean.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The Amazon River, which carries more water than any other river in the ……… empties into the Atlantic Ocean.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "world",
    "world,",
@@ -212,7 +212,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The mathematician \\_\\_\\_\\_\\_\\_ calculated trajectories for some of NASA’s earliest crewed space missions.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The mathematician ……… calculated trajectories for some of NASA’s earliest crewed space missions.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    ", Katherine Johnson",
    "Katherine Johnson,",
@@ -228,7 +228,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The students who volunteered at the river \\_\\_\\_\\_\\_\\_ more than 200 kilograms of trash.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The students who volunteered at the river ……… more than 200 kilograms of trash.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "cleanup, collected",
    "cleanup collected",
@@ -244,7 +244,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Wangari Maathai, who founded the Green Belt \\_\\_\\_\\_\\_\\_ won the Nobel Peace Prize in 2004.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Wangari Maathai, who founded the Green Belt ……… won the Nobel Peace Prize in 2004.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "Movement",
    "Movement,",
@@ -260,7 +260,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "After three years of \\_\\_\\_\\_\\_\\_ engineers finally launched the weather satellite.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "After three years of ……… engineers finally launched the weather satellite.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "testing;",
    "testing,",
@@ -276,7 +276,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The bridge \\_\\_\\_\\_\\_\\_ in 1937 is still one of the longest suspension bridges in the country.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The bridge ……… in 1937 is still one of the longest suspension bridges in the country.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "that opened",
    ", that opened",
@@ -292,7 +292,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The list of approved projects \\_\\_\\_\\_\\_\\_ posted on the main board every Friday.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The list of approved projects ……… posted on the main board every Friday.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "are",
    "is",
@@ -308,7 +308,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Each of the twelve paintings in the exhibit \\_\\_\\_\\_\\_\\_ by a different artist.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Each of the twelve paintings in the exhibit ……… by a different artist.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "were created",
    "was created",
@@ -324,7 +324,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The research team’s findings about the coral \\_\\_\\_\\_\\_\\_ surprising to many marine biologists.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The research team’s findings about the coral ……… surprising to many marine biologists.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "was",
    "is",
@@ -340,7 +340,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The orchestra \\_\\_\\_\\_\\_\\_ preparing for its first international tour.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The orchestra ……… preparing for its first international tour.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "are",
    "is",
@@ -356,7 +356,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Rainfall and temperature \\_\\_\\_\\_\\_\\_ when the hillside flowers bloom each spring.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Rainfall and temperature ……… when the hillside flowers bloom each spring.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "determines",
    "has determined",
@@ -372,7 +372,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Among the artifacts in the glass display case \\_\\_\\_\\_\\_\\_ a small bronze key that may have opened the temple’s main door.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Among the artifacts in the glass display case ……… a small bronze key that may have opened the temple’s main door.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "is",
    "are",
@@ -388,7 +388,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "After years of research, the startup finally unveiled \\_\\_\\_\\_\\_\\_ first electric tractor.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "After years of research, the startup finally unveiled ……… first electric tractor.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "its",
    "it’s",
@@ -404,7 +404,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The \\_\\_\\_\\_\\_\\_ nests were found high on the cliffs above the bay.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The ……… nests were found high on the cliffs above the bay.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "falcon’s",
    "falcons’",
@@ -420,7 +420,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "When visitors enter the cave, \\_\\_\\_\\_\\_\\_ must wear a helmet at all times.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "When visitors enter the cave, ……… must wear a helmet at all times.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "it",
    "they",
@@ -436,7 +436,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "A tortoise can pull \\_\\_\\_\\_\\_\\_ head completely inside its shell when it feels threatened.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "A tortoise can pull ……… head completely inside its shell when it feels threatened.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "it’s",
    "its",
@@ -452,7 +452,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The volunteers, \\_\\_\\_\\_\\_\\_ had trained for months, finished the mountain trail in record time.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The volunteers, ……… had trained for months, finished the mountain trail in record time.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "who",
    "which",
@@ -468,7 +468,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The \\_\\_\\_\\_\\_\\_ final letter, written just weeks before her death, was discovered in an attic in 2015.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The ……… final letter, written just weeks before her death, was discovered in an attic in 2015.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "poets",
    "poet’s",
@@ -484,7 +484,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "By the time the firefighters arrived, the flames \\_\\_\\_\\_\\_\\_ to the second floor of the warehouse.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "By the time the firefighters arrived, the flames ……… to the second floor of the warehouse.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "have spread",
    "will spread",
@@ -500,7 +500,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "In 1969, astronauts \\_\\_\\_\\_\\_\\_ on the Moon for the first time, an event watched by hundreds of millions of people.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "In 1969, astronauts ……… on the Moon for the first time, an event watched by hundreds of millions of people.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "walk",
    "walked",
@@ -516,7 +516,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Built in the twelfth century, \\_\\_\\_\\_\\_\\_\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Built in the twelfth century, ………\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "tourists still visit the castle every summer.",
    "the castle still attracts thousands of tourists every summer.",
@@ -532,7 +532,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The program teaches students to design experiments, to collect data, and \\_\\_\\_\\_\\_\\_\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The program teaches students to design experiments, to collect data, and ………\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "analyzing the results.",
    "to analyze the results.",
@@ -548,7 +548,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Exhausted after the eight-hour climb, \\_\\_\\_\\_\\_\\_\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Exhausted after the eight-hour climb, ………\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "the summit was where the hikers finally rested.",
    "the hikers finally rested at the summit.",
@@ -564,7 +564,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The swimmer had \\_\\_\\_\\_\\_\\_ the channel twice before she turned twenty.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The swimmer had ……… the channel twice before she turned twenty.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "swam",
    "swum",
@@ -580,7 +580,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "Coral reefs cover less than one percent of the ocean floor, yet they support about a quarter of all known marine species. Because of this outsized role, marine biologists describe reefs as \\_\\_\\_\\_\\_\\_ to ocean biodiversity.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Coral reefs cover less than one percent of the ocean floor, yet they support about a quarter of all known marine species. Because of this outsized role, marine biologists describe reefs as ……… to ocean biodiversity.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "incidental",
    "essential",
@@ -596,7 +596,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "Many early films had no recorded sound. To help audiences follow the story, filmmakers \\_\\_\\_\\_\\_\\_ short written cards, called intertitles, between scenes.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Many early films had no recorded sound. To help audiences follow the story, filmmakers ……… short written cards, called intertitles, between scenes.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "inserted",
    "removed",
@@ -612,7 +612,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "Although the trail looked \\_\\_\\_\\_\\_\\_ on the map, hikers found it steep and rocky, with several difficult climbs.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Although the trail looked ……… on the map, hikers found it steep and rocky, with several difficult climbs.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "challenging",
    "crowded",
@@ -628,7 +628,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "The town council voted to \\_\\_\\_\\_\\_\\_ the old library rather than demolish it, restoring its original windows and repairing its roof.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The town council voted to ……… the old library rather than demolish it, restoring its original windows and repairing its roof.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "abandon",
    "sell",
@@ -644,7 +644,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "The baker’s new recipe was an \\_\\_\\_\\_\\_\\_ success: within a week of its launch, customers were lining up around the block.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The baker’s new recipe was an ……… success: within a week of its launch, customers were lining up around the block.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "immediate",
    "uncertain",
@@ -660,7 +660,7 @@
   "skill": "vocab",
   "level": 2,
   "type": "choice",
-  "prompt": "In her memoir, the architect recalls that her early designs were often dismissed as impractical. Yet she remained \\_\\_\\_\\_\\_\\_, submitting proposal after proposal until a city finally commissioned one of her buildings.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "In her memoir, the architect recalls that her early designs were often dismissed as impractical. Yet she remained ………, submitting proposal after proposal until a city finally commissioned one of her buildings.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "indifferent",
    "persistent",
@@ -692,7 +692,7 @@
   "skill": "vocab",
   "level": 2,
   "type": "choice",
-  "prompt": "Researchers had assumed that the warbler’s long migration was guided mainly by the position of the sun. New tracking data \\_\\_\\_\\_\\_\\_ that view: birds flying under thick cloud cover stayed on course just as accurately as birds flying under clear skies.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Researchers had assumed that the warbler’s long migration was guided mainly by the position of the sun. New tracking data ……… that view: birds flying under thick cloud cover stayed on course just as accurately as birds flying under clear skies.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "confirm",
    "inspire",
@@ -708,7 +708,7 @@
   "skill": "vocab",
   "level": 2,
   "type": "choice",
-  "prompt": "The novelist is known for her \\_\\_\\_\\_\\_\\_ prose: she rarely uses two words where one will do.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The novelist is known for her ……… prose: she rarely uses two words where one will do.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "concise",
    "ornate",
@@ -740,7 +740,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "Some historians have portrayed the inventor as a lone genius. Letters recently found in an archive, however, reveal that her breakthroughs were often \\_\\_\\_\\_\\_\\_ efforts, shaped by daily exchanges with a circle of fellow engineers.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Some historians have portrayed the inventor as a lone genius. Letters recently found in an archive, however, reveal that her breakthroughs were often ……… efforts, shaped by daily exchanges with a circle of fellow engineers.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "solitary",
    "collaborative",
@@ -756,7 +756,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "Although the musician’s first albums sold poorly, critics now regard them as \\_\\_\\_\\_\\_\\_: techniques she pioneered on those records appear in the work of dozens of later artists.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Although the musician’s first albums sold poorly, critics now regard them as ………: techniques she pioneered on those records appear in the work of dozens of later artists.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "derivative",
    "forgettable",
@@ -772,7 +772,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "The study’s authors are careful not to overstate their results. They describe the link they observed between sleep and memory as \\_\\_\\_\\_\\_\\_ rather than definitive, noting that their sample included only forty participants.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The study’s authors are careful not to overstate their results. They describe the link they observed between sleep and memory as ……… rather than definitive, noting that their sample included only forty participants.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "tentative",
    "conclusive",
@@ -804,7 +804,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "The documentary does not simply celebrate the expedition; it also \\_\\_\\_\\_\\_\\_ its costs, describing the injuries and debts that team members carried for years afterward.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The documentary does not simply celebrate the expedition; it also ……… its costs, describing the injuries and debts that team members carried for years afterward.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "ignores",
    "exaggerates",
@@ -1076,7 +1076,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Venus is closer to the Sun than Earth is. \\_\\_\\_\\_\\_\\_ its thick atmosphere of carbon dioxide traps heat, making Venus the hottest planet in the solar system.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Venus is closer to the Sun than Earth is. ……… its thick atmosphere of carbon dioxide traps heat, making Venus the hottest planet in the solar system.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "However,",
    "For example,",
@@ -1092,7 +1092,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Most spiders spin webs to catch their prey. \\_\\_\\_\\_\\_\\_ jumping spiders stalk insects and pounce on them without using a web at all.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Most spiders spin webs to catch their prey. ……… jumping spiders stalk insects and pounce on them without using a web at all.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Similarly,",
    "In contrast,",
@@ -1108,7 +1108,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The Elm Street bridge was closed for repairs for six months. \\_\\_\\_\\_\\_\\_ many commuters switched to taking the ferry across the river.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The Elm Street bridge was closed for repairs for six months. ……… many commuters switched to taking the ferry across the river.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Nevertheless,",
    "For example,",
@@ -1124,7 +1124,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Several animals besides humans use tools. \\_\\_\\_\\_\\_\\_ crows in New Caledonia shape twigs into hooks to pull insects out of tree bark.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Several animals besides humans use tools. ……… crows in New Caledonia shape twigs into hooks to pull insects out of tree bark.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "For example,",
    "However,",
@@ -1140,7 +1140,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "To make a ceramic bowl, a potter first shapes wet clay on a wheel. \\_\\_\\_\\_\\_\\_ the bowl is left to dry for several days before it is fired in a kiln.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "To make a ceramic bowl, a potter first shapes wet clay on a wheel. ……… the bowl is left to dry for several days before it is fired in a kiln.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "However,",
    "In fact,",
@@ -1156,7 +1156,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The new phone model has a larger, brighter screen than the previous one. \\_\\_\\_\\_\\_\\_ its battery lasts about two hours less on a single charge.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The new phone model has a larger, brighter screen than the previous one. ……… its battery lasts about two hours less on a single charge.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Therefore,",
    "However,",
@@ -1172,7 +1172,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Scientists long believed that only humans use grammar, combining sounds in rule-governed orders to create meaning. \\_\\_\\_\\_\\_\\_ studies of a small Japanese songbird have shown that it responds differently to the same calls depending on the order in which they are arranged.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Scientists long believed that only humans use grammar, combining sounds in rule-governed orders to create meaning. ……… studies of a small Japanese songbird have shown that it responds differently to the same calls depending on the order in which they are arranged.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Similarly,",
    "Consequently,",
@@ -1188,7 +1188,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Organizers expected the town’s first jazz festival to draw about 5,000 visitors. \\_\\_\\_\\_\\_\\_ more than 12,000 people attended over the weekend.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Organizers expected the town’s first jazz festival to draw about 5,000 visitors. ……… more than 12,000 people attended over the weekend.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Likewise,",
    "Therefore,",
@@ -1204,7 +1204,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "An octopus has about 500 million neurons. \\_\\_\\_\\_\\_\\_ roughly two-thirds of those neurons are located not in its brain but in its eight arms.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "An octopus has about 500 million neurons. ……… roughly two-thirds of those neurons are located not in its brain but in its eight arms.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Remarkably,",
    "Instead,",
@@ -1220,7 +1220,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The first small trial of the new treatment produced promising results. \\_\\_\\_\\_\\_\\_ the researchers designed a larger study to test whether the results would hold up.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The first small trial of the new treatment produced promising results. ……… the researchers designed a larger study to test whether the results would hold up.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Accordingly,",
    "Nevertheless,",
@@ -1236,7 +1236,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Spider silk is remarkably light: a strand long enough to circle Earth would weigh only a few hundred grams. \\_\\_\\_\\_\\_\\_ some types of spider silk are, for their weight, stronger than steel.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Spider silk is remarkably light: a strand long enough to circle Earth would weigh only a few hundred grams. ……… some types of spider silk are, for their weight, stronger than steel.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Yet",
    "Therefore,",
@@ -1252,7 +1252,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The novelist’s first three books are set in the small Ohio town where she grew up. \\_\\_\\_\\_\\_\\_ her later novels range across the world, from the markets of Lagos to the trams of Lisbon.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The novelist’s first three books are set in the small Ohio town where she grew up. ……… her later novels range across the world, from the markets of Lagos to the trams of Lisbon.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Likewise,",
    "For this reason,",
@@ -1556,7 +1556,7 @@
   "skill": "read",
   "level": 1,
   "type": "choice",
-  "prompt": "Most plants make their own food through photosynthesis, using the green pigment chlorophyll to capture energy from sunlight. The ghost pipe, a white plant that grows on dark forest floors, contains no chlorophyll. Therefore, the ghost pipe must \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Most plants make their own food through photosynthesis, using the green pigment chlorophyll to capture energy from sunlight. The ghost pipe, a white plant that grows on dark forest floors, contains no chlorophyll. Therefore, the ghost pipe must ………\n\nWhich choice most logically completes the text?",
   "options": [
    "grow only in bright sunlight.",
    "get its nutrients in some way other than photosynthesis.",
@@ -1572,7 +1572,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "Archaeologists excavating an ancient village found hundreds of pottery fragments made from a type of clay that occurs only in a region about 300 kilometers away. They found no kilns, clay deposits or pottery-making tools at the village itself. These findings suggest that the villagers \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Archaeologists excavating an ancient village found hundreds of pottery fragments made from a type of clay that occurs only in a region about 300 kilometers away. They found no kilns, clay deposits or pottery-making tools at the village itself. These findings suggest that the villagers ………\n\nWhich choice most logically completes the text?",
   "options": [
    "made all of their pottery from local clay.",
    "probably obtained their pottery through trade or travel with that distant region.",
@@ -1588,7 +1588,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "In a study, two groups of mice explored a maze once. The next day, one group slept normally, while the other was kept awake for several hours. When placed in the maze again, the mice that had slept found the exit much faster than the mice that had been kept awake. These results suggest that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "In a study, two groups of mice explored a maze once. The next day, one group slept normally, while the other was kept awake for several hours. When placed in the maze again, the mice that had slept found the exit much faster than the mice that had been kept awake. These results suggest that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "sleep may help mice remember what they have learned.",
    "mice that are kept awake become more curious.",
@@ -1604,7 +1604,7 @@
   "skill": "read",
   "level": 1,
   "type": "choice",
-  "prompt": "A bakery’s owner noticed that her lemon tarts sold out by noon every Saturday but that she often had several left at closing on weekdays. To reduce waste and still satisfy her Saturday customers, she should probably \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "A bakery’s owner noticed that her lemon tarts sold out by noon every Saturday but that she often had several left at closing on weekdays. To reduce waste and still satisfy her Saturday customers, she should probably ………\n\nWhich choice most logically completes the text?",
   "options": [
    "stop selling lemon tarts.",
    "bake more lemon tarts on Saturdays and fewer on weekdays.",
@@ -1620,7 +1620,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "Geologists use layers of rock to date fossils: in undisturbed rock, lower layers are older than the layers above them. At one site, a layer of volcanic ash has been dated to 12,000 years ago. A fossil found in an undisturbed layer directly above the ash must therefore be \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Geologists use layers of rock to date fossils: in undisturbed rock, lower layers are older than the layers above them. At one site, a layer of volcanic ash has been dated to 12,000 years ago. A fossil found in an undisturbed layer directly above the ash must therefore be ………\n\nWhich choice most logically completes the text?",
   "options": [
    "older than 12,000 years.",
    "exactly 12,000 years old.",
@@ -1636,7 +1636,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "Songbirds in noisy cities often sing at higher pitches than members of the same species in quiet forests. Some researchers have suggested that this difference evolved over many generations. But when researchers played recordings of traffic noise in a quiet park, the birds there raised the pitch of their songs within minutes. This finding suggests that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Songbirds in noisy cities often sing at higher pitches than members of the same species in quiet forests. Some researchers have suggested that this difference evolved over many generations. But when researchers played recordings of traffic noise in a quiet park, the birds there raised the pitch of their songs within minutes. This finding suggests that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "birds in quiet forests cannot hear low-pitched songs.",
    "at least some of the pitch difference may result from birds adjusting their songs in the moment, not only from evolution.",
@@ -1652,7 +1652,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "Some plants form partnerships with soil fungi, which help the plants absorb nutrients in exchange for sugars. In an experiment, plants grown with the fungi grew much larger than plants without them when the soil was poor in nutrients. In nutrient-rich soil, however, plants with and without the fungi grew to about the same size. These results suggest that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Some plants form partnerships with soil fungi, which help the plants absorb nutrients in exchange for sugars. In an experiment, plants grown with the fungi grew much larger than plants without them when the soil was poor in nutrients. In nutrient-rich soil, however, plants with and without the fungi grew to about the same size. These results suggest that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "the fungi harm plants growing in rich soil.",
    "the benefit plants get from the fungi depends on how many nutrients the soil already contains.",
@@ -1668,7 +1668,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "Historians long believed that the earliest surviving map of the island was drawn in 1620, the year the first detailed survey of its coast was completed. Recently, a map of the island was found in a ship captain’s logbook dated 1611. Although it is less detailed than the 1620 map, it correctly shows several bays that the survey later recorded. If the logbook’s date is accurate, it would suggest that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Historians long believed that the earliest surviving map of the island was drawn in 1620, the year the first detailed survey of its coast was completed. Recently, a map of the island was found in a ship captain’s logbook dated 1611. Although it is less detailed than the 1620 map, it correctly shows several bays that the survey later recorded. If the logbook’s date is accurate, it would suggest that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "the 1620 survey was completely inaccurate.",
    "at least some of the island’s coastline had been mapped before the 1620 survey.",
@@ -1684,7 +1684,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "The museum guard asked visitors not to \\_\\_\\_\\_\\_\\_ the paintings, since oils from their fingers can damage the surface.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The museum guard asked visitors not to ……… the paintings, since oils from their fingers can damage the surface.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "touch",
    "admire",
@@ -1700,7 +1700,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "Although the forecast called for sunshine, the afternoon turned \\_\\_\\_\\_\\_\\_, and the picnic was moved indoors.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Although the forecast called for sunshine, the afternoon turned ………, and the picnic was moved indoors.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "stormy",
    "pleasant",
@@ -1716,7 +1716,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "The two species of beetle look so \\_\\_\\_\\_\\_\\_ that even experts sometimes need a microscope to tell them apart.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The two species of beetle look so ……… that even experts sometimes need a microscope to tell them apart.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "similar",
    "different",
@@ -1732,7 +1732,7 @@
   "skill": "vocab",
   "level": 2,
   "type": "choice",
-  "prompt": "The new evidence did not \\_\\_\\_\\_\\_\\_ the detective’s theory; instead, it raised doubts about a key part of it.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The new evidence did not ……… the detective’s theory; instead, it raised doubts about a key part of it.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "confirm",
    "question",
@@ -1748,7 +1748,7 @@
   "skill": "vocab",
   "level": 2,
   "type": "choice",
-  "prompt": "The author’s tone in the letter is \\_\\_\\_\\_\\_\\_: she thanks the committee warmly but makes clear that she will not change her decision.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The author’s tone in the letter is ………: she thanks the committee warmly but makes clear that she will not change her decision.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "polite but firm",
    "angry and bitter",
@@ -1796,7 +1796,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "The scientist’s conclusions were \\_\\_\\_\\_\\_\\_: she noted that the sample was small and that further studies might produce different results.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The scientist’s conclusions were ………: she noted that the sample was small and that further studies might produce different results.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "tentative",
    "definitive",
@@ -1812,7 +1812,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "Critics found the film’s plot \\_\\_\\_\\_\\_\\_, noting that nearly every twist could be predicted from the opening scene.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Critics found the film’s plot ………, noting that nearly every twist could be predicted from the opening scene.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "formulaic",
    "intricate",
@@ -1828,7 +1828,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "Rather than \\_\\_\\_\\_\\_\\_ the rival company’s success, the CEO studied its methods closely and adopted several of them.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Rather than ……… the rival company’s success, the CEO studied its methods closely and adopted several of them.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "dismissing",
    "imitating",
@@ -2452,7 +2452,7 @@
   "skill": "read",
   "level": 1,
   "type": "choice",
-  "prompt": "Plants on a sunny windowsill often lean toward the glass. This happens because cells on the shaded side of the stem grow faster than cells on the sunny side. As a result, \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Plants on a sunny windowsill often lean toward the glass. This happens because cells on the shaded side of the stem grow faster than cells on the sunny side. As a result, ………\n\nWhich choice most logically completes the text?",
   "options": [
    "the stem bends toward the light.",
    "the plant stops growing.",
@@ -2468,7 +2468,7 @@
   "skill": "read",
   "level": 1,
   "type": "choice",
-  "prompt": "A library found that its e-book loans doubled during a month when its building was closed for repairs, while total borrowing stayed about the same. This suggests that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "A library found that its e-book loans doubled during a month when its building was closed for repairs, while total borrowing stayed about the same. This suggests that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "many patrons switched to e-books when they could not visit the building.",
    "patrons stopped reading during the repairs.",
@@ -2484,7 +2484,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "Some lizards can detach their tails when grabbed by a predator. The detached tail keeps wriggling for several minutes. This most likely helps the lizard by \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Some lizards can detach their tails when grabbed by a predator. The detached tail keeps wriggling for several minutes. This most likely helps the lizard by ………\n\nWhich choice most logically completes the text?",
   "options": [
    "distracting the predator while the lizard escapes.",
    "making the lizard look larger.",
@@ -2500,7 +2500,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "In a study, people viewed the same painting with one of two labels. Half were told it was by a famous artist, and half were told it was by an unknown student. Those told it was by the famous artist rated it as more beautiful. This suggests that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "In a study, people viewed the same painting with one of two labels. Half were told it was by a famous artist, and half were told it was by an unknown student. Those told it was by the famous artist rated it as more beautiful. This suggests that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "people’s judgments of art can be influenced by what they believe about who made it.",
    "famous artists always produce better paintings.",
@@ -2516,7 +2516,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "Fennec foxes, which live in hot deserts, have very large ears. Blood flowing through the thin skin of the ears releases heat into the air. Arctic foxes, in contrast, have small, rounded ears. This difference suggests that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Fennec foxes, which live in hot deserts, have very large ears. Blood flowing through the thin skin of the ears releases heat into the air. Arctic foxes, in contrast, have small, rounded ears. This difference suggests that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "ear size in foxes may be related to how much body heat the animals need to release or keep.",
    "arctic foxes have better hearing than fennec foxes.",
@@ -2532,7 +2532,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "Historians note that during the war, soldiers’ letters home were often read by officers before being mailed, and that soldiers knew this. When reading these letters today, historians should therefore keep in mind that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Historians note that during the war, soldiers’ letters home were often read by officers before being mailed, and that soldiers knew this. When reading these letters today, historians should therefore keep in mind that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "soldiers may have left out details or feelings they did not want officers to see.",
    "the letters were written by officers.",
@@ -2548,7 +2548,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "Archaeologists found wheat seeds at a site 9,000 years old. Wild wheat drops its seeds as soon as they ripen, but this wheat held on to its seeds until harvest, a trait that develops only when people repeatedly plant seeds gathered from plants that kept their seeds. The find therefore suggests that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Archaeologists found wheat seeds at a site 9,000 years old. Wild wheat drops its seeds as soon as they ripen, but this wheat held on to its seeds until harvest, a trait that develops only when people repeatedly plant seeds gathered from plants that kept their seeds. The find therefore suggests that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "people at the site were already farming wheat 9,000 years ago.",
    "wild wheat did not grow near the site.",
@@ -2564,7 +2564,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "Two groups of students studied the same chapter. One group reread it twice; the other read it once and then took a practice quiz. A week later, the quiz group remembered more, even though the rereading group had predicted they would do better. These results suggest that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Two groups of students studied the same chapter. One group reread it twice; the other read it once and then took a practice quiz. A week later, the quiz group remembered more, even though the rereading group had predicted they would do better. These results suggest that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "students may not always be able to judge which study methods will help them most.",
    "rereading a chapter twice is the most effective way to study.",
@@ -2580,7 +2580,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "Bus ridership in a town fell by 20 percent in the year after fares went up. During the same year, however, the town’s largest employer moved its offices to a city 50 kilometers away. It is therefore possible that the fare increase \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Bus ridership in a town fell by 20 percent in the year after fares went up. During the same year, however, the town’s largest employer moved its offices to a city 50 kilometers away. It is therefore possible that the fare increase ………\n\nWhich choice most logically completes the text?",
   "options": [
    "was not the only cause of the drop in ridership.",
    "was the only reason fewer people rode the bus.",
@@ -2596,7 +2596,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "A garden spider rebuilds its web every night, eating the old silk before spinning a new web. Researchers found that spider silk contains a large amount of protein, which takes energy to produce. Eating the old web most likely helps the spider \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "A garden spider rebuilds its web every night, eating the old silk before spinning a new web. Researchers found that spider silk contains a large amount of protein, which takes energy to produce. Eating the old web most likely helps the spider ………\n\nWhich choice most logically completes the text?",
   "options": [
    "recover some of the protein and energy used to make the silk.",
    "hide from predators during the day.",
@@ -2612,7 +2612,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The marathon route passes several famous \\_\\_\\_\\_\\_\\_ including the old city hall and the cathedral.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The marathon route passes several famous ……… including the old city hall and the cathedral.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "landmarks,",
    "landmarks;",
@@ -2628,7 +2628,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Ostriches cannot \\_\\_\\_\\_\\_\\_ they can run at about 70 kilometers per hour.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Ostriches cannot ……… they can run at about 70 kilometers per hour.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "fly, but",
    "fly but,",
@@ -2644,7 +2644,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Although the storm had passed by \\_\\_\\_\\_\\_\\_ the roads stayed closed for most of the day.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Although the storm had passed by ……… the roads stayed closed for most of the day.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "morning,",
    "morning",
@@ -2660,7 +2660,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Many spices that are now common in European kitchens, such as pepper and \\_\\_\\_\\_\\_\\_ were once so valuable that they were traded like gold.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Many spices that are now common in European kitchens, such as pepper and ……… were once so valuable that they were traded like gold.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "cinnamon,",
    "cinnamon",
@@ -2676,7 +2676,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The scientist’s goal was \\_\\_\\_\\_\\_\\_ to find a way to store solar energy cheaply enough for every home.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The scientist’s goal was ……… to find a way to store solar energy cheaply enough for every home.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "simple:",
    "simple;",
@@ -2692,7 +2692,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Mount \\_\\_\\_\\_\\_\\_ last erupted in 1707, is Japan’s highest mountain.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Mount ……… last erupted in 1707, is Japan’s highest mountain.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "Fuji, which",
    "Fuji which",
@@ -2708,7 +2708,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "In 1953, Rosalind Franklin’s X-ray images helped scientists work out the structure of \\_\\_\\_\\_\\_\\_ the molecule that carries genetic information.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "In 1953, Rosalind Franklin’s X-ray images helped scientists work out the structure of ……… the molecule that carries genetic information.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "DNA,",
    "DNA;",
@@ -2724,7 +2724,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The study had an unexpected \\_\\_\\_\\_\\_\\_ participants who slept less said they felt more creative, though their scores on creativity tests were lower.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The study had an unexpected ……… participants who slept less said they felt more creative, though their scores on creativity tests were lower.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "result:",
    "result,",
@@ -2740,7 +2740,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Some of the world’s oldest living trees are bristlecone \\_\\_\\_\\_\\_\\_ in California, one of them is more than 4,800 years old.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Some of the world’s oldest living trees are bristlecone ……… in California, one of them is more than 4,800 years old.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "pines;",
    "pines,",
@@ -2756,7 +2756,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Researchers who study animal \\_\\_\\_\\_\\_\\_ the ways animals share information with one another—have found that prairie dogs use different alarm calls for different predators.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Researchers who study animal ……… the ways animals share information with one another—have found that prairie dogs use different alarm calls for different predators.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "communication—",
    "communication,",
@@ -2772,7 +2772,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The puppies at the shelter \\_\\_\\_\\_\\_\\_ eager to meet visitors.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The puppies at the shelter ……… eager to meet visitors.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "are",
    "is",
@@ -2788,7 +2788,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Yesterday, the school choir \\_\\_\\_\\_\\_\\_ its final performance of the season.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Yesterday, the school choir ……… its final performance of the season.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "gave",
    "gives",
@@ -2804,7 +2804,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "When archaeologists opened the tomb in 1922, they \\_\\_\\_\\_\\_\\_ objects that had not been seen for more than 3,000 years.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "When archaeologists opened the tomb in 1922, they ……… objects that had not been seen for more than 3,000 years.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "found",
    "find",
@@ -2820,7 +2820,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The company announced that \\_\\_\\_\\_\\_\\_ will open a new store downtown next spring.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The company announced that ……… will open a new store downtown next spring.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "it",
    "they",
@@ -2836,7 +2836,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "After the muddy game, all eleven \\_\\_\\_\\_\\_\\_ uniforms had to be washed twice.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "After the muddy game, all eleven ……… uniforms had to be washed twice.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "players’",
    "players",
@@ -2852,7 +2852,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "One of the most popular exhibits at the science center \\_\\_\\_\\_\\_\\_ a giant model of the human heart that visitors can walk through.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "One of the most popular exhibits at the science center ……… a giant model of the human heart that visitors can walk through.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "is",
    "are",
@@ -2868,7 +2868,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Walking along the beach at sunrise, \\_\\_\\_\\_\\_\\_\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Walking along the beach at sunrise, ………\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "the photographer spotted a pod of dolphins.",
    "a pod of dolphins was spotted by the photographer.",
@@ -2884,7 +2884,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "A honeybee beats \\_\\_\\_\\_\\_\\_ wings more than 200 times per second, producing its familiar buzz.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "A honeybee beats ……… wings more than 200 times per second, producing its familiar buzz.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "its",
    "it’s",
@@ -2900,7 +2900,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The museum’s collection of fossils, along with several rare meteorites, \\_\\_\\_\\_\\_\\_ been moved to a new building.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The museum’s collection of fossils, along with several rare meteorites, ……… been moved to a new building.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "has",
    "have",
@@ -2916,7 +2916,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The volunteers spent the weekend clearing trails, planting trees, and \\_\\_\\_\\_\\_\\_\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The volunteers spent the weekend clearing trails, planting trees, and ………\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "repairing the footbridge.",
    "they repaired the footbridge.",
@@ -2932,7 +2932,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The library’s old computers were slow and unreliable. \\_\\_\\_\\_\\_\\_ the library replaced them with new ones last month.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The library’s old computers were slow and unreliable. ……… the library replaced them with new ones last month.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "As a result,",
    "However,",
@@ -2948,7 +2948,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Some dinosaurs were enormous. \\_\\_\\_\\_\\_\\_ *Argentinosaurus* may have weighed more than 70 metric tons.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Some dinosaurs were enormous. ……… *Argentinosaurus* may have weighed more than 70 metric tons.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "For example,",
    "However,",
@@ -2964,7 +2964,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "First, the students collected water samples from the river. \\_\\_\\_\\_\\_\\_ they tested each sample for bacteria in the school laboratory.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "First, the students collected water samples from the river. ……… they tested each sample for bacteria in the school laboratory.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Then,",
    "In contrast,",
@@ -2980,7 +2980,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Tomatoes need plenty of direct sunlight. \\_\\_\\_\\_\\_\\_ lettuce can grow well in partial shade.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Tomatoes need plenty of direct sunlight. ……… lettuce can grow well in partial shade.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "In contrast,",
    "Similarly,",
@@ -2996,7 +2996,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Many people assume that sharks are solitary hunters. \\_\\_\\_\\_\\_\\_ some species show complex social behavior, returning to the same companions over many years.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Many people assume that sharks are solitary hunters. ……… some species show complex social behavior, returning to the same companions over many years.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "However,",
    "Therefore,",
@@ -3012,7 +3012,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Solar panels produce no emissions while generating electricity. \\_\\_\\_\\_\\_\\_ they generate electricity only when the sun is shining, so they must be paired with batteries or other sources.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Solar panels produce no emissions while generating electricity. ……… they generate electricity only when the sun is shining, so they must be paired with batteries or other sources.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Still,",
    "Thus,",
@@ -3028,7 +3028,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The author’s first novel received little attention when it was published. \\_\\_\\_\\_\\_\\_ it is now taught in literature courses around the world.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The author’s first novel received little attention when it was published. ……… it is now taught in literature courses around the world.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Today, however,",
    "Consequently,",
@@ -3044,7 +3044,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Most substances shrink as they freeze. Water, \\_\\_\\_\\_\\_\\_ expands when it freezes, which is why ice floats.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Most substances shrink as they freeze. Water, ……… expands when it freezes, which is why ice floats.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "by contrast,",
    "therefore,",
@@ -3060,7 +3060,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The study found that students who slept at least eight hours did better on memory tests. \\_\\_\\_\\_\\_\\_ the study did not show that more sleep caused the improvement; students who sleep more may differ in other ways.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The study found that students who slept at least eight hours did better on memory tests. ……… the study did not show that more sleep caused the improvement; students who sleep more may differ in other ways.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "That said,",
    "As a result,",
@@ -3076,7 +3076,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Researchers expected the new drug to lower blood pressure, and it did. \\_\\_\\_\\_\\_\\_ it also seemed to improve patients’ sleep, an effect that no one had predicted.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Researchers expected the new drug to lower blood pressure, and it did. ……… it also seemed to improve patients’ sleep, an effect that no one had predicted.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Surprisingly,",
    "Therefore,",
@@ -3092,7 +3092,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "The library asked visitors to speak \\_\\_\\_\\_\\_\\_ so that others could read without being disturbed.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The library asked visitors to speak ……… so that others could read without being disturbed.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "quietly",
    "loudly",
@@ -3108,7 +3108,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "Because the soup was too \\_\\_\\_\\_\\_\\_ to eat, Leo waited a few minutes for it to cool.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Because the soup was too ……… to eat, Leo waited a few minutes for it to cool.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "hot",
    "cold",
@@ -3124,7 +3124,7 @@
   "skill": "vocab",
   "level": 1,
   "type": "choice",
-  "prompt": "The mountain path was so \\_\\_\\_\\_\\_\\_ that the hikers had to walk in single file.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The mountain path was so ……… that the hikers had to walk in single file.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "narrow",
    "wide",
@@ -3140,7 +3140,7 @@
   "skill": "vocab",
   "level": 2,
   "type": "choice",
-  "prompt": "The scientist’s talk was highly \\_\\_\\_\\_\\_\\_: she explained each idea with everyday examples, and no one in the audience left confused.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The scientist’s talk was highly ………: she explained each idea with everyday examples, and no one in the audience left confused.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "accessible",
    "technical",
@@ -3156,7 +3156,7 @@
   "skill": "vocab",
   "level": 2,
   "type": "choice",
-  "prompt": "Although the new law was meant to help small farms, its effects were \\_\\_\\_\\_\\_\\_: some farms benefited, while others lost money.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Although the new law was meant to help small farms, its effects were ………: some farms benefited, while others lost money.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "mixed",
    "uniform",
@@ -3172,7 +3172,7 @@
   "skill": "vocab",
   "level": 2,
   "type": "choice",
-  "prompt": "The two reports \\_\\_\\_\\_\\_\\_ on most points but disagree about how much the project will cost.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The two reports ……… on most points but disagree about how much the project will cost.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "agree",
    "argue",
@@ -3220,7 +3220,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "The diplomat’s statement was carefully \\_\\_\\_\\_\\_\\_, offering sympathy to both countries without assigning blame to either.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The diplomat’s statement was carefully ………, offering sympathy to both countries without assigning blame to either.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "impartial",
    "inflammatory",
@@ -3236,7 +3236,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "Early reviews of the novel were \\_\\_\\_\\_\\_\\_, but over the following decades, critics came to regard it as a masterpiece.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Early reviews of the novel were ………, but over the following decades, critics came to regard it as a masterpiece.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "dismissive",
    "rapturous",
@@ -3252,7 +3252,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "The chemist’s method, though \\_\\_\\_\\_\\_\\_, produced remarkably pure samples: each step took several days, and the whole process required weeks of careful work.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The chemist’s method, though ………, produced remarkably pure samples: each step took several days, and the whole process required weeks of careful work.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "laborious",
    "effortless",
@@ -3268,7 +3268,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "Rather than \\_\\_\\_\\_\\_\\_ the scandal, the company’s new leaders addressed it openly, publishing a full report on what had gone wrong.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "Rather than ……… the scandal, the company’s new leaders addressed it openly, publishing a full report on what had gone wrong.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "concealing",
    "investigating",
@@ -3284,7 +3284,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "The researcher cautioned that the link between the two variables was \\_\\_\\_\\_\\_\\_: it appeared in some samples but vanished in others, suggesting that it might be due to chance.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The researcher cautioned that the link between the two variables was ………: it appeared in some samples but vanished in others, suggesting that it might be due to chance.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "tenuous",
    "robust",
@@ -3316,7 +3316,7 @@
   "skill": "vocab",
   "level": 3,
   "type": "choice",
-  "prompt": "The poet’s later work is marked by \\_\\_\\_\\_\\_\\_: where her early poems used elaborate imagery, her later ones rely on a few plain words.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
+  "prompt": "The poet’s later work is marked by ………: where her early poems used elaborate imagery, her later ones rely on a few plain words.\n\nWhich choice completes the text with the most logical and precise word or phrase?",
   "options": [
    "austerity",
    "extravagance",
@@ -4292,7 +4292,7 @@
   "skill": "read",
   "level": 1,
   "type": "choice",
-  "prompt": "Penguins live almost entirely in the Southern Hemisphere, while polar bears live in the Arctic, in the far north. Therefore, polar bears and penguins \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Penguins live almost entirely in the Southern Hemisphere, while polar bears live in the Arctic, in the far north. Therefore, polar bears and penguins ………\n\nWhich choice most logically completes the text?",
   "options": [
    "rarely, if ever, meet in the wild.",
    "often hunt together.",
@@ -4308,7 +4308,7 @@
   "skill": "read",
   "level": 1,
   "type": "choice",
-  "prompt": "Maya’s houseplant was wilting, and its soil was completely dry. She watered it, and by evening its leaves were standing up again. This suggests that the plant had been wilting because \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Maya’s houseplant was wilting, and its soil was completely dry. She watered it, and by evening its leaves were standing up again. This suggests that the plant had been wilting because ………\n\nWhich choice most logically completes the text?",
   "options": [
    "it needed water.",
    "it had too much sunlight.",
@@ -4324,7 +4324,7 @@
   "skill": "read",
   "level": 1,
   "type": "choice",
-  "prompt": "Some animals hibernate during winter, when food is scarce. While they hibernate, their body temperature drops and their heartbeat slows, so they use very little energy. This allows them to \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Some animals hibernate during winter, when food is scarce. While they hibernate, their body temperature drops and their heartbeat slows, so they use very little energy. This allows them to ………\n\nWhich choice most logically completes the text?",
   "options": [
    "survive the winter without eating much.",
    "grow larger during the winter.",
@@ -4340,7 +4340,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "In a study, people serving themselves from a buffet were given either a small plate or a large one. Everyone could take as much food as they wanted, yet people with small plates served themselves less and ate less. This suggests that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "In a study, people serving themselves from a buffet were given either a small plate or a large one. Everyone could take as much food as they wanted, yet people with small plates served themselves less and ate less. This suggests that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "the size of a plate can influence how much people eat.",
    "people with large plates were hungrier.",
@@ -4356,7 +4356,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "A bookstore noticed that books displayed on a table near the front door sold more copies than the same books shelved at the back of the store. To sell more of a particular book, the store’s manager should probably \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "A bookstore noticed that books displayed on a table near the front door sold more copies than the same books shelved at the back of the store. To sell more of a particular book, the store’s manager should probably ………\n\nWhich choice most logically completes the text?",
   "options": [
    "display it on the table near the front door.",
    "move it to the back of the store.",
@@ -4372,7 +4372,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "In a study, one group of children was praised for being smart after solving puzzles, and another group was praised for working hard. When offered a choice of new puzzles, children praised for effort more often chose harder ones. This suggests that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "In a study, one group of children was praised for being smart after solving puzzles, and another group was praised for working hard. When offered a choice of new puzzles, children praised for effort more often chose harder ones. This suggests that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "praising effort may encourage children to take on challenges.",
    "children praised for being smart are better at puzzles.",
@@ -4388,7 +4388,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "Mountain climbers often feel short of breath at high altitudes, even when they are resting. At high altitudes, each breath of air contains less oxygen. Climbers’ shortness of breath is therefore most likely caused by \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Mountain climbers often feel short of breath at high altitudes, even when they are resting. At high altitudes, each breath of air contains less oxygen. Climbers’ shortness of breath is therefore most likely caused by ………\n\nWhich choice most logically completes the text?",
   "options": [
    "getting less oxygen with each breath.",
    "climbing too quickly.",
@@ -4404,7 +4404,7 @@
   "skill": "read",
   "level": 2,
   "type": "choice",
-  "prompt": "An umbrella shop found that its sales were highest in the rainiest months and lowest in the driest months. Based on this pattern, the shop can expect to \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "An umbrella shop found that its sales were highest in the rainiest months and lowest in the driest months. Based on this pattern, the shop can expect to ………\n\nWhich choice most logically completes the text?",
   "options": [
    "sell more umbrellas during a rainy month than during a dry one.",
    "sell the same number of umbrellas every month.",
@@ -4420,7 +4420,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "A city installed brighter streetlights on half of its streets. Over the following year, reported crimes fell on the newly lit streets. They also fell by a similar amount on the streets that kept the old lights. This suggests that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "A city installed brighter streetlights on half of its streets. Over the following year, reported crimes fell on the newly lit streets. They also fell by a similar amount on the streets that kept the old lights. This suggests that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "the brighter lights may not have been the main reason for the drop in crime.",
    "brighter lights cause crime to fall.",
@@ -4436,7 +4436,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "Researchers found that in one forest, the trees with the most fungus on their roots grew the fastest. But when researchers added the fungus to the roots of slow-growing trees, those trees’ growth did not change. These results suggest that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Researchers found that in one forest, the trees with the most fungus on their roots grew the fastest. But when researchers added the fungus to the roots of slow-growing trees, those trees’ growth did not change. These results suggest that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "the fungus may not be what makes the fast-growing trees grow quickly.",
    "the fungus slows tree growth.",
@@ -4452,7 +4452,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "Historians studying a medieval town found that its population records show a sharp drop in 1349. Records from many other towns in the region show a similar drop in the same year, and a plague is known to have spread through the region in 1348 and 1349. Together, these findings suggest that the town’s population \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Historians studying a medieval town found that its population records show a sharp drop in 1349. Records from many other towns in the region show a similar drop in the same year, and a plague is known to have spread through the region in 1348 and 1349. Together, these findings suggest that the town’s population ………\n\nWhich choice most logically completes the text?",
   "options": [
    "probably fell because of the plague.",
    "fell because people moved to other towns in the region.",
@@ -4468,7 +4468,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "Most songbirds learn their songs by listening to adult birds of their species. In one experiment, young birds raised without hearing any adult songs produced simple, unusual songs as adults, while young birds that heard recordings of adult songs sang normal songs. This suggests that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Most songbirds learn their songs by listening to adult birds of their species. In one experiment, young birds raised without hearing any adult songs produced simple, unusual songs as adults, while young birds that heard recordings of adult songs sang normal songs. This suggests that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "hearing adult songs is important for young songbirds to develop normal songs.",
    "songbirds are born knowing their species’ songs.",
@@ -4484,7 +4484,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "A company let employees choose to work from home two days a week. Those who chose to do so reported higher job satisfaction than those who did not. However, the employees who chose to work from home had also, on average, worked at the company longer and held more senior positions. It is therefore possible that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "A company let employees choose to work from home two days a week. Those who chose to do so reported higher job satisfaction than those who did not. However, the employees who chose to work from home had also, on average, worked at the company longer and held more senior positions. It is therefore possible that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "the higher satisfaction is due partly to differences in experience and position, not only to working from home.",
    "working from home lowers job satisfaction.",
@@ -4500,7 +4500,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "Astronomers noticed that a star appears to wobble slightly back and forth every 4 days. A large planet orbiting a star pulls on it, making the star wobble with the same period as the planet’s orbit. The astronomers concluded that the star probably \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "Astronomers noticed that a star appears to wobble slightly back and forth every 4 days. A large planet orbiting a star pulls on it, making the star wobble with the same period as the planet’s orbit. The astronomers concluded that the star probably ………\n\nWhich choice most logically completes the text?",
   "options": [
    "has a large planet that orbits it about every 4 days.",
    "has no planets.",
@@ -4516,7 +4516,7 @@
   "skill": "read",
   "level": 3,
   "type": "choice",
-  "prompt": "In the 1990s, a lake’s water became much clearer. During the same years, zebra mussels, small shellfish that filter tiny particles out of the water, spread through the lake in huge numbers. Earlier efforts to reduce pollution had not noticeably changed the water’s clarity. These facts suggest that \\_\\_\\_\\_\\_\\_\n\nWhich choice most logically completes the text?",
+  "prompt": "In the 1990s, a lake’s water became much clearer. During the same years, zebra mussels, small shellfish that filter tiny particles out of the water, spread through the lake in huge numbers. Earlier efforts to reduce pollution had not noticeably changed the water’s clarity. These facts suggest that ………\n\nWhich choice most logically completes the text?",
   "options": [
    "the zebra mussels may have been largely responsible for the clearer water.",
    "pollution in the lake increased in the 1990s.",
@@ -4532,7 +4532,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The concert starts at \\_\\_\\_\\_\\_\\_ please arrive early to find a seat.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The concert starts at ……… please arrive early to find a seat.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "eight;",
    "eight,",
@@ -4548,7 +4548,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Because the main road was \\_\\_\\_\\_\\_\\_ the bus took a longer route through the hills.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Because the main road was ……… the bus took a longer route through the hills.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "closed,",
    "closed;",
@@ -4564,7 +4564,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Sloths move very \\_\\_\\_\\_\\_\\_ they spend most of their lives hanging upside down in trees.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Sloths move very ……… they spend most of their lives hanging upside down in trees.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "slowly;",
    "slowly,",
@@ -4580,7 +4580,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The chef’s signature dish has three main \\_\\_\\_\\_\\_\\_ fresh pasta, wild mushrooms, and a drizzle of truffle oil.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The chef’s signature dish has three main ……… fresh pasta, wild mushrooms, and a drizzle of truffle oil.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "ingredients:",
    "ingredients;",
@@ -4596,7 +4596,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Jane Goodall, who began studying chimpanzees in Tanzania in \\_\\_\\_\\_\\_\\_ discovered that they make and use tools.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Jane Goodall, who began studying chimpanzees in Tanzania in ……… discovered that they make and use tools.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "1960,",
    "1960",
@@ -4612,7 +4612,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The bridge—one of the longest in the \\_\\_\\_\\_\\_\\_ took nearly ten years to build.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The bridge—one of the longest in the ……… took nearly ten years to build.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "country—",
    "country,",
@@ -4628,7 +4628,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "After hours of searching, the hikers finally found the \\_\\_\\_\\_\\_\\_ behind a curtain of vines, it was smaller than they had expected.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "After hours of searching, the hikers finally found the ……… behind a curtain of vines, it was smaller than they had expected.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "cave. Hidden",
    "cave, hidden",
@@ -4644,7 +4644,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The \\_\\_\\_\\_\\_\\_ old farmhouse at the end of the road was finally sold last spring.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The ……… old farmhouse at the end of the road was finally sold last spring.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "creaky, drafty",
    "creaky drafty",
@@ -4660,7 +4660,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The novel’s \\_\\_\\_\\_\\_\\_ a former sailor who returns home after twenty years—discovers that no one in his village recognizes him.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The novel’s ……… a former sailor who returns home after twenty years—discovers that no one in his village recognizes him.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "narrator—",
    "narrator,",
@@ -4676,7 +4676,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Many of the town’s oldest buildings were damaged in the \\_\\_\\_\\_\\_\\_ several, however, survived with only minor cracks.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Many of the town’s oldest buildings were damaged in the ……… several, however, survived with only minor cracks.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "earthquake;",
    "earthquake,",
@@ -4692,7 +4692,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Two species of finch live on the \\_\\_\\_\\_\\_\\_ one with a thick beak for cracking seeds, the other with a thin beak for catching insects.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Two species of finch live on the ……… one with a thick beak for cracking seeds, the other with a thin beak for catching insects.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "island:",
    "island;",
@@ -4708,7 +4708,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The museum is usually crowded on \\_\\_\\_\\_\\_\\_ on weekday mornings, however, its galleries are often nearly empty.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The museum is usually crowded on ……… on weekday mornings, however, its galleries are often nearly empty.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "weekends;",
    "weekends,",
@@ -4724,7 +4724,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Leonardo da Vinci’s \\_\\_\\_\\_\\_\\_ was stolen from the Louvre in 1911 and recovered two years later.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Leonardo da Vinci’s ……… was stolen from the Louvre in 1911 and recovered two years later.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "*Mona Lisa*",
    "*Mona Lisa*,",
@@ -4740,7 +4740,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The volunteers planted three kinds of \\_\\_\\_\\_\\_\\_ oaks, which grow slowly but live for centuries; maples; and birches, which grow quickly.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The volunteers planted three kinds of ……… oaks, which grow slowly but live for centuries; maples; and birches, which grow quickly.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "trees:",
    "trees;",
@@ -4756,7 +4756,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Jonas Salk, who developed the first widely used polio vaccine, famously declined to patent \\_\\_\\_\\_\\_\\_ asked who owned it, he replied that it belonged to the people.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Jonas Salk, who developed the first widely used polio vaccine, famously declined to patent ……… asked who owned it, he replied that it belonged to the people.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "it; when",
    "it, when",
@@ -4772,7 +4772,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "The kittens \\_\\_\\_\\_\\_\\_ asleep in a basket by the fire.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The kittens ……… asleep in a basket by the fire.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "are",
    "is",
@@ -4788,7 +4788,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Yesterday, our teacher \\_\\_\\_\\_\\_\\_ us a story about her trip to Peru.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Yesterday, our teacher ……… us a story about her trip to Peru.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "told",
    "tells",
@@ -4804,7 +4804,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The sound of the waves \\_\\_\\_\\_\\_\\_ the children to sleep every night.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The sound of the waves ……… the children to sleep every night.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "lulls",
    "lull",
@@ -4820,7 +4820,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The museum displayed the \\_\\_\\_\\_\\_\\_ final paintings, completed just before she died, in a room of their own.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The museum displayed the ……… final paintings, completed just before she died, in a room of their own.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "artist’s",
    "artists’",
@@ -4836,7 +4836,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Each of the swallows built \\_\\_\\_\\_\\_\\_ nest high on the cliff.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Each of the swallows built ……… nest high on the cliff.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "its",
    "their",
@@ -4852,7 +4852,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Swimming across the bay, \\_\\_\\_\\_\\_\\_\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Swimming across the bay, ………\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "the athletes battled strong currents.",
    "strong currents slowed the athletes.",
@@ -4868,7 +4868,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The museum’s new exhibit, which \\_\\_\\_\\_\\_\\_ more than 200 photographs, opens next week.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The museum’s new exhibit, which ……… more than 200 photographs, opens next week.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "includes",
    "include",
@@ -4884,7 +4884,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Either the twins or their older brother \\_\\_\\_\\_\\_\\_ going to walk the dog tonight.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Either the twins or their older brother ……… going to walk the dog tonight.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "is",
    "are",
@@ -4900,7 +4900,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Among the most famous of the ancient wonders \\_\\_\\_\\_\\_\\_ the Hanging Gardens of Babylon, which may never have existed at all.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Among the most famous of the ancient wonders ……… the Hanging Gardens of Babylon, which may never have existed at all.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "are",
    "is",
@@ -4916,7 +4916,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The committee will announce \\_\\_\\_\\_\\_\\_ decision after it has reviewed all of the applications.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The committee will announce ……… decision after it has reviewed all of the applications.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "its",
    "their",
@@ -4932,7 +4932,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The bell had \\_\\_\\_\\_\\_\\_ three times before the students noticed it.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The bell had ……… three times before the students noticed it.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "rung",
    "rang",
@@ -4948,7 +4948,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Having been warned about the approaching storm, \\_\\_\\_\\_\\_\\_\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Having been warned about the approaching storm, ………\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "the sailors stayed in the harbor.",
    "the harbor was full of boats.",
@@ -4964,7 +4964,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The doctor recommended that each patient \\_\\_\\_\\_\\_\\_ at least eight glasses of water a day.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The doctor recommended that each patient ……… at least eight glasses of water a day.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "drink",
    "drinks",
@@ -4980,7 +4980,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Few of the paintings in the exhibition \\_\\_\\_\\_\\_\\_ been shown in public before.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "Few of the paintings in the exhibition ……… been shown in public before.\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "have",
    "has",
@@ -4996,7 +4996,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The coach told her players that she valued effort more than talent and that teamwork mattered more than \\_\\_\\_\\_\\_\\_\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
+  "prompt": "The coach told her players that she valued effort more than talent and that teamwork mattered more than ………\n\nWhich choice completes the text so that it conforms to the conventions of Standard English?",
   "options": [
    "individual glory.",
    "being individually glorious.",
@@ -5012,7 +5012,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "It rained heavily all morning. \\_\\_\\_\\_\\_\\_ the soccer game was postponed until the next day.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "It rained heavily all morning. ……… the soccer game was postponed until the next day.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Therefore,",
    "However,",
@@ -5028,7 +5028,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Lions live in groups called prides. \\_\\_\\_\\_\\_\\_ tigers usually live and hunt alone.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Lions live in groups called prides. ……… tigers usually live and hunt alone.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "In contrast,",
    "Similarly,",
@@ -5044,7 +5044,7 @@
   "skill": "gram",
   "level": 1,
   "type": "choice",
-  "prompt": "Many fruits are rich in vitamin C. \\_\\_\\_\\_\\_\\_ oranges, strawberries and kiwis all contain large amounts of it.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Many fruits are rich in vitamin C. ……… oranges, strawberries and kiwis all contain large amounts of it.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "For example,",
    "However,",
@@ -5060,7 +5060,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The museum owns one of the world’s largest collections of ancient coins. \\_\\_\\_\\_\\_\\_ the collection is rarely displayed, because the coins are fragile and difficult to protect.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The museum owns one of the world’s largest collections of ancient coins. ……… the collection is rarely displayed, because the coins are fragile and difficult to protect.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "However,",
    "Therefore,",
@@ -5076,7 +5076,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Studies show that regular exercise improves heart health. \\_\\_\\_\\_\\_\\_ it can reduce stress and improve sleep.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Studies show that regular exercise improves heart health. ……… it can reduce stress and improve sleep.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "In addition,",
    "In contrast,",
@@ -5092,7 +5092,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The team was losing by ten points at halftime. \\_\\_\\_\\_\\_\\_ it rallied in the second half and won the game by three.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The team was losing by ten points at halftime. ……… it rallied in the second half and won the game by three.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Nevertheless,",
    "As a result,",
@@ -5108,7 +5108,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "The author’s first novel was rejected by twelve publishers. \\_\\_\\_\\_\\_\\_ it was published and went on to sell millions of copies.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The author’s first novel was rejected by twelve publishers. ……… it was published and went on to sell millions of copies.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Eventually,",
    "Consequently,",
@@ -5124,7 +5124,7 @@
   "skill": "gram",
   "level": 2,
   "type": "choice",
-  "prompt": "Some plants need full sunlight to grow well. Others, \\_\\_\\_\\_\\_\\_ thrive in the shade of taller trees.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Some plants need full sunlight to grow well. Others, ……… thrive in the shade of taller trees.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "however,",
    "therefore,",
@@ -5140,7 +5140,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The new treatment reduced symptoms in most patients. \\_\\_\\_\\_\\_\\_ it caused serious side effects in a few, so doctors recommend it only for severe cases.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The new treatment reduced symptoms in most patients. ……… it caused serious side effects in a few, so doctors recommend it only for severe cases.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "That said,",
    "Accordingly,",
@@ -5156,7 +5156,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The ancient Egyptians built pyramids as tombs for their rulers. The Maya, \\_\\_\\_\\_\\_\\_ built most of their pyramids as platforms for temples, with steep stairs leading to a shrine at the top.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The ancient Egyptians built pyramids as tombs for their rulers. The Maya, ……… built most of their pyramids as platforms for temples, with steep stairs leading to a shrine at the top.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "by contrast,",
    "therefore,",
@@ -5172,7 +5172,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Critics expected the small, quiet film to disappear from theaters within a week. \\_\\_\\_\\_\\_\\_ it played for months, drawing larger crowds each weekend as word spread.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Critics expected the small, quiet film to disappear from theaters within a week. ……… it played for months, drawing larger crowds each weekend as word spread.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Instead,",
    "Similarly,",
@@ -5188,7 +5188,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The researchers’ first experiment showed that the drug lowered blood pressure in mice. \\_\\_\\_\\_\\_\\_ they could not yet say whether it would work in humans, since many drugs that help mice fail in people.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The researchers’ first experiment showed that the drug lowered blood pressure in mice. ……… they could not yet say whether it would work in humans, since many drugs that help mice fail in people.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Still,",
    "Therefore,",
@@ -5204,7 +5204,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Volcanic eruptions can be enormously destructive. \\_\\_\\_\\_\\_\\_ the ash they leave behind eventually breaks down into some of the most fertile soil on Earth.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Volcanic eruptions can be enormously destructive. ……… the ash they leave behind eventually breaks down into some of the most fertile soil on Earth.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "At the same time,",
    "For example,",
@@ -5220,7 +5220,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "The city’s population grew by 40 percent in a single decade. \\_\\_\\_\\_\\_\\_ the number of buses on its streets stayed almost the same, and riders complained about crowding.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "The city’s population grew by 40 percent in a single decade. ……… the number of buses on its streets stayed almost the same, and riders complained about crowding.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "Yet",
    "Accordingly,",
@@ -5236,7 +5236,7 @@
   "skill": "gram",
   "level": 3,
   "type": "choice",
-  "prompt": "Scientists once thought that the human appendix served no purpose. \\_\\_\\_\\_\\_\\_ some researchers believe that it may store helpful bacteria that can repopulate the gut after an illness.\n\nWhich choice completes the text with the most logical transition?",
+  "prompt": "Scientists once thought that the human appendix served no purpose. ……… some researchers believe that it may store helpful bacteria that can repopulate the gut after an illness.\n\nWhich choice completes the text with the most logical transition?",
   "options": [
    "In recent years, however,",
    "For this reason,",

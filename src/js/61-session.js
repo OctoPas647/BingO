@@ -49,11 +49,11 @@ SCREENS.session = async (el, { subj, mode, skill, similar }, nav) => {
     if (item.why === 'similar' && subj === 'math' && MATH_GEN[item.skill]) t = genMathTask(item.skill, item.like.task.level || lvl, sessionId + ':sim:' + P.i);
     /* a Gemini question about every third time (always when the bank has nothing left) */
     const ai = aiCacheTake(subj, item.skill, P.used);
-    if (!t && ai && (item.why === 'similar' || seedRng(sessionId + P.i).chance(0.34))) t = ai;
+    if (!t && ai && (item.why === 'similar' || (!P.aiShown && P.i >= 2) || seedRng(sessionId + P.i).chance(0.34))) t = ai;
     if (!t) t = pickTask(subj, item.skill, lvl, sessionId + ':' + P.i, P.used) || ai;
     return t ? mark(t) : null;
   }
-  function mark(t) { Q[P.i].task = t; P.used.add(t.id); P.used.add(taskKey(t)); if (t.src === 'ai') { const k = subj + '.' + t.skill; S.aiCache[k] = (S.aiCache[k] || []).filter(x => x.id !== t.id); } return t; }
+  function mark(t) { if (t.src === 'ai') P.aiShown = true; Q[P.i].task = t; P.used.add(t.id); P.used.add(taskKey(t)); if (t.src === 'ai') { const k = subj + '.' + t.skill; S.aiCache[k] = (S.aiCache[k] || []).filter(x => x.id !== t.id); } return t; }
 
   async function showTask() {
     /* "similar" mode waits a moment for Gemini's question before falling back */

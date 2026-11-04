@@ -212,7 +212,8 @@ E('resetState(false)');
     if (f.validate) { const m = f.validate('x'.repeat(60)); if (m) keys.add(m); }
   }); });
   const missing = [...keys].filter(k => EN[k] == null);
-  missing.forEach(k => fail('English UI: no translation for ' + JSON.stringify(k)));
+  missing.forEach(k => fail("English UI: no translation for " + JSON.stringify(k)));
+  if (process.env.MISSING_OUT) require("fs").writeFileSync(process.env.MISSING_OUT, JSON.stringify(missing, null, 1));
   E("S.settings.lang = 'en'");
   if (E("L('Начало')") !== 'Home' || E("L('Губиш ≈ {a} от {b} т.', { a: 3, b: 66 })") !== 'You lose ≈ 3 of 66 pts') fail('English UI: L() does not translate');
   E("S.settings.lang = 'bg'");

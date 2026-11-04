@@ -18,7 +18,7 @@ try { vm.runInContext(files.map(f => fs.readFileSync(f, 'utf8')).join('\n;\n'), 
 const SK = { bnd: 'gram', fss: 'gram', trn: 'gram', wic: 'vocab', cid: 'read', inf: 'read', tsp: 'read', ctc: 'read', coet: 'read' };   /* conventions and transitions = grammar, words in context = vocabulary, ideas / inference / structure = reading (data tables and quantitative evidence are left out: they need a table or chart) */
 for (const { sk, set, i, q } of ctx.items) {
   const skill = SK[sk]; if (!skill || !Array.isArray(q.o) || q.o.length !== 4 || !Number.isInteger(q.a)) continue;
-  const prompt = (q.ps ? q.ps.replace(/______/g, '\\_\\_\\_\\_\\_\\_') + '\n\n' : '') + (q.p || '');
+  const prompt = (q.ps ? q.ps.replace(/_{3,}/g, '………') + '\n\n' : '') + (q.p || '');
   out.push({ id: `bb:${set}:${i}`, skill, level: q.d || 2, type: 'choice', prompt, options: q.o, answer: q.a, explain: q.x || '', from: 'BrainBurst' });
 }
 /* BandUP synonyms: "Which word is closest in meaning to X?" with three other synonyms' answers as distractors */
