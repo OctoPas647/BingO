@@ -59,3 +59,4 @@
 ## Bugs
 - Test flakiness in `tests/fixes.py` is fixed: fixed sleeps, shared browser state, random diagnostic retries, and brittle timing assumptions were replaced with isolated contexts, condition-based waits, and `?testSeed=` scenarios.
 - The suite now reports failed checks and page errors clearly, saves a screenshot for each failing test, and exits 0 only when all checks pass.
+- Fixed in this branch: the AI-hint translation key was restored to `✦ Подсказка`, matching its English entry; demo/restore and Liquid-glass tests now wait on app state or navigate after reload instead of assuming a settings control is already visible.

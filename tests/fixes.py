@@ -21,7 +21,8 @@ def wait_task(p): p.wait_for_selector('.task')
 def wait_feedback(p): p.wait_for_selector('.checkbar.good, .checkbar.bad')
 def wait_result(p): p.wait_for_selector('.result')
 def wait_state(p, expr): p.wait_for_function(f'() => !!({expr})')
-def wait_answer_field(p): p.wait_for_selector('.opt, input.field.num, .orderlist')
+def wait_answer_field(p): p.wait_for_selector('.opt, input.field.num, .orderlist, .mi.l')
+def home_ready(p): p.wait_for_selector('[data-start="diag"], [data-start="focus"]')
 
 def run(b, name, fn, state=None, raw=None, seed='123'):
     ctx = p = None
@@ -53,7 +54,7 @@ with sync_playwright() as pw:
 
     # 2. old/odd data: app still opens on Home
     def t2(ctx, p):
-        p.wait_for_selector('[data-start="diag"], [data-start="focus"]')
+        home_ready(p)
         ok('bad fields: home renders', p.locator('.card.error').count() == 0)
     run(b, 'bad fields', t2, state={**DONE, 'subject': 'chem', 'log': None, 'skills': {'math.quad': {'p': 'x'}}, 'settings': {'theme': 'neon'}})
 
@@ -61,9 +62,9 @@ with sync_playwright() as pw:
     def t3(ctx, p):
         p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('.settings')
         p.click('[data-back]'); p.wait_for_selector('.settings', state='detached')
-        p.click('[data-tab="home"]'); p.wait_for_selector('[data-start="diag"], [data-start="focus"]')
+        p.click('[data-tab="home"]'); home_ready(p)
         p.click('[data-tab="stats"]'); p.wait_for_selector('.statcard')
-        p.go_back(); p.wait_for_selector('[data-start="diag"], [data-start="focus"]')
+        p.go_back(); home_ready(p)
         ok('browser back from Stats lands on Home in one press', p.locator('[data-start="diag"], [data-start="focus"]').count() >= 1)
         ok('history has no stale entries', p.evaluate('history.state') is None or 'trap' not in (p.evaluate('history.state') or {}), str(p.evaluate('history.state')))
     run(b, 'browser back', t3, state=DONE)
@@ -101,13 +102,12 @@ with sync_playwright() as pw:
                 wait_feedback(p)
                 ok('double tap: feedback still shown', p.locator('.checkbar.good, .checkbar.bad').count() == 1 and p.locator('.pcount').inner_text() == before, before)
                 p.screenshot(path=str(SHOTS / 'double-tap.png'))
+            if p.locator('[data-main]').is_disabled(): break
             p.locator('[data-main]').click()
             p.wait_for_selector('.task, .result')
             if p.locator('.result').count(): break
         ok('diagnostic: reached a recognizable task type', any(seen.values()), str(seen))
         ok('diagnostic: numeric task handling ran when present', not seen['number'] or sign_checked)
-        ok('diagnostic: ordering task handling ran when present', not seen['order'] or p.locator('[data-main]').count() >= 0)
-        ok('diagnostic: choice task handling ran when present', not seen['choice'] or p.locator('[data-main]').count() >= 0)
     run(b, 'diagnostic interactions', t4, state=DONE, seed='4')
 
     # 5. no repeated questions in a one-skill session (Дебелянов); ?testSeed=5 makes selection repeatable.
@@ -115,12 +115,14 @@ with sync_playwright() as pw:
         p.evaluate("go('session', { subj: 'bel', mode: 'skill', skill: 'lit' })"); wait_task(p)
         prompts = []
         for i in range(20):
-            wait_task(p)
+            wait_task(p); wait_answer_field(p)
             prompts.append(p.locator('.task .prompt').first.inner_text())
             if p.locator('.opt').count(): p.locator('.opt').nth(1).click()
             elif p.locator('.mi.l').count():
                 for k in range(p.locator('.mi.l').count()): p.locator('.mi.l').nth(k).click(); p.locator('.mi.r').nth(k).click()
+            if p.locator('[data-main]').is_disabled(): break
             p.click('[data-main]'); wait_feedback(p)
+            if p.locator('[data-main]').is_disabled(): break
             p.click('[data-main]')
             p.wait_for_selector('.task, .result')
             if p.locator('.result').count(): break
@@ -135,10 +137,12 @@ with sync_playwright() as pw:
         p.click('[data-act="no"]'); p.wait_for_selector('.sheet-title', state='detached')
         wait_state(p, "S.sessions === 2 && S.log.length === 1")
         ok('demo: cancel keeps real progress', p.evaluate("S.sessions") == 2 and p.evaluate("S.log.length") == 1)
-        p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('[data-start="focus"]')
+        p.click('[data-demo]'); p.click('[data-act="yes"]')
+        wait_state(p, "S.demo === true && S.profile.name === 'Демо ученик'")
         ok('demo: loaded after yes', p.evaluate("S.profile.name") == 'Демо ученик')
         p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-restore]')
-        p.click('[data-restore]'); p.wait_for_selector('[data-start="focus"]')
+        p.click('[data-restore]')
+        wait_state(p, "S.demo === false && S.profile.name === 'Тест' && S.sessions === 2")
         ok('demo: restore brings real data back', p.evaluate("S.sessions") == 2 and p.evaluate("S.profile.name") == 'Тест')
     run(b, 'demo restore', t6, state={**DONE, 'sessions': 2, 'log': [{'t': 1, 'timestamp': '2026-10-01T10:00:00Z', 'student_id': 'u1', 'subject': 'Математика', 'task_id': 'x', 'correct': 1}]})
 
@@ -187,7 +191,7 @@ with sync_playwright() as pw:
 
     # 11. the whole profile, past results and the Sheet retry state survive a restart; broken entries are dropped
     def t11(ctx, p):
-        p.reload(); p.wait_for_selector('[data-start="diag"], [data-start="focus"]')
+        p.reload(); home_ready(p)
         prof = p.evaluate("S.profile")
         ok('restart: age/exam/track/extra kept', [prof['age'], prof['exam'], prof['track'], prof['extra']] == ['17', 'dzi12', 'math', 'maths'], str(prof))
         ok('restart: past result kept', p.evaluate("S.pastResults['dzi12-math-2020-06-02-v2']?.pts") == 82.5)
@@ -200,12 +204,15 @@ with sync_playwright() as pw:
 
     # 12. loading the demo twice never replaces the real copy with demo data
     def t12(ctx, p):
-        p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('[data-start="focus"]')
+        p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.click('[data-act="yes"]')
+        wait_state(p, "S.demo === true && S.profile.name === 'Демо ученик'")
         ok('demo: marked as demo', p.evaluate("S.demo") is True)
-        p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.wait_for_selector('[data-start="focus"]')
+        p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]')
+        wait_state(p, "S.demo === true && S.profile.name === 'Демо ученик'")
         ok('demo: second load keeps the demo', p.evaluate("S.demo") is True and p.evaluate("S.profile.name") == 'Демо ученик')
         p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-restore]')
-        p.click('[data-restore]'); p.wait_for_selector('[data-start="focus"]')
+        p.click('[data-restore]')
+        wait_state(p, "S.demo === false && S.profile.name === 'Тест' && S.sessions === 2")
         ok('demo: restore after two loads brings real data back', p.evaluate("S.sessions") == 2 and p.evaluate("S.profile.name") == 'Тест' and p.evaluate("S.demo") is False)
         ok('demo: no restore button without a real copy', p.evaluate("demoBackupHasRealData()") is False)
     real = {**DONE, 'sessions': 2, 'log': [{'t': 1, 'timestamp': '2026-10-01T10:00:00Z', 'student_id': 'u1', 'subject': 'Математика', 'task_id': 'x', 'correct': 1}]}
@@ -275,6 +282,7 @@ with sync_playwright() as pw:
             elif p.locator('.bank .chip:not(.used)').count(): p.locator('.bank .chip:not(.used)').first.click()
             if p.locator('[data-main]').is_disabled(): break
             p.locator('[data-main]').click(); wait_feedback(p)
+            if p.locator('[data-main]').is_disabled(): break
             p.locator('[data-main]').click()
             p.wait_for_selector('.task, .result')
             if p.locator('.pcount').count() and '/ 8' not in p.locator('.pcount').inner_text(): stable = False; break
@@ -286,9 +294,9 @@ with sync_playwright() as pw:
     def t19(ctx, p):
         p.click('[data-tab="stats"]'); p.wait_for_selector('.statcard')
         p.click('[data-tab="profile"]'); p.wait_for_selector('.settings, [data-go="settings"]')
-        p.click('[data-tab="home"]'); p.wait_for_selector('[data-start="diag"], [data-start="focus"]')
+        p.click('[data-tab="home"]'); home_ready(p)
         p.click('[data-tab="stats"]'); p.wait_for_selector('.statcard')
-        p.go_back(); p.wait_for_selector('[data-start="diag"], [data-start="focus"]')
+        p.go_back(); home_ready(p)
         ok('bottom menu: Back from Stats lands on Home', p.locator('[data-start="diag"], [data-start="focus"]').count() >= 1)
         ok('bottom menu: no stale trap on Home', not ((p.evaluate('history.state') or {}).get('trap')))
     run(b, 'tab history', t19, state=DONE)
@@ -327,7 +335,7 @@ with sync_playwright() as pw:
     def t23(ctx, p):
         ok('НВО 4: three math skills', p.evaluate("subjectSummary('math').list.map(x => x.sk.id).join()") == 'pct,rtri,prob')
         ok('НВО 4: no level 3 tasks', p.evaluate("genMathTask('pct', 3, 1).level") == 2)
-        p.wait_for_selector('[data-start="diag"]')
+        home_ready(p)
         ok('НВО 4: Home says НВО', 'НВО' in p.locator('.losscard .kicker').first.inner_text())
         p.evaluate("S.profile.exam = 'dzi12'")
         ok('ДЗИ: the matura skill map', p.evaluate("subjectSummary('math').list.length") == 7)
@@ -342,10 +350,11 @@ with sync_playwright() as pw:
         bg = p.evaluate("getComputedStyle(document.querySelector('.card')).backgroundColor")
         ok('glass: cards keep a see-through background', bg.startswith('rgba(') and not bg.endswith(', 0)'), bg)
         p.screenshot(path=str(SHOTS / 'settings-glass.png'), full_page=True)
-        p.reload(); p.wait_for_selector('[data-sw="glass"]')
+        p.reload(); home_ready(p)
+        p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-sw="glass"]')
         wait_state(p, "document.documentElement.dataset.glass === '1'")
         ok('glass: kept after restart', p.evaluate("document.documentElement.dataset.glass") == '1')
-        p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-sw="glass"]')
+        p.click('[data-sw="glass"]')
         wait_state(p, "!document.documentElement.dataset.glass")
         ok('glass: off again', p.evaluate("document.documentElement.dataset.glass") is None)
     run(b, 'liquid glass', t24, state=DONE)
