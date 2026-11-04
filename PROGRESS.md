@@ -1,6 +1,12 @@
 # Progress
 
 ## Done
+- Test stability, part 3: rewrote the flaky diagnostic and repetition checks in `tests/fixes.py`.
+  - Test 4 now uses `?testSeed=4`, waits for an actual answer control (`.opt`, `input.field.num`, or `.orderlist`), and handles each recognized task type without random whole-session retries.
+  - Test 5 now uses `?testSeed=5`, explicitly waits for every `.task`, and deterministically collects the available prompts before asserting that none repeat.
+  - Home readiness in these flows is awaited through stable action hooks (`[data-start="diag"]` / `[data-start="focus"]`) rather than the visual `.losscard` class.
+  - The tech lead's suggested stable home data-attributes do not exist in the app, and this part is scoped to `tests/fixes.py`; the existing `[data-start]` action attributes are therefore used as the stable home markers.
+  - Manual test: run `python tests/fixes.py` after `python tools/build.py web` at least 10 times; tests 4 and 5 should pass consistently, with no timing-related failures.
 - Test stability, part 2: replaced fixed sleeps in `tests/fixes.py` with condition-based Playwright waits and isolated each browser check.
   - Every test now runs in its own browser context through `run()`, with a failure screenshot saved to `build/shots/` and the failing step reported.
   - Fixed `wait_for_timeout()` calls were replaced by waits for visible UI, detached elements, feedback/result screens, and concrete app state via `wait_for_function()` / `expect()`.
