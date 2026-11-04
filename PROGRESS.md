@@ -2,11 +2,12 @@
 
 ## Done
 - **Профилът на ученика се губи при всяко рестартиране** (part 1: state sanitization).
-  - Fix: `sanitizeState()` in `src/js/50-state.js` now preserves the full student profile (`name`, `cls`, `age`, `exam`, `track`, `extra`, `id`) and valid `pastResults` when loading saved state.
+  - Fix: `sanitizeState()` in `src/js/50-state.js` preserves the full student profile (`name`, `cls`, `age`, `exam`, `track`, `extra`, `id`) and valid `pastResults` when loading saved state.
   - Rationale: the old code rebuilt the profile with only `name`, `cls` and `id`, so `age`, `exam`, `track` and `extra` were dropped on every restart and the exam plan became wrong; `pastResults` was not copied either.
   - Safe fallbacks: invalid `age` becomes `''`, unknown `exam` becomes `''`, unknown `track`/`extra` become `''`, and only well-formed `pastResults` entries (`pts`, `max`, `at` as finite numbers) are kept, so a broken save cannot break startup.
   - Files changed: `src/js/50-state.js`.
   - Automated test: check 11 in `tests/fixes.py` seeds a full profile and a past-exam result, reloads, and asserts `S.profile` and `S.pastResults` keep their values.
+- **0.6.0** (claude/ios-redesign-ai-matura): iOS redesign with Liquid glass as the navigation layer and spring motion (zz-ios.css, 68-motion.js); no typed API key anywhere — Gemini through BingO's server, key only on the server; Gemini Nano on the device (54c-nano.js, NanoBridge.java, Gradle build with ML Kit GenAI); every matura from МОН's PDFs (tools/import_dzi.py, content/subjects.json) and an English bank from BrainBurst/BandUp; every past-exam question in training (66b-past-bank.js); four options on every closed question; math topics Функции/Тригонометрия/Планиметрия/Статистика with MON-style generators; second try, "Не знам", mistake review and "Тренирай подобни" (61-session.js, 61b-review.js). Checks: tools/check.js 0 problems; tests fixes.py 71/71, play.py and ai_mock.py clean; Gradle APK builds.
 - Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
   - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
   - Scope: UI only. Questions, answer options, solutions, explanations and rubrics stay in their original language.
@@ -18,6 +19,11 @@
 
 ## Decisions
 - Profile persistence: fix lives in `src/js/50-state.js`, not in `engine/` (engine is a vendored copy of Shelly and would be overwritten on resync). `track` and `extra` use id-pattern checks because `TRACKS` loads after `50-state.js`.
+- AI key: never in the app or the public web page (the repo, the APK and the web page are public). The app calls `BINGO_AI_SERVER/generate`; the server holds `GEMINI_API_KEY` (Secret Manager) or uses Vertex AI. Per-IP limits on the server.
+- Liquid glass is for the navigation layer only (bars, tab bar, answer bar, sheets, toasts); content stays on solid grouped surfaces, as in iOS 26. On by default; Settings can turn it off.
+- Official three-option questions get a 4th option that is never right ("none of these" or a near number) and are marked `added: [3]`; true/false items are left as they are.
+- Imported questions that need a picture, map, diagram or audio are skipped; language exams keep only the reading part.
+- The second try does not change the skill map: the first answer counts.
 - Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
 - Skill progress is kept per exam (`math.quad@nvo7`). Keys without an exam move to the current exam the first time they are read (`skillState` in 51-skills.js); the demo learner writes keys for the current exam.
@@ -30,6 +36,10 @@
 - Firestore: only staff read /questions (it holds correctAnswer); students get questions from `startAttempt`.
 
 ## Left
+- Deploy `server/` on Cloud Run with the Gemini key and set the `BINGO_AI_SERVER` GitHub variable (until then the app runs without cloud AI; Gemini Nano still works on phones/browsers that have it).
+- Try Gemini Nano on the Xiaomi 17 Ultra: its Bulgarian may be weak; it is only used for hints, first estimates and checks.
+- More of the Drive folder: only the newest 4 exams per subject were imported (≈70 of ≈230 PDFs); run tools/import_dzi.py on the rest.
+- Topic tagging of imported questions is by keywords; a teacher could check it.
 - Exams the bot could not upload (its branches held placeholder text, nothing was taken): НВО 4 БЕЛ 2007–2016, ДЗИ Математика (общообразователна) 2022-08, English НВО 10 Математика 2025 and 2026, integrated НВО 10 samples (БЕЛ, математика).
 - НВО 4 Математика 2007–2016: 25 drawing questions are missing (2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14; 2013 q9 and q17; 2014 q13,14,15; 2015 q9 and q17; 2016 q13,14,18), and the formulas rebuilt from the key (2012 q9, 2013 q9 and q17, 2015 q9 and q17) should be checked against the PDFs.
 - The website upload in the Build workflow fails: curl cannot verify the FTP server's certificate (exit code 60). The FTP_HOST secret must be a host name the server's certificate is issued for. The APK and the GitHub release are not affected.
