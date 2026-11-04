@@ -1,43 +1,23 @@
 /* ================= Gemini: explain a mistake, hint without the answer, new tasks, weekly plan =================
-   Two ways to reach Gemini:
-   - 'key'   : straight to the Gemini API with a key from Google AI Studio (fine for a prototype on your own device)
-   - 'proxy' : through our small Cloud Run server, which calls Gemini on Vertex AI with the team's
-               Google Cloud credits, so no key ever reaches the phone (see server/).
-   The app works fully without AI; AI only adds explanations and new tasks. */
+   AI requests always go through BingO's server-side proxy at SERVER_AI_URL + '/api/ai/generate'.
+   The browser never stores, sends, or sees a Gemini/Vertex credential; the server supplies it from
+   its own environment. The app works fully without AI; AI only adds explanations and new tasks. */
 
-const aiOn = () => (S.settings.aiMode === 'key' && !!S.settings.apiKey) || (S.settings.aiMode === 'proxy' && !!S.settings.proxyUrl);
+const aiOn = () => !!SERVER_AI_URL;
 
-const AI_SYSTEM = `Ти си търпелив учител, който подготвя български ученици за държавния зрелостен изпит (ДЗИ).
-Пишеш на правилен български език, кратко и ясно, без излишни похвали и без да обвиняваш ученика.
-Математиката пишеш в LaTeX между знаци $...$, с десетична запетая ($2{,}5$).
-Никога не измисляш факти. Ако не си сигурен, казваш го.`;
+const AI_SYSTEM = `Ти си търпелив учител, който подготвя български ученици за държавния зрелостен изпит (ДЗИ).\nПишеш на правилен български език, кратко и ясно, без излишни похвали и без да обвиняваш ученика.\nМатематиката пишеш в LaTeX между знаци $...$, с десетична запетая ($2{,}5$).\nНикога не измисляш факти. Ако не си сигурен, казваш го.`;
 
 async function callAI({ system = AI_SYSTEM, prompt, json = true, temperature = 0.4 }) {
   if (!aiOn()) throw new Error('ИИ е изключен');
   const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 30000);
   try {
-    let text;
-    if (S.settings.aiMode === 'proxy') {
-      const res = await fetch(S.settings.proxyUrl.replace(/\/+$/, '') + '/generate', {
-        method: 'POST', signal: ctrl.signal, headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: S.settings.model, system, prompt, json, temperature })
-      });
-      if (!res.ok) throw new Error('Сървърът върна ' + res.status);
-      text = (await res.json()).text;
-    } else {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(S.settings.model)}:generateContent`, {
-        method: 'POST', signal: ctrl.signal,
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': S.settings.apiKey },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: system }] },
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { temperature, ...(json ? { responseMimeType: 'application/json' } : {}) }
-        })
-      });
-      const body = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error((body.error && body.error.message) || ('Gemini върна ' + res.status));
-      text = (body.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('');
-    }
+    const res = await fetch(SERVER_AI_URL.replace(/\/+$/, '') + '/api/ai/generate', {
+      method: 'POST', signal: ctrl.signal, headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: S.settings.model, system, prompt, json, temperature })
+    });
+    if (!res.ok) throw new Error('Сървърът върна ' + res.status);
+    const body = await res.json();
+    const text = body.text;
     if (!json) return text;
     return parseJSON(text);
   } finally { clearTimeout(timer); }
@@ -70,22 +50,13 @@ function taskForAI(task, subj, resp) {
 /* 1. Why was this wrong? */
 async function aiExplainMistake(subj, task, resp, misc) {
   const sk = skillDef(subj, task.skill);
-  const prompt = `${taskForAI(task, subj, resp)}
-Умение: ${sk ? sk.name : task.skill}
-${misc ? `Вероятна типична грешка: ${miscLabel(misc)}` : ''}
-
-Ученикът е сгрешил. Обясни **какво точно е объркал в мисленето си** (не само кой е верният отговор).
-Върни JSON: {"diagnosis": "грешката с до 8 думи", "explanation": "2–4 изречения, конкретно за неговия отговор", "check": "един кратък въпрос, с който сам да провери дали е разбрал"}`;
+  const prompt = `${taskForAI(task, subj, resp)}\nУмение: ${sk ? sk.name : task.skill}\n${misc ? `Вероятна типична грешка: ${miscLabel(misc)}` : ''}\n\nУченикът е сгрешил. Обясни **какво точно е объркал в мисленето си** (не само кой е верният отговор).\nВърни JSON: {"diagnosis": "грешката с до 8 думи", "explanation": "2–4 изречения, конкретно за неговия отговор", "check": "един кратък въпрос, с който сам да провери дали е разбрал"}`;
   return callAI({ prompt, temperature: 0.3 });
 }
 
 /* 2. A hint that does not give the answer away */
 async function aiHint(subj, task) {
-  const t2 = { ...task }; const prompt = `${taskForAI(t2, subj, null)}
-
-Ученикът още не е отговорил и иска подсказка. Дай **една** насочваща подсказка: кое правило или първа стъпка да приложи.
-НЕ казвай верния отговор, НЕ изключвай отговори и НЕ решавай задачата докрай.
-Върни JSON: {"hint": "1–2 изречения"}`;
+  const t2 = { ...task }; const prompt = `${taskForAI(t2, subj, null)}\n\nУченикът още не е отговорил и иска подсказка. Дай **една** насочваща подсказка: кое правило или първа стъпка да приложи.\nНЕ казвай верния отговор, НЕ изключвай отговори и НЕ решавай задачата докрай.\nВърни JSON: {"hint": "1–2 изречения"}`;
   return callAI({ prompt, temperature: 0.4 });
 }
 
@@ -97,16 +68,7 @@ async function aiNewTask(subj, skill, level, seed) {
   const examples = (subj === 'math' ? [genMathTask(skill, level, seed + 'x')] : BANK[subj].filter(t => t.skill === skill).slice(0, 2))
     .map(t => JSON.stringify({ prompt: t.prompt, options: t.options, answer: t.answer, explain: t.explain }));
   const lit = skill === 'lit' ? '\nЗадачата е по поезията на Димчо Дебелянов от учебната програма за 11–12 клас (напр. „Да се завърнеш в бащината къща“, „Помниш ли, помниш ли…“, „Сиротна песен“). Питай само за неща, в които си напълно сигурен (теми, мотиви, образи), не за дати и цитати.' : '';
-  const prompt = `Създай **една нова** задача с избираем отговор за ДЗИ по ${SUBJECTS[subj].title}.
-Умение: ${sk.name}. Трудност: ${level} от 3.${lit}
-Ученикът най-често греши така: ${miscs.length ? miscs.map(miscLabel).join('; ') : 'още не знаем'}.
-Направи грешните отговори така, че всеки да идва от една от тези типични грешки: ${known.map(k => `"${k}" (${miscLabel(k)})`).join(', ') || 'обичайни грешки'}.
-Примери за формата (не ги повтаряй): ${examples.join('\n')}
-
-Върни JSON точно така:
-{"prompt": "условието", "options": ["А", "Б", "В", "Г"], "answer": индекс на верния (0–3),
- "misc": [за всеки отговор: null за верния, иначе кодът на грешката от списъка],
- "explain": "кратко решение"}`;
+  const prompt = `Създай **една нова** задача с избираем отговор за ДЗИ по ${SUBJECTS[subj].title}.\nУмение: ${sk.name}. Трудност: ${level} от 3.${lit}\nУченикът най-често греши така: ${miscs.length ? miscs.map(miscLabel).join('; ') : 'още не знаем'}.\nНаправи грешните отговори така, че всеки да идва от една от тези типични грешки: ${known.map(k => `"${k}" (${miscLabel(k)})`).join(', ') || 'обичайни грешки'}.\nПримери за формата (не ги повтаряй): ${examples.join('\n')}\n\nВърни JSON точно така:\n{"prompt": "условието", "options": ["А", "Б", "В", "Г"], "answer": индекс на верния (0–3),\n "misc": [за всеки отговор: null за верния, иначе кодът на грешката от списъка],\n "explain": "кратко решение"}`;
   const j = await callAI({ prompt, temperature: 0.8 });
   const ok = j && typeof j.prompt === 'string' && Array.isArray(j.options) && j.options.length >= 2 && j.options.length <= 5 && j.options.every(o => typeof o === 'string' && o.trim())
     && Number.isInteger(j.answer) && j.answer >= 0 && j.answer < j.options.length && new Set(j.options).size === j.options.length;
@@ -124,10 +86,6 @@ async function aiNewTask(subj, skill, level, seed) {
 async function aiWeekPlan(subj) {
   const sm = subjectSummary(subj);
   const lines = sm.list.map(x => `- ${x.sk.name}: овладяно ${Math.round(x.st.p * 100)}%, отговори ${x.st.n}, губи ≈${fmtNum(roundTo(x.lost, 1), 'bg', 1)} т., чести грешки: ${Object.entries(x.st.misc).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k, n]) => miscLabel(k) + ' ×' + n).join('; ') || 'няма'}`).join('\n');
-  const prompt = `Карта на уменията на ученик за ДЗИ по ${SUBJECTS[subj].title}:
-${lines}
-
-Направи план за следващите 5 дни по 20 минути. Правило: работим **само върху слабите места**; силните не повтаряме.
-Върни JSON: {"summary": "2 изречения: къде губи най-много точки и защо", "days": [{"day": "Ден 1", "focus": "умение", "do": "какво точно да прави", "why": "защо"}]}`;
+  const prompt = `Карта на уменията на ученик за ДЗИ по ${SUBJECTS[subj].title}:\n${lines}\n\nНаправи план за следващите 5 дни по 20 минути. Правило: работим **само върху слабите места**; силните не повтаряме.\nВърни JSON: {"summary": "2 изречения: къде губи най-много точки и защо", "days": [{"day": "Ден 1", "focus": "умение", "do": "какво точно да прави", "why": "защо"}]}`;
   return callAI({ prompt, temperature: 0.4 });
 }
