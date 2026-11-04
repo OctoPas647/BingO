@@ -168,28 +168,53 @@ const levelFor = p => {
 };
 
 /* ---------- НВО 4, 7 and 10 ----------
-   When the learner's exam (from the setup or Profile) is an НВО, mathematics uses that grade's
-   skills and weights instead of the matura's, and difficulty rises at that grade's pace: НВО 4
-   stays easier for longer (and never gets level 3, see 52-math.js), НВО 10 moves on sooner.
-   The tasks still come from the same generators; grade-specific tasks can be added later.
-   The weights are planning estimates, like the matura's, to be checked against МОН's specification. */
+   Each НВО grade has its own mathematics taxonomy. The IDs are unique and separate from the
+   matura skill IDs, so progress, weak spots and future task generators can be grade-specific.
+   `gen` is a temporary compatibility alias to an existing matura generator until dedicated
+   НВО generators are added; it does not change the matura profile. */
+const NVO_MATH_SKILLS = {
+  4: [
+    { id: 'nvo4_num', name: 'Числа и изчисления', weight: 18, gen: 'pow' },
+    { id: 'nvo4_frac', name: 'Дроби и десетични числа', weight: 18, gen: 'pct' },
+    { id: 'nvo4_pct', name: 'Проценти в ежедневни ситуации', weight: 16, gen: 'pct' },
+    { id: 'nvo4_geo', name: 'Геометрични фигури и измервания', weight: 22, gen: 'rtri' },
+    { id: 'nvo4_data', name: 'Данни, таблици и вероятности', weight: 16, gen: 'prob' },
+    { id: 'nvo4_text', name: 'Текстови задачи', weight: 10, gen: 'lin' }
+  ],
+  7: [
+    { id: 'nvo7_rational', name: 'Рационални числа и степени', weight: 14, gen: 'pow' },
+    { id: 'nvo7_expr', name: 'Алгебрични изрази', weight: 12, gen: 'pow' },
+    { id: 'nvo7_eq', name: 'Уравнения и неравенства', weight: 18, gen: 'lin' },
+    { id: 'nvo7_quad', name: 'Квадратни уравнения', weight: 14, gen: 'quad' },
+    { id: 'nvo7_pct', name: 'Проценти и пропорции', weight: 12, gen: 'pct' },
+    { id: 'nvo7_geo', name: 'Геометрични фигури и триъгълници', weight: 16, gen: 'rtri' },
+    { id: 'nvo7_stat', name: 'Статистика и вероятности', weight: 14, gen: 'prob' }
+  ],
+  10: [
+    { id: 'nvo10_alg', name: 'Алгебрични изрази и степени', weight: 14, gen: 'pow' },
+    { id: 'nvo10_eq', name: 'Уравнения, неравенства и системи', weight: 18, gen: 'quad' },
+    { id: 'nvo10_func', name: 'Функции и графики', weight: 16, gen: 'lin' },
+    { id: 'nvo10_seq', name: 'Прогресии', weight: 12, gen: 'prog' },
+    { id: 'nvo10_geo', name: 'Геометрия и тригонометрия', weight: 20, gen: 'rtri' },
+    { id: 'nvo10_stat', name: 'Статистика и вероятности', weight: 12, gen: 'prob' },
+    { id: 'nvo10_text', name: 'Приложни и текстови задачи', weight: 8, gen: 'pct' }
+  ]
+};
+
+/* Difficulty pace and maximum level remain grade-specific. */
 const NVO_PROFILES = {
   math: {
-    4: { levels: { weak: 0.5, mid: 0.8 }, maxLevel: 2, skills: [
-      { id: 'pct', name: 'Проценти', weight: 14 }, { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prob', name: 'Вероятности', weight: 10 }] },
-    7: { levels: { weak: 0.4, mid: 0.7 }, maxLevel: 3, skills: [
-      { id: 'quad', name: 'Квадратни уравнения', weight: 12 }, { id: 'pct', name: 'Проценти', weight: 10 }, { id: 'pow', name: 'Степени и корени', weight: 10 },
-      { id: 'lin', name: 'Линейни неравенства', weight: 10 }, { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prog', name: 'Аритметична прогресия', weight: 8 },
-      { id: 'prob', name: 'Вероятности', weight: 8 }] },
-    10: { levels: { weak: 0.35, mid: 0.65 }, maxLevel: 3, skills: [
-      { id: 'quad', name: 'Квадратни уравнения', weight: 14 }, { id: 'pow', name: 'Степени и корени', weight: 12 }, { id: 'lin', name: 'Линейни неравенства', weight: 12 },
-      { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prog', name: 'Аритметична прогресия', weight: 10 }, { id: 'prob', name: 'Вероятности', weight: 10 }] }
+    4: { levels: { weak: 0.5, mid: 0.8 }, maxLevel: 2, skills: NVO_MATH_SKILLS[4] },
+    7: { levels: { weak: 0.4, mid: 0.7 }, maxLevel: 3, skills: NVO_MATH_SKILLS[7] },
+    10: { levels: { weak: 0.35, mid: 0.65 }, maxLevel: 3, skills: NVO_MATH_SKILLS[10] }
   }
 };
 /* '4' | '7' | '10' when the learner prepares for an НВО, otherwise null (ДЗИ 12) */
 const nvoGrade = () => ({ nvo4: '4', nvo7: '7', nvo10: '10' })[S.profile && S.profile.exam] || null;
 /* the skills trained for a subject: the НВО grade's for mathematics, otherwise the matura's */
 function skillList(subj) {
-  const g = nvoGrade(), prof = g && NVO_PROFILES[subj] && NVO_PROFILES[subj][g];
+  const g = nvoGrade();
+  if (subj === 'math' && g && NVO_MATH_SKILLS[g]) return NVO_MATH_SKILLS[g];
+  const prof = g && NVO_PROFILES[subj] && NVO_PROFILES[subj][g];
   return prof ? prof.skills : SUBJECTS[subj].skills;
 }
