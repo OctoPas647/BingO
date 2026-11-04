@@ -30,6 +30,13 @@ BingO мери всяко умение от матурата поотделно,
 | **Google Sheets + Apps Script** | всеки отговор става ред в таблицата на учителя | `apps-script/Code.gs`, `src/js/55-sync.js` |
 | **Looker Studio** | табло за учителя върху таблицата | виж по-долу |
 
+### 0. Вграден ключ (ИИ работи за всички веднага)
+Ключът **никога** не влиза в кода. При сглобяване `tools/build.py` го взима от:
+- GitHub Actions: secret **`GEMINI_API_KEY`** (Settings → Secrets and variables → Actions);
+- твоя компютър: файл `tools/ai-key.txt` (в `.gitignore`, не се качва).
+
+С вграден ключ Gemini е включен по подразбиране; ученикът може да го изключи или да сложи свой ключ в Настройки. Внимание: ключът е вътре в APK-то и уеб страницата, така че може да бъде извлечен — сложи лимит на разходите в [AI Studio](https://ai.studio/projects).
+
 ### 1. Gemini с API ключ (най-бързо, за демото)
 1. Вземи ключ от [Google AI Studio](https://aistudio.google.com/).
 2. BingO → Настройки → Gemini → **API ключ** → постави ключа → „Провери връзката“.

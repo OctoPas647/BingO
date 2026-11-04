@@ -60,6 +60,8 @@ jobs:
           fi
 
       - name: Build APK and web page
+        env:
+          BINGO_GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python3 tools/build.py android
           python3 tools/build.py web

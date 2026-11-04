@@ -7,10 +7,14 @@ const APP_NAME_UI = 'BingO';
 /* Shelly's 20-ui.js reads APP.settings (theme, sound, motion, lang) */
 let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, shuffle: false }, xp: 0, days: {} };
 
+/* The Gemini key the build ships with (tools/build.py, ai_key): with it, AI works for everyone
+   without any setup. A learner's own key in Settings is used instead when there is one. */
+const BUILTIN_AI_KEY = typeof globalThis.BINGO_BUILTIN_AI_KEY === 'string' ? globalThis.BINGO_BUILTIN_AI_KEY : '';
+
 const DEFAULT_STATE = () => ({
   v: 1,
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
-  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', glass: false, sound: true, lang: 'bg' },
+  settings: { aiMode: BUILTIN_AI_KEY ? 'key' : 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', glass: false, sound: true, lang: 'bg' },
   subject: 'math',
   demo: false,           /* true while the simulated demo learner is loaded (56-demo.js) */
   skills: {},            /* "math.quad@dzi12" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] }: one map per exam */
@@ -21,7 +25,8 @@ const DEFAULT_STATE = () => ({
   review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
   onboarding: null,      /* first-run setup progress (58-onboarding.js) */
   aiFlags: [],           /* AI-made tasks a learner reported as wrong */
-  pastResults: {}        /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  pastResults: {},       /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  aiDefaulted: !!BUILTIN_AI_KEY /* AI was switched on once for this install because the build has a key */
 });
 
 let S = DEFAULT_STATE();
@@ -98,6 +103,9 @@ function sanitizeState(v) {
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
   out.pastResults = {};
   if (isObj(v.pastResults)) for (const [k, r] of Object.entries(v.pastResults)) { const c = cleanPastResult(r); if (c && k) out.pastResults[k] = c; }
+  /* installs from before the built-in key had AI off: switch it on once, after that the learner's choice stays */
+  out.aiDefaulted = v.aiDefaulted === true;
+  if (BUILTIN_AI_KEY && !out.aiDefaulted) { if (out.settings.aiMode === 'off') out.settings.aiMode = 'key'; out.aiDefaulted = true; }
   /* the Sheet's retry state (55-sync.js): without it a restart forgets failed sends */
   if (isObj(v.sync)) out.sync = { fails: isNum(v.sync.fails) ? Math.max(0, Math.floor(v.sync.fails)) : 0, lastError: isStr(v.sync.lastError) ? v.sync.lastError.slice(0, 200) : '', lastOk: isNum(v.sync.lastOk) ? v.sync.lastOk : 0, unverified: !!v.sync.unverified };
   return out;

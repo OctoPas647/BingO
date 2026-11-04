@@ -121,6 +121,7 @@ const EN_UI = {
 
   /* settings */
   'Език': 'Language', 'Езикът сменя менютата и бутоните. Задачите остават на български.': 'The language changes menus and buttons. Tasks stay in Bulgarian.',
+  'вграденият ключ на BingO': "BingO's built-in key", 'BingO има вграден ключ, така че ИИ работи веднага. Свой ключ тук се ползва вместо него.': 'BingO has a built-in key, so AI works right away. A key of your own here is used instead.',
   'Изключен': 'Off', 'API ключ': 'API key', 'Vertex AI сървър': 'Vertex AI server', 'Gemini API ключ': 'Gemini API key', 'от aistudio.google.com': 'from aistudio.google.com',
   'Ключът стои само на това устройство. За прототип е добре; за истински ученици ползвай сървъра (Vertex AI).': 'The key stays on this device only. Fine for a prototype; for real learners use the server (Vertex AI).',
   'Адрес на сървъра (Cloud Run)': 'Server address (Cloud Run)', 'Модел': 'Model', 'Провери връзката': 'Test the connection',

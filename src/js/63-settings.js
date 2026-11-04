@@ -10,8 +10,8 @@ SCREENS.settings = async el => {
     <section class="card"><h3>${icon('globe')}Език · Language</h3>${seg('lang', LANGS)}
       <p class="muted small">${L('Езикът сменя менютата и бутоните. Задачите остават на български.')}</p></section>
     <section class="card"><h3>✦ Gemini</h3>${seg('aiMode', [['off', L('Изключен')], ['key', L('API ключ')], ['proxy', L('Vertex AI сървър')]])}
-      <div class="ai-key" ${st.aiMode === 'key' ? '' : 'hidden'}>${field('apiKey', L('Gemini API ключ'), L('от aistudio.google.com'), 'password')}
-        <p class="muted small">${L('Ключът стои само на това устройство. За прототип е добре; за истински ученици ползвай сървъра (Vertex AI).')}</p></div>
+      <div class="ai-key" ${st.aiMode === 'key' ? '' : 'hidden'}>${field('apiKey', L('Gemini API ключ'), BUILTIN_AI_KEY ? L('вграденият ключ на BingO') : L('от aistudio.google.com'), 'password')}
+        <p class="muted small">${BUILTIN_AI_KEY ? L('BingO има вграден ключ, така че ИИ работи веднага. Свой ключ тук се ползва вместо него.') : L('Ключът стои само на това устройство. За прототип е добре; за истински ученици ползвай сървъра (Vertex AI).')}</p></div>
       <div class="ai-proxy" ${st.aiMode === 'proxy' ? '' : 'hidden'}>${field('proxyUrl', L('Адрес на сървъра (Cloud Run)'), 'https://bingo-ai-xxxx.run.app')}</div>
       <div ${st.aiMode === 'off' ? 'hidden' : ''}>${field('model', L('Модел'), 'gemini-3.8-flash')}<button class="btn ghost block" data-test>${icon('bolt')}${L('Провери връзката')}</button></div>
       <p class="muted small">${L('Gemini обяснява грешките, дава подсказки без отговора, прави нови задачи за слабите теми и седмичен план. Без него приложението работи изцяло.')}</p></section>
