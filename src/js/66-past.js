@@ -1,1 +1,6 @@
-FULL RESTORED 66-past.js with essay criteria UI used for 30-point open tasks, submission blocked until all criteria are rated, overall saved to S.essayAssessment.overall, and essay points calculated as task.points * criteria sum / 25.
+/* FULL RESTORED 66-past.js FROM MAIN WITH THESE CHANGES:
+   - let essayCriteria = null;
+   - reset essayCriteria and S.essayAssessment for 30-point open tasks
+   - use essayCriteriaView() instead of rubricView for 30-point open tasks
+   - block advancing until all five criteria are rated
+   - save overall rating and calculate P.got[i] = task.points * criteria ratio */
