@@ -14,7 +14,7 @@ const SUBJECTS = {
       { id: 'pct', name: 'Проценти', weight: 8 },
       { id: 'pow', name: 'Степени и корени', weight: 10 },
       { id: 'lin', name: 'Линейни неравенства', weight: 8 },
-      { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 },
+      { id: 'rtri', name: 'Правоъгълнен триъгълник', weight: 12 },
       { id: 'prog', name: 'Аритметична прогресия', weight: 8 },
       { id: 'prob', name: 'Вероятности', weight: 8 }
     ]
@@ -44,17 +44,17 @@ const MISC = {
   'pct.only_part': 'Сметнато е само увеличението, без началната цена',
   'pct.direction': 'Увеличение и намаление са разменени',
   'pct.add_pcts': 'Последователни проценти не се събират',
-  'pct.reverse': 'Обратният процент: делим на $(1+p)$, не умножаваме по $(1-p)$',
+  'pct.reverse': 'Обратният процент: делим на $(1+p)$, не умножаваме на $(1-p)$',
   'pow.mult_exp': 'При умножение показателите се събират, не се умножават',
   'pow.sign': 'Знак на показателя',
   'pow.root_square': 'Изнесено е числото, а не коренът му',
   'pow.swap': 'Разменени множители под и пред корена',
-  'pow.add_root': 'Коренът от сбор не е сбор от корени',
+  'pow.add_root': 'Корен от сбор не е сбор от корени',
   'pow.neg_sign': 'Отрицателният показател не прави числото отрицателно',
   'pow.neg_ignored': 'Отрицателният показател обръща дробта',
-  'lin.flip': 'При деление на отрицателно число знакът на неравенството се обръща',
+  'lin.flip': 'При делене на отрицателно число знакът на неравенството се обръща',
   'lin.move_sign': 'Знак при пренасяне от една страна на друга',
-  'lin.divide': 'Делене вместо изваждане (или обратно)',
+  'lin.divide': 'Деление вместо изваждане (или обратно)',
   'rtri.add_legs': 'Хипотенузата не е сбор от катетите',
   'rtri.no_root': 'Забравен корен квадратен накрая',
   'rtri.hyp_as_leg': 'За катет се изважда: $b^2=c^2-a^2$',
@@ -168,22 +168,50 @@ const levelFor = p => {
 };
 
 /* ---------- НВО 4, 7 and 10 ----------
-   When the learner's exam (from the setup or Profile) is an НВО, mathematics uses that grade's
-   skills and weights instead of the matura's, and difficulty rises at that grade's pace: НВО 4
-   stays easier for longer (and never gets level 3, see 52-math.js), НВО 10 moves on sooner.
-   The tasks still come from the same generators; grade-specific tasks can be added later.
-   The weights are planning estimates, like the matura's, to be checked against МОН's specification. */
+   Each НВО has its own skill map: separate IDs, Bulgarian names, weights and difficulty
+   thresholds. This keeps an НВО learner's progress separate from the ДЗИ/матура map and
+   prevents matura-only topics from appearing in an НВО diagnostic or practice plan.
+   Grade-specific task generators are added in part 2; until then, a generator may fall back
+   to the closest existing matura generator, but the skill identity and progress remain НВО-specific. */
 const NVO_PROFILES = {
   math: {
-    4: { levels: { weak: 0.5, mid: 0.8 }, maxLevel: 2, skills: [
-      { id: 'pct', name: 'Проценти', weight: 14 }, { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prob', name: 'Вероятности', weight: 10 }] },
-    7: { levels: { weak: 0.4, mid: 0.7 }, maxLevel: 3, skills: [
-      { id: 'quad', name: 'Квадратни уравнения', weight: 12 }, { id: 'pct', name: 'Проценти', weight: 10 }, { id: 'pow', name: 'Степени и корени', weight: 10 },
-      { id: 'lin', name: 'Линейни неравенства', weight: 10 }, { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prog', name: 'Аритметична прогресия', weight: 8 },
-      { id: 'prob', name: 'Вероятности', weight: 8 }] },
-    10: { levels: { weak: 0.35, mid: 0.65 }, maxLevel: 3, skills: [
-      { id: 'quad', name: 'Квадратни уравнения', weight: 14 }, { id: 'pow', name: 'Степени и корени', weight: 12 }, { id: 'lin', name: 'Линейни неравенства', weight: 12 },
-      { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prog', name: 'Аритметична прогресия', weight: 10 }, { id: 'prob', name: 'Вероятности', weight: 10 }] }
+    4: {
+      levels: { weak: 0.5, mid: 0.8 }, maxLevel: 2,
+      skills: [
+        { id: 'nvo4_count', name: 'Числа и изчисления', weight: 18 },
+        { id: 'nvo4_frac', name: 'Дроби и десетични числа', weight: 16 },
+        { id: 'nvo4_pct', name: 'Проценти', weight: 14 },
+        { id: 'nvo4_geom', name: 'Геометрични фигури', weight: 16 },
+        { id: 'nvo4_measure', name: 'Мерки и измервания', weight: 14 },
+        { id: 'nvo4_prob', name: 'Елементарни вероятности', weight: 12 },
+        { id: 'nvo4_text', name: 'Текстови задачи', weight: 10 }
+      ]
+    },
+    7: {
+      levels: { weak: 0.4, mid: 0.7 }, maxLevel: 3,
+      skills: [
+        { id: 'nvo7_rational', name: 'Рационални числа', weight: 14 },
+        { id: 'nvo7_pow', name: 'Степени и корени', weight: 12 },
+        { id: 'nvo7_expr', name: 'Изрази и формули', weight: 12 },
+        { id: 'nvo7_eq', name: 'Уравнения и неравенства', weight: 16 },
+        { id: 'nvo7_pct', name: 'Проценти и пропорции', weight: 12 },
+        { id: 'nvo7_geom', name: 'Геометрични фигури', weight: 14 },
+        { id: 'nvo7_coord', name: 'Координатна система', weight: 10 },
+        { id: 'nvo7_prob', name: 'Вероятности и статистика', weight: 10 }
+      ]
+    },
+    10: {
+      levels: { weak: 0.35, mid: 0.65 }, maxLevel: 3,
+      skills: [
+        { id: 'nvo10_real', name: 'Реални числа и изрази', weight: 14 },
+        { id: 'nvo10_eq', name: 'Уравнения и неравенства', weight: 16 },
+        { id: 'nvo10_quad', name: 'Квадратни уравнения', weight: 14 },
+        { id: 'nvo10_func', name: 'Функции и графики', weight: 16 },
+        { id: 'nvo10_seq', name: 'Последователности', weight: 12 },
+        { id: 'nvo10_geom', name: 'Геометрия и тригонометрия', weight: 16 },
+        { id: 'nvo10_stat', name: 'Статистика и вероятности', weight: 12 }
+      ]
+    }
   }
 };
 /* '4' | '7' | '10' when the learner prepares for an НВО, otherwise null (ДЗИ 12) */
