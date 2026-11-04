@@ -10,7 +10,7 @@ let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, sh
 const DEFAULT_STATE = () => ({
   v: 1,
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
-  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', glass: false, sound: true, lang: 'bg' },
+  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', feedbackUrl: '', sheetUrl: '', theme: 'auto', glass: false, sound: true, lang: 'bg' },
   subject: 'math',
   demo: false,           /* true while the simulated demo learner is loaded (56-demo.js) */
   skills: {},            /* "math.quad@dzi12" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] }: one map per exam */
@@ -38,6 +38,7 @@ const SETTING_OK = {
   apiKey: v => isStr(v) && !/\s/.test(v) && v.length < 200,
   model: v => isStr(v) && /^[\w.\-]{1,80}$/.test(v),
   proxyUrl: v => v === '' || (isStr(v) && /^https:\/\/[^\s]+$/.test(v)),
+  feedbackUrl: v => v === '' || (isStr(v) && /^https:\/\/[^\s]+$/.test(v)),
   sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/script\.google\.com\/[^\s]+$/.test(v)),
   theme: v => ['auto', 'light', 'dark', 'amoled'].includes(v),
   glass: v => typeof v === 'boolean',
@@ -168,6 +169,6 @@ function hydrateMedia(root, id) {
   root.querySelectorAll('[data-media]').forEach(el => {
     const url = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.media]; el.removeAttribute('data-media');
     if (url) el.src = url; else el.classList.add('missing');
-    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; if (poster) el.poster = poster; el.removeAttribute('data-poster'); }
+    if (el.dataset.poster) { const poster = (window.SHELLY_MEDIA || {})[id + '\n' + el.dataset.poster]; el.src = url; else el.classList.add('missing'); }
   });
 }
