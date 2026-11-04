@@ -1,6 +1,15 @@
 # Progress
 
 ## Done
+- **ISSUE 1: Самооженка на есе без критерии** (feature/feedback-20261104-1445-s12).
+  - Added five standardized БЕЛ essay criteria: thesis, structure, argumentation, language, and task compliance.
+  - Added a criteria rating UI in the past-exam essay self-assessment screen (`SCREENS.pastexam` in `src/js/66-past.js`), with ratings stored in `S.essayAssessment.criteria`.
+  - Added `validateEssayAssessment()` and `calculateEssayResult()` in `src/js/53-bel.js`; submission is blocked until every criterion is rated.
+  - Added per-criterion skill keys (`bel.thesis`, `bel.structure`, `bel.argumentation`, `bel.language`, `bel.task`) and `recordEssayCriterion()` in `src/js/51-skills.js`, which updates weak spots through BKT.
+  - The overall result is the average criterion rating; a 30-point essay receives points proportionally to the criteria total.
+  - Added criteria layout, selected-rating and disabled-submit styles to `src/css/bingo.css`.
+  - Note: the essay self-assessment screen is `66-past.js`, not `61-session.js`; `61-session.js` was restored unchanged.
+  - Manual test: open a БЕЛ past exam with a 30-point essay, submit text, rate all five criteria, and check that the app advances, logs criterion scores, and updates the skill map. With any criterion unrated, advancement must be blocked.
 - Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
   - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
   - Scope: UI only. Questions, answer options, solutions, explanations and rubrics stay in their original language.
@@ -11,6 +20,8 @@
 - **Оценката на усвояването се мени прекалено рязко**: `bktUpdate` in 51-skills.js no longer adds learning after a wrong answer, `guessOf` uses a 0.2 default for non-choice tasks, and `bktStep` keeps a conservative maximum jump (0.05 below two answers, 0.10 below four) and a 0.25 learning multiplier until `st.n >= 3`. This stabilizes the weak/mid/strong classification and matches the new smoothing logic.
 
 ## Decisions
+- Essay self-assessment uses five fixed criteria and stores both per-criterion ratings and the calculated overall result in `S.essayAssessment`.
+- A criterion rating of 3 or higher counts as mastery evidence for BKT; lower ratings update the skill as not mastered.
 - Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
 - Skill progress is kept per exam (`math.quad@nvo7`). Keys without an exam move to the current exam the first time they are read (`skillState` in 51-skills.js); the demo learner writes keys for the current exam.
@@ -29,6 +40,7 @@
 - Firebase is not wired into the app yet (functions, rules and docs only); the Gemini free-text grading (54b-ai-grade.js) is not on a screen yet.
 - НВО profiles reuse the matura generators; НВО-specific tasks (especially for НВО 4) and weights checked against МОН's specification are still to do.
 - Manual test on web and APK: Liquid glass on a real phone (blur performance), Android font size, feedback form against a deployed server.
+- Manual test on web and APK: БЕЛ essay self-assessment criteria, validation, overall score, and weak-spot updates.
 - Maybe add more variants to the small math generators.
 
 ## Bugs
