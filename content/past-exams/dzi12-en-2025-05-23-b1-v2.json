@@ -1,0 +1,101 @@
+{
+ "format": 1,
+ "id": "dzi12-en-2025-05-23-b1-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Английски език · 23 май 2025 · ниво B1 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "en",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B1",
+  "profile": "профилирана",
+  "source": "2dzi25_ae_pp_nivo_b1_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B1 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Apparently, the mission of the Avatar programme is",
+       "options": [
+        "to protect the Na'vi from exploitation.",
+        "to help the indigenous people integrate.",
+        "to obtain access to a precious mineral.",
+        "None of the above"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Avatar presents viewers with",
+       "options": [
+        "a striking, vibrant glimpse of the past.",
+        "a world where emotions are governed by technology.",
+        "an opportunity to empathize with the Na'vi.",
+        "None of the above"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Avatar has been criticized for",
+       "options": [
+        "its negative portrayal of humans as exploiters.",
+        "similarities to previous cinematic works.",
+        "making the protagonist change sides in the story.",
+        "None of the above"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Ultimately, the author’s view is that Avatar",
+       "options": [
+        "relies on content over form for impact.",
+        "tackles its themes without much subtlety.",
+        "is too short to make a powerful statement.",
+        "None of the above"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

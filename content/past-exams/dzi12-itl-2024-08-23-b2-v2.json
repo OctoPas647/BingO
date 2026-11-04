@@ -1,0 +1,128 @@
+{
+ "format": 1,
+ "id": "dzi12-itl-2024-08-23-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Италиански език · 23 август 2024 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "itl",
+  "year": 2024,
+  "date": "2024-08-23",
+  "variant": 2,
+  "session": "август",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "italianski-ezik-nivo-v2-23-avgust-2024-g.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 август 2024 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Le emoticon",
+       "options": [
+        "aiutano la rapida trasmissione di emozioni.",
+        "vengono usate oggigiorno solo dai giovanissimi.",
+        "sono state inventate per trasmettere messaggi segreti.",
+        "aiutano i giovani a essere più socievoli con gli altri."
+       ],
+       "answer": 0,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "La polizia",
+       "options": [
+        "ha pubblicato un libro sul comportamento dei giovani.",
+        "ha cercato di dare una mano ai genitori e ai professori.",
+        "ha pubblicato un elenco con tutte le emoticon esistenti.",
+        "ha proibito l’uso delle emoticon dai giovanissimi."
+       ],
+       "answer": 1,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Secondo la polizia",
+       "options": [
+        "gli spacciatori e i giovani parlano in una lingua straniera.",
+        "gli emoji sono soltanto messaggini innocui ed innocenti.",
+        "dietro le faccine si potrebbero nascondere pratiche illegali.",
+        "i giovani devono smettere di usare gli emoji nei loro messaggi."
+       ],
+       "answer": 2,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Secondo gli esperti",
+       "options": [
+        "molte faccine sono legate ai diversi stupefacenti.",
+        "le faccine della frutta rappresentano la cocaina.",
+        "non esistono le icone che raffigurano la cannabis.",
+        "tutte le faccine simboleggiano uno stupefacente."
+       ],
+       "answer": 0,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Con gli emoji si può esprimere",
+       "options": [
+        "anche il modo di somministrazione delle droghe.",
+        "l’effetto provocato dall’uso di alcuni medicinali.",
+        "l’atteggiamento negativo nei confronti delle droghe.",
+        "la sanzione prevista per lo spaccio di diverse droghe."
+       ],
+       "answer": 0,
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "La polizia ritiene che gli emoji usati dai figli",
+       "options": [
+        "non sempre dovrebbero essere motivo di preoccupazione.",
+        "possono fungere da codice segreto che nessuno comprende.",
+        "garantiscono coinvolgimento nello spaccio di droga.",
+        "sono un vero motivo per punire i ragazzi."
+       ],
+       "answer": 0,
+       "passage": "p1",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {
+  "p1": {
+   "title": "Text",
+   "text": "Testo 2 Leggete il testo e svolgete il compito segnalando nel foglio delle risposte l'affermazione corretta.\n\nIl mondo segreto delle emoticon Le emoticon sono sempre più utilizzate, soprattutto dai giovanissimi, per scrivere messaggi sul cellulare o sui social ‘risparmiando’ parole e per centrare direttamente l’argomento e le emozioni. Ma potrebbero avere un significato segreto? La polizia ha pubblicato una guida su ciò che le emoji potrebbero realmente significare quando vengono usate dai più giovani in modo da fornire ai genitori e agli insegnanti un supporto sul “mondo segreto” in cui le icone digitali vengono utilizzate per fare riferimento a droghe e sesso. La polizia sostiene che gli spacciatori potrebbero anche usare questa tattica per sfruttare i giovani incoraggiandoli a prendere sostanze stupefacenti, diventare trafficanti di droga o, in ultima analisi, spacciare loro stessi droga sotto le spoglie di emoji innocenti. Secondo gli agenti ci sono ben quattordici icone che possono rappresentare la cannabis: il quadrifoglio, le varie foglie, il limone, il grappolo d’uva, il cocomero, la fragola, le ciliegie, l’ananas, la faccia del cane, le caramelle, la torta, il gelato e il biscotto. La cocaina è rappresentata dall’emoji del naso, ma anche da quella del pesce, della pompa di benzina, del pupazzo di neve e del fiocco di neve, mentre l’ecstasy è raffigurata usando un’icona del diavolo, il teschio, l’alieno e il mostro tentacolare. La ketamina e il protossido di azoto sono stati rappresentati utilizzando rispettivamente le icone del cavallo e del palloncino. La polizia sostiene che i giovani potrebbero usare gli emoji per distinguere tra diversi metodi di assunzione di droghe, come l’icona della pillola per rappresentare droghe orali e la siringa per rappresentare stupefacenti iniettati. Secondo gli agenti pure i livelli di purezza delle droghe sono indicati utilizzando diversi emoji, con la scala espressa utilizzando l’icona del pugno, del razzo, del fulmine, dell’esplosione, del fuoco e della bomba. Gli stessi spacciatori di droga vengono\n\nrappresentati dall’emoji della palla da biliardo con il numero 8, dall’icona degli occhi o dalla presa di corrente. L’elenco segreto svelato dalla polizia non si limita all’uso di droghe. Anche il sesso si maschera dietro a emoji come ciliegie, spruzzi d’acqua, melanzane e pesche. La polizia precisa che se i genitori trovano queste emoticon sul telefono dei figli non necessariamente significa che i giovani sono coinvolti in comportamenti illeciti ma consiglia di tenerli d’occhio, magari notando se hanno cambiamenti d’umore, se varia il rendimento a scuola o se i giovani si chiudono in se stessi. La polizia, infine, consiglia di non controllare direttamente il cellulare dei figli altrimenti il rapporto di fiducia potrebbe venire meno."
+  }
+ }
+}

@@ -16,7 +16,12 @@ const SUBJECTS = {
       { id: 'lin', name: 'Линейни неравенства', weight: 8 },
       { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 },
       { id: 'prog', name: 'Аритметична прогресия', weight: 8 },
-      { id: 'prob', name: 'Вероятности', weight: 8 }
+      { id: 'prob', name: 'Вероятности', weight: 8 },
+      /* the rest of the ДЗИ syllabus: real tasks from past exams, new generators and Gemini (0.6.0) */
+      { id: 'func', name: 'Функции и графики', weight: 10 },
+      { id: 'trig', name: 'Тригонометрия', weight: 8 },
+      { id: 'geom', name: 'Планиметрия', weight: 10 },
+      { id: 'stat', name: 'Статистика и комбинаторика', weight: 6 }
     ]
   },
   bel: {
@@ -25,10 +30,15 @@ const SUBJECTS = {
       { id: 'art', name: 'Пълен и кратък член', weight: 6 },
       { id: 'comma', name: 'Запетая', weight: 8 },
       { id: 'spell', name: 'Слято, полуслято, разделно', weight: 6 },
-      { id: 'lit', name: 'Литература: Дебелянов', weight: 10 }
+      { id: 'lit', name: 'Литература: Дебелянов', weight: 10 },
+      { id: 'read', name: 'Четене с разбиране', weight: 12 },
+      { id: 'norm', name: 'Лексика и граматика', weight: 10 }
     ]
   }
 };
+/* the other maturas: История, Биология, Химия, Физика, География, Философия, ИТ, Информатика,
+   Предприемачество, Изобразително изкуство, Музика and the foreign languages (content/subjects.json) */
+for (const [id, s] of Object.entries(window.SUBJECTS_JSON || {})) SUBJECTS[id] = { id, ...s };
 const skillDef = (subj, id) => skillList(subj).find(s => s.id === id) || SUBJECTS[subj].skills.find(s => s.id === id);
 
 /* Typical mistakes. A wrong option in a task can name the mistake it comes from,
@@ -175,15 +185,18 @@ const levelFor = p => {
    The weights are planning estimates, like the matura's, to be checked against МОН's specification. */
 const NVO_PROFILES = {
   math: {
+    /* НВО 4 is about numbers, measures, shapes and word problems; its tasks come from the 17 real НВО 4 exams and Gemini */
     4: { levels: { weak: 0.5, mid: 0.8 }, maxLevel: 2, skills: [
-      { id: 'pct', name: 'Проценти', weight: 14 }, { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prob', name: 'Вероятности', weight: 10 }] },
+      { id: 'num', name: 'Числа и действия', weight: 14 }, { id: 'meas', name: 'Мерни единици', weight: 10 },
+      { id: 'geom', name: 'Геометрични фигури', weight: 12 }, { id: 'word', name: 'Текстови задачи', weight: 14 }] },
     7: { levels: { weak: 0.4, mid: 0.7 }, maxLevel: 3, skills: [
       { id: 'quad', name: 'Квадратни уравнения', weight: 12 }, { id: 'pct', name: 'Проценти', weight: 10 }, { id: 'pow', name: 'Степени и корени', weight: 10 },
       { id: 'lin', name: 'Линейни неравенства', weight: 10 }, { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prog', name: 'Аритметична прогресия', weight: 8 },
-      { id: 'prob', name: 'Вероятности', weight: 8 }] },
+      { id: 'prob', name: 'Вероятности', weight: 8 }, { id: 'geom', name: 'Планиметрия', weight: 14 }] },
     10: { levels: { weak: 0.35, mid: 0.65 }, maxLevel: 3, skills: [
       { id: 'quad', name: 'Квадратни уравнения', weight: 14 }, { id: 'pow', name: 'Степени и корени', weight: 12 }, { id: 'lin', name: 'Линейни неравенства', weight: 12 },
-      { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prog', name: 'Аритметична прогресия', weight: 10 }, { id: 'prob', name: 'Вероятности', weight: 10 }] }
+      { id: 'rtri', name: 'Правоъгълен триъгълник', weight: 12 }, { id: 'prog', name: 'Аритметична прогресия', weight: 10 }, { id: 'prob', name: 'Вероятности', weight: 10 },
+      { id: 'func', name: 'Функции и графики', weight: 12 }, { id: 'trig', name: 'Тригонометрия', weight: 8 }, { id: 'geom', name: 'Планиметрия', weight: 12 }, { id: 'stat', name: 'Статистика и комбинаторика', weight: 6 }] }
   }
 };
 /* '4' | '7' | '10' when the learner prepares for an НВО, otherwise null (ДЗИ 12) */

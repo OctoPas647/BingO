@@ -14,7 +14,7 @@ function mathOk(s) {
 function checkTask(t, where) {
   n++;
   for (const s of [t.prompt, t.explain, ...(t.options || [])]) { const bad = mathOk(s); if (bad) fail(where + ' katex ' + bad, t); }
-  if (!t.explain && t.src !== 'shelly') fail(where + ' no explain', t);
+  if (!t.explain && !['shelly', 'past'].includes(t.src)) fail(where + ' no explain', t);   /* official past-exam questions come with the key, not a worked solution */
   /* two signs in a row ("25--24", "3+-2") read as a typo; a negative number after an operator needs brackets */
   for (const s of [t.prompt, t.explain, ...(t.options || [])]) for (const m of String(s || '').match(/\$[^$]+\$/g) || []) if (/[-+]\s*[-+]/.test(m.replace(/\\pm/g, '±'))) fail(where + ' double sign ' + m, t);
   if (t.type === 'choice') {
@@ -40,13 +40,13 @@ const few = skills.flatMap(sk => [1, 2, 3].map(l => E(`genMathTask(${JSON.string
 if (few.length) console.log('note: choice tasks with fewer than 4 options:', few.map(t => t.id).join(', '));
 
 /* 2. banks pass Shelly's module checker */
-for (const subj of ['math', 'bel']) {
+for (const subj of E('Object.keys(SUBJECTS)')) {
   const tasks = E(`BANK.${subj}`);
   for (const t of tasks) checkTask(t, `bank ${subj} ${t.id}`);
-  const mod = { format: 1, id: 'bingo.check.' + subj, version: '1', lang: 'bg', title: 'x', passages: E(`SHELLY_MODS.${subj} ? SHELLY_MODS.${subj}.passages : {}`), exams: [{ id: 'x', title: 'x', parts: [{ title: 'x', tasks: JSON.parse(JSON.stringify(tasks)).map(t => { delete t.media; return t; }) }] }] };
+  const mod = { format: 1, id: 'bingo.check.' + subj, version: '1', lang: 'bg', title: 'x', passages: E(`fakeModule(${JSON.stringify(subj)}).passages`), exams: [{ id: 'x', title: 'x', parts: [{ title: 'x', tasks: JSON.parse(JSON.stringify(tasks)).map(t => { delete t.media; return t; }) }] }] };
   const { errors } = E(`checkModule(${JSON.stringify(mod)})`);
   errors.forEach(e => fail(`bank ${subj} module check: ${e.at} ${e.msg}`));
-  E('SUBJECTS.' + subj).skills.forEach(s => { if (!tasks.some(t => t.skill === s.id) && !(subj === 'math' && E(`!!MATH_GEN.${s.id}`))) fail(`no tasks for ${subj}.${s.id}`); });
+  E('SUBJECTS.' + subj).skills.forEach(s => { if (!s.aiOnly && !tasks.some(t => t.skill === s.id) && !(subj === 'math' && E(`!!MATH_GEN.${s.id}`))) fail(`no tasks for ${subj}.${s.id}`); });
 }
 
 /* 3. the knowledge model */
@@ -67,7 +67,7 @@ const sm = E("subjectSummary('math')"); console.log('demo learner loses ≈', sm
   for (const j of raw) {
     const at = 'past ' + j.id;
     if (!loaded.includes(j.id)) { fail(at + ' not loaded', E(`checkModule(${JSON.stringify(j)}).errors`)); continue; }
-    if (!E(`!!EXAMS[${JSON.stringify(j.past.exam)}]`) || !['math', 'bel'].includes(j.past.subj)) fail(at + ' unknown exam or subject', j.past);
+    if (!E(`!!EXAMS[${JSON.stringify(j.past.exam)}]`) || !E(`!!SUBJECTS[${JSON.stringify(j.past.subj)}]`)) fail(at + ' unknown exam or subject', j.past);
     const files = p => fsx.existsSync(px.join(dir, 'media', j.id, p));
     const texts = [...Object.values(j.passages || {}).map(p => p.text)];
     for (const part of j.exams[0].parts) {
@@ -185,7 +185,7 @@ for (const [subj, skill] of [['math', 'prob'], ['math', 'rtri'], ['bel', 'lit']]
 }
 
 /* 8. the forecast does not name a grade from a handful of answers (65-forecast.js) */
-E("SUBJECTS.math.skills.forEach((s, i) => recordAnswer('math', genMathTask(s.id, 1, i), i < 2, null))");
+E("SUBJECTS.math.skills.forEach((s, i) => recordAnswer('math', genMathTask(s.id, 1, i) || BANK.math.find(t => t.skill === s.id), i < 2, null))");
 if (E("forecast('math').conf") !== 'low' || !/след още/.test(E("gradeText(forecast('math'))"))) fail('forecast: a grade is shown after one answer per skill');
 E('resetState(false)');
 

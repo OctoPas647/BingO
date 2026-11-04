@@ -1,0 +1,149 @@
+{
+ "format": 1,
+ "id": "dzi12-fr-2025-05-23-b11-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Френски език · 23 май 2025 · ниво B1.1 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "fr",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B1.1",
+  "profile": "профилирана",
+  "source": "2dzi25_fe_pp_nivo_b1.1_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B1.1 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "prompt": "À l’école, Mylène :",
+       "options": [
+        "était sûre de son futur métier.",
+        "voulait un travail sans lien avec les autres.",
+        "n’avait pas de projet professionnel concret.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Au lycée, elle :",
+       "options": [
+        "a décidé d’étudier la psychologie.",
+        "ne s’intéressait pas aux rapports entre les personnes.",
+        "n’avait pas envie de comprendre les gens.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q28",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Son séjour à Vancouver lui a permis :",
+       "options": [
+        "de faire des stages dans le domaine social.",
+        "de trouver un travail dans le secteur culturel.",
+        "de perfectionner ses connaissances de l’anglais.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Pendant la période de la pandémie, Mylène :",
+       "options": [
+        "a gardé ses projets inchangés.",
+        "a réfléchi sérieusement à son avenir professionnel.",
+        "a compris la nécessité de se sentir bien à l’extérieur.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Cette étudiante dit :",
+       "options": [
+        "que le cadre de vie influence peu l’état mental.",
+        "qu’elle déteste la mode.",
+        "qu’elle a toujours trouvé attrayant le design.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "passage": "p1",
+       "skill": "read"
+      }
+     ]
+    },
+    {
+     "title": "Част 2 · свободен отговор",
+     "tasks": [
+      {
+       "id": "q36",
+       "type": "open",
+       "points": 2,
+       "prompt": "Lisez le sujet et rédigez un email (100-110 mots), en traitant les points proposés. Votre correspondant/e francophone, Laurent/Laurence, est passionné/e de musique. Il/elle vous demande des conseils pour découvrir la musique bulgare. Vous lui envoyez un email pour lui adresser des recommandations. Parlez-lui : ● des genres de la musique bulgare que vous aimez ; ● de vos chanteurs et groupes bulgares préférés ; ● des raisons pour lesquelles vous lui conseillez d’écouter leurs chansons. N’utilisez pas d’information personnelle qui pourrait briser l’anonymat car vous risquez que la copie soit annulée. Signez votre email Paul / Pauline. Писмен текст под 55 думи или текст, изцяло несъответстващ на темата, се оценява с 0 (нула) точки.",
+       "answer": "Максимален брой точки – 15.\n0-4 точки: Съдържателно съответствие с темата, смислова свързаност и логическа\nпоследователност (умение за представяне на факти, за формулиране на позиция);\n0-3 точки: Структура на текста (вкл. и спазване на зададения обем и формат);\n0-3 точки: Правилна и адекватна употреба на лексиката, лексикално богатство;\n0-3 точки: Граматическа правилност (морфологична и синтактична правилност);\n0-2 точки: Правопис.",
+       "skill": "read"
+      },
+      {
+       "id": "q37",
+       "type": "open",
+       "points": 2,
+       "prompt": "Lisez le sujet et rédigez un texte (120-130 mots), en répondant aux questions formulées. L’histoire d’un pays et du monde en général est faite de grandes figures humaines. Quel est le personnage historique national ou international qui vous impressionne le plus ? Quel est son rôle dans l’histoire ? Pourquoi vous inspire-t-il ? Justifiez votre réponse. Писмен текст под 65 думи или текст, изцяло несъответстващ на темата, се оценява с 0 (нула) точки. ФРЕНСКИ ЕЗИК 23 май 2025 г. НИВО В1.1",
+       "answer": "Максимален брой точки – 25.\n0-7 точки: Съдържателно съответствие с темата, смислова свързаност и логическа\nпоследователност (умение за представяне на факти, за формулиране на позиция);\n0-2 точки: Структура на текста (вкл. и спазване на зададения обем и формат);\n0-7 точки: Правилна и адекватна употреба на лексиката, лексикално богатство;\n0-7 точки: Граматическа правилност (морфологична и синтактична правилност);\n0-2 точки: Правопис.",
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {
+  "p1": {
+   "title": "Text",
+   "text": "Texte № 2 Lisez le texte et les questions, puis cochez la bonne réponse sur la feuille de réponses. Mon parcours vers l’architecture Mylène Philipona, étudiante suisse en architecture, raconte comment elle a choisi ses études. « À l’école, comme beaucoup, je ne savais pas encore quel métier je voulais exercer. Ce qui était clair, c’est que je souhaitais faire un métier qui permettrait d’aider les autres. Avec cette idée en tête, mais sans plan précis, j’ai choisi l’option psychologie au lycée, un domaine qui me semblait bien correspondre à mon envie d’explorer les relations humaines et la compréhension des autres. Après le lycée, j’ai exploré diverses pistes dans le domaine social en réalisant des stages. Ces expériences m’ont enrichie, mais elles m’ont aussi confrontée aux défis émotionnels de ce travail. Pour compléter mon apprentissage, je suis partie en séjour linguistique à Vancouver pendant quatre mois. Cette aventure a été une parenthèse dans ma formation qui m’a permis de découvrir d’autres cultures et d’améliorer mon anglais. Cependant, à mon retour, la pandémie de COVID-19 a bouleversé mes plans et a été l’occasion d’une profonde analyse de mes souhaits de carrière. Pendant le confinement, j’ai pris conscience de l’importance de se sentir bien chez soi. L’environnement dans lequel nous vivons joue un rôle fondamental dans notre santé mentale et notre bien-être. Parallèlement, j’ai toujours été attirée par les belles choses : la mode, la décoration, l’art et le design. Ces deux réflexions ont éclairé une nouvelle voie pour moi : devenir architecte. Ce métier associait mon envie d’aider les autres à travers des espaces conçus pour leur bien-être, et mon attrait pour l’esthétique et le design. »"
+  }
+ }
+}

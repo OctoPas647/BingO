@@ -1,0 +1,117 @@
+{
+ "format": 1,
+ "id": "dzi12-es-2025-05-23-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Испански език · 23 май 2025 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "es",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "2dzi25_isp_e_pp_nivo_b2_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Los álbumes tenían un alto valor para la chica ya que…",
+       "options": [
+        "contenían sellos de coleccionistas famosos.",
+        "estaban hechos de un material simple.",
+        "sus tapas eran de un material muy fino.",
+        "habían sido diseñados por un prestigioso fabricante."
+       ],
+       "answer": 2,
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "El bisabuelo Tirso le…",
+       "options": [
+        "regaló una colección con miles de ejemplares.",
+        "enseñó a negociar con vendedores de antigüedades.",
+        "dejó en herencia su colección de sellos.",
+        "mostró cómo restaurar sellos dañados."
+       ],
+       "answer": 2,
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Los domingos solía ir a la Plaza Mayor para…",
+       "options": [
+        "buscar nuevas piezas para su colección.",
+        "vender los sellos que ya no quería.",
+        "enseñar su colección a otros coleccionistas.",
+        "intercambiar sellos con vendedores."
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "¿Cuál NO era su reacción viendo un sello interesante?",
+       "options": [
+        "Entusiasmo.",
+        "Duda.",
+        "Indiferencia.",
+        "Disimulo."
+       ],
+       "answer": 2,
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Intentaba conseguir un sello sin pagar demasiado…",
+       "options": [
+        "pidiendo ayuda a otros coleccionistas para negociar.",
+        "fingiendo que estaba interesada en otros sellos menos valiosos.",
+        "esperando a que el vendedor bajara el precio espontáneamente.",
+        "preguntando por el sello directamente y ofrecía un precio bajo."
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Después de conseguir un sello que deseaba se sentía…",
+       "options": [
+        "aliviada, porque cada compra era un gran esfuerzo.",
+        "decepcionada, porque nunca encontraba lo que buscaba.",
+        "insegura respecto a la elección que ha hecho.",
+        "feliz y a la vez con un entusiasmo poco duradero."
+       ],
+       "answer": 3,
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

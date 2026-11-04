@@ -1,0 +1,201 @@
+{
+ "format": 1,
+ "id": "dzi12-infm-2025-05-23-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Информатика · 23 май 2025 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "infm",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": null,
+  "profile": "профилирана",
+  "source": "2dzi25_informatika_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Даден е следния програмен фрагмент: С# class Engine { private int power; public Engine(int power) { this.power = power; } } class Vehicle { private Engine engine; public Vehicle(Engine engine) { this.engine = engine; } } class Car : Vehicle { public Car(Engine engine) : base(engine) { } } Java class Engine { private int power; public Engine(int power) { this.power = power; } } class Vehicle { private Engine engine; public Vehicle(Engine engine) { this.engine = engine; } } class Car extends Vehicle { public Car(Engine engine) { super(engine); } } Кое от следните твърдения е вярно за връзките между класовете в дадения код?",
+       "options": [
+        "Car \"има\" (has a) Vehicle и Vehicle \"има\" (has a) Engine",
+        "Car \"е\" (is a) Vehicle и Vehicle \"е\" (is a) Engine",
+        "Car \"е\" (is a) Vehicle и Vehicle \"има\" (has a) Engine",
+        "Car \"има\" (has a) Engine и Vehicle \"има\" (has a) Engine"
+       ],
+       "answer": 2,
+       "skill": "oop"
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Кой от изброените модификатори за достъп позволява най-широк достъп до съответния член на класа? C# JAVA",
+       "options": [
+        "protected А) protected",
+        "private Б) private",
+        "internal В) без (default)",
+        "public Г) public"
+       ],
+       "answer": 3,
+       "skill": "oop"
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Кое от следните твърдения за компонента TextBox ( за C#) / TextField (за Java) е вярно?",
+       "options": [
+        "Свойството Text (за C#)/ методът getText() (за Java) връща въведения текст като масив от символи",
+        "При настройка ReadOnly = true (за C#)/ setEditable(false) (за Java) потребителят не може да вижда текста",
+        "Свойството Text (за C#)/ методът getText() (за Java) връща въведения текст като символен низ",
+        "TextBox (за C#) / TextField (за Java) се използва само за визуализиране на текст, но не и за въвеждане"
+       ],
+       "answer": 2,
+       "skill": "oop"
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Посочете вярното твърдение за статичен метод на клас:",
+       "options": [
+        "В дефиницията на статичен метод на клас може да се използват както статични, така и нестатични членове на класа",
+        "В дефиницията на статичен метод на клас не може да се използват нестатични членове на класа",
+        "Статичен метод на клас може да се дефинира само в статичен клас",
+        "Статичните методи на клас са винаги частни и не може да се достъпват от други класове"
+       ],
+       "answer": 1,
+       "skill": "oop"
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 1,
+       "prompt": "За дадения програмен фрагмент, кое от твърденията е вярно? С# string text = \"exam\"; for (int i = 0; i <= text.Length; i++) { Console.Write(text[i]); } Java String text = \"exam\"; for (int i = 0; i <= text.length(); i++){ System.out.print(text.charAt(i)); }",
+       "options": [
+        "Програмата няма да се компилира, защото Length (за C#) / length() (за Java) се използва неправилно",
+        "Програмата няма да се компилира, защото достъпът до символ в низ е некоректен",
+        "Програмата ще работи правилно и ще изведе \"exam\"",
+        "Програмата ще генерира грешка при изпълнение"
+       ],
+       "answer": 3,
+       "skill": "oop"
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Какво ще се изведе на стандартния изход след извикването на метода PrintNumbers(3) (за C#) / printNumbers(3) (за Java)? C# public static void PrintNumbers(int n) { if (n > 0) { PrintNumbers(n - 1); Console.Write(\" \" + n); } } JAVA public static void printNumbers(int n) { if (n > 0) { printNumbers(n - 1); System.out.print(\" \" + n); } }",
+       "options": [
+        "3 2 1",
+        "1 2 3",
+        "3 1 2",
+        "1 3 2"
+       ],
+       "answer": 1,
+       "skill": "oop"
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Какво ще се изведе на стандартния изход след изпълнение на следния програмен фрагмент: С# string text = \"Barbie without Ken\"; text.Replace(\"without\", \"meets\"); Console.WriteLine(text); text = text.Replace(\"without\", \"meets\"); Console.WriteLine(text); Java String text = \"Barbie without Ken\"; text.replace(\"without\", \"meets\"); System.out.println(text); text = text.replace(\"without\", \"meets\"); System.out.println(text);",
+       "options": [
+        "Barbie without Ken Barbie without Ken",
+        "Barbie meets Ken Barbie meets Ken",
+        "Barbie without Ken Barbie meets Ken",
+        "Barbie meets Ken Barbie without Ken"
+       ],
+       "answer": 2,
+       "skill": "oop"
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Даден е масив int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; Посочете вярното твърдение:",
+       "options": [
+        "Елементите на масива се разполагат в последователни клетки в статичната памет (стек, stack).",
+        "Елементите на масива се разполагат в последователни клетки в динамичната памет (хийп, heap).",
+        "Елементите на масива се разполагат в произволни клетки в динамичната памет (хийп, heap).",
+        "Елементите на масива представляват референции, сочещи клетките в паметта, където са разположени стойностите."
+       ],
+       "answer": 1,
+       "skill": "alg"
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Каква е основната разлика между линейно и двоично търсене?",
+       "options": [
+        "Линейното търсене изисква сортиран масив, а двоичното не",
+        "Двоичното търсене работи само с числа, а линейното – с всякакви данни",
+        "Линейното търсене проверява последователно елементите, докато двоичното разделя структурата на части",
+        "Линейното търсене винаги е по-бързо от двоичното"
+       ],
+       "answer": 2,
+       "skill": "alg"
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Какво ще се изведе на стандартния изход, след изпълнение на програмния фрагмент? C# List<int> nums = new List<int> { 12, 4, -7, 11, 10 }; nums.Insert(2, 11); nums.RemoveAt(4); nums.Sort(); for (int i = 0; i < nums.Count; i++) { Console.Write(nums[i] + \" \"); } Java List<Integer> nums = new ArrayList<>(Arrays.asList(12, 4, -7, 11, 10)); nums.add(2, 11); nums.remove(4); nums.sort(null); for (int i = 0; i < nums.size(); i++) { System.out.print(nums.get(i) + \" \"); }",
+       "options": [
+        "-7 4 10 11 12",
+        "-7 10 11 11 12",
+        "-7 2 4 11 11 12",
+        "-7 2 11 11 12"
+       ],
+       "answer": 0,
+       "skill": "oop"
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Какво ще се изведе на стандартния изход след изпълнение на следната програма? C# using System; public class Test { public static void Main(string[] args) { try { P(); Console.WriteLine(\"After the method call\"); } catch (FormatException) { Console.WriteLine(\"Invalid number format\"); } catch (DivideByZeroException) { Console.WriteLine(\"Runtime Exception\"); } catch (Exception) { Console.WriteLine(\"General exception\"); } } static void P() { string s = \"5.6\"; int num = int.Parse(s); int i = 0; int y = 2 / i; Console.WriteLine(\"Welcome\"); } } Java public class Test { public static void main(String[] args) { try { p(); System.out.println(\"After the method call\"); } catch (NumberFormatException ex) { System.out.println(\"Invalid number format\"); } catch (ArithmeticException ex) { System.out.println(\"Runtime Exception\"); } catch (Exception ex) { System.out.println(\"General exception\"); } } static void p() { String s = \"5.6\"; int num=Integer.parseInt(s); int i = 0; int y = 2 / i; System.out.println(\"Welcome\"); } }",
+       "options": [
+        "Invalid number format",
+        "Welcome A er the method call",
+        "Run me Excep on",
+        "Welcome General excep on"
+       ],
+       "answer": 0,
+       "skill": "oop"
+      },
+      {
+       "id": "q16",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Поредността на етапите в жизнения цикъл на информационна система е: 1. Проектиране 2. ___________ 3. Тестване 4. Използване 5. Поддръжка Кой е етапът, липсващ в поредицата?",
+       "options": [
+        "Разработване",
+        "Анализ",
+        "Планиране",
+        "Реализиране"
+       ],
+       "answer": 0,
+       "skill": "oop"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

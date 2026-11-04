@@ -1,0 +1,117 @@
+{
+ "format": 1,
+ "id": "dzi12-en-2024-08-23-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Английски език · 23 август 2024 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "en",
+  "year": 2024,
+  "date": "2024-08-23",
+  "variant": 2,
+  "session": "август",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "anglijski-ezik-nivo-v2-23-avgust-2024-g.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 август 2024 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Most probably the narrator was ...",
+       "options": [
+        "just a curious tourist.",
+        "a construction worker.",
+        "a veterinary doctor.",
+        "a scholar doing research."
+       ],
+       "answer": 3,
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "The place the narrator wanted to investigate to her knowledge was once …",
+       "options": [
+        "a biergarten.",
+        "a pharmacy.",
+        "a shrub hotbed.",
+        "an architectural memorial."
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "The stranger who came after her turned out to be …",
+       "options": [
+        "a construction manager.",
+        "an experienced womanizer.",
+        "a professional plumber.",
+        "a street photographer."
+       ],
+       "answer": 2,
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "On hearing about the narrator’s husband, the stranger …",
+       "options": [
+        "didn’t seem to believe her.",
+        "lost all interest in her.",
+        "got the creeps.",
+        "went to check the husband’s whereabouts."
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "The main interest of the narrator lay with …",
+       "options": [
+        "the shrubs in the clearing.",
+        "the interior of the wine cellar.",
+        "a certain apothecary.",
+        "abandoned sites downtown."
+       ],
+       "answer": 2,
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "The stranger, for his part, would have liked …",
+       "options": [
+        "to see a beerhouse in the vicinity.",
+        "to set up a shop on the site.",
+        "to be allowed to explore the place.",
+        "to get rid of that creepy area."
+       ],
+       "answer": 0,
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

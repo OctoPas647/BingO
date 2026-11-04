@@ -44,12 +44,27 @@ def content_js():
         embed_media(media, j['id'], ROOT / 'content/past-exams/media' / f.stem)
     # English versions of past exams: same id and file name, same pictures (media/ of the Bulgarian original)
     past_en = [json.loads(read(f)) for f in sorted((ROOT / 'content/past-exams-en').glob('*.json'))]
+    # the other maturas (content/subjects.json, imported with tools/import_dzi.py) and the English bank (tools/import_english.js)
+    subjects = {k: v for k, v in json.loads(read('content/subjects.json')).items() if not k.startswith('_')}
+    for v in subjects.values():
+        for sk in v['skills']: sk.pop('words', None)
+    eng = json.loads(read('content/english-bank.json')) if (ROOT / 'content/english-bank.json').exists() else []
     return (f'window.SHELLY_MODULE_JSON = {json.dumps(mods, ensure_ascii=False)};\nwindow.PAST_EXAMS_JSON = {json.dumps(past, ensure_ascii=False)};\n'
             f'window.PAST_EXAMS_EN_JSON = {json.dumps(past_en, ensure_ascii=False)};\n'
+            f'window.SUBJECTS_JSON = {json.dumps(subjects, ensure_ascii=False)};\nwindow.ENGLISH_BANK_JSON = {json.dumps(eng, ensure_ascii=False)};\n'
             f'window.SHELLY_MEDIA = {json.dumps(media)};\n')
 
+def ai_server():
+    """The address of BingO's AI server (server/, on Cloud Run). The Gemini key lives only there, never in the app.
+    From the BINGO_AI_SERVER environment variable (a GitHub Actions variable or secret) or tools/config.json "aiServer"."""
+    u = (os.environ.get('BINGO_AI_SERVER') or CFG.get('aiServer') or '').strip().rstrip('/')
+    return u if re.fullmatch(r'https://[\w.\-]+(:\d+)?(/[\w.\-/]*)?', u) else ''
+
 def js_bundle():
-    head = f'const APP_NAME = {json.dumps(CFG["appName"])}, APP_VERSION = {json.dumps(CFG["version"])};\n' + content_js()
+    srv = ai_server()
+    say(f'ai server {srv or "none (set aiServer in tools/config.json or BINGO_AI_SERVER; on-device AI still works)"}')
+    head = (f'const APP_NAME = {json.dumps(CFG["appName"])}, APP_VERSION = {json.dumps(CFG["version"])};\n'
+            f'globalThis.BINGO_AI_SERVER = {json.dumps(srv)};\n') + content_js()
     parts = [head, '/* ==== engine/vendor/katex.min.js ==== */\n' + read('engine/vendor/katex.min.js')]
     parts += [f'/* ==== {f.relative_to(ROOT).as_posix()} ==== */\n' + read(f) for f in js_files()]
     return '\n;\n'.join(parts)

@@ -10,7 +10,9 @@ let APP = { settings: { lang: 'bg', theme: 'auto', sound: true, motion: true, sh
 const DEFAULT_STATE = () => ({
   v: 1,
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', id: uid() },
-  settings: { aiMode: 'off', apiKey: '', model: 'gemini-3.8-flash', proxyUrl: '', sheetUrl: '', theme: 'auto', glass: false, sound: true, lang: 'bg' },
+  /* No API key is ever typed in or stored: Gemini runs on BingO's own server (54-ai.js), Gemini Nano on the device.
+     ai / nano only switch them off for a learner who does not want them. */
+  settings: { ai: true, nano: true, sheetUrl: '', theme: 'auto', glass: true, sound: true, lang: 'bg' },
   subject: 'math',
   demo: false,           /* true while the simulated demo learner is loaded (56-demo.js) */
   skills: {},            /* "math.quad@dzi12" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] }: one map per exam */
@@ -21,7 +23,9 @@ const DEFAULT_STATE = () => ({
   review: {},            /* "math.quad" -> { box, due }: when a strong skill is checked again (57-review.js) */
   onboarding: null,      /* first-run setup progress (58-onboarding.js) */
   aiFlags: [],           /* AI-made tasks a learner reported as wrong */
-  pastResults: {}        /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  pastResults: {},       /* past exam id -> { pts, max, at }: the last result (66-past.js) */
+  aiCache: {},           /* AI-made tasks kept for offline use and "train similar": "subj.skill" -> [task] (54-ai.js) */
+  glassV6: true
 });
 
 let S = DEFAULT_STATE();
@@ -34,10 +38,8 @@ let STATE_NOTICE = null;
 const isNum = x => typeof x === 'number' && Number.isFinite(x);
 const isStr = x => typeof x === 'string';
 const SETTING_OK = {
-  aiMode: v => ['off', 'key', 'proxy'].includes(v),
-  apiKey: v => isStr(v) && !/\s/.test(v) && v.length < 200,
-  model: v => isStr(v) && /^[\w.\-]{1,80}$/.test(v),
-  proxyUrl: v => v === '' || (isStr(v) && /^https:\/\/[^\s]+$/.test(v)),
+  ai: v => typeof v === 'boolean',
+  nano: v => typeof v === 'boolean',
   sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/script\.google\.com\/[^\s]+$/.test(v)),
   theme: v => ['auto', 'light', 'dark', 'amoled'].includes(v),
   glass: v => typeof v === 'boolean',
@@ -82,7 +84,7 @@ function sanitizeState(v) {
   out.profile = cleanProfile(prof, d);
   out.settings = { ...d.settings };
   for (const [k, ok] of Object.entries(SETTING_OK)) if (k in set && ok(set[k])) out.settings[k] = set[k];
-  out.subject = ['math', 'bel'].includes(v.subject) ? v.subject : d.subject;
+  out.subject = SUBJECT_IDS().includes(v.subject) ? v.subject : d.subject;
   out.demo = v.demo === true;
   out.skills = {};
   if (isObj(v.skills)) for (const [k, st] of Object.entries(v.skills)) { const c = cleanSkill(st); if (c && /^\w+\.\w+(@\w+)?$/.test(k)) out.skills[k] = c; }
@@ -95,13 +97,20 @@ function sanitizeState(v) {
   out.review = {};
   if (isObj(v.review)) for (const [k, r] of Object.entries(v.review)) if (isObj(r) && isNum(r.box) && isNum(r.due)) out.review[k] = { box: clamp(Math.floor(r.box), 0, 5), due: r.due };
   out.onboarding = isObj(v.onboarding) ? { ...v.onboarding, done: !!v.onboarding.done, step: isNum(v.onboarding.step) ? v.onboarding.step : 0 } : null;
+  out.aiCache = {};
+  if (isObj(v.aiCache)) for (const [k, list] of Object.entries(v.aiCache)) if (/^\w+\.\w+$/.test(k) && Array.isArray(list)) out.aiCache[k] = list.filter(t => isObj(t) && t.type === 'choice' && Array.isArray(t.options)).slice(-24);
   out.aiFlags = Array.isArray(v.aiFlags) ? v.aiFlags.filter(isObj).slice(-200) : [];
   out.pastResults = {};
   if (isObj(v.pastResults)) for (const [k, r] of Object.entries(v.pastResults)) { const c = cleanPastResult(r); if (c && k) out.pastResults[k] = c; }
+  /* 0.6.0: Liquid glass is the app's look now, so older saves get it once; "Намали прозрачността" turns it off */
+  if (!v.glassV6) out.settings.glass = true;
+  out.glassV6 = true;
   /* the Sheet's retry state (55-sync.js): without it a restart forgets failed sends */
   if (isObj(v.sync)) out.sync = { fails: isNum(v.sync.fails) ? Math.max(0, Math.floor(v.sync.fails)) : 0, lastError: isStr(v.sync.lastError) ? v.sync.lastError.slice(0, 200) : '', lastOk: isNum(v.sync.lastOk) ? v.sync.lastOk : 0, unverified: !!v.sync.unverified };
   return out;
 }
+/* math, БЕЛ and the maturas imported from МОН's exams (content/subjects.json) */
+const SUBJECT_IDS = () => ['math', 'bel', ...Object.keys(window.SUBJECTS_JSON || {})];
 const BKT_PRIOR = 0.3; /* the same as BKT.prior in 51-skills.js, which loads after this file */
 
 /* Local calendar day (the phone's time zone), used for the streak */

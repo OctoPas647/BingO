@@ -1,0 +1,228 @@
+{
+ "format": 1,
+ "id": "dzi12-infm-2024-08-23-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Информатика · 23 август 2024 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "infm",
+  "year": 2024,
+  "date": "2024-08-23",
+  "variant": 2,
+  "session": "август",
+  "level": null,
+  "profile": "профилирана",
+  "source": "informatika-23-avgust-2024-g.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 август 2024 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Композиция (composition) в обектно ориентираното програмиране означава, че:",
+       "options": [
+        "полетата на класа трябва да бъдат декларирани като частни (private)",
+        "един клас наследява друг клас",
+        "променлива от родителския клас се отнася до обект от наследяващия клас",
+        "даден клас съдържа поле, което е обект от друг клас"
+       ],
+       "answer": 3,
+       "skill": "oop"
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Колко пъти ще се изпълни следващия цикъл и кое е последното изведено число? C# JAVA int i = 5; int i = 5; while (i <= 5) while (i <= 5) { { System.out.println(i); Console.WriteLine(i); i += 2; i += 2; } }",
+       "options": [
+        "Цикълът е безкраен",
+        "1 път, последното изведено число е 7",
+        "0 пъти, не се извежда нищо",
+        "1 път, последното изведено число е 5"
+       ],
+       "answer": 3,
+       "skill": "oop"
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 1,
+       "prompt": "На кой ред запазените думи са само модификатори за достъп?",
+       "options": [
+        "public, class, final",
+        "public, static, protected",
+        "private, protected, public",
+        "private, overload, public"
+       ],
+       "answer": 2,
+       "skill": "other"
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Даденият програмен код трябва да извежда средноаритметичното на стойностите на масива. На кой ред от програмния фрагмент е допусната грешка? C# 1 int[] numbers = { 5, -10, 17, -20, 25 }; 2 int sum = 0; 3 foreach (int number in numbers) { 4 sum += number; 5 } 6 double average = sum / numbers.Length; 7 Console.WriteLine(\"Average: {0:F2}\", average); Java 1 int[] numbers = { 5, -10, 17, -20, 25 }; 2 int sum = 0; 3 for (int number : numbers) { 4 sum += number; 5 } 6 double average = sum / numbers.length; 7 System.out.println(String.format(\"Average: %.2f\", average));",
+       "options": [
+        "На ред 6",
+        "На ред 7",
+        "Няма грешка в кода",
+        "На ред 3"
+       ],
+       "answer": 0,
+       "skill": "oop"
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Какво ще се изведе на стандартния изход, след изпълнение на програмния фрагмент? C# string str = \" C# Programming Course\"; string sub = str.Substring(4, 11); int index1 = str.IndexOf(\"C#\"); int index2 = str.IndexOf(\"r\", 7); Console.WriteLine(sub + \" \" + index1 + \" \" + index2); Java String str = \" C# Programming Course\"; String sub = str.substring(4, 15); int index1 = str.indexOf(\"C#\"); int index2 = str.indexOf(\"r\", 7); System.out.println(sub + \" \" + index1 + \" \" + index2);",
+       "options": [
+        "Programming 0 6",
+        "Programming 1 8",
+        "Programming 0 7",
+        "C# Programming 1 7"
+       ],
+       "answer": 1,
+       "skill": "oop"
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Кой алгоритъм е представен в програмния фрагмент, ако се знае, че масивът array е подреден във възходящ ред? C# static int Function (int[] array, int left, int right, int num) { if (left > right) return -1; int middle = (left + right) / 2; if (num == array[middle]) return middle; if (num < array[middle]) return Function (array, left, middle - 1, num); else return Function (array, middle + 1, right, num); } Java static int function(int[] array, int left, int right, int num) { if (left > right) return -1; int middle = (left + right) / 2; if (num == array[middle]) return middle; if (num < array[middle]) return function(array, left, middle - 1, num); else return function(array, middle + 1, right, num); }",
+       "options": [
+        "Сливане на сортирани редици",
+        "Бързо сортиране в низходящ ред",
+        "Двоично търсене",
+        "Комбинации"
+       ],
+       "answer": 2,
+       "skill": "alg"
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Даден е текстовия файл Numbers.txt, съдържащ произволен брой цели числа, всяко на нов ред. Какъв ще бъде резултатът от изпълнението на следния програмен фрагмент? C# static void Main(string[] args) { int[] array = { 1, 2, 15 }; foreach (int el in array) { Console.WriteLine(el); } StreamReader reader = new StreamReader(\"Numbers\"); string line = reader.ReadLine(); while (line != null) { int num = Convert.ToInt32(line); Console.WriteLine(num); line = reader.ReadLine(); } } Java public static void main(String[] args) throws FileNotFoundException { int[] array = {1, 2, 15}; for (int el : array) { System.out.println(el); } Scanner scanner = new Scanner(new File(\"Numbers\")); while (scanner.hasNext()) { int num = scanner.nextInt(); System.out.println(num); } }",
+       "options": [
+        "Програмата няма да стартира, ще даде грешка – грешно име на файл.",
+        "Програмата ще стартира, но ще прекъсне със съобщение за грешка, че файлът не може да бъде намерен.",
+        "Програмата ще стартира и ще отвори файл Numbers.txt за четене.",
+        "Програмата ще стартира, ще създаде файл Numbers и ще го отвори за четене."
+       ],
+       "answer": 1,
+       "skill": "oop"
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Посочете правилната последователност на описаните абстрактни структури от данни. Линейната абстрактна структура от данни ………….. е структура от данни, която се използва за съхранение на последователност от еднотипни елементи, като елементите се добавят и премахват на място в структурата, където е необходимо. Линейната абстрактна структура от данни ………….. е структура от данни, която се използва за съхранение на последователност от еднотипни елементи, като елементите се добавят и премахват в съответствие с принципа \"първи влязъл, първи излязъл\" (First In, First Out). Линейната абстрактна структура от данни ………….. е структура от данни, която се използва за съхранение на последователност от еднотипни елементи, като елементите се добавят и премахват в съответствие с принципа „последен влязъл, първи излязъл“ (Last In, First Out).",
+       "options": [
+        "стек, опашка, списък",
+        "опашка, списък, стек",
+        "списък, опашка, стек",
+        "опашка, стек, списък"
+       ],
+       "answer": 2,
+       "skill": "alg"
+      },
+      {
+       "id": "q16",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Добавянето на кои два реда, на празното място в дадения програмен фрагмент, ще доведе до извеждане на стандартния изход думата „nation”, като резултат от изпълнението на фрагмента? C# var str = new StringBuilder(); .......................... .......................... Console.WriteLine(str); Java var str = new StringBuilder(); .......................... .......................... System.out.println(str); C# Java",
+       "options": [
+        "str.Add(\"examination\"); А) str.add(\"examination\"); str.Remove(0, 5); str.delete(0, 5);",
+        "str.Add(\"examination\"); Б) str.add(\"examination\"); str.Remove(0, 4); str.delete(0, 4);",
+        "str.Append(\"examination\"); В) str.append(\"examination\"); str.Remove(0, 5); str.delete(0, 5);",
+        "str.Append(\"examination\"); Г) str.append(\"examination\"); str.Remove(0, 4); str.delete(0, 4);"
+       ],
+       "answer": 2,
+       "skill": "oop"
+      }
+     ]
+    },
+    {
+     "title": "Част 2 · свободен отговор",
+     "tasks": [
+      {
+       "id": "q18",
+       "type": "open",
+       "points": 2,
+       "prompt": "Довършете изреченията, като в полетата за отговори срещу А) и Б) запишете типа връзка is-a (е), has-a (има) или няма връзка. А) Когато класа А наследява класа В, казваме, че класовете А и В са свързани с връзка от тип ………………… Б) Когато поле на класа А е препратка (референция) към клас В, казваме, че класовете А и В са свързани с връзка от тип …………",
+       "answer": "А) is-a / е\n Б) has-a / има",
+       "skill": "oop"
+      },
+      {
+       "id": "q19",
+       "type": "open",
+       "points": 2,
+       "prompt": "В празна опашка последователно са постъпили елементите 1, 20, 1, 5, 0, 10, а в празен стек – 0 и 6. От опашката се изваждат два елемента, първият от които (ако е различен от 0) се добавя отново в опашката, а вторият от тях се добавя в стека. Действието се повтаря до изваждането на елемент със стойност 0 от опашката (няма значение дали е първи или втори от двойката). В полетата за отговори срещу (1), (2), (3) и (4) запишете: (1) Колко са елементите в стека? (2) Колко е броят на елементите в опашката? (3) Кои са елементите на стека? (4) Кои са елементите на опашката? Забележка: Винаги се изваждат два елемента от опашката, дори ако единият от тях е 0.",
+       "answer": "(1) 4\n (2) 2\n (3) 5, 20, 6, 0 или 0, 6, 20, 5\n (4) 1, 1",
+       "skill": "alg"
+      },
+      {
+       "id": "q20",
+       "type": "open",
+       "points": 3,
+       "prompt": "Даденият програмен фрагмент трябва да извежда на стандартния изход всички прости делители (без повторения) на естествено число, въведено от стандартния вход, но има изпуснати части, отбелязани с номера <1>, <2>, <3>, <4>, <5> и <6>. Срещу номерата <1>, <2>, <3>, <4>, <5> и <6> запишете пропуснатите части от кода, така че да се получи верен програмен код. C# int number = ...<1>...; for (int i = 2; ...<2>...; ...<3>...) { if ( ...<4>...) Console.Write(i + \" \"); while ( ...<5>...) { ...<6>...; } } Java Scanner scr = new Scanner(System.in); int number = ...<1>...; for (int i = 2; ...<2>...; ...<3>...) { if( ...<4>...) System.out.print(i + \" \"); while ( ...<5>...) { ...<6>...; } }",
+       "answer": "<1> За C#: Convert.ToInt32(Console.ReadLine())\n За Java: scr.nextInt()\n <2> i <= number\n <3> i++ или ++i или i+=1 или i= i+1\n <4> number % i == 0\n <5> number % i == 0\n <6> number /= i или number = number / i",
+       "skill": "oop"
+      },
+      {
+       "id": "q21",
+       "type": "open",
+       "points": 3,
+       "prompt": "В полето за отговори запишете какво ще се изведе на стандартния изход след изпълнението на програмния фрагмент? C# public class Test { public static void Main(string[] args) { try { Console.WriteLine(\"Welcome to Java\"); int i = 0; int y = 2 / i; Console.WriteLine(\"Welcome to C#\"); } catch (DivideByZeroException ex) { Console.WriteLine(\"Welcome to Java and C#\"); } finally { Console.WriteLine(\"End of the block\"); } } } JAVA public class Test { public static void main(String[] args) { try { System.out.println(\"Welcome to Java\"); int i = 0; int y = 2 / i; System.out.println(\"Welcome to C#\"); } catch (RuntimeException ex) { System.out.println(\"Welcome to Java and C#\"); } finally { System.out.println(\"End of the block\"); } } }",
+       "answer": "Welcome to Java\n Welcome to Java and C#\n End of the block",
+       "skill": "oop"
+      },
+      {
+       "id": "q22",
+       "type": "open",
+       "points": 3,
+       "prompt": "Програмният фрагмент трябва да въвежда от стандартния вход размера на квадратен масив от цели числа с неповече от 20 реда и 20 колони, както и неговите елементи. От стандартния вход коректно се въвеждат на първи ред – броят n на редовете/колоните, а следващите n реда съдържат по n цели числа, не по-големи от 1000000 по абсолютна стойност, разделени с интервал. Фрагментът трябва да намира и извежда на стандартния изход сумата от нечетните стойности на елементите на вторичния диагонал на двумерния масив. В кода има допуснати грешки. В полето за отговор запишете на кои редове има грешка и срещу номера на реда запишете верния код. Забележка: Вторичен диагонал – диагоналът на матрицата, започващ от горен десен елемент и стигащ до долен ляв елемент. C# 1 int n = Convert.ToInt32(Console.ReadLine()); 2 int sum = 0; 3 int[,] arr = new int[20, 20]; 4 for (int i = 0; i < n; i++) { 5 string[] line = Console.ReadLine().Split(); 6 for (int i = 0; i < n; i++) { 7 arr[i, j] = Convert.ToInt32(line[j]); 8 } 9 } 10 for (int i = 0; i < n; i++) { 11 if (arr[i, i] % 2 == 1) { 12 sum += arr[i, i]; 13 } 14 } 15 Console.WriteLine(sum); Java 1 Scanner scr = new Scanner(System.in); 2 int n = scr.nextInt(); 3 int sum = 0; 4 int[][] arr = new int[20][20]; 5 for (int i = 0; i< n; i++) { 6 for (int i = 0; i< n; i++) { 7 arr[i][j] = scr.nextInt(); 8 } 9 } 10 for (int i = 0; i < n; i++) { 11 if(arr[i][i] % 2 == 1) { 12 sum += arr[i][i]; 13 } 14 } 15 System.out.println(sum);",
+       "answer": "C# Java\n Ред 6 for (int j = 0; j < n; j++) Ред 6 for (int j = 0; j< n; j++)\n Ред 11 if(arr[i][n-1-i] % 2 != 0) Ред 11 if(arr[i][n-1-i] % 2 != 0)\n Ред 12 sum += arr[i][n-1-i]; Ред 12 sum += arr[i][n-1-i];",
+       "skill": "oop"
+      },
+      {
+       "id": "q23",
+       "type": "open",
+       "points": 3,
+       "prompt": "В полето за отговор запишете по какво трябва да се различават методите на даден клас, за да ги наричаме претоварени (overload) методи? (1) Брой на аргументите (2) Имената на методите (3) Подредбата (позицията) на аргументите, които са от различен тип (4) Тип на аргументите (5) Тип на връщания от метода резултат",
+       "answer": "(1) Брой на аргументите\n (3) Подредбата (позицията) на аргументите, които са от различен тип\n (4) Тип на аргументите\n Признава се и ако са записани само номерата или само думите, като не се взема под\nвнимание реда на изброяването.",
+       "skill": "oop"
+      },
+      {
+       "id": "q24",
+       "type": "open",
+       "points": 3,
+       "prompt": "За всеки клас от представените в полетата за отговори, обозначени с <1>, <2> и <3> запишете метода, който добавя елемент след последния към създадената инстанция. C# List<String> list = new List<String>(); list. ...<1>... (\"Maria\"); Stack<String> stack = new Stack<String>(); stack. ...<2>... (\"Maria\"); Queue<String> queue = new Queue<String>(); queue. ...<3>... (\"Maria\"); Java List<String> list = new ArrayList<>(); list. ...<1>... (\"Maria\"); Stack<String> stack = new Stack<>(); stack. ...<2>... (\"Maria\"); Queue<String> queue = new ArrayDeque<>(); queue. ...<3>... (\"Maria\");",
+       "answer": "ред C# Java\n < 1 > Add add\n < 2 > Push push / add\n < 3 > Enqueue offer / add",
+       "skill": "oop"
+      },
+      {
+       "id": "q26",
+       "type": "open",
+       "points": 15,
+       "prompt": "Управител на IT компания получава доклад за печалбата ѝ за n (n ≤ 100) месеца назад в хиляди лева. Той иска да разбере най-големия брой последователни месеци, през които компанията е имала печалба не по-ниска от тази на предходния месец и с колко процента най- ниската печалба за периода на доклада е по-малка от печалбата за следващия месец. Създайте приложение с име Zad26, което чете от стандартния вход два реда: от първия ред се чете едно естествено число n – броят на месеците в доклада и от втория ред - n естествени числа, разделени с точно един интервал – печалбите (в хиляди лева). Приложението намира най-големия брой последователни месеци, през които компанията е имала печалба не по-малка от тази на предходния месец и с колко процента най-ниската печалба за периода на доклада е по-малка от печалбата за следващия месец. Ако най-ниската печалба се достига в последния за доклада месец, то тя се сравнява с предпоследния месец от доклада. Гарантирано е, че има само един месец с най-ниска печалба и входните данни се подават коректно. Приложението извежда на стандартния изход търсената информация в следния формат: На първия ред се извежда: The longest period with bigger profit is <брой последователни месеци> mounths. На втория ред се извежда: Smaller with <процент> %. Дробните числа да се форматират до втория знак след десетичната запетая. Примерен вход: 5346712345 Изход: Longest period with bigger profit is 5 mounths. Smaller with 50.00% *Забележки: Приемат се и решения с графичен потребителски интерфейс (ГПИ), в които данните се въвеждат в подходящи контроли, а резултатът се извежда в етикет или нередактируемо текстово поле. Прикачете в изпитната система архив с име inf_23.08.2024_ zad26.zip, съдържащ файловете с Вашите решения.",
+       "answer": "Примерно решение\nC#\nusing System;\nnamespace DZI\n{\n class Zad26\n {\n static void Main(string[] args)\n {\n int n = Convert.ToInt32(Console.ReadLine());\n int[] profit = new int[n];\n string[] input = Console.ReadLine().Split(' '); ;\n for (int i = 0; i < n; i++)\n {\n profit[i] = Convert.ToInt32(input[i]);\n }\n int longestStreak = 1;\n int currentStreak = 1;\n for (int i = 1; i < n; ++i)\n {\n if (profit[i] <= profit[i - 1])\n {\n if (currentStreak > longestStreak)\n {\n longestStreak = currentStreak;\n }\n currentStreak = 0;\n }\n ++currentStreak;\n }\n if (currentStreak > longestStreak)\n {\n longestStreak = currentStreak;\n }\n Console.WriteLine(\"The longest period with bigger profit is \"\n+ longestStreak + \" mounths.\");\n int smallestProfit = profit[0];\n int targetPeriod = 0;\n for (int i = 1; i < n; i++)\n {\n if (profit[i] < smallestProfit)\n {\n smallestProfit = profit[i];\n targetPeriod = i;\n }\n }\n int closestProfi",
+       "skill": "other"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

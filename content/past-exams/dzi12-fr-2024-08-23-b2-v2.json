@@ -1,0 +1,117 @@
+{
+ "format": 1,
+ "id": "dzi12-fr-2024-08-23-b2-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Френски език · 23 август 2024 · ниво B2 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "fr",
+  "year": 2024,
+  "date": "2024-08-23",
+  "variant": 2,
+  "session": "август",
+  "level": "B2",
+  "profile": "профилирана",
+  "source": "frenski-ezik-nivo-v2-23-avgust-2024-g.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 август 2024 · ниво B2 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q31",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Le carton en tant que matériau :",
+       "options": [
+        "ne peut pas être recyclé.",
+        "se dégrade moins vite que le plastique.",
+        "est une menace moins grave pour l’environnement.",
+        "résiste à un environnement humide."
+       ],
+       "answer": 2,
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Les gobelets en carton sont :",
+       "options": [
+        "constitués uniquement de carton.",
+        "destinés à un usage unique.",
+        "inoffensifs pour les animaux.",
+        "très facilement recyclables."
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Les gobelets cartonnés sont un emballage alimentaire :",
+       "options": [
+        "qui est moins nocif que le plastique.",
+        "qui est désastreux pour l’environnement.",
+        "qui est recyclé dans tous les centres de recyclage.",
+        "dont la composition exacte est bien connue."
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Les gobelets réutilisables en plastique pourraient être utilisés :",
+       "options": [
+        "pour leur aspect attrayant.",
+        "pour les boissons chaudes.",
+        "pour la réduction des émissions carbone.",
+        "pour leur profit économique."
+       ],
+       "answer": 2,
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Selon le chercheur cité, la meilleure solution est de :",
+       "options": [
+        "privilégier les gobelets cartonnés.",
+        "garder les gobelets jetables.",
+        "se servir de sa tasse individuelle.",
+        "choisir la vaisselle lavable."
+       ],
+       "answer": 3,
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "choice",
+       "points": 1,
+       "prompt": "La loi française anti-gaspillage interdit d’utiliser de la vaisselle jetable :",
+       "options": [
+        "à compter de 2020.",
+        "dans tous les restaurants sans exception.",
+        "pour la consommation à table à partir de vingt clients.",
+        "pour les repas à emporter."
+       ],
+       "answer": 2,
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}

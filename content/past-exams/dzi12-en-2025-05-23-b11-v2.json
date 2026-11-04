@@ -1,0 +1,118 @@
+{
+ "format": 1,
+ "id": "dzi12-en-2025-05-23-b11-v2",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Английски език · 23 май 2025 · ниво B1.1 · вариант 2",
+ "past": {
+  "exam": "dzi12",
+  "subj": "en",
+  "year": 2025,
+  "date": "2025-05-23",
+  "variant": 2,
+  "session": "май",
+  "level": "B1.1",
+  "profile": "профилирана",
+  "source": "2dzi25_ae_pp_nivo_b1.1_v2.pdf"
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "23 май 2025 · ниво B1.1 · вариант 2",
+   "minutes": null,
+   "parts": [
+    {
+     "title": "Част 1 · избираем отговор",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "prompt": "According to the text, which task is artificial intelligence (AI) already capable of performing?",
+       "options": [
+        "Writing weather forecasts.",
+        "Writing legal papers.",
+        "Writing technological instruction manuals.",
+        "None of the above"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "prompt": "What makes quantum computers different from regular computers?",
+       "options": [
+        "They cost less to construct.",
+        "They use qubits that can be both 0 and 1 simultaneously.",
+        "They are powered by solar batteries.",
+        "None of the above"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q28",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Which technology mentioned in the passage has the potential to eliminate certain inherited diseases?",
+       "options": [
+        "Gene-editing.",
+        "Material creation.",
+        "Data protection.",
+        "None of the above"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "prompt": "According to the text, what role does the James Webb Space Telescope play?",
+       "options": [
+        "Repairing broken satellites.",
+        "Taking photos of distant galaxies.",
+        "Controlling weather patterns on Earth.",
+        "None of the above"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "prompt": "What overall message does the text convey about these discoveries?",
+       "options": [
+        "They are only useful for entertainment.",
+        "They demonstrate the limits of human knowledge.",
+        "They show humans are capable of achieving the seemingly impossible.",
+        "None of the above"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "passages": {}
+}
