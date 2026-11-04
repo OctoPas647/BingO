@@ -1,6 +1,12 @@
 # Progress
 
 ## Done
+- **Профилът на ученика се губи при всяко рестартиране** (part 1: state sanitization).
+  - Fix: `sanitizeState()` in `src/js/50-state.js` now preserves the full student profile (`name`, `cls`, `age`, `exam`, `track`, `extra`, `id`) and valid `pastResults` when loading saved state.
+  - Rationale: the old code rebuilt the profile with only `name`, `cls` and `id`, so `age`, `exam`, `track` and `extra` were dropped on every restart and the exam plan became wrong; `pastResults` was not copied either.
+  - Safe fallbacks: invalid `age` becomes `''`, unknown `exam` becomes `''`, unknown `track`/`extra` become `''`, and only well-formed `pastResults` entries (`pts`, `max`, `at` as finite numbers) are kept, so a broken save cannot break startup.
+  - Files changed: `src/js/50-state.js`.
+  - Automated test: check 11 in `tests/fixes.py` seeds a full profile and a past-exam result, reloads, and asserts `S.profile` and `S.pastResults` keep their values.
 - Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
   - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
   - Scope: UI only. Questions, answer options, solutions, explanations and rubrics stay in their original language.
@@ -11,6 +17,7 @@
 - **Оценката на усвояването се мени прекалено рязко**: `bktUpdate` in 51-skills.js no longer adds learning after a wrong answer, `guessOf` uses a 0.2 default for non-choice tasks, and `bktStep` keeps a conservative maximum jump (0.05 below two answers, 0.10 below four) and a 0.25 learning multiplier until `st.n >= 3`. This stabilizes the weak/mid/strong classification and matches the new smoothing logic.
 
 ## Decisions
+- Profile persistence: fix lives in `src/js/50-state.js`, not in `engine/` (engine is a vendored copy of Shelly and would be overwritten on resync). `track` and `extra` use id-pattern checks because `TRACKS` loads after `50-state.js`.
 - Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
 - Skill progress is kept per exam (`math.quad@nvo7`). Keys without an exam move to the current exam the first time they are read (`skillState` in 51-skills.js); the demo learner writes keys for the current exam.
