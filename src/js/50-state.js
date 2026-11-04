@@ -87,6 +87,9 @@ function sanitizeState(v) {
   out.skills = {};
   if (isObj(v.skills)) for (const [k, st] of Object.entries(v.skills)) { const c = cleanSkill(st); if (c && /^\w+\.\w+(@\w+)?$/.test(k)) out.skills[k] = c; }
   out.log = Array.isArray(v.log) ? v.log.filter(r => isObj(r) && isStr(r.task_id || '') && isStr(r.subject || '')).slice(-3000) : [];
+  /* answers saved before rows had an exam belong to the exam the learner had then (like skill keys without one) */
+  const logExam = out.profile && EXAM_IDS.includes(out.profile.exam) ? out.profile.exam : 'dzi12';
+  out.log.forEach(r => { if (!EXAM_IDS.includes(r.exam)) r.exam = logExam; });
   out.queue = Array.isArray(v.queue) ? v.queue.filter(isObj).slice(-3000) : [];
   out.sessions = isNum(v.sessions) && v.sessions >= 0 ? Math.floor(v.sessions) : 0;
   /* saves from before 0.5.0 have no sessionDays: start the streak from the days with answers */
@@ -116,11 +119,16 @@ const myLog = () => S.log.filter(r => r.student_id === S.profile.id || (S.demo &
    Keys are "math.quad@dzi12"; keys without an exam come from older saves and the demo learner and
    are moved to the current exam the first time they are read (51-skills.js). */
 const currentExamKey = () => (S.profile && EXAM_IDS.includes(S.profile.exam) ? S.profile.exam : 'dzi12');
+/* the learner's answers for the exam they prepare for now: answer counts, accuracy and "Грешки и данни"
+   follow the exam like the skill map does. The streak and the CSV export keep all answers. */
+const myExamLog = () => { const ex = currentExamKey(); return myLog().filter(r => (r.exam || 'dzi12') === ex); };
 
 /* A save that cannot be read is copied to its own key before anything can overwrite it */
 function backupRaw(raw) {
   const key = STORE_KEY + '.broken-' + new Date().toISOString().replace(/[:.]/g, '-');
-  try { localStorage.setItem(key, raw); return key; } catch (e) { return null; }
+  /* the Gemini API key is never copied into a backup */
+  const safe = String(raw).replace(/("apiKey"\s*:\s*)"(?:[^"\\]|\\.)*"/g, '$1""');
+  try { localStorage.setItem(key, safe); return key; } catch (e) { return null; }
 }
 function loadState() {
   let raw = null;
@@ -137,6 +145,10 @@ function saveState(now) {
   const put = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { console.warn('state not saved', e); } };
   if (now) put(); else saveTimer = setTimeout(put, 120);
 }
+/* a change made right before the app is closed or hidden is written at once, not after the short delay */
+function flushPendingSave() { if (saveTimer) { saveState(true); saveTimer = 0; } }
+if (typeof window.addEventListener === 'function') window.addEventListener('pagehide', flushPendingSave);
+if (typeof document.addEventListener === 'function') document.addEventListener('visibilitychange', () => { if (document.hidden) flushPendingSave(); });
 function resetState(keepSettings) {
   const keep = keepSettings ? { settings: S.settings, profile: S.profile } : {};
   S = { ...DEFAULT_STATE(), ...keep }; saveState(true);

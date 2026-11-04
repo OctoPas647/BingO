@@ -1,6 +1,18 @@
 # Progress
 
 ## Done
+- Notion fixes, 4 Nov 2026 (ai/claude-easy-medium-fixes) — tests: tests/fixes_nov4.py (22 checks, waits for conditions instead of sleeping).
+  - Offline feedback is sent on the next start (99-boot.js). Back with the feedback box open closes the box and keeps the text (63-settings.js).
+  - Past exams: BingO's fallback essay criteria are labelled as sample criteria, not official (66-past.js).
+  - Liquid glass menu is based on --bg at 90% so text underneath can't be read (nav.css).
+  - Switches save at once; any pending save is written on pagehide / when hidden (50-state.js, 63-settings.js).
+  - Profile name/class inputs have maxlength 40/10, matching what is kept (64-nav.js).
+  - Google Sheets status shows "sent · time" only after a send worked, plus the last error (62-insights.js).
+  - Setup counter total never grows mid-setup (58-onboarding.js obCounts).
+  - Answer counts, accuracy and "Грешки и данни" are per exam: log rows carry `exam`, older rows get the current exam on load; streak and CSV keep all answers (myExamLog in 50-state.js).
+  - Exam (and profile / extra matura for ДЗИ, НВО 10) can be changed from Profile (64-nav.js changeExam).
+  - The Gemini API key is no longer copied into the demo backup or a broken-save backup (50-state.js, 56-demo.js). Still plain text in the main save.
+  - Removed unused window.AndroidBridge from platforms/android/bridge.js.
 - Past exams: English UI metadata fix (feature/feedback-20261029-1247-s46).
   - Diagnosis: in English mode, `pastView()` in `src/js/66-past.js` selects the matching English module from `content/past-exams-en/`, so its exam title, part titles and instructions supply the UI chrome. Task content remains Bulgarian by design.
   - Scope: UI only. Questions, answer options, solutions, explanations and rubrics stay in their original language.

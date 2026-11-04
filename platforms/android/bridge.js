@@ -1,4 +1,5 @@
-/* Android bridge: system bars follow the app theme, and Android can flush queued feedback. */
+/* Android bridge: system bars follow the app theme. (Queued feedback is sent by the web app itself
+   on start and when the connection comes back, see 55-sync.js and 99-boot.js.) */
 (function () {
   var UI = window.AndroidUI;
   if (UI) {
@@ -16,21 +17,4 @@
       if (window.matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { setTimeout(sync, 50); });
     });
   }
-
-  /* Android calls AndroidBridge.submitFeedback(function (result) { ... }).
-     It flushes BingOFeedback's localStorage queue and reports whether at least one item reached the server. */
-  window.AndroidBridge = {
-    submitFeedback: function (callback) {
-      var done = typeof callback === 'function' ? callback : function () { };
-      if (!window.BingOFeedback || typeof window.BingOFeedback.flushFeedback !== 'function') {
-        done({ ok: false, sent: 0, error: 'Feedback queue is unavailable' });
-        return;
-      }
-      window.BingOFeedback.flushFeedback().then(function (delivered) {
-        done({ ok: !!delivered, sent: delivered ? 1 : 0 });
-      }).catch(function (error) {
-        done({ ok: false, sent: 0, error: error && error.message ? error.message : String(error) });
-      });
-    }
-  };
 })();

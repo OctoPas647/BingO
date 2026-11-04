@@ -117,6 +117,10 @@ function myMatura() {
 const obText = v => (typeof v === 'function' ? v() : v);
 const obTitle = step => obText(step.title);
 const obActive = step => !step.when || step.when();
+/* For the "3/9" counter: a later step that depends on an answer not given yet still counts, so the
+   total never grows during the setup (it can only drop once, e.g. when НВО 4 or 7 is picked). */
+const OB_DECIDED_BY = { track: 'exam', extra: 'track' };
+const obCounts = (step, o) => obActive(step) || (!!OB_DECIDED_BY[step.id] && o.step <= ONBOARD.steps.findIndex(s => s.id === OB_DECIDED_BY[step.id]));
 /* the step number shown to the learner: the screens seen so far, so a step that is skipped
    because of an answer never makes the counter jump by two */
 const obPosNow = () => Math.max(1, ONBOARD.steps.slice(0, obState().step + 1).filter(obActive).length);
@@ -224,7 +228,7 @@ window.__back = () => {
 SCREENS.onboarding = async el => {
   el.style.setProperty('--accent', SUBJECTS[S.subject].color); el.style.setProperty('--accent-ink', inkOn(SUBJECTS[S.subject].color));
   const o = obState(), step = obStep(), isLast = o.step >= ONBOARD.steps.length - 1;
-  const n = ONBOARD.steps.filter(obActive).length, pos = clamp(o.pos || obPosNow(), 1, n);
+  const n = ONBOARD.steps.filter(s => obCounts(s, o)).length, pos = clamp(o.pos || obPosNow(), 1, n);
   const d = {}; step.fields.forEach(f => { const v = obGet(f.path); d[f.key] = v == null ? '' : v; });
   let errors = {};
   const fieldHtml = f => {

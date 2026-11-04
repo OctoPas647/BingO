@@ -114,14 +114,16 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     if (task.type === 'open') {
       const answer = view.get();
       if (!String(answer.text || '').trim()) { toast(L('Напиши отговор, преди да се оцениш.'), 'bad'); return; }
-      if (task.points >= 30 && (!Array.isArray(task.rubric) || !task.rubric.length)) task.rubric = ESSAY_RUBRIC_30;
+      /* the fallback criteria are BingO's own, so they are never called official */
+      const ownRubric = task.rubric === ESSAY_RUBRIC_30 || (task.points >= 30 && (!Array.isArray(task.rubric) || !task.rubric.length));
+      if (ownRubric) task.rubric = ESSAY_RUBRIC_30;
       P.phase = 'next'; P.touched = true;
       view.show({ status: 'ungraded' });
       /* pictures that belong to the official solution (a drawing in the key), shown only after the answer */
       if (task.solutionMedia && task.solutionMedia.length) { fb.insertAdjacentHTML('beforeend', `<div class="task-media">${blocksHTML(task.solutionMedia)}</div>`); hydrateMedia(fb, m.id); }
       rubric = rubricView(task, null);
       fb.hidden = false; fb.appendChild(rubric.el);
-      verdict.innerHTML = `${icon('info')}<span><b>${L('Оцени се сам')}</b><small>${L('по официалния отговор и критериите')}</small></span>`;
+      verdict.innerHTML = `${icon('info')}<span><b>${L('Оцени се сам')}</b><small>${L(ownRubric ? 'по примерни критерии на BingO (не са официалните)' : 'по официалния отговор и критериите')}</small></span>`;
     } else {
       P.phase = 'next'; P.touched = true;
       const res = scoreTask(task, view.get(), m.lang || 'bg'), right = res.status === 'right';

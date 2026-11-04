@@ -11,5 +11,6 @@
     actions: [{ id: 'ok', label: 'Разбрах', kind: 'primary' }]
   });
   scheduleFlush();
+  scheduleFeedbackFlush(1500);   /* feedback saved offline before the app was closed is sent on the next start */
   if (window.AndroidFiles && window.AndroidFiles.ready) window.AndroidFiles.ready();
 })();

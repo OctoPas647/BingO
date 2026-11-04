@@ -1,11 +1,20 @@
 /* ================= Mistakes and data: typical mistakes, Gemini week plan, Sheets / Looker Studio ================= */
+/* What really happened with the Sheet: "sent" only after a send that worked, with its time */
+function sheetStatus() {
+  if (!S.settings.sheetUrl) return L('не е свързан');
+  const sy = S.sync || {}, n = S.queue.length;
+  if (n) return sy.fails ? L('{n} чакат · последното изпращане не успя', { n }) : L('{n} чакат', { n });
+  if (!sy.lastOk) return L('още нищо не е изпратено');
+  const t = new Date(sy.lastOk).toLocaleString(appLang() === 'en' ? 'en-GB' : 'bg-BG', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  return L(sy.unverified ? 'изпратено без потвърждение · {t}' : 'изпратено · {t}', { t });
+}
 SCREENS.insights = async el => {
   const subj = S.subject, sm = subjectSummary(subj), sub = SUBJECTS[subj];
   el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color));
   const miscs = [];
   sm.list.forEach(x => Object.entries(x.st.misc).forEach(([k, n]) => miscs.push({ k, n, sk: x.sk })));
   miscs.sort((a, b) => b.n - a.n);
-  const mine = myLog().filter(r => r.subject === sub.title), acc = mine.length ? mine.filter(r => r.correct).length / mine.length : 0;
+  const mine = myExamLog().filter(r => r.subject === sub.title), acc = mine.length ? mine.filter(r => r.correct).length / mine.length : 0;
   el.innerHTML = `${topbar(L('Грешки и данни'))}<div class="pad settings">
     ${subjectTabs(subj)}
     <section class="card"><h3>${icon('target')}${L('Типичните ти грешки · {s}', { s: esc(L(sub.title)) })}</h3>
@@ -18,7 +27,8 @@ SCREENS.insights = async el => {
     <section class="card"><h3>${icon('grid')}${L('Данни за учителя (Looker Studio)')}</h3>
       <p class="small">${L('Всеки отговор е един ред: ученик, клас, тема, вярно/грешно, типична грешка, време, увереност преди и след. Учителят вижда целия клас в Looker Studio.')}</p>
       <div class="rows">
-        <div class="row"><span>${icon('upload')}Google Sheets</span><b class="small">${S.settings.sheetUrl ? (S.queue.length ? L('{n} чакат', { n: S.queue.length }) : L('изпратено')) : L('не е свързан')}</b></div></div>
+        <div class="row"><span>${icon('upload')}Google Sheets</span><b class="small">${sheetStatus()}</b></div></div>
+      ${S.settings.sheetUrl && S.sync && S.sync.fails && S.sync.lastError ? `<p class="muted small">${L('Последна грешка: {e}', { e: esc(S.sync.lastError) })}</p>` : ''}
       ${S.settings.sheetUrl ? `<button class="btn ghost block" data-flush>${icon('upload')}${L('Изпрати сега')}</button>` : ''}
       <button class="btn ghost block" data-csv>${icon('download')}${L('Моите отговори (CSV)')}</button>
       <button class="btn ghost block" data-class>${icon('download')}${L('Примерен клас от 28 ученика (CSV)')}</button>

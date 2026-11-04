@@ -34,7 +34,7 @@ function simulateLearner({ truth = DEMO_TRUE, name = 'Демо ученик', cl
       st.hist.push([t, roundTo(st.p, 3)]);
       rows.push({ t, timestamp: new Date(t).toISOString(), student_id: id, student: name, class: cls, subject: SUBJECTS[subj].title, skill_id: subj + '.' + sk.id, skill: sk.name,
         level: lvl, correct: correct ? 1 : 0, misconception_code: correct ? '' : misc || '', misconception: correct || !misc ? '' : miscLabel(misc).replace(/\$/g, ''), source: task.src || 'bank',
-        seconds: 20 + Math.floor(r.f() * 70), hints: 0, mastery_before: roundTo(before, 3), mastery_after: roundTo(st.p, 3), mode: i < 1 ? 'diag' : 'focus', session_id: 'demo' + Math.floor(i / 3), task_id: task.id });
+        seconds: 20 + Math.floor(r.f() * 70), hints: 0, mastery_before: roundTo(before, 3), mastery_after: roundTo(st.p, 3), mode: i < 1 ? 'diag' : 'focus', session_id: 'demo' + Math.floor(i / 3), task_id: task.id, exam: currentExamKey() });
     }
     skills[subj + '.' + sk.id + '@' + currentExamKey()] = st;
   }
@@ -76,7 +76,8 @@ async function loadDemoLearner() {
     const ok = await confirmBox(L('Да заредим ли демо ученик?'), L('Демото заменя картата на уменията и отговорите ти. Ще пазим копие на твоите данни и можеш да ги върнеш от Настройки → „Върни моите отговори“.'), L('Зареди демото'));
     if (!ok) return false;
     if (!demoBackupHasRealData()) {
-      try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify(S)); }
+      /* the copy leaves out the Gemini API key; restoring keeps the key that is set at that time */
+      try { localStorage.setItem(DEMO_BACKUP_KEY, JSON.stringify({ ...S, settings: { ...S.settings, apiKey: '' } })); }
       catch (e) { toast('Няма място за копие на данните ти — демото не е заредено.', 'bad'); return false; }
     }
   }
@@ -86,7 +87,9 @@ async function loadDemoLearner() {
 function restoreFromDemo() {
   const v = demoBackup();
   if (!v) return false;   /* never restore demo data or an empty copy as "my answers" */
+  const key = S.settings && S.settings.apiKey;
   S = v; S.demo = false;
+  if (key && !S.settings.apiKey) S.settings.apiKey = key;
   saveState(true);
   try { localStorage.removeItem(DEMO_BACKUP_KEY); } catch (e) { }
   return true;

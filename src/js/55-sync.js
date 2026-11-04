@@ -15,7 +15,8 @@ function logAnswer({ subj, task, correct, misc, secs, hints, before, after, mode
     subject: SUBJECTS[subj].title, skill_id: subj + '.' + task.skill, skill: sk ? sk.name : task.skill, level: task.level || 2,
     correct: correct ? 1 : 0, misconception_code: correct ? '' : (misc || ''), misconception: correct ? '' : (misc ? miscLabel(misc).replace(/\$/g, '') : ''),
     source: task.src || 'bank', seconds: Math.round(secs), hints: hints || 0,
-    mastery_before: roundTo(before, 3), mastery_after: roundTo(after, 3), mode, session_id: session, task_id: task.id
+    mastery_before: roundTo(before, 3), mastery_after: roundTo(after, 3), mode, session_id: session, task_id: task.id,
+    exam: currentExamKey()   /* which exam this answer was for, so counters stay per exam (not a Sheet column) */
   };
   S.log.push(row); if (S.log.length > 3000) S.log.splice(0, S.log.length - 3000);
   if (S.settings.sheetUrl) { S.queue.push(row); if (S.queue.length > QUEUE_MAX) S.queue.splice(0, S.queue.length - QUEUE_MAX); }

@@ -46,14 +46,19 @@ SCREENS.settings = async el => {
     </div>
   </div>`;
   const feedbackEndpoint = () => st.proxyUrl ? st.proxyUrl.replace(/\/+$/, '') + '/api/feedback' : '';
+  /* the feedback box counts as an open overlay, so Android/browser Back closes it (keeping the text)
+     instead of leaving Settings */
+  let fbOpen = null;
   const openFeedback = () => {
     const overlay = el.querySelector('[data-fb-overlay]');
     overlay.style.display = 'flex';
     el.querySelector('[data-fb-text]').focus();
+    if (!fbOpen) { fbOpen = { dismiss: true, close: () => closeFeedback() }; overlays.push(fbOpen); syncHistory(); }
   };
   const closeFeedback = () => {
     el.querySelector('[data-fb-overlay]').style.display = 'none';
     el.querySelector('[data-fb-status]').textContent = '';
+    if (fbOpen) { const i = overlays.indexOf(fbOpen); if (i >= 0) overlays.splice(i, 1); fbOpen = null; syncHistory(); }
   };
   const sendFeedback = async () => {
     const button = el.querySelector('[data-fb-send]');
@@ -82,7 +87,7 @@ SCREENS.settings = async el => {
     const b = e.target.closest('.seg button');
     if (b) { st[b.parentNode.dataset.key] = b.dataset.v; APP.settings.theme = st.theme; APP.settings.lang = st.lang; saveState(); applySettings(); return refresh(); }
     const w = e.target.closest('[data-sw]');
-    if (w) { const key = w.dataset.sw; st[key] = !st[key]; APP.settings[key] = st[key]; saveState(); w.classList.toggle('on'); if (key === 'glass') applySettings(); return; }
+    if (w) { const key = w.dataset.sw; st[key] = !st[key]; APP.settings[key] = st[key]; saveState(true); w.classList.toggle('on'); if (key === 'glass') applySettings(); return; }
     if (e.target.closest('[data-feedback]')) return openFeedback();
     if (e.target.closest('[data-fb-cancel]') || e.target.closest('[data-fb-overlay]') === e.target) return closeFeedback();
     if (e.target.closest('[data-fb-send]')) return sendFeedback();

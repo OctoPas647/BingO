@@ -33,7 +33,7 @@ SCREENS.home = async el => {
     <header class="apphead">
       <div class="brand bingo">Bing<span>O</span></div>
       <div class="head-stats">
-        <span class="pill" title="${L('Отговори досега')}">${icon('check')}${myLog().length}</span>
+        <span class="pill" title="${L('Отговори досега')}">${icon('check')}${myExamLog().length}</span>
         <button class="iconbtn" data-go="insights" aria-label="${L('Грешки и данни')}">${icon('grid')}</button>
         <button class="iconbtn" data-go="settings" aria-label="${L('Настройки')}">${icon('settings')}</button>
       </div>

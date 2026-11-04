@@ -57,7 +57,7 @@ function setAccent(el) { const sub = SUBJECTS[S.subject]; el.style.setProperty('
 /* ---------- Статистики: one card per matura the learner plans to take ---------- */
 SCREENS.stats = async el => {
   setAccent(el);
-  const act = activity(), mine = myLog(), total = mine.length, max = Math.max(1, ...act.week.map(w => w.n));
+  const act = activity(), mine = myExamLog(), total = mine.length, max = Math.max(1, ...act.week.map(w => w.n));
   /* one card per matura the learner plans to take; the ones without tasks yet say "Скоро" */
   const cards = myMatura().map(m => {
     if (!m.ready) {
@@ -92,9 +92,40 @@ SCREENS.stats = async el => {
 };
 
 /* ---------- Профил ---------- */
+/* ---------- changing the exam from Profile (the same questions as in the setup) ----------
+   Skill maps and answer counts are kept per exam (50-state.js), so switching never mixes points:
+   the new exam starts with its own map and the old one is still there when the learner switches back. */
+function examLabel() {
+  const p = S.profile, t = TRACKS[p.track];
+  return L(EXAMS[currentExamKey()]) + (needsTrack(p.exam) && t ? ' · ' + L(t.title) : '');
+}
+async function changeExam() {
+  const pick = (title, opts, cur) => sheet({
+    title,
+    body: `<div class="sklist">${opts.map(([id, label]) => `<button class="skrow" data-act="${esc(id)}"${id === cur ? ' aria-current="true"' : ''}><div class="sk-main"><b>${esc(label)}${id === cur ? ' ✓' : ''}</b></div></button>`).join('')}</div>`,
+    actions: [{ id: 'x', label: L('Отказ') }]
+  });
+  const exam = await pick(L('За кой изпит се готвиш?'), Object.entries(EXAMS).map(([id, t]) => [id, L(t)]), S.profile.exam);
+  if (!EXAMS[exam]) return false;
+  let track = '', extra = '';
+  if (needsTrack(exam)) {
+    track = await pick(L('Какъв е профилът ти?'), Object.entries(TRACKS).map(([id, t]) => [id, t.icon + ' ' + L(t.title)]), S.profile.track);
+    if (!TRACKS[track]) return false;
+    const opts = [...extraOptions(track), ['none', L('Без допълнителна матура')]];
+    extra = await pick(L('Допълнителна матура?'), opts, S.profile.extra || 'none');
+    if (!opts.some(o => o[0] === extra)) return false;
+    if (extra === 'none' || extra === track) extra = '';
+  }
+  S.profile.exam = exam; S.profile.track = track; S.profile.extra = extra;
+  /* as in the setup: without mathematics in the plan, БЕЛ is the subject that has tasks */
+  if (needsTrack(exam) && !trackHasMath(track) && extra !== EXTRA_MATH && !trackHasMath(extra)) S.subject = 'bel';
+  saveState(true);
+  return true;
+}
+
 SCREENS.profile = async el => {
   setAccent(el);
-  const p = S.profile, act = activity(), mine = myLog(), total = mine.length;
+  const p = S.profile, act = activity(), mine = myExamLog(), total = mine.length;
   const subs = Object.values(SUBJECTS).map(s => ({ s, sm: subjectSummary(s.id) }));
   const strongN = sum(subs.map(x => x.sm.list.filter(y => y.status === 'strong').length)), skillN = sum(subs.map(x => x.sm.list.length));
   const initials = (name => name.trim().split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase() || L('Ученик')[0]);
@@ -104,9 +135,10 @@ SCREENS.profile = async el => {
       <div class="profhead"><div class="avatar">${esc(initials(p.name || ''))}</div>
         <h1 class="pname">${esc(p.name || L('Ученик'))}</h1><p class="muted pcls">${p.cls ? L('Клас {c}', { c: esc(p.cls) }) : L('Добави клас по-долу')}</p></div>
       <div class="card"><h3>${icon('pen')}${L('Данни')}</h3>
-        <label class="fld"><span>${L('Име')}</span><input class="field" data-p="name" value="${esc(p.name || '')}" placeholder="${L('напр. Мария П.')}" autocomplete="off"></label>
-        <label class="fld"><span>${L('Клас')}</span><input class="field" data-p="cls" value="${esc(p.cls || '')}" placeholder="${L('напр. 12а')}" autocomplete="off"></label>
-        <p class="muted small">${L('Името и класът отиват при учителя само ако си свързал Google Sheets.')}</p></div>
+        <label class="fld"><span>${L('Име')}</span><input class="field" data-p="name" maxlength="${MAX_NAME_LEN}" value="${esc(p.name || '')}" placeholder="${L('напр. Мария П.')}" autocomplete="off"></label>
+        <label class="fld"><span>${L('Клас')}</span><input class="field" data-p="cls" maxlength="${MAX_CLS_LEN}" value="${esc(p.cls || '')}" placeholder="${L('напр. 12а')}" autocomplete="off"></label>
+        <p class="muted small">${L('Името и класът отиват при учителя само ако си свързал Google Sheets.')}</p>
+        <div class="rows"><div class="row"><span>${icon('target')}${L('Изпит')}: ${esc(examLabel())}</span><button class="btn ghost" data-exam>${L('Смени')}</button></div></div></div>
       <div class="card"><h3>${icon('trophy')}${L('Моят напредък')}</h3>
         <div class="rows prows">
           <div class="row"><span>${icon('flame')}${L('Поредни дни')}</span><b>${act.streak}</b></div>
@@ -121,6 +153,7 @@ SCREENS.profile = async el => {
   el.addEventListener('click', e => {
     const g = e.target.closest('[data-go]'); if (g) return go(g.dataset.go);
     if (e.target.closest('[data-csv]')) return downloadText(`bingo-${slug(S.profile.name || 'uchenik')}-${todayKey()}.csv`, logCSV());
+    if (e.target.closest('[data-exam]')) return changeExam().then(ok => { if (ok) { toast('Изпитът е сменен. Резултатите за всеки изпит се пазят отделно.'); refresh(); } });
   });
   el.addEventListener('input', e => {
     const f = e.target.closest('[data-p]'); if (!f) return;
