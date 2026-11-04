@@ -1,6 +1,10 @@
 # Progress
 
 ## Done
+- Test stability, part 4: documented the test-stability fix and added a clear suite-validation summary.
+  - `tests/fixes.py` now prints the total checks, passed checks, failed checks, page errors, and the names of any failed checks.
+  - The script exits with code 0 only when every check passes and no page error was captured; otherwise it exits nonzero.
+  - `PROGRESS.md` records the `?testSeed=` hook, condition-based waits, isolated browser contexts, deterministic diagnostic/repetition tests, and the validation summary.
 - Test stability, part 3: rewrote the flaky diagnostic and repetition checks in `tests/fixes.py`.
   - Test 4 now uses `?testSeed=4`, waits for an actual answer control (`.opt`, `input.field.num`, or `.orderlist`), and handles each recognized task type without random whole-session retries.
   - Test 5 now uses `?testSeed=5`, explicitly waits for every `.task`, and deterministically collects the available prompts before asserting that none repeat.
@@ -30,6 +34,7 @@
 - **Оценката на усвояването се мени прекалено рязко**: `bktUpdate` in 51-skills.js no longer adds learning after a wrong answer, `guessOf` uses a 0.2 default for non-choice tasks, and `bktStep` keeps a conservative maximum jump (0.05 below two answers, 0.10 below four) and a 0.25 learning multiplier until `st.n >= 3`. This stabilizes the weak/mid/strong classification and matches the new smoothing logic.
 
 ## Decisions
+- Test stability uses four coordinated changes: a URL test seed, a deterministic PRNG, condition-based waits with isolated contexts, and deterministic diagnostic/repetition scenarios. The suite exits 0 only for a fully green run.
 - Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
 - Skill progress is kept per exam (`math.quad@nvo7`). Keys without an exam move to the current exam the first time they are read (`skillState` in 51-skills.js); the demo learner writes keys for the current exam.
@@ -49,6 +54,8 @@
 - НВО profiles reuse the matura generators; НВО-specific tasks (especially for НВО 4) and weights checked against МОН's specification are still to do.
 - Manual test on web and APK: Liquid glass on a real phone (blur performance), Android font size, feedback form against a deployed server.
 - Maybe add more variants to the small math generators.
+- Run `python tests/fixes.py` at least 10 times locally after building the web app to confirm the diagnostic and repetition tests remain stable.
 
 ## Bugs
-- None known. tests/fixes.py covers the 0.5.0 fixes (tests 11–25).
+- Test flakiness in `tests/fixes.py` is fixed: fixed sleeps, shared browser state, random diagnostic retries, and brittle timing assumptions were replaced with isolated contexts, condition-based waits, and `?testSeed=` scenarios.
+- The suite now reports failed checks and page errors clearly, saves a screenshot for each failing test, and exits 0 only when all checks pass.

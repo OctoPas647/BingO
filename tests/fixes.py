@@ -367,6 +367,18 @@ with sync_playwright() as pw:
     run(b, 'feedback queue', t25, state={**DONE, 'settings': {'aiMode': 'proxy', 'proxyUrl': 'https://bingo.example.run.app'}})
     b.close()
 
-print('page errors:', errors or 'none')
-print(sum(r[1] for r in results), '/', len(results), 'passed')
-sys.exit(0 if all(r[1] for r in results) and not errors else 1)
+passed = sum(r[1] for r in results)
+failed = [r for r in results if not r[1]]
+print('\nSUITE SUMMARY')
+print(f'  checks: {len(results)}')
+print(f'  passed: {passed}')
+print(f'  failed: {len(failed)}')
+print(f'  page errors: {len(errors)}')
+if failed:
+    print('  failed checks:')
+    for name, _, extra in failed: print(f'    - {name}' + (f' ({extra})' if extra else ''))
+if errors:
+    print('  page errors:')
+    for e in errors: print(f'    - {e}')
+print('RESULT: PASS' if not failed and not errors else 'RESULT: FAIL')
+sys.exit(0 if not failed and not errors else 1)
