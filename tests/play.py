@@ -20,15 +20,16 @@ def setup(p, theme, take_shots):
         p.click('[data-ob="next"]'); p.wait_for_timeout(150)
     p.wait_for_selector('.losscard')
 def answer(p, wrong=False):
-    """answer the current task: pick an option, or type a number"""
+    """answer the current task: pick an option, type a number, or fill a gap"""
     if p.locator('.opt').count():
-        n = p.locator('.opt').count()
         p.locator('.opt').nth(1 if wrong else 0).click()
     elif p.locator('input.field').count():
         p.locator('input.field').fill('999' if wrong else '1')
+    elif p.locator('.gap.slot').count():
+        p.locator('.bank .chip:not(.used)').first.click()
     elif p.locator('.gap.pick button').count():
         p.locator('.gap.pick button').first.click()
-    else:
+    elif p.locator('.gap-in').count():
         p.locator('.gap-in').first.fill('x')
     p.click('[data-main]')
 with sync_playwright() as pw:
@@ -39,7 +40,7 @@ with sync_playwright() as pw:
         p.goto(PAGE); setup(p, theme, theme == 'light'); shot(p, f'{theme}-01-start')
         if theme == 'dark':
             p.click('[data-demo]'); p.wait_for_timeout(300); shot(p, 'dark-02-demo-map')
-            p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-key="theme"] [data-v="amoled"]'); p.wait_for_timeout(200); shot(p, 'dark-03-amoled-settings')
+            p.click('[data-tab="profile"]'); p.wait_for_selector('.profhead'); p.click('[data-go="settings"]'); p.wait_for_selector('.settings'); p.click('[data-key="theme"] [data-v="amoled"]'); p.wait_for_timeout(200); shot(p, 'dark-03-amoled-settings')
             p.click('[data-back]'); p.wait_for_timeout(200); p.click('[data-tab="home"]'); p.wait_for_timeout(200); shot(p, 'dark-04-amoled-home'); ctx.close(); continue
         # diagnostic
         p.click('[data-start="diag"]'); p.wait_for_selector('.task'); shot(p, 'light-02-diag-task')
@@ -51,7 +52,7 @@ with sync_playwright() as pw:
         p.wait_for_selector('.result'); shot(p, 'light-04-diag-result')
         p.click('[data-out]'); p.wait_for_selector('.losscard'); shot(p, 'light-05-map')
         # demo learner and focus
-        p.click('[data-go="settings"]'); p.wait_for_selector('.settings'); shot(p, 'light-06-settings'); p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard'); shot(p, 'light-07-demo-map')
+        p.click('[data-tab="profile"]'); p.wait_for_selector('.profhead'); p.click('[data-go="settings"]'); p.wait_for_selector('.settings'); shot(p, 'light-06-settings'); p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard'); shot(p, 'light-07-demo-map')
         p.locator('.skrow').first.click(); p.wait_for_timeout(400); shot(p, 'light-08-skill-sheet'); p.click('[data-act="x"]'); p.wait_for_timeout(300)
         p.click('[data-start="focus"]'); p.wait_for_selector('.task'); shot(p, 'light-09-focus-task')
         for i in range(25):
