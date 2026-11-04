@@ -1,6 +1,12 @@
 # Progress
 
 ## Done
+- Test stability, part 2: replaced fixed sleeps in `tests/fixes.py` with condition-based Playwright waits and isolated each browser check.
+  - Every test now runs in its own browser context through `run()`, with a failure screenshot saved to `build/shots/` and the failing step reported.
+  - Fixed `wait_for_timeout()` calls were replaced by waits for visible UI, detached elements, feedback/result screens, and concrete app state via `wait_for_function()` / `expect()`.
+  - The suite now opens `?testSeed=123`, using the part-1 hook so diagnostic and generated-task sequences are repeatable.
+  - Normal app behavior is unchanged; this PR changes only the browser test harness.
+  - Manual test: run `python tests/fixes.py` after `python tools/build.py web`; it should complete without `TimeoutError`, save a screenshot for any failing check, and exit nonzero only when a check or page error fails.
 - Test stability, part 1: added a `?testSeed=` hook for repeatable task sequences.
   - `src/index.template.html` reads `testSeed` from the URL before app scripts run.
   - `src/js/99-boot.js` installs a deterministic PRNG in place of `Math.random` only when `?testSeed=` is present.
