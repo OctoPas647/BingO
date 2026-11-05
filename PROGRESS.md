@@ -14,13 +14,13 @@
 - **Оценката на усвояването се мени прекалено рязко**: `bktUpdate` in 51-skills.js no longer adds learning after a wrong answer, `guessOf` uses a 0.2 default for non-choice tasks, and `bktStep` keeps a conservative maximum jump (0.05 below two answers, 0.10 below four) and a 0.25 learning multiplier until `st.n >= 3`. This stabilizes the weak/mid/strong classification and matches the new smoothing logic.
 
 ## Decisions
+- Past exams are imported in full (tools/install_exam.py); a full version replaces the partial one from tools/import_dzi.py under the same id. Listening texts: the official transcript is spoken by Gemini TTS through BingO's server (POST /tts) or the device voice, and shown only after the answer (66c-listen.js); listening questions are not used in training.
 - Test security: the server is the only writer of events/strikes/locks (`proctorReport`); clients only report. The heartbeat (10 s) is required for saving answers (90 s window in the rules), so a silent page can't keep answering. Leaving counts once per absence: `left`, or a `gap` if nothing was reported. Strikes count only while a live test is running and the student isn't locked. Unlocking sets `forgiven = strikes`, so the warnings start over.
 - Full screen is required on computers only (`pointer: fine`); on phones the back gesture would leave it too easily, and pinning covers phones in the app.
 - Opening the camera for a photo answer isn't leaving (the photo button marks an expected leave for 3 minutes).
 - AI key: never in the app or the public web page (the repo, the APK and the web page are public). The app calls `BINGO_AI_SERVER/generate`; the server holds `GEMINI_API_KEY` (Secret Manager) or uses Vertex AI. Per-IP limits on the server.
 - Liquid glass is for the navigation layer only (bars, tab bar, answer bar, sheets, toasts); content stays on solid grouped surfaces, as in iOS 26. On by default; Settings can turn it off.
 - Official three-option questions get a 4th option that is never right ("none of these" or a near number) and are marked `added: [3]`; true/false items are left as they are.
-- Imported questions that need a picture, map, diagram or audio are skipped; language exams keep only the reading part.
 - The second try does not change the skill map: the first answer counts.
 - Past-exam English support keeps matura content in Bulgarian: only module-level UI metadata and app chrome are translated.
 - Fixes live in BingO's own src/, not in engine/ (engine is a vendored copy of Shelly and would be overwritten on resync). Strict sentence checking is therefore in src/js/48-scoring.js, which wraps Shelly's `textMatches` and `scoreTask`.
@@ -40,7 +40,7 @@
 - Not done from Shkolo on purpose (scope: tests and homework): absences, remarks, parents' accounts, messages.
 - Deploy `server/` on Cloud Run with the Gemini key and set the `BINGO_AI_SERVER` GitHub variable (until then the app runs without cloud AI; Gemini Nano still works on phones/browsers that have it).
 - Try Gemini Nano on the Xiaomi 17 Ultra: its Bulgarian may be weak; it is only used for hints, first estimates and checks.
-- More of the Drive folder: only the newest 4 exams per subject were imported (≈70 of ≈230 PDFs); run tools/import_dzi.py on the rest.
+- More of the Drive folder: 49 exams are now imported in full (all questions, pictures, listening); 59 are still partial and 235 missing. Step-by-step instructions and the exact list: docs/IMPORT-FULL-EXAMS.md, docs/import-remaining.json, tools/install_exam.py.
 - Topic tagging of imported questions is by keywords; a teacher could check it.
 - Exams the bot could not upload (its branches held placeholder text, nothing was taken): НВО 4 БЕЛ 2007–2016, ДЗИ Математика (общообразователна) 2022-08, English НВО 10 Математика 2025 and 2026, integrated НВО 10 samples (БЕЛ, математика).
 - НВО 4 Математика 2007–2016: 25 drawing questions are missing (2007 q12,13,14,16; 2008 q13,14; 2009 q13,14; 2010 q14,15; 2011 q14,15,16; 2012 q13,14; 2013 q9 and q17; 2014 q13,14,15; 2015 q9 and q17; 2016 q13,14,18), and the formulas rebuilt from the key (2012 q9, 2013 q9 and q17, 2015 q9 and q17) should be checked against the PDFs.
