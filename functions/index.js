@@ -1034,3 +1034,7 @@ exports.classStats = onCall({ timeoutSeconds: 120 }, async req => {
 });
 
 exports._test = { deadlineFor, isVisible, zonedParts, cleanSettings };
+
+/* Messages: class group chats, private chats with a teacher, emails for sharing Google Drive files (chat.js) */
+const CHAT = require('./chat');
+for (const k of ['chatSyncClass', 'chatEnsure', 'chatOpenDm', 'chatEmails', 'chatNotify']) exports[k] = CHAT[k];

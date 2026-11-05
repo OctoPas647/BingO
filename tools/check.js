@@ -198,7 +198,7 @@ E('resetState(false)');
   const fs = require('fs'), path = require('path'), dir = path.join(__dirname, '../src/js'), EN = E('EN_UI'), keys = new Set();
   const unq = x => x.replace(/\\'/g, "'").replace(/\\\\/g, '\\');
   for (const f of fs.readdirSync(dir)) {
-    if (f === '49-lang.js' || f === '49b-lang-classes.js' || f === '49c-lang-090.js' || f === '69-qrcode.js') continue;
+    if (f === '49-lang.js' || f === '49b-lang-classes.js' || f === '49c-lang-090.js' || f === '49c-lang-messages.js' || f === '69-qrcode.js') continue;
     const src = fs.readFileSync(path.join(dir, f), 'utf8');
     for (const re of [/\bL\('((?:[^'\\]|\\.)*)'/g, /\btoast\('((?:[^'\\]|\\.)*)'/g, /\blabel: '((?:[^'\\]|\\.)*)'/g, /L\(\w+ [=!<>]+[^?]+\? '((?:[^'\\]|\\.)*)' : '((?:[^'\\]|\\.)*)'/g])
       for (const m of src.matchAll(re)) for (const k of m.slice(1)) if (k && /[А-Яа-я]/.test(k)) keys.add(unq(k));
@@ -227,6 +227,57 @@ E('resetState(false)');
   if (!fs.existsSync(sync.OUT) || fs.readFileSync(sync.OUT, 'utf8') !== sync.build()) fail('functions/shared/edu.js is out of date: run node tools/sync-functions.js');
   const edu = E('({ g: eduGrade(17, 20, { scale: "bg6" }).value, e: eduGrade(17, 20, { scale: "bg6exact" }).value, s: eduStrip([{ id: "a", type: "choice", prompt: "x", options: ["1", "2"], answer: 1 }], "s").pub[0].answer })');
   if (edu.g !== 5 || edu.e !== 5.4 || edu.s !== undefined) fail('class grading rules', edu);
+}
+
+/* 11. Messages (80-msg-core.js): chat ids, links, Google Workspace links and files, grouping, reactions, unread */
+{
+  const J = x => E(`JSON.stringify(${x})`), j = x => JSON.parse(J(x)), eq = (a, b, what) => { if (JSON.stringify(a) !== JSON.stringify(b)) fail('messages: ' + what, { got: a, want: b }); };
+  eq(E('dmChatId("b", "a")'), E('dmChatId("a", "b")'), 'a private chat has one id for both people');
+  eq(E('classChatId("X1")'), 'class_X1', 'class chat id');
+  eq(j('urlsIn("виж https://docs.google.com/document/d/1AbCdEfGhIjKlMnOp/edit?usp=sharing, и www.bingo.bg.")'), ['https://docs.google.com/document/d/1AbCdEfGhIjKlMnOp/edit?usp=sharing', 'https://www.bingo.bg'], 'links in a message (trailing punctuation left out)');
+  eq(E('safeUrl("javascript:alert(1)")'), '', 'only http(s) links');
+  eq(j('linkParts("a <b> https://x.bg/q")').map(p => p.t), ['text', 'url'], 'text and link parts');
+  const G = {
+    'https://docs.google.com/document/d/1AbCdEfGhIjKlMnOp/edit': ['docs', '1AbCdEfGhIjKlMnOp'], 'https://docs.google.com/spreadsheets/u/1/d/1SsSsSsSsSsSsSsSs/edit#gid=0': ['sheets', '1SsSsSsSsSsSsSsSs'],
+    'https://docs.google.com/presentation/d/1PpPpPpPpPpPpPp/present': ['slides', '1PpPpPpPpPpPpPp'], 'https://docs.google.com/forms/d/e/1FAIpQLSdXyz123456/viewform': ['forms', '1FAIpQLSdXyz123456'],
+    'https://forms.gle/AbC123': ['forms', 'AbC123'], 'https://drive.google.com/file/d/1FfFfFfFfFfFfFfFf/view?usp=drive_link': ['drive', '1FfFfFfFfFfFfFfFf'],
+    'https://drive.google.com/open?id=1OoOoOoOoOoOoOoOo': ['drive', '1OoOoOoOoOoOoOoOo'], 'https://drive.google.com/drive/u/0/folders/1DdDdDdDdDdDdDdD': ['folder', '1DdDdDdDdDdDdDdD'],
+    'https://meet.google.com/abc-defg-hij': ['meet', 'abc-defg-hij'], 'https://docs.google.com/a/school.bg/document/d/1SchoolDocIdAbc/edit': ['docs', '1SchoolDocIdAbc'],
+    'https://youtu.be/dQw4w9WgXcQ': ['youtube', 'dQw4w9WgXcQ'], 'https://classroom.google.com/c/MTIz': ['classroom', '']
+  };
+  for (const [u, [app, id]] of Object.entries(G)) { const g = j(`gLinkInfo(${JSON.stringify(u)})`) || {}; eq([g.app, g.id], [app, id], 'Google link ' + u); }
+  eq(E('gLinkInfo("https://example.com/document/d/1AbCdEfGhIjKlMnOp")'), null, 'not Google: no card');
+  eq(E('gLinkInfo("https://docs.google.com.evil.bg/document/d/1AbCdEfGhIjKlMnOp")'), null, 'a look-alike host is not Google');
+  eq(E('gLinkInfo("https://docs.google.com/document/d/1AbCdEfGhIjKlMnOp/edit").preview'), 'https://docs.google.com/document/d/1AbCdEfGhIjKlMnOp/preview', 'Docs preview');
+  eq(E('gAppOfMime("application/vnd.google-apps.spreadsheet")') + E('gAppOfMime("application/pdf")'), 'sheetsdrive', 'Drive mime types');
+  eq(E('gOpenUrl("slides", "1PpPpPpPpPpPp")'), 'https://docs.google.com/presentation/d/1PpPpPpPpPpPp/edit', 'open Slides in the editor');
+  const K = { 'a.docx': 'doc', 'b.XLSX': 'sheet', 'c.pptx': 'slides', 'd.pdf': 'pdf', 'e.heic': 'image', 'f.mov': 'video', 'g.m4a': 'audio', 'h.zip': 'archive', 'i.gdoc': 'gshortcut', 'j.bin': 'file', 'k.odt': 'doc', 'l.csv': 'sheet' };
+  for (const [f, k] of Object.entries(K)) eq(E(`fileKind(${JSON.stringify(f)}, "")`), k, 'file kind ' + f);
+  eq(E('fileKind("x", "image/png")'), 'image', 'kind from the mime type');
+  eq(j('gTargetOf("Есе.docx", "")'), { app: 'docs', mime: 'application/vnd.google-apps.document' }, 'Word opens in Google Docs');
+  eq(E('gTargetOf("b.xlsx","").app') + E('gTargetOf("c.ppt","").app') + E('gTargetOf("d.pdf","")'), 'sheetsslidesnull', 'Excel → Sheets, PowerPoint → Slides, PDF stays');
+  eq(E('gShortcutUrl("Есе.gdoc", JSON.stringify({ doc_id: "1AbCdEfGhIjKlMnOp", email: "a@b.bg" }))'), 'https://docs.google.com/document/d/1AbCdEfGhIjKlMnOp/edit', 'a .gdoc shortcut becomes its link');
+  eq(E('gShortcutUrl("x.gsheet", JSON.stringify({ url: "https://docs.google.com/spreadsheets/d/1SsSsSsSsSsSs/edit" }))'), 'https://docs.google.com/spreadsheets/d/1SsSsSsSsSsSs/edit', 'old-style shortcut with a url');
+  eq(E('gShortcutUrl("x.gdoc", "not json") + gShortcutUrl("x.txt", "{}")'), '', 'bad shortcut files are uploaded as files');
+  eq(E('safeFileName("a/b\\\\c?.pdf")'), 'a_b_c_.pdf', 'safe Storage file names');
+  const big = E('MSG.MAX_FILE');
+  eq(j(`checkFiles([{ name: "a", size: 10 }, { name: "b", size: ${big + 1} }, { name: "c", size: 0 }]).bad.map(b => b.why)`), ['big', 'empty'], 'files over 25 MB and empty files are refused');
+  eq(E(`checkFiles([{ name: "a", size: ${big} }]).ok.length`), 1, 'exactly 25 MB is fine');
+  eq(E('checkFiles(Array.from({ length: 12 }, (_, i) => ({ name: "f" + i, size: 5 }))).ok.length'), 10, 'at most 10 files in a message');
+  eq([E('emojiOnly("❤️")'), E('emojiOnly("👍🏽👍")'), E('emojiOnly("ok 👍")'), E('emojiOnly("😀😀😀😀")')], [1, 2, 0, 0], 'big emoji for 1–3 emoji only');
+  const t0 = new Date(2026, 10, 5, 10, 0).getTime();
+  const lay = j(`layoutMessages([{ from: "a", at: ${t0} }, { from: "a", at: ${t0 + 60000} }, { from: "b", at: ${t0 + 120000} }, { from: "b", at: ${t0 + 120000 + 5 * 3600000} }])`);
+  eq(lay.map(x => [x.first, x.last, x.timeLine]), [[true, false, true], [false, true, false], [true, true, false], [true, true, true]], 'bubble groups and time lines');
+  eq(j('reactionSummary({ u1: "❤️", u2: "😂", u3: "❤️" }, "u2").map(r => [r.e, r.n, r.mine])'), [['❤️', 2, false], ['😂', 1, true]], 'reactions summary');
+  eq(j('msgPreview({ files: [{ name: "a.jpg", mime: "image/jpeg" }] })'), { key: '📷 Снимка', text: '' }, 'preview of a photo');
+  eq(E('msgPreview({ links: [{ url: "u", title: "Есе" }] }).text'), '🔗 Есе', 'preview of a Google file');
+  const ms = 'x => x';
+  eq([E(`chatUnread({ lastMessage: { from: "b", at: 5 }, reads: { a: 3 } }, "a", ${ms})`), E(`chatUnread({ lastMessage: { from: "b", at: 5 }, reads: { a: 6 } }, "a", ${ms})`), E(`chatUnread({ lastMessage: { from: "a", at: 5 } }, "a", ${ms})`)], [true, false, false], 'unread');
+  const cc = '[{ classId: "c1", title: "11Б", people: { t: { name: "Иванова", teacher: true }, s1: { name: "Ани" }, s2: { name: "Борис" } } }]';
+  eq(j(`dmContacts(${cc}, "s1", false).map(p => p.uid)`), ['t'], 'a student can write privately only to teachers');
+  eq(j(`dmContacts(${cc}, "t", true).map(p => p.uid)`), ['s1', 's2'], 'a teacher can write to the students');
+  eq(E('initialsOf("Мария Иванова")'), 'МИ', 'initials');
+  console.log('messages core checked');
 }
 
 console.log(`${n} tasks checked, ${fails} problems`);

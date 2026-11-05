@@ -10,6 +10,13 @@ service firebase.storage {
       allow read: if request.auth != null && (request.auth.uid == uid
         || request.auth.uid in firestore.get(/databases/(default)/documents/assignments/$(aid)).data.teacherIds);
     }
+    /* Messages: any file up to 25 MB, from a member of the chat; only the chat's members can open it; the sender can remove it */
+    match /chats/{chatId}/{uid}/{mid}/{file} {
+      function inChat() { return request.auth != null && request.auth.uid in firestore.get(/databases/(default)/documents/chats/$(chatId)).data.members; }
+      allow create: if inChat() && request.auth.uid == uid && request.resource.size <= 25 * 1024 * 1024;
+      allow read: if inChat();
+      allow delete: if request.auth != null && request.auth.uid == uid;
+    }
     match /tests/{uid}/{file} {
       allow create: if request.auth != null && request.auth.uid == uid && request.auth.token.get('role', 'student') in ['teacher', 'admin']
         && request.resource.size < 5 * 1024 * 1024 && request.resource.contentType.matches('image/.*');

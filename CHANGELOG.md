@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.10.0
+**Съобщения**: a chat for classes, like Apple's Messages with a little Instagram. Setup and details: docs/messages.md.
+
+- **A group chat for every class**, made and kept up to date by the server (joining, leaving, co-teachers, renaming); **private chats** between a student and their teacher (students cannot start private chats with each other)
+- **Messages that feel native**: blue bubbles grouped by sender with day and time lines, big emoji, clickable links, replies with a quote, unsend, a teacher can remove a message in their chats; "Изпратено" / "Видяно" / "Видяно от N", "… пише", unread dots and a count on the tab, a toast for a new message in another chat (never during a test or practice)
+- **Notifications**: a system notification for a new message while BingO is in the background (tap opens the chat), **web push** when BingO is closed (Firebase Cloud Messaging, `chatNotify`, the `bingo-push-sw.js` worker next to the page), the unread count in the page title, mute a chat, nothing during a test; the Android app shows messages while open (push there needs Firebase Messaging in the Gradle build, docs/messages.md)
+- **Reactions**: hold (or right-click) a message for ❤️ 😂 😮 😢 😡 👍, double-tap for ❤️
+- **Any file up to 25 MB** (10 per message): pick, paste or drag & drop; pictures in a grid, videos and audio play in the chat, other files as cards
+- **Google Workspace**: Docs/Sheets/Slides/Forms/Drive/Meet/YouTube links become cards with a preview; pick files **from Google Drive** and give the chat access in the same step; **Word, Excel and PowerPoint open in Google Docs, Sheets and Slides**; Drive's `.gdoc`/`.gsheet`/… shortcut files turn into their links; save any file to Google Drive; start a **Google Meet** call from the chat
+- **Laptop and phone**: list and chat side by side on a wide screen; a tab for students (Начало · Статистики · Клас · Съобщения · Профил) and a section for teachers
+- **Demo mode**: the demo school has its class chats and a private chat, so Messages can be shown offline
+- Security: Firestore and Storage rules for chats (members only, write only as yourself, one reaction each, unsend clears the message), functions in `functions/chat.js`; tests in `tools/check.js` (section 11), `tests/emulator/chat.test.mjs` and `tests/ui_messages.py` (the UI with a stand-in for Firebase)
+
+
 ## 0.9.0 — statistics, projections, planned tests
 - Student **Статистики** in three tabs: **Оценки** (Shkolo-style: общ успех, grades by subject and term with срочна/годишна, spread of grades, the year's average next to last year's, you vs the class on BingO tests, teachers' notes, absences), **Упражнения** (activity rings, active days, accuracy by week, the matura forecast over time) and **Години** (every school year side by side). Grades come from BingO tests automatically and can be typed in (one by one, many at once, or past years' year grades); everything is kept across school years.
 - Teacher **Прогнози** (from Табло, a class's tab and each student's page): likely result and grade of every student on each coming test with a range, НВО/ДЗИ forecast, who needs help and why, the class over time and by school year. New `classStats` function gives students class averages only.

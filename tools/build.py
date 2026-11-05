@@ -63,11 +63,12 @@ def ai_server():
 def firebase_cfg():
     """The Firebase web config for BingO for classes (not secret: it only names the project; the security rules protect the data).
     From the BINGO_FIREBASE environment variable (JSON, a GitHub Actions variable) or tools/config.json "firebase".
-    Keys: apiKey, authDomain, projectId, storageBucket, appId, messagingSenderId, and webClientId (the OAuth "Web client" id, for sign-in on Android)."""
+    Keys: apiKey, authDomain, projectId, storageBucket, appId, messagingSenderId, webClientId (the OAuth "Web client" id, for sign-in on Android),
+    and vapidKey (Cloud Messaging → Web Push certificates, for push notifications of new messages; docs/messages.md)."""
     raw = os.environ.get('BINGO_FIREBASE') or ''
     try: c = json.loads(raw) if raw.strip() else (CFG.get('firebase') or {})
     except ValueError: sys.exit('BINGO_FIREBASE is not valid JSON')
-    keep = ['apiKey', 'authDomain', 'projectId', 'storageBucket', 'appId', 'messagingSenderId', 'webClientId', 'region']
+    keep = ['apiKey', 'authDomain', 'projectId', 'storageBucket', 'appId', 'messagingSenderId', 'webClientId', 'region', 'vapidKey']
     c = {k: str(v) for k, v in (c or {}).items() if k in keep and isinstance(v, str) and re.fullmatch(r'[\w.:\-/]+', v)}
     return c if c.get('apiKey') and c.get('projectId') else None
 
@@ -108,7 +109,22 @@ def page(pre_script=''):
     html = html.replace('{{CSS}}', css_bundle(), 1)
     return re.sub(r'\{\{JS\}\}', lambda m: js_bundle(), html, count=1)
 
+def push_worker():
+    """The service worker for push notifications of new messages (81b-msg-notify.js, functions/chat.js chatNotify).
+    It must sit next to the page (dist/web/bingo-push-sw.js) and is uploaded with it. Firebase shows the notification
+    and opens the chat when it is tapped (the link comes with the push)."""
+    fb = firebase_cfg() or {}
+    cfg = {k: fb[k] for k in ('apiKey', 'authDomain', 'projectId', 'storageBucket', 'appId', 'messagingSenderId') if k in fb}
+    return (f"/* BingO push notifications for Messages (made by tools/build.py) */\n"
+            f"const CFG = {json.dumps(cfg)};\n"
+            f"if (CFG.apiKey && CFG.messagingSenderId) {{\n"
+            f"  importScripts('https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js', 'https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js');\n"
+            f"  firebase.initializeApp(CFG); firebase.messaging();\n"
+            f"}}\n"
+            f"self.addEventListener('notificationclick', e => {{ const link = e.notification.data && e.notification.data.FCM_MSG && e.notification.data.FCM_MSG.notification && e.notification.data.FCM_MSG.notification.click_action; if (!link) return; e.notification.close(); e.waitUntil(clients.openWindow(link)); }});\n")
+
 def build_web():
+    write(DIST / 'web' / 'bingo-push-sw.js', push_worker())
     out = DIST / 'web' / 'index.html'; write(out, page())
     say(f'web      -> {out.relative_to(ROOT)}  ({out.stat().st_size // 1024} KB)'); return out
 

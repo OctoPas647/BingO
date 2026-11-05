@@ -85,6 +85,7 @@ jobs:
           path: |
             dist/android/*.apk
             dist/web/index.html
+            dist/web/bingo-push-sw.js
 
       - name: Publish release
         if: steps.key.outputs.signed == 'true'
@@ -158,6 +159,9 @@ jobs:
           # FTPS (encrypted); the folder is created if it doesn't exist yet
           curl --fail --silent --show-error --ssl-reqd --ftp-create-dirs --retry 3 \
             --user "$FTP_USER:$FTP_PASSWORD" -T dist/web/index.html "$URL"
+          # the push service worker for Messages must sit next to the page
+          curl --fail --silent --show-error --ssl-reqd --ftp-create-dirs --retry 3 \
+            --user "$FTP_USER:$FTP_PASSWORD" -T dist/web/bingo-push-sw.js "ftp://$HOST/${DIR:+$DIR/}bingo-push-sw.js"
           echo "Uploaded BingO ${{ steps.ver.outputs.version }} to $HOST/${DIR:+$DIR/}index.html"
 
       - name: Remove signing key
