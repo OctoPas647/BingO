@@ -146,7 +146,7 @@ SCREENS.messages = async (el, params, nav) => {   /* the bottom menu comes from 
 SCREENS.tMessages = async (el, params, nav) => {
   if (!(await tGate(el, 'tMessages'))) return;
   const body = tFrame(el, 'tMessages', { title: L('Съобщения'), actions: `<button class="iconbtn" data-notify aria-label="${L('Известия')}">${icon('bell')}</button><button class="btn accent small" data-compose>${icon('compose')}${L('Ново съобщение')}</button>`, wide: true });
-  el.classList.add('t-msg');
+  el.classList.add('t-msgscreen');   /* not .t-msg: that is the Assistant's chat bubble (zzz-class.css) */
   el.querySelector('[data-notify]').addEventListener('click', () => notifySheet());
   const view = msgView(body, nav);
   el.querySelector('[data-compose]').addEventListener('click', () => view.compose());

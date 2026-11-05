@@ -351,3 +351,5 @@ html.still *, html.still *::before, html.still *::after { transition-duration: 0
 :root.sideways #rotatehint b { font-size: 1.15rem; } :root.sideways #rotatehint span { color: var(--muted); font-size: .9rem; }
 @keyframes rot-turn { 0%, 30% { transform: rotate(-90deg); } 60%, 100% { transform: rotate(0); } }
 @keyframes rot-in { from { opacity: 0; transform: scale(.94); } }
+/* five or more tabs on a narrow phone: the labels shrink a little instead of being cut ("Съобщения") */
+.tabbar button span { font-size: min(1em, 2.55vw); letter-spacing: -.01em; }

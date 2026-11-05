@@ -18,10 +18,10 @@
   .msg-listpane { border-right: 1px solid var(--line); background: var(--surface); padding-top: 12px; }
   .msg-threadpane { display: block; position: relative; background: var(--bg); }
 }
-.t-msg .t-body { padding-bottom: 0; }
-.t-msg .msg-split { height: calc(100dvh - 128px); }
-@media (min-width: 900px) { .t-msg .msg-split { height: calc(100dvh - 110px); max-width: none; } .t-msg .msg-title { display: none; } }
-@media (max-width: 899px) { .t-msg .msg-split { height: calc(100dvh - 150px - env(safe-area-inset-bottom)); } .t-msg .msg-title { display: none; } }
+.t-msgscreen .t-body { padding-bottom: 0; }
+.t-msgscreen .msg-split { height: calc(100dvh - 128px); }
+@media (min-width: 900px) { .t-msgscreen .msg-split { height: calc(100dvh - 110px); max-width: none; } .t-msgscreen .msg-title { display: none; } }
+@media (max-width: 899px) { .t-msgscreen .msg-split { height: calc(100dvh - 150px - env(safe-area-inset-bottom)); } .t-msgscreen .msg-title { display: none; } }
 
 .msg-empty { height: 100%; display: grid; place-content: center; justify-items: center; gap: 10px; color: var(--ink-3); }
 .msg-empty .ic { width: 54px; height: 54px; }
@@ -285,4 +285,6 @@ button.msg-person:hover { background: var(--surface-2); }
 .msg-mute > .ic { width: 22px; height: 22px; color: var(--primary); flex: none; }
 .msg-mute.on > .ic { color: var(--ink-2); }
 .msg-mute span { display: grid; } .msg-mute small { color: var(--ink-2); font-size: .8rem; }
-.t-msg .t-actions .iconbtn .ic { width: 22px; height: 22px; }
+.t-msgscreen .t-actions .iconbtn .ic { width: 22px; height: 22px; }
+/* the teacher's frame already has 16px sides on a phone: the list lines up with the other teacher tabs */
+@media (max-width: 899px) { .t-msgscreen .msg-listpane { padding: 0; } .t-msgscreen .msg-list { margin: 0 -8px; padding: 0 0 24px; } }

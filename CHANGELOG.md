@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1 — the UI lined up
+- Teacher Съобщения lines up with the other tabs (it had its own background and extra side space on a phone).
+- Табло: the Прогнози и статистики card is laid out properly.
+- Five tabs on a narrow phone: the labels shrink a little instead of being cut.
+- Demo: Статистики shows the class averages instead of a "not sent anywhere" message.
+- All browser tests run again (the demo picker and the new Статистики tabs), and the menu sweep covers Messages and the projections.
+
 ## 1.0.0
 **Съобщения**: a chat for classes, like Apple's Messages with a little Instagram. Setup and details: docs/messages.md.
 

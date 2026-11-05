@@ -109,6 +109,16 @@ async function demoFn(name, data) {
   if (name === 'gradeTask') { const p = 'results/' + data.attemptId, r = DB.get(p); if (r && r.per && r.per[data.taskId]) { const per = { ...r.per, [data.taskId]: { ...r.per[data.taskId], points: data.points, status: data.points >= r.per[data.taskId].max ? 'right' : data.points > 0 ? 'partial' : 'wrong', by: 'teacher' } }; const pts = sum(Object.values(per).map(x => x.points || 0)); dbWrite(p, { per, points: pts, pct: pts / r.max, grade: eduGrade(pts, r.max, { scale: 'matura' }), needsReview: Object.values(per).some(x => x.status === 'pending' || x.by === 'ai') }, true); } return { ok: true }; }
   if (name === 'liveControl') { const p = 'assignments/' + data.assignmentId, a = DB.get(p); if (a) { const live = { ...(a.live || {}) }; if (data.action === 'start') { live.state = 'question'; live.q = 0; live.startedAt = dts(Date.now()); } else if (data.action === 'end') live.state = 'ended'; else if (data.action === 'pause') live.state = 'paused'; else if (data.action === 'resume') live.state = 'question'; else if (data.action === 'next') live.q = (live.q || 0) + 1; dbWrite(p, { live, status: live.state === 'ended' ? 'closed' : a.status }, true); } return { ok: true }; }
   if (name === 'proctorControl') { const p = 'attempts/' + (data.attemptId || ''); if (DB.has(p)) dbWrite(p, data.action === 'unlock' || data.action === 'forgive' ? { locked: false, forgiven: (DB.get(p).flags || 0) } : data.action === 'lock' ? { locked: true } : {}, true); return { ok: true }; }
+  if (name === 'classStats') {
+    const all = [...DB.entries()].filter(([k]) => k.startsWith('results/')).map(([, r]) => r), stats = {}, mean = xs => (xs.length ? sum(xs) / xs.length : null);
+    for (const r of all.filter(x => x.studentId === (CLOUD.user && CLOUD.user.uid) && x.visible && isFinite(x.pct))) {
+      const peers = all.filter(x => x.assignmentId === r.assignmentId && isFinite(x.pct)); if (peers.length < 3) continue;
+      const gs = peers.map(x => x.grade || {}).filter(g => ['bg6', 'bg6exact', 'matura'].includes(g.scale) && isFinite(g.value)).map(g => g.value);
+      const below = peers.filter(x => x.pct < r.pct).length, same = peers.filter(x => x.pct === r.pct).length;
+      stats[r.assignmentId] = { n: peers.length, avgPct: mean(peers.map(x => x.pct)), avgGrade: gs.length >= 3 ? mean(gs) : null, rank: (below + (same - 1) / 2) / Math.max(1, peers.length - 1), classId: r.classId || '' };
+    }
+    return { stats };
+  }
   if (name === 'inviteStudents') return { invited: (data.emails || []).length, ok: true };
   if (name === 'registerProfile') return { ok: true };
   toast(L('В демото това не се изпраща никъде.'));

@@ -13,10 +13,10 @@ found = []
 SCREENS = {
   'teacher': [('tHome', {}), ('tClasses', {}), ('tTests', {}), ('tCalendar', {}), ('tAI', {}), ('tMore', {}), ('tClass', {'cid': 'c12a'}), ('tClass', {'cid': 'c12b'}),
               ('tStudent', {'cid': 'c12a', 'uid': 'demo-s1'}), ('tAssignment', {'aid': 'demo-ru-mock'}), ('tAssignment', {'aid': 'demo-math-hw'}), ('tAssignment', {'aid': 'demo-math-next'}),
-              ('tGrade', {'attemptId': 'demo-ru-mock_demo-s2'}), ('tLive', {'aid': 'demo-math-live'}), ('tTestEdit', {}), ('tTestEdit', {'testId': 'demo-test-ru'}), ('tPublish', {'testId': 'demo-test-ru'})],
-  'student': [('home', {}), ('stats', {}), ('profile', {}), ('classes', {}), ('insights', {}), ('settings', {}), ('assignment', {'aid': 'demo-ru-mock'}), ('assignment', {'aid': 'demo-ru-hw'}), ('past', {}), ('forecast', {}), ('skills', {})],
+              ('tGrade', {'attemptId': 'demo-ru-mock_demo-s2'}), ('tLive', {'aid': 'demo-math-live'}), ('tTestEdit', {}), ('tTestEdit', {'testId': 'demo-test-ru'}), ('tPublish', {'testId': 'demo-test-ru'}), ('tStats', {}), ('tMessages', {}), ('tClass', {'cid': 'c12b', 'tab': 'forecast'})],
+  'student': [('home', {}), ('stats', {}), ('profile', {}), ('classes', {}), ('insights', {}), ('settings', {}), ('assignment', {'aid': 'demo-ru-mock'}), ('assignment', {'aid': 'demo-ru-hw'}), ('past', {}), ('forecast', {}), ('skills', {}), ('stats', {'tab': 'practice'}), ('stats', {'tab': 'years'}), ('messages', {})],
 }
-SKIP = re.compile(r'Изход|Leave|logout|Нулирай|Изтрий всичко|reset-all|data-exit|data-signout', re.I)
+SKIP = re.compile(r'Изход|Leave|logout|Нулирай|Изтрий всичко|reset-all|data-exit|data-signout|English|data-lang', re.I)
 
 def setup(b, role):
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, color_scheme='dark', locale='bg-BG', accept_downloads=True)

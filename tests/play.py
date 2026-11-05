@@ -48,7 +48,7 @@ with sync_playwright() as pw:
         p = ctx.new_page(); p.on('pageerror', lambda e: errors.append(str(e))); p.on('console', lambda m: m.type == 'error' and errors.append(m.text))
         p.goto(PAGE); setup(p, theme, theme == 'light'); shot(p, f'{theme}-01-start')
         if theme == 'dark':
-            p.click('[data-demo]'); p.wait_for_timeout(300); shot(p, 'dark-02-demo-map')
+            p.click('[data-demo]'); p.click('[data-act="student"]'); p.wait_for_timeout(300); shot(p, 'dark-02-demo-map')
             p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-key="theme"] [data-v="amoled"]'); p.wait_for_timeout(200); shot(p, 'dark-03-amoled-settings')
             p.click('[data-back]'); p.wait_for_timeout(200); p.click('[data-tab="home"]'); p.wait_for_timeout(200); shot(p, 'dark-04-amoled-home'); ctx.close(); continue
         # diagnostic
@@ -61,7 +61,7 @@ with sync_playwright() as pw:
         p.wait_for_selector('.result'); shot(p, 'light-04-diag-result')
         p.click('[data-out]'); p.wait_for_selector('.losscard'); shot(p, 'light-05-map')
         # demo learner and focus
-        p.click('[data-go="settings"]'); p.wait_for_selector('.settings'); shot(p, 'light-06-settings'); p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard'); shot(p, 'light-07-demo-map')
+        p.click('[data-go="settings"]'); p.wait_for_selector('.settings'); shot(p, 'light-06-settings'); p.click('[data-demo]'); p.click('[data-act="student"]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard'); shot(p, 'light-07-demo-map')
         p.locator('.skrow').first.click(); p.wait_for_timeout(400); shot(p, 'light-08-skill-sheet'); p.click('[data-act="x"]'); p.wait_for_timeout(300)
         p.click('[data-start="focus"]'); p.wait_for_selector('.task'); shot(p, 'light-09-focus-task')
         for i in range(25):
@@ -74,7 +74,7 @@ with sync_playwright() as pw:
         p.click('[data-out]'); p.wait_for_selector('.losscard')
         p.click('[data-go="insights"]'); p.wait_for_selector('.misclist, .card'); shot(p, 'light-13-insights')
         p.click('[data-subjpick]'); p.wait_for_selector('.ios-row'); shot(p, 'light-14a-subject-picker'); p.click('.ios-row[data-act="bel"]'); p.wait_for_timeout(300); p.click('[data-back]'); p.wait_for_selector('.losscard'); shot(p, 'light-14-bel-map')
-        p.click('[data-tab="stats"]'); p.wait_for_selector('.statcard'); shot(p, 'light-16-stats')
+        p.click('[data-tab="stats"]'); p.click('[data-sttab="practice"]'); p.wait_for_selector('.statcard'); shot(p, 'light-16-stats')
         p.click('[data-tab="profile"]'); p.wait_for_selector('.profhead'); shot(p, 'light-17-profile')
         p.click('[data-tab="home"]'); p.wait_for_selector('[data-forecast]'); p.click('[data-forecast]'); p.wait_for_timeout(400); shot(p, 'light-18-forecast'); p.click('[data-act="x"]'); p.wait_for_timeout(300)
         p.click('[data-start="focus"]'); p.wait_for_selector('.task'); shot(p, 'light-15-bel-task')

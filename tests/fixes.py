@@ -100,12 +100,12 @@ with sync_playwright() as pw:
 
     # 6. demo learner asks first when there is real progress; restore brings it back
     ctx, p = fresh(b, state={**DONE, 'sessions': 2, 'log': [{'t': 1, 'timestamp': '2026-10-01T10:00:00Z', 'student_id': 'u1', 'subject': 'Математика', 'task_id': 'x', 'correct': 1}]})
-    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.wait_for_timeout(300)
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.click('[data-act="student"]'); p.wait_for_timeout(300)
     ok('demo: confirmation shown', p.locator('.sheet-title', has_text='демо').count() == 1)
     p.click('[data-act="no"]'); p.wait_for_timeout(300)
     ok('demo: cancel keeps real progress', p.evaluate("S.sessions") == 2 and p.evaluate("S.log.length") == 1)
-    p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard')
-    ok('demo: loaded after yes', p.evaluate("S.profile.name") == 'Демо ученик')
+    p.click('[data-demo]'); p.click('[data-act="student"]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard')
+    ok('demo: loaded after yes', p.evaluate("S.profile.name") == 'Мария Петрова')
     p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-restore]')
     p.click('[data-restore]'); p.wait_for_selector('.losscard')
     ok('demo: restore brings real data back', p.evaluate("S.sessions") == 2 and p.evaluate("S.profile.name") == 'Тест')
@@ -166,10 +166,10 @@ with sync_playwright() as pw:
     # 12. loading the demo twice never replaces the real copy with demo data
     real = {**DONE, 'sessions': 2, 'log': [{'t': 1, 'timestamp': '2026-10-01T10:00:00Z', 'student_id': 'u1', 'subject': 'Математика', 'task_id': 'x', 'correct': 1}]}
     ctx, p = fresh(b, state=real)
-    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard')
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.click('[data-act="student"]'); p.click('[data-act="yes"]'); p.wait_for_selector('.losscard')
     ok('demo: marked as demo', p.evaluate("S.demo") is True)
-    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.wait_for_selector('.losscard')
-    ok('demo: second load keeps the demo', p.evaluate("S.demo") is True and p.evaluate("S.profile.name") == 'Демо ученик')
+    p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.click('[data-demo]'); p.click('[data-act="student"]'); p.wait_for_selector('.losscard')
+    ok('demo: second load keeps the demo', p.evaluate("S.demo") is True and p.evaluate("S.profile.name") == 'Мария Петрова')
     p.click('[data-tab="profile"]'); p.click('[data-go="settings"]'); p.wait_for_selector('[data-restore]')
     p.click('[data-restore]'); p.wait_for_selector('.losscard')
     ok('demo: restore after two loads brings real data back', p.evaluate("S.sessions") == 2 and p.evaluate("S.profile.name") == 'Тест' and p.evaluate("S.demo") is False)
@@ -281,7 +281,7 @@ with sync_playwright() as pw:
 
     # 22. Stats shows every planned matura; one without tasks yet says "Скоро"
     ctx, p = fresh(b, state={**DONE, 'profile': {**DONE['profile'], 'exam': 'dzi12', 'track': 'hum', 'extra': 'maths'}})
-    p.click('[data-tab="stats"]'); p.wait_for_selector('.statcard')
+    p.click('[data-tab="stats"]'); p.click('[data-sttab="practice"]'); p.wait_for_selector('.statcard')
     names = p.locator('.statcard h3').all_inner_texts()
     ok('planned matura: БЕЛ, the humanities subjects and Математика, none "скоро" (0.6.0)', any('История' in n for n in names) and any('Математика' in n for n in names) and p.locator('.statcard button[disabled]').count() == 0, str(names))
     p.screenshot(path=str(SHOTS / 'stats-planned.png'), full_page=True)

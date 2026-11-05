@@ -56,13 +56,16 @@ def start(b, role, vp, scheme):
 
 def teacher(p, name):
     tabs = p.evaluate("() => [...document.querySelectorAll('.tabbar [data-tab], .t-side [data-tab], [data-tgo]')].map(b => b.dataset.tab || b.dataset.tgo)")
-    for s in ['tHome', 'tClasses', 'tTests', 'tCalendar', 'tAI', 'tMore', 'tStats']:
+    for s in ['tHome', 'tClasses', 'tTests', 'tCalendar', 'tAI', 'tMore', 'tStats', 'tMessages']:
         if p.evaluate(f"() => !!SCREENS['{s}']"): go(p, s); check(p, f'{name}-{s}')
     for cid in ['c12a', 'c12b']:
         go(p, 'tClass', {'cid': cid}); check(p, f'{name}-tClass-{cid}')
         for tab in p.evaluate("() => [...document.querySelectorAll('[data-ctab],[data-tab-k]')].map(b => b.dataset.ctab || b.dataset.tabK)"):
             p.click(f'[data-ctab="{tab}"],[data-tab-k="{tab}"]'); check(p, f'{name}-tClass-{cid}-{tab}')
     go(p, 'tStudent', {'cid': 'c12a', 'uid': 'demo-s1'}); check(p, f'{name}-tStudent')
+    go(p, 'tClass', {'cid': 'c12b', 'tab': 'forecast'}); p.wait_for_timeout(600); check(p, f'{name}-tClass-forecast')
+    for cid in p.evaluate("() => [...DB.keys()].filter(k => /^chats[/][^/]+$/.test(k)).map(k => k.split('/')[1]).slice(0, 2)"):
+        go(p, 'chat', {'cid': cid}); check(p, f'{name}-chat-{cid[:10]}')
     for aid in ['demo-ru-mock', 'demo-math-hw', 'demo-math-next', 'demo-ru-hw']:
         go(p, 'tAssignment', {'aid': aid}); check(p, f'{name}-tAssignment-{aid}')
         for tab in p.evaluate("() => [...document.querySelectorAll('[data-atab]')].map(b => b.dataset.atab)"):
@@ -78,8 +81,12 @@ def teacher(p, name):
     go(p, 'tPublish', {'testId': 'demo-test-ru'}); check(p, f'{name}-tPublish')
 
 def student(p, name):
-    for s in ['home', 'stats', 'profile', 'classes', 'insights', 'settings', 'grades']:
+    for s in ['home', 'stats', 'profile', 'classes', 'insights', 'settings', 'messages']:
         if p.evaluate(f"() => !!SCREENS['{s}']"): go(p, s); check(p, f'{name}-{s}')
+    for tab in ['practice', 'years']:
+        go(p, 'stats', {'tab': tab}); check(p, f'{name}-stats-{tab}')
+    for cid in p.evaluate("() => [...DB.keys()].filter(k => /^chats[/][^/]+$/.test(k)).map(k => k.split('/')[1]).slice(0, 2)"):
+        go(p, 'chat', {'cid': cid}); check(p, f'{name}-chat-{cid[:10]}')
     go(p, 'assignment', {'aid': 'demo-ru-mock'}); check(p, f'{name}-assignment-ru')
     go(p, 'assignment', {'aid': 'demo-ru-hw'}); check(p, f'{name}-assignment-practice')
     go(p, 'pastexam', {'id': 'dzi12-ru-2025-05-23-b1-v2'}); check(p, f'{name}-pastexam')
