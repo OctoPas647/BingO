@@ -1,0 +1,715 @@
+{
+ "format": 1,
+ "id": "dzi12-fr-2024-05-20-b11-v1",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Френски език · ПП, ниво B1.1 · 20 май 2024 · вариант 1",
+ "past": {
+  "exam": "dzi12",
+  "subj": "fr",
+  "year": 2024,
+  "date": "2024-05-20",
+  "variant": 1,
+  "session": "май",
+  "level": "B1.1",
+  "source": "2dzi_frenski-ezik_nivo_b1.1_v1-otgovori_20052024.pdf",
+  "profile": "профилирана"
+ },
+ "passages": {
+  "l1": {
+   "title": "Compréhension orale · Texte № 1",
+   "listen": true,
+   "text": "Vous allez entendre le texte deux fois. Avant la première écoute du texte, vous avez 25 secondes pour lire les questions. Pendant la première écoute, vous n’avez pas le droit de cocher la réponse que vous avez choisie. Après la première écoute, vous avez 25 secondes pour cocher les réponses que vous avez choisies sur la feuille de réponses. Pendant la deuxième écoute, vous pouvez cocher les réponses que vous avez choisies. Après la deuxième écoute, vous avez encore 25 secondes pour vérifier ou corriger.",
+   "transcript": "Le Salon de l’Étudiant vous aidera dans votre orientation et votre parcours d’études. Collégiens, lycéens, étudiants ou parents, vous y trouverez toutes les infos sur les formations, les conditions d’admission, les programmes, les métiers, les stages ou la vie étudiante ! Le Salon est une occasion unique d’échanger avec les enseignants et les étudiants, directement sur les stands des universités ! Nouveau ! Préparez votre visite sur le site officiel du Salon de l’Étudiant. Vous êtes professeur et souhaitez organiser la venue d’un groupe scolaire ? C’est possible, il faut seulement inscrire votre groupe sur notre site."
+  },
+  "l2": {
+   "title": "Compréhension orale · Texte № 2",
+   "listen": true,
+   "text": "Vous allez entendre le texte deux fois. Avant la première écoute du texte, vous avez 25 secondes pour lire les questions. Pendant la première écoute, vous n’avez pas le droit de cocher la réponse que vous avez choisie. Après la première écoute, vous avez 25 secondes pour cocher les réponses que vous avez choisies sur la feuille de réponses. Pendant la deuxième écoute, vous pouvez cocher les réponses que vous avez choisies. Après la deuxième écoute, vous avez encore 25 secondes pour vérifier ou corriger.",
+   "transcript": "La ville de Paris nous offre toujours des expériences originales comme celle de manger dans un bus en admirant la capitale. Le restaurant-bus Saint-Germain 1920 ! Ce n’est pas un simple restaurant ambulant : c’est Paris vu d’une toute nouvelle perspective. Vous pourrez dîner et en même temps voir par la fenêtre Notre-Dame, la Seine ou les Invalides. Vous resterez surpris pas la qualité des plats ainsi que par leur prix abordable. C’est une cuisine française avec de bons produits. Venez nombreux pour goûter à nos spécialités et regarder à travers les vitres les belles vues parisiennes !"
+  },
+  "l3": {
+   "title": "Compréhension orale · Texte № 3",
+   "listen": true,
+   "text": "Vous allez entendre le texte deux fois. Avant la première écoute du texte, vous avez 1 minute pour lire les questions. Pendant la première écoute, vous n’avez pas le droit de cocher la réponse que vous avez choisie. Après la première écoute, vous avez 1 minute pour cocher les réponses que vous avez choisies sur la feuille de réponses. Pendant la deuxième écoute, vous pouvez cocher les réponses que vous avez choisies. Après la deuxième écoute, vous avez encore 1 minute pour vérifier ou corriger.",
+   "transcript": "Le vétérinaire : Bonjour, Madame Duval. Comment allez-vous ?\nMadame Duval : Je vais bien, merci. Je viens avec mon chien Médor pour le vaccin annuel.\nLe vétérinaire : Il va bien Médor ?\nMadame Duval : Non, il est insupportable.\nLe vétérinaire : Mais pourquoi ? Qu’est-ce qu’il fait ?\nMadame Duval : Il est trop bruyant. Il aboie quand on passe devant la porte. De plus, il dort dans mon lit. Ça fait plus d’un an. À la maison, il mange avant moi. Il se prend pour le chef.\nLe vétérinaire : Oui, je comprends, c’est un vrai schéma de domination.\nMadame Duval : Qu’est-ce que nous pouvons faire ?\nLe vétérinaire : Surtout, disciplinez-le ! Rétablissez la hiérarchie ! Dites « Non » à une sortie, par exemple. Inutile de punir le chien en rentrant, malgré les dégâts, il associerait la punition à votre retour. Résultat ? Chaque jour il irait se cacher en vous entendant arriver. Une autre chose : vous ne devez pas l’enfermer dans une pièce sans fenêtre. Laissez les rideaux ouverts et l’accès libre aux pièces que vous lui autorisez !\nMadame Duval : Je dois donc changer complètement d’attitude.\nLe vétérinaire : Oui. Je vous conseille aussi de l’emmener chez un éducateur pour chiens. C’est pour son bien … D’accord ? Faisons maintenant cette vaccination."
+  },
+  "l4": {
+   "title": "Compréhension orale · Texte № 4",
+   "listen": true,
+   "text": "Vous allez entendre le texte deux fois. Avant la première écoute du texte, vous avez 1 minute pour lire les questions. Pendant la première écoute, vous n’avez pas le droit de cocher la réponse que vous avez choisie. Après la première écoute, vous avez 1 minute pour cocher les réponses que vous avez choisies sur la feuille de réponses. Pendant la deuxième écoute, vous pouvez cocher les réponses que vous avez choisies. Après la deuxième écoute, vous avez encore 1 minute pour vérifier ou corriger.",
+   "transcript": "Dans les mains de chacun d’entre nous, les téléphones portables font partie de notre quotidien. Plus de 16 millions sont achetés chaque année en France. Conséquence aujourd’hui :100 millions de téléphones portables ne sont plus utilisés mais restent chez les Français qui ne peuvent pas s’en débarrasser. On les met dans un tiroir, à la maison parce qu’on ne sait pas où les mettre. Les anciens portables sont au centre d’une opération lancée par une association dans l’Est de la Bretagne. Des boîtes de recyclage sont installées à l’entrée des hôtels de ville. Le but : récupérer le maximum d’appareils mais aussi d’accessoires de téléphonie mobile comme des chargeurs ou des batteries. Des téléphones qui seront réparés quand c’est possible, soit, dans la plupart des cas, recyclés composant par composant. Quant aux données personnelles, elles sont effacées selon un processus bien contrôlé.\nUne opération dont les bénéfices financeront des programmes de solidarité en Afrique. Mais il y a encore beaucoup à faire parce que seulement 15 % des téléphones portables sont recyclés ou réparés aujourd’hui."
+  },
+  "l5": {
+   "title": "Compréhension orale · Texte № 5",
+   "listen": true,
+   "text": "Vous allez entendre le texte deux fois. Avant la première écoute du texte, vous avez 1 minute 30 secondes pour lire les questions. Pendant la première écoute, vous n’avez pas le droit de cocher la réponse que vous avez choisie. Après la première écoute, vous avez 1 minute 30 secondes pour cocher les réponses que vous avez choisies sur la feuille de réponses. Pendant la deuxième écoute, vous pouvez cocher les réponses que vous avez choisies. Après la deuxième écoute, vous avez encore 1 minute 30 secondes pour vérifier ou corriger.",
+   "transcript": "Le journaliste : Bonsoir, jeunes auditeurs et auditrices ! Bienvenue à notre invitée, Nathalie Cabrol, une femme de science qui cherche des civilisations extraterrestres. Pouvez-vous nous dire en quoi consiste exactement votre travail ?\nNathalie Cabrol : Bonsoir, je suis contente de participer à l’émission d’un journaliste si connu comme vous... Je suis astrobiologiste. Avec mon équipe, on cherche à comprendre comment la vie est apparue sur Terre. On veut aussi savoir s’il y a des microbes sur d’autres planètes… ou même, peut-être, des civilisations extraterrestres ! Je fais des expéditions dans les Andes, par exemple, car ces paysages ressemblent à la planète Mars. Je grimpe aussi sur des volcans et je plonge dans des lacs.\nLe journaliste : Depuis combien de temps la science vous passionne-t-elle ?\nNathalie Cabrol : Toute petite, j’étais très curieuse, je posais plein de questions et j’étais passionnée par les documentaires sur la nature à la télé. À 10 ans, j’adorais les étoiles et la nature. Je regardais toujours en l’air, vers le haut ou je grattais la terre pour voir ce qu’il y avait dedans.\nLe journaliste : Avez-vous des conseils pour les enfants qui voudraient devenir scientifiques ?\nNathalie Cabrol : Mon conseil, c’est de ne pas abandonner ! On peut arriver à tout ce que l’on veut si l’on travaille beaucoup. Alors, bon courage, ayez une passion et surtout respectez votre planète et les gens autour de vous."
+  },
+  "r1": {
+   "title": "Compréhension écrite · Texte № 1",
+   "text": "**COMPRÉHENSION ÉCRITE**\n\n**Texte № 1**\n\n*Lisez le texte et les questions, puis cochez la bonne réponse sur la feuille de réponses.*\n\n### Les Nuits des Forêts : un festival pour redécouvrir les forêts\n\nLes Nuits des Forêts reviennent du 9 au 18 juin dans plus de 20 forêts de Nouvelle-Aquitaine, première région forestière du pays.\n\nLe festival Les Nuits des Forêts présente des projets artistiques et culturels dans le but de sensibiliser aux conséquences graves du changement climatique… C’est notamment l’occasion de découvrir comment vivre en harmonie avec la nature !\n\nOn vous dévoile le programme en Gironde !\n\nLe 14 juin : sortie pour enfants.\n\nL’Usine Végétale organise « Promenons-nous dans les bois » : une sortie pour les enfants (à partir de 6 ans) et toute la famille le long du sentier de la forêt de la Double. 16 juin : randonnée nocturne dans le Parc Régional des Landes de Gascogne.\n\nLa Forêt d’Art Contemporain, le Parc naturel régional des Landes de Gascogne et le festival Nuits Atypiques vous proposent une randonnée artistique en forêt sous les étoiles. Rendez-vous à Bourideys dès 19h avec votre pique-nique !\n\nLe 16 juin : la forêt communale de Donnezac.\n\nL’Usine Végétale vous fait découvrir les métiers de la forêt et du bois. Journée dédiée aux professionnels !\n\nLe 17 juin : les Nuits des Forêts à l’Usine Végétale.\n\nL’Usine Végétale vous invite à une journée et une nuit, pleines de surprises ! Au programme cette année : yoga, balade nature, marché d’artisanat, performance artistique…"
+  },
+  "r2": {
+   "title": "Compréhension écrite · Texte № 2",
+   "text": "**Texte № 2**\n\n*Lisez le texte et les questions, puis cochez la bonne réponse sur la feuille de réponses.*\n\n### Mayana Elbaz, fondatrice de Persil & Romarin\n\nCette semaine, nous avons rencontré Mayana Elbaz, fondatrice de Persil & Romarin. L’entreprise vous propose un service de chefs qui se déplacent directement à votre domicile pour préparer chaque semaine des repas personnalisés.\n\n« Moi, c’est Mayana Elbaz. J’ai passé toute ma jeunesse en Alsace, puis je suis partie faire mes études dans le Sud de la France. Depuis mon enfance, je suis passionnée par la cuisine et je me suis rapidement mis en tête de vouloir travailler dans ce milieu-là. Après avoir eu quelques expériences professionnelles en tant que commerciale, j’ai décidé de voyager un an en Asie … Une expérience vraiment enrichissante pendant laquelle j’ai pris des cours de cuisine dans tous les pays que j’ai visités !\n\nEn rentrant en France, je me suis lancée dans la mise en place de cours de cuisine pour les étrangers qui viennent découvrir la France. Pourquoi avoir choisi Bordeaux ? J’ai un véritable coup de cœur pour cette ville ! Peu à peu, je suis devenue cheffe à domicile pour de l’événementiel… Puis, à la demande de certains clients, j’ai commencé à réfléchir au projet de cuisiner directement chez des particuliers !\n\nL’aventure Persil & Romarin a démarré en septembre 2020, avec l’aide de mon associé Mathieu Piron-Lafleur. Le concept ? Faire venir un chef directement chez vous pour qu’il fasse du batch-cooking … Autrement dit, qu’il prépare des plats pour toute la semaine en une seule session de cuisine qui ne dure pas plus de 2 ou 3 heures ! Nos chefs ont de l’expérience et possèdent des spécificités différentes (sans gluten, végétarien …).\n\nNotre objectif ? Permettre à nos clients de bien manger et de faire attention à ce qu’ils ont dans leur assiette ! Une façon de manger équilibré, mais aussi de gagner du temps sur son emploi du temps hebdomadaire ! »."
+  },
+  "r3": {
+   "title": "Compréhension écrite · Texte № 3",
+   "text": "**Texte № 3**\n\n*Lisez le texte et les questions. Répondez à chaque question concrète par une phrase formulée par vous.*\n\n### Comment j’ai surmonté ma phobie ?\n\nLa phobie de l’eau, des insectes, de la foule … Heureusement, il y a des solutions qui aident à surmonter sa peur. Voilà le témoignage d’une jeune femme, Patricia, 19 ans, qui partage avec nous son expérience.\n\n« Je souffrais d’une timidité maladive, à la limite de la phobie sociale : aller chez le coiffeur, faire mes courses ou même téléphoner me rendait malade parce que parler avec des inconnus m’était très difficile. Une fois, quand maman était en voyage d’affaires, je me suis enfermée des journées entières dans notre appartement et j’ai senti ma santé mentale se dégrader. Et puis un jour, je me suis dit : « Là, il faut que tu fasses quelque chose, sinon tu vas devenir folle. » Heureusement, depuis toute petite, j’adore chanter. J’ai donc décidé de m’inscrire à une chorale. Y aller m’a demandé énormément de courage et j’ai annulé plusieurs fois avant. Mais ça m’a sauvé la vie : aujourd’hui, je chante régulièrement en groupe et cette semaine, nous faisons un concert ! J’ai un peu le trac mais on dit que c’est normal. Les autres aussi ont un peu peur, donc, ça ne m’inquiète pas du tout. Je m’entends bien avec les autres de la chorale. Je sais qu’il est essentiel de m’entourer avec des personnes bienveillantes. Alors, je suis contente d’avoir fait ce pas en avant. Ma phobie était devenue insupportable et il était nécessaire de me transformer. Voilà, maintenant, je peux dire que chanter m’a sauvé la vie. »"
+  }
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "20 май 2024 · вариант 1",
+   "minutes": 240,
+   "parts": [
+    {
+     "title": "Част 1",
+     "minutes": 60,
+     "instructions": "**COMPRÉHENSION ORALE**",
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Cette publicité s’adresse seulement aux étudiants.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 1,
+       "passage": "l1",
+       "skill": "read"
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Les personnes intéressées par le Salon peuvent préparer leur visite :",
+       "options": [
+        "sur place.",
+        "sur Internet.",
+        "auprès des universités.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 1,
+       "passage": "l1",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Le restaurant-bus Saint-Germain 1920 permet aux clients de regarder les monuments de Paris sur un écran vidéo pendant le dîner.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 1,
+       "passage": "l2",
+       "skill": "read"
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 1,
+       "prompt": "La cuisine de ce restaurant est composée de :",
+       "options": [
+        "plats très chers.",
+        "plats au goût exotique.",
+        "plats typiquement français.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 2,
+       "passage": "l2",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Madame Duval va chez le vétérinaire pour faire vacciner son chien.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 0,
+       "passage": "l3",
+       "skill": "read"
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Le chien NE fait PAS beaucoup de bruit à la maison.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 1,
+       "passage": "l3",
+       "skill": "read"
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Le chien comprend qu’il n’est pas le chef.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 1,
+       "passage": "l3",
+       "skill": "read"
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 1,
+       "prompt": "De retour à la maison, Madame Duval NE devrait PAS punir son chien.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 0,
+       "passage": "l3",
+       "skill": "read"
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Selon le vétérinaire, le chien doit rester dans une pièce bien éclairée.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 0,
+       "passage": "l3",
+       "skill": "read"
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Le vétérinaire recommande un spécialiste pour chiens pour Médor.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 0,
+       "passage": "l3",
+       "skill": "read"
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 1,
+       "prompt": "En France, en général, les vieux téléphones portables sont :",
+       "options": [
+        "revendus.",
+        "réutilisés.",
+        "gardés à la maison.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 2,
+       "passage": "l4",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Pendant l’opération de collecte de vieux portables, les gens peuvent les laisser :",
+       "options": [
+        "au centre de l’association à l’origine du projet.",
+        "dans une boîte de recyclage.",
+        "à l’entrée de leur maison.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 1,
+       "passage": "l4",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 1,
+       "prompt": "L’association rassemble les anciens téléphones pour :",
+       "options": [
+        "leur donner une seconde vie.",
+        "utiliser les données personnelles.",
+        "contrôler leur procédé de fabrication.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 0,
+       "passage": "l4",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 1,
+       "prompt": "L’argent collecté par cette opération servira à :",
+       "options": [
+        "lancer de nouvelles opérations en France.",
+        "soutenir des programmes de solidarité.",
+        "produire de nouveaux téléphones portables.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 1,
+       "passage": "l4",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Nathalie Cabrol est :",
+       "options": [
+        "auditrice.",
+        "scientifique.",
+        "journaliste.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 1,
+       "passage": "l5",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q16",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Nathalie Cabrol et son équipe étudient :",
+       "options": [
+        "l’origine de la vie sur Terre.",
+        "les anciennes civilisations.",
+        "les expéditions sur d’autres planètes.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 0,
+       "passage": "l5",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q17",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Nathalie fait des voyages dans les Andes :",
+       "options": [
+        "parce que leurs paysages ressemblent à ceux sur Mars.",
+        "parce qu’il y a beaucoup de volcans.",
+        "parce qu’on peut explorer de nombreux lacs.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 0,
+       "passage": "l5",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q18",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Toute jeune, Nathalie Cabrol :",
+       "options": [
+        "cherchait à tout savoir.",
+        "posait rarement des questions.",
+        "ne s’intéressait pas aux émissions télévisées scientifiques.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 0,
+       "passage": "l5",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q19",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Dans son enfance, Nathalie :",
+       "options": [
+        "apprenait les noms des étoiles.",
+        "aimait regarder le ciel.",
+        "avait peur de la nature.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 1,
+       "passage": "l5",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q20",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Elle conseille aux futurs scientifiques :",
+       "options": [
+        "d’abandonner les projets difficiles.",
+        "d’arriver à temps au travail.",
+        "de travailler sérieusement.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 2,
+       "passage": "l5",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q21",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Les Nuits des Forêts se dérouleront dans la plus grande région de forêts en France.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 0,
+       "passage": "r1",
+       "skill": "read"
+      },
+      {
+       "id": "q22",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Le festival N’a PAS d’objectifs écologiques.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 1,
+       "passage": "r1",
+       "skill": "read"
+      },
+      {
+       "id": "q23",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Le 14 juin, l’Usine Végétale organisera une promenade pour enfants de tout âge.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 1,
+       "passage": "r1",
+       "skill": "read"
+      },
+      {
+       "id": "q24",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Pendant la randonnée nocturne, les participants doivent apporter quelque chose à manger.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 0,
+       "passage": "r1",
+       "skill": "read"
+      },
+      {
+       "id": "q25",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Dans la forêt de Donnezac, les participants pourront connaître les professions liées aux forêts et au bois.",
+       "options": [
+        "Vrai",
+        "Faux"
+       ],
+       "answer": 0,
+       "passage": "r1",
+       "skill": "read"
+      }
+     ]
+    },
+    {
+     "title": "Част 2",
+     "minutes": 180,
+     "instructions": "**COMPRÉHENSION ÉCRITE**",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Avant ses études, Mayana Elbaz a vécu :",
+       "options": [
+        "en Alsace.",
+        "en Asie.",
+        "à Bordeaux.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 0,
+       "passage": "r2",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Après son retour d’Asie :",
+       "options": [
+        "elle a travaillé dans le commerce.",
+        "elle a donné des cours de cuisine.",
+        "elle a découvert la France.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 1,
+       "passage": "r2",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q28",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Elle a fondé l’entreprise Persil & Romarin :",
+       "options": [
+        "avec des clients.",
+        "avec un partenaire.",
+        "toute seule.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 1,
+       "passage": "r2",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "prompt": "Pendant le batch-cooking, un chef prépare :",
+       "options": [
+        "tous vos repas de la semaine en une seule fois.",
+        "seulement des plats sans gluten.",
+        "seulement des plats végétariens.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 0,
+       "passage": "r2",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "prompt": "L’objectif de l’entreprise est de permettre aux clients :",
+       "options": [
+        "de manger beaucoup.",
+        "d’avoir plus de temps.",
+        "d’apprendre à préparer des plats équilibrés.",
+        "Aucune de ces réponses"
+       ],
+       "answer": 1,
+       "passage": "r2",
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q31",
+       "type": "open",
+       "points": 2,
+       "prompt": "Dans quelles situations quotidiennes Patricia souffrait-elle de sa timidité ?",
+       "passage": "r3",
+       "answer": "**Примерен отговор:** Deux réponses parmi : (Elle souffrait de sa timidité ) quand elle allait chez le coiffeur ; quand elle allait au magasin / faisait des achats ; quand elle devait parler au téléphone ; quand elle devait parler / communiquer avec un inconnu / avec une personne inconnue / qu’elle ne connaissait pas.\n\nМаксималният брой точки за задачите с кратък свободен отговор е 10 точки. Задачите с кратък свободен отговор (от № 31 до № 35) се оценяват с 0 точки, 1 точка или 2 точки в зависимост от верността и пълнотата на отговора. При проверка на задачите с кратък свободен отговор не се вземат предвид правописни и граматически грешки. В отговора се оценява съответствието между информацията в него с тази в текста. Отговорите на отворените въпроси са примерни. Приема се за верен всеки отговор, формулиран по различен начин, но съответстващ на въпроса и на информацията в текста, върху която е зададен въпросът.",
+       "rubric": [
+        {
+         "text": "Първи верен елемент от изброените в ключа: (Elle souffrait de sa timidité ) quand elle allait chez le coiffeur ; quand elle allait au magasin / faisait des achats ; quand elle devait parler au téléphone ; quand elle devait parler / communiquer avec un inconnu / avec une personne inconnue / qu’elle ne connaissait pas",
+         "points": 1
+        },
+        {
+         "text": "Втори верен елемент от същия списък",
+         "points": 1
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "open",
+       "points": 2,
+       "prompt": "Que s’est-il passé quand la mère de Patricia était partie en voyage professionnel ?",
+       "passage": "r3",
+       "answer": "**Примерен отговор:** Deux réponses attendues : Elle est restée plusieurs jours chez elle / à la maison / sans sortir ET elle s’est sentie mal psychologiquement / a été déprimée.\n\nМаксималният брой точки за задачите с кратък свободен отговор е 10 точки. Задачите с кратък свободен отговор (от № 31 до № 35) се оценяват с 0 точки, 1 точка или 2 точки в зависимост от верността и пълнотата на отговора. При проверка на задачите с кратък свободен отговор не се вземат предвид правописни и граматически грешки. В отговора се оценява съответствието между информацията в него с тази в текста. Отговорите на отворените въпроси са примерни. Приема се за верен всеки отговор, формулиран по различен начин, но съответстващ на въпроса и на информацията в текста, върху която е зададен въпросът.",
+       "rubric": [
+        {
+         "text": "Elle est restée plusieurs jours chez elle / à la maison / sans sortir",
+         "points": 1
+        },
+        {
+         "text": "elle s’est sentie mal psychologiquement / a été déprimée",
+         "points": 1
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "open",
+       "points": 2,
+       "prompt": "Quelle solution Patricia a-t-elle trouvé à ses problèmes ?",
+       "passage": "r3",
+       "answer": "**Примерен отговор:** Elle s’est inscrite à une chorale / elle a commencé à chanter dans une chorale / elle a décidé de chanter dans une chorale.\n\nМаксималният брой точки за задачите с кратък свободен отговор е 10 точки. Задачите с кратък свободен отговор (от № 31 до № 35) се оценяват с 0 точки, 1 точка или 2 точки в зависимост от верността и пълнотата на отговора. При проверка на задачите с кратък свободен отговор не се вземат предвид правописни и граматически грешки. В отговора се оценява съответствието между информацията в него с тази в текста. Отговорите на отворените въпроси са примерни. Приема се за верен всеки отговор, формулиран по различен начин, но съответстващ на въпроса и на информацията в текста, върху която е зададен въпросът.",
+       "rubric": [
+        {
+         "text": "Отговорът съдържа вярна информация от текста (непълен отговор – 1 точка)",
+         "points": 1
+        },
+        {
+         "text": "Отговорът е пълен, както в примерния отговор: Elle s’est inscrite à une chorale / elle a commencé à chanter dans une chorale / elle a décidé de chanter dans une chorale.",
+         "points": 1
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "open",
+       "points": 2,
+       "prompt": "Pourquoi a-t-elle choisi cette solution ?",
+       "passage": "r3",
+       "answer": "**Примерен отговор:** (Elle a choisi le chant) parce qu’elle aimait beaucoup chanter / elle adorait le chant, quand elle était enfant / jeune.\n\nМаксималният брой точки за задачите с кратък свободен отговор е 10 точки. Задачите с кратък свободен отговор (от № 31 до № 35) се оценяват с 0 точки, 1 точка или 2 точки в зависимост от верността и пълнотата на отговора. При проверка на задачите с кратък свободен отговор не се вземат предвид правописни и граматически грешки. В отговора се оценява съответствието между информацията в него с тази в текста. Отговорите на отворените въпроси са примерни. Приема се за верен всеки отговор, формулиран по различен начин, но съответстващ на въпроса и на информацията в текста, върху която е зададен въпросът.",
+       "rubric": [
+        {
+         "text": "Отговорът съдържа вярна информация от текста (непълен отговор – 1 точка)",
+         "points": 1
+        },
+        {
+         "text": "Отговорът е пълен, както в примерния отговор: (Elle a choisi le chant) parce qu’elle aimait beaucoup chanter / elle adorait le chant, quand elle était enfant / jeune.",
+         "points": 1
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "open",
+       "points": 2,
+       "prompt": "Pourquoi la peur de sortir devant le public NE l’inquiète-t-elle PAS ?",
+       "passage": "r3",
+       "answer": "**Примерен отговор:** (La peur de sortir devant le public ne l’inquiète pas) parce que les autres choristes / chanteurs de la chorale sont aussi stressés.\n\nМаксималният брой точки за задачите с кратък свободен отговор е 10 точки. Задачите с кратък свободен отговор (от № 31 до № 35) се оценяват с 0 точки, 1 точка или 2 точки в зависимост от верността и пълнотата на отговора. При проверка на задачите с кратък свободен отговор не се вземат предвид правописни и граматически грешки. В отговора се оценява съответствието между информацията в него с тази в текста. Отговорите на отворените въпроси са примерни. Приема се за верен всеки отговор, формулиран по различен начин, но съответстващ на въпроса и на информацията в текста, върху която е зададен въпросът.",
+       "rubric": [
+        {
+         "text": "Отговорът съдържа вярна информация от текста (непълен отговор – 1 точка)",
+         "points": 1
+        },
+        {
+         "text": "Отговорът е пълен, както в примерния отговор: (La peur de sortir devant le public ne l’inquiète pas) parce que les autres choristes / chanteurs de la chorale sont aussi stressés.",
+         "points": 1
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "open",
+       "points": 15,
+       "prompt": "**PRODUCTION ÉCRITE**\n\n***Lisez le sujet et rédigez un email (100 – 110 mots), en traitant les points proposés.***\n\nVous avez un(e) correspondant(e) francophone, Jean / Jeanne, qui aimerait visiter votre pays pendant les vacances d’été pour assister à un événement culturel. Invitez dans un email votre correspondant(e) chez vous pour 10 jours. Parlez-lui :\n\n- des événements culturels dans votre pays ;\n- d’un festival ou d’une fête que vous pourriez visiter ensemble dans votre ville ou votre village bulgare.\n- de l’organisation de son séjour.\n\nIl ne faut pas utiliser d’information personnelle qui pourrait briser l’anonymat car vous risquez que la copie soit annulée.\n\nSignez votre email Paul / Pauline.\n\n***Писмен текст под 55 думи или текст, изцяло несъответстващ на темата, се оценява с 0 (нула) точки.***",
+       "answer": "Ключът дава само критерии за оценяване:\n- Съдържателно съответствие с темата, смислова свързаност и логическа последователност (умение за представяне на факти, за формулиране на позиция) — 0–4 т.\n- Структура на текста (вкл. и спазване на зададения обем и формат) — 0–3 т.\n- Правилна и адекватна употреба на лексиката, лексикално богатство — 0–3 т.\n- Граматическа правилност (морфологична и синтактична правилност) — 0–3 т.\n- Правопис — 0–2 т.",
+       "rubric": [
+        {
+         "text": "Съдържателно съответствие с темата, смислова свързаност и логическа последователност (умение за представяне на факти, за формулиране на позиция)",
+         "points": 4
+        },
+        {
+         "text": "Структура на текста (вкл. и спазване на зададения обем и формат)",
+         "points": 3
+        },
+        {
+         "text": "Правилна и адекватна употреба на лексиката, лексикално богатство",
+         "points": 3
+        },
+        {
+         "text": "Граматическа правилност (морфологична и синтактична правилност)",
+         "points": 3
+        },
+        {
+         "text": "Правопис",
+         "points": 2
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q37",
+       "type": "open",
+       "points": 25,
+       "prompt": "***Lisez le sujet et rédigez un texte (120 - 130 mots), en répondant aux questions formulées.***\n\nLes jeunes d’aujourd’hui font de plus en plus attention aux marques des vêtements qu’ils portent. Est-ce que pour vous aussi la marque des vêtements est importante ? Pourquoi ? Quel est votre style vestimentaire ? Selon quels critères choisissez-vous vos vêtements ? Expliquez en donnant des exemples concrets.\n\n***Писмен текст под 65 думи или текст, изцяло несъответстващ на темата, се оценява с 0 (нула) точки.***",
+       "answer": "Ключът дава само критерии за оценяване:\n- Съдържателно съответствие с темата, смислова свързаност и логическа последователност (умение за представяне на факти, за формулиране на позиция) — 0–7 т.\n- Структура на текста (вкл. и спазване на зададения обем и формат) — 0–2 т.\n- Правилна и адекватна употреба на лексиката, лексикално богатство — 0–7 т.\n- Граматическа правилност (морфологична и синтактична правилност) — 0–7 т.\n- Правопис — 0–2 т.",
+       "rubric": [
+        {
+         "text": "Съдържателно съответствие с темата, смислова свързаност и логическа последователност (умение за представяне на факти, за формулиране на позиция)",
+         "points": 7
+        },
+        {
+         "text": "Структура на текста (вкл. и спазване на зададения обем и формат)",
+         "points": 2
+        },
+        {
+         "text": "Правилна и адекватна употреба на лексиката, лексикално богатство",
+         "points": 7
+        },
+        {
+         "text": "Граматическа правилност (морфологична и синтактична правилност)",
+         "points": 7
+        },
+        {
+         "text": "Правопис",
+         "points": 2
+        }
+       ],
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
