@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.10.0
+## 1.0.0
 **Съобщения**: a chat for classes, like Apple's Messages with a little Instagram. Setup and details: docs/messages.md.
 
 - **A group chat for every class**, made and kept up to date by the server (joining, leaving, co-teachers, renaming); **private chats** between a student and their teacher (students cannot start private chats with each other)

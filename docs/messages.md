@@ -1,4 +1,4 @@
-# BingO Messages (0.10.0)
+# BingO Messages (1.0.0)
 
 A chat for classes, inside BingO: a **„Съобщения“** tab for students and a section in the teacher's part.
 It looks and feels like Apple's Messages (blue bubbles, grouped by sender, "Видяно", "… пише") with
