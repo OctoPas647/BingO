@@ -160,7 +160,7 @@ jobs:
             if echo "$LIST" | grep -qx "public_html"; then DIR="public_html/bingo"
             elif echo "$LIST" | grep -qxE "wp-config\.php|wp-content|wp-admin"; then DIR="bingo"
             else DIR=""; fi
-            echo "::notice::FTP_DIR is not set: uploading to ${DIR:-the FTP account's top folder}/ (set the FTP_DIR secret to choose another folder)"
+            echo "::notice::FTP_DIR is not set: uploading to ${DIR:-the top folder of the FTP account}/ (set the FTP_DIR secret to choose another folder)"
           fi
           # Remove the copy the old builds left in public_html/bingo/bingo (preotkrivanegk.com/bingo/bingo/)
           if [ -z "$DIR" ] && echo "$LIST" | grep -qx "bingo"; then
