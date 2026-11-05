@@ -6,7 +6,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "lint": "node --check index.js && node --check ai.js && node --check shared/edu.js",
+    "lint": "node --check index.js && node --check ai.js && node --check shared/edu.js && node --check chat.js",
     "serve": "firebase emulators:start --only functions,firestore,auth,storage",
     "deploy": "firebase deploy --only functions,firestore,storage"
   },

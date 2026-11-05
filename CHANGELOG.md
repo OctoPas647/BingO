@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.0
+**Съобщения**: a chat for classes, like Apple's Messages with a little Instagram. Setup and details: docs/messages.md.
+
+- **A group chat for every class**, made and kept up to date by the server (joining, leaving, co-teachers, renaming); **private chats** between a student and their teacher (students cannot start private chats with each other)
+- **Messages that feel native**: blue bubbles grouped by sender with day and time lines, big emoji, clickable links, replies with a quote, unsend, a teacher can remove a message in their chats; "Изпратено" / "Видяно" / "Видяно от N", "… пише", unread dots and a count on the tab, a toast for a new message in another chat (never during a test or practice)
+- **Reactions**: hold (or right-click) a message for ❤️ 😂 😮 😢 😡 👍, double-tap for ❤️
+- **Any file up to 25 MB** (10 per message): pick, paste or drag & drop; pictures in a grid, videos and audio play in the chat, other files as cards
+- **Google Workspace**: Docs/Sheets/Slides/Forms/Drive/Meet/YouTube links become cards with a preview; pick files **from Google Drive** and give the chat access in the same step; **Word, Excel and PowerPoint open in Google Docs, Sheets and Slides**; Drive's `.gdoc`/`.gsheet`/… shortcut files turn into their links; save any file to Google Drive; start a **Google Meet** call from the chat
+- **Laptop and phone**: list and chat side by side on a wide screen; a tab for students (Начало · Статистики · Клас · Съобщения · Профил) and a section for teachers
+- Security: Firestore and Storage rules for chats (members only, write only as yourself, one reaction each, unsend clears the message), functions in `functions/chat.js`; tests in `tools/check.js` (section 11), `tests/emulator/chat.test.mjs` and `tests/ui_messages.py` (the UI with a stand-in for Firebase)
+- Fixes found on the way: the tab bar's lens is one tab wide for any number of tabs (it assumed 3), and a toast on a screen with a tab bar no longer stretches to full height
+
 ## 0.8.0
 Test security for teacher-set tests. Setup and details: docs/test-security.md.
 

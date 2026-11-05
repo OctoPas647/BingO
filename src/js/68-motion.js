@@ -82,6 +82,7 @@ function decorate(el) {
   const tabbar = el.querySelector('.tabbar');
   if (tabbar) {
     const i = [...tabbar.querySelectorAll('button')].findIndex(b => b.classList.contains('on'));
+    tabbar.style.setProperty('--tab-n', tabbar.querySelectorAll('button').length);   /* the lens is one tab wide */
     const prev = decorate.tab == null ? i : decorate.tab;
     tabbar.style.setProperty('--tab-i', prev);
     requestAnimationFrame(() => requestAnimationFrame(() => tabbar.style.setProperty('--tab-i', i)));

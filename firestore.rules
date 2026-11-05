@@ -122,6 +122,46 @@ service cloud.firestore {
       allow create, update: if false;
     }
 
+    /* Messages: a group chat per class and private chats (functions/chat.js decides who is in them).
+       Members write messages, reactions, "read" and "typing" themselves; nobody else can read a chat. */
+    match /chats/{chatId} {
+      function chatKeysChanged() { return request.resource.data.diff(resource.data).affectedKeys(); }
+      function onlyMyKey(field) { return request.resource.data.get(field, {}).diff(resource.data.get(field, {})).affectedKeys().hasOnly([me()]); }
+      allow read: if signedIn() && me() in resource.data.members;
+      allow create, delete: if false;
+      /* the last message (only my own, stamped now), when I read it, when I am typing */
+      allow update: if signedIn() && me() in resource.data.members
+        && onlyChanges(['lastMessage', 'updatedAt', 'reads', 'typing'])
+        && onlyMyKey('reads') && onlyMyKey('typing')
+        && (!('lastMessage' in chatKeysChanged()) || (request.resource.data.lastMessage.from == me() && request.resource.data.updatedAt == request.time))
+        && (!('updatedAt' in chatKeysChanged()) || 'lastMessage' in chatKeysChanged());
+
+      match /messages/{mid} {
+        function chat() { return get(/databases/$(database)/documents/chats/$(chatId)).data; }
+        function m() { return request.resource.data; }
+        allow read: if signedIn() && me() in chat().members;
+        allow create: if signedIn() && me() in chat().members
+          && m().keys().hasOnly(['from', 'at', 'text', 'files', 'links', 'reply', 'reactions', 'deleted'])
+          && m().from == me() && m().at == request.time
+          && m().text is string && m().text.size() <= 4000
+          && m().files is list && m().files.size() <= 10
+          && m().links is list && m().links.size() <= 10
+          && (m().reply == null || m().reply is map)
+          && m().reactions == {} && m().deleted == false
+          && (m().text.size() > 0 || m().files.size() > 0 || m().links.size() > 0);
+        allow update: if signedIn() && me() in chat().members && resource.data.deleted == false && (
+          /* one reaction per person, only my own */
+          (onlyChanges(['reactions'])
+            && m().reactions.diff(resource.data.reactions).affectedKeys().hasOnly([me()])
+            && (!(me() in m().reactions) || (m().reactions[me()] is string && m().reactions[me()].size() <= 16)))
+          /* unsend my message, or a teacher removes one from their chat */
+          || ((resource.data.from == me() || me() in chat().get('teacherIds', []))
+            && onlyChanges(['deleted', 'text', 'files', 'links', 'reply', 'deletedBy'])
+            && m().deleted == true && m().deletedBy == me() && m().text == '' && m().files.size() == 0 && m().links.size() == 0));
+        allow delete: if false;
+      }
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
