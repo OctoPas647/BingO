@@ -1,0 +1,715 @@
+{
+ "format": 1,
+ "id": "dzi12-de-2022-05-20-b1-v1",
+ "version": "1",
+ "lang": "bg",
+ "title": "ДЗИ · Немски език · ПП, ниво B1 · 20 май 2022 · вариант 1",
+ "past": {
+  "exam": "dzi12",
+  "subj": "de",
+  "year": 2022,
+  "date": "2022-05-20",
+  "variant": 1,
+  "session": "май",
+  "level": "B1",
+  "source": "2dzi_pp_nemski_ezik_nivo_b1_v1.pdf",
+  "profile": "профилирана"
+ },
+ "passages": {
+  "l1": {
+   "title": "Hörverstehen · Text 1",
+   "listen": true,
+   "text": "*Sie hören den Text zweimal. Vor dem ersten Hören haben Sie 25 Sekunden Zeit, um die Aufgaben zum Text zu lesen. Beim ersten Hören dürfen Sie die Antworten nicht markieren. Nach dem ersten Hören haben Sie 25 Sekunden Zeit, um die gewählten Antworten auf dem Antwortblatt anzukreuzen. Beim zweiten Hören dürfen Sie die Antworten auf dem Antwortblatt parallel markieren. Nach dem zweiten Hören haben Sie noch 25 Sekunden Zeit zum Überprüfen oder zum Korrigieren.*",
+   "transcript": "Verehrte Hörer! In unserer traditionellen Beitragsreihe „Aktive Kinder“ lädt das Medienzentrum Köln zur Teilnahme am Wettbewerb „Kamera-Kinder“ ein. Das Portal möchte Kinder animieren, die Möglichkeiten der Fotografie zu entdecken und ihre Sicht auf die Welt darzustellen. Grundschüler aus Köln können dabei ihre Ideen einbringen. Die Kinder können Fotos hochladen und selbst die besten Projekte auszeichnen, indem sie für ihren Favoriten stimmen. Anmeldung bis zum 5. August unter www.köln.de."
+  },
+  "l2": {
+   "title": "Hörverstehen · Text 2",
+   "listen": true,
+   "text": "*Sie hören den Text zweimal. Vor dem ersten Hören haben Sie 25 Sekunden Zeit, um die Aufgaben zum Text zu lesen. Beim ersten Hören dürfen Sie die Antworten nicht markieren. Nach dem ersten Hören haben Sie 25 Sekunden Zeit, um die gewählten Antworten auf dem Antwortblatt anzukreuzen. Beim zweiten Hören dürfen Sie die Antworten auf dem Antwortblatt parallel markieren. Nach dem zweiten Hören haben Sie noch 25 Sekunden Zeit zum Überprüfen oder zum Korrigieren.*",
+   "transcript": "Und hier ein interessantes Angebot für unsere Zuhörer, die auch im Urlaub aktiv sein möchten. Der Spezialveranstalter „Harmonie“ bietet in diesem Jahr Reisen für Naturfreunde an. Wer Urlaub und umweltbewusstes Handeln miteinander verbinden möchte, ist bei „Harmonie“ ganz richtig. Sie können ihre Ferien der Umwelt widmen. Vormittags am Strand die Sonne genießen und am späten Nachmittag ihn sauber machen oder Bäume pflanzen – das Programmangebot ist vielfältig. Informationen zu unseren Preisen und Terminen unter 08719-403440."
+  },
+  "l3": {
+   "title": "Hörverstehen · Text 3",
+   "listen": true,
+   "text": "*Sie hören den Text zweimal. Vor dem ersten Hören haben Sie 1 Minute Zeit, um die Aufgaben zum Text zu lesen. Beim ersten Hören dürfen Sie die Antworten nicht markieren. Nach dem ersten Hören haben Sie 1 Minute Zeit, um die gewählten Antworten auf dem Antwortblatt anzukreuzen. Beim zweiten Hören dürfen Sie die Antworten auf dem Antwortblatt parallel markieren. Nach dem zweiten Hören haben Sie noch 1 Minute Zeit zum Überprüfen oder zum Korrigieren.*",
+   "transcript": "Vater: Wo bleibt denn Markus? 18 Uhr war angesagt! Immer verspätet er sich!\n\nMutter: Beruhige dich, Walter! Er kommt sicher gleich. Außerdem ist es erst zehn vor sechs!\n\nVater: Wie kann ich mich beruhigen?! Wie kannst DU ruhig sein?! Du hast sein Zwischenzeugnis gesehen! Eine DREI in Geschichte!\n\nMutter: Ach, Walter, sei nicht so streng! Eine Drei ist doch nicht so schlimm!\n\nVater: Nicht so schlimm! Wenn er Jura studieren möchte, muss er ausgezeichnete Noten haben. Sonst geht es nicht.\n\nMutter: Aber Jura ist eigentlich nicht sein Wunsch. Das ist doch dein Wunsch, Walter! Ich finde es unehrlich, dass du von Markus verlangst, die Tradition deiner Familie fortzusetzen. Lass ihn diese Entscheidung selbst treffen. Das ist doch seine Zukunft!\n\nVater: Das ist doch die Höhe! Du nimmst Partei für ihn. Und was ist seine Entscheidung? „Etwas, was mir Spaß macht“, hat er gesagt. Das ist unreif. Die Berufswahl ist was Ernstes! Das ist kein Spiel, das „Spaß macht”. Der Beruf soll gute Aussichten geben, hohes Einkommen…Das ist für einen Mann ganz wichtig.\n\nMutter: Das klingt aber dogmatisch! Das Gehalt ist ohne Zweifel sehr wichtig, aber der Arbeitsmarkt gibt heutzutage zahlreiche Möglichkeiten. Man kann erfolgreich sein und gut verdienen, auch wenn man kein Anwalt ist. Ich werde seine Entscheidung unterstützen, egal welche sie wäre."
+  },
+  "l4": {
+   "title": "Hörverstehen · Text 4",
+   "listen": true,
+   "text": "*Sie hören den Text zweimal. Vor dem ersten Hören haben Sie 1 Minute Zeit, um die Aufgaben zum Text zu lesen. Beim ersten Hören dürfen Sie die Antworten nicht markieren. Nach dem ersten Hören haben Sie 1 Minute Zeit, um die gewählten Antworten auf dem Antwortblatt anzukreuzen. Beim zweiten Hören dürfen Sie die Antworten auf dem Antwortblatt parallel markieren. Nach dem zweiten Hören haben Sie noch 1 Minute Zeit zum Überprüfen oder zum Korrigieren.*",
+   "transcript": "In unserer traditionellen Reihe „Wissenschaft im Alltag“ stellen wir Ihnen einen Diamanten vor, den keiner haben will.\n\nEr wiegt 428 Karat und wurde in den Achtzigerjahren, in Botswana, in der größten Diamant-Mine der Welt, gefördert. Trotz seiner Größe ist der Stein auf dem Markt für Rohdiamanten nicht erfolgreich. Der Edelstein hat eine grünliche Färbung und in seinem Inneren gibt es mehrere dunkle Flecken. Das mindert seinen Verkaufswert auf dem Markt erheblich.\n\nDer Diamant weckt aber das Interesse der Forschung. Der deutsche Mineraloge Oliver Tschauner setzte den Diamanten zu intensiver Röntgenstrahlung aus, um mehr über die Natur der mineralischen dunklen Flecken zu erfahren. Bei den Experimenten stellte sich heraus : der Diamant enthält ein Mineral, von dem Forscher bisher geglaubt hatten, es könne an der Erdoberfläche überhaupt nicht existieren. Es handelt sich um ein Kalziumsilikat der mineralischen Form von Perowskit. Dieses Mineral entsteht nur unter einem extrem hohen Druck, wie er beispielsweise im unteren Erdmantel in fast tausend Kilometer Tiefe herrscht. An die Erdoberfläche gelangt es über senkrechte Kanäle im Inneren des Vulkans.Vor allem das südliche Afrika ist reich an diesen erloschenen Resten von Vulkanen.\n\nDie Wissenschaftler können nicht erklären, wie das Mineral während der langen Reise durch den Mantel unseres Planeten unbeschadet geblieben ist.\n\nDer Diamant ist nun im Museum für Naturgeschichte in Los Angeles ausgestellt, wo man eine Tour auch online machen könnte. Dort ist er für alle Forscher für weitere Untersuchungen zugänglich. Wer weiß, welche anderen Überraschungen er noch bereithält."
+  },
+  "l5": {
+   "title": "Hörverstehen · Text 5",
+   "listen": true,
+   "text": "*Sie hören den Text zweimal. Vor dem ersten Hören haben Sie 1 Minute und 30 Sekunden Zeit, um die Aufgaben zum Text zu lesen. Beim ersten Hören dürfen Sie die Antworten nicht markieren. Nach dem ersten Hören haben Sie 1 Minute und 30 Sekunden Zeit, um die gewählten Antworten auf dem Antwortblatt anzukreuzen. Beim zweiten Hören dürfen Sie die Antworten auf dem Antwortblatt parallel markieren. Nach dem zweiten Hören haben Sie noch 1 Minute und 30 Sekunden Zeit zum Überprüfen oder zum Korrigieren.*",
+   "transcript": "MODERATORIN:\n\nStellen wir uns ein 18 Monate altes Kind vor, das bereits die New York Times lesen kann. Nun betrachten wir das hochbegabte Kind erneut, jetzt im Alter von acht Jahren: es spricht fließend Französisch, Deutsch, Russisch, Türkisch, Armenisch, Latein und natürlich seine Muttersprache Englisch. Im Alter von 9 Jahren kreiert dieses Kind eine ganz neue Sprache, die er Vendergood nannte. Die wurde von Linguisten erforscht und für komplett, korrekt und faszinierend gehalten. Er hieß William James Sidis und gilt als einer der intelligentesten Menschen aller Zeiten. Seine Leistungen sind in fast allen Bereichen der Wissenschaft, aber trotzdem hinterließ er selbst kaum Spuren in der Wissenschaftsgeschichte.\n\nAls er 9 Jahre alt war, wurde er an der Harvard University aufgenommen. Mit zwölf Jahren hielt er seinen ersten Vortrag über die vierte Dimension. Bei all seiner Intelligenz hatte William Sidis nie eine Kindheit und konnte es nie genießen, ein kleiner Junge zu sein.\n\nDie Medien und die wissenschaftliche Gemeinschaft beobachteten ihn genau. Die tägliche Belästigung der Presse traumatisierte ihn. Er fühlte sich wie eine Laborratte, deren Gedanken und Bewegungen unter dem Mikroskop analysiert wurden.\n\nWieso war Sidis so intelligent? Spielte der genetische Faktor eine Rolle?\n\nSeine Eltern, ein berühmter Psychologe und eine namhafte Ärztin, hatten ein klares Ziel vor Augen: Sie wollten den Geist und Verstand des Kindes trainieren, damit es ein Genie wird. Sie überprüften an ihrem Sohn ihre Theorien zum frühkindlichen Lernen. So wurde er das Ergebnis eines geplanten Erziehungsexperimentes. Dabei vergaßen sie das Wesentliche: sein Herz und seine Gefühle. Die hohen Erwartungen an ihn ermüdeten Sidis zu früh. Er isolierte sich von der Gesellschaft, von seiner Familie und von der akademischen Welt. Er starb mit 46 Jahren, vom Denken und vom Leben ermüdet.\n\nExtreme Intelligenz ist nicht immer gleichbedeutend mit Glück."
+  },
+  "r1": {
+   "title": "Leseverstehen · Text 1",
+   "text": "**LESEVERSTEHEN** · *Text 1*\n\n*Lesen Sie zuerst den Text und die Aufgaben dazu. Kreuzen Sie dann die richtige Antwort auf dem Antwortblatt an.*\n\n### „Sprache und Natur auf der Spur“\n\n### Zwei Wochen Lernen und Spaß im Osnabrücker Land\n\nDie Zielgruppe sind mehrsprachige Drittklässler*innen, die in Deutschland eingeschult wurden. Kinder, die eine kürzere Aufenthaltsdauer in Deutschland haben, können leider nicht berücksichtigt werden.\n\nDas Camp dauert 12 Tage. Es fängt jedes Jahr am ersten Sonntag der Sommerferien an und endet am Freitag in der zweiten Woche. Das Schullandheim in Mentrup Hagen ist unser fester Standort.\n\nAlle Grundschulen der Stadt und des Landkreises Osnabrück bekommen die Flyer zugeschickt und man kann sich über die Klassenlehrerin anmelden.\n\nGelernt wird vormittags. Die Kinder beschäftigen sich in Kleingruppen in einer lockeren Atmosphäre mit der deutschen Sprache. Das Prinzip des entdeckenden Grammatikunterrichts trägt dazu bei, dass sie auf eine anregende Art und Weise viel Neues über die Grammatik lernen. Außerdem erweitern sie ihren Wortschatz zu solchen Themen wie „Wald und ihre Bewohner“, „Insekten“, „Überleben in der wilden Natur“ usw. Jeden Nachmittag unter der Woche verbringen die Kinder draußen: Sie entdecken etwas im Wald, am Bach oder sie bleiben in der Nähe des Hauses, um etwas Kreatives aus Naturmaterialien herzustellen. An zwei Nachmittagen absolvieren sie ein Kinder-Survival-Training.\n\nEs geht dabei natürlich wieder um die Sprache, die implizit gelernt wird. Sprachlich verstehen sich die Umweltbildungsangebote als Ergänzung zu der Sprachförderarbeit vormittags. Die Teilnahme kostet 50 Euro."
+  },
+  "r2": {
+   "title": "Leseverstehen · Text 2",
+   "text": "**LESEVERSTEHEN** · *Text 2*\n\n*Lesen Sie zuerst den Text und die Aufgaben dazu. Kreuzen Sie dann die richtige Antwort auf dem Antwortblatt an.*\n\n### Friede, Freude, Sojakuchen\n\nÜber Veganer kursieren verschiedene Meinungen: Die einen sehen sie als Weltverbesserer und Idealisten, andere als nervige Spaßbremsen. Mai, 2019 wurde zum veganen Monat erklärt. In ihrem Erfahrungsbericht für fluter.de erzählt Juliane, wie die vegane Lebensweise in der Praxis funktioniert und wo man Probleme mit Gesellschaft, Familie und mit Freunden bekommen kann.\n\nJuliane, 20, Freiwillige auf einer Jugendfarm. Früher bestand meine Ernährung hauptsächlich aus Fertigpizza mit extra Käse oder chinesischer Instantsuppe. Doch Junk Food ist selten vegan. Also war das vegane Essen eine ziemliche Herausforderung für eine so gechillte Person wie mich. Fleisch und andere tierische Produkte vermisse ich, die immer viel Fleisch gegessen habe, kaum mehr. Schwierig sind aber Situationen, in denen ich bei jemandem zum Essen eingeladen werde. Der Gastgeber gibt sich unglaublich Mühe, mir ein zauberhaftes Essen zu bereiten, und ich bediene mich am Ende nur von dem Salat, weil überall sonst tierische Produkte drin sind. Kein schönes Gefühl. Jetzt, nach dem Experiment (dem veganen Monat), ernähre ich mich weiterhin vegetarisch. Vielleicht werde ich mal wieder eine vegane Zeit einlegen. Bis dahin will ich vor allem die Rohprodukte, wie beispielsweise Milch oder Butter, durch vegane Alternativen ersetzen. Ich weiß, dass das nicht ideal ist und dass alle Veganer*innen das höchst inkonsequent finden. Aber ich denke: Wenn jeder nur einen kleinen Schritt in die richtige Richtung macht, dann ist schon viel erreicht. Unterwegs ist es aber leider schwieriger. Brot und Aufstrich wurden meine treuen Begleiter. Da ich mich so frisch, lecker und abwechslungsreich wie selten in meinem Leben ernährt habe, werde ich versuchen, erst mal weiter vegan zu leben."
+  },
+  "r3": {
+   "title": "Leseverstehen · Text 3",
+   "text": "**LESEVERSTEHEN** · *Text 3*\n\n*Lesen Sie zuerst den Text und die Fragen dazu. Beantworten Sie dann die Fragen in ganzen Sätzen.*\n\n### Geht die Rechnung auf?\n\nDie Bluse passt nicht, die Hose ist zu weit: Wer Kleidung oder Schuhe online einkauft, kann die Artikel bei fast allen Händlern kostenlos zurückschicken.\n\n### Geht die Rechnung auf?\n\nIn Deutschland wird fast jeder dritte Bekleidungsartikel im Internet gekauft. Nach Elektronikartikeln sind Mode und Accessoires die zweitbeliebteste Warengruppe im Onlineshopping. Das war nicht von Anfang an so, denn Bekleidungsartikel haben im Vergleich zu anderen Produkten einen entscheidenden Nachteil. Während ein Fernseher oder ein Handy mit einigen technischen Angaben ziemlich eindeutig beschrieben werden können, ist Größe 39 bei Nike nicht dasselbe wie bei Adidas. Kleider- und Schuhanprobe ist im Internet unmöglich. Wie soll man da online eine Entscheidung treﬀen können? Das Geschäft mit der Mode kam deshalb im Internet lange nicht in Fahrt. Doch dann entwickelte sich die Idee, dass die Käufer die Sachen gratis zurückgeben können. Damit haben sie die Möglichkeit bekommen, sie bei Wohlfühllicht und Lieblingsmusik zu Hause mehrmals anzuprobieren und sich Zeit für die Entscheidung zu geben. Man behielt die passenden Artikel und schickte den Rest kostenlos zurück.\n\nIn Deutschland wird zurzeit die Hälfte der bestellten Artikel zurückgeschickt. In einer Umfrage gaben 50 Prozent der befragten Deutschen an, schon einmal Waren, die sie online eingekauft hatten, retourniert zu haben.\n\nGleichzeitig sind die Rücksendungen aber auch ein riesiger Kostenfaktor für die Händler. Denn nicht nur der Transport der Pakete verursacht viele CO₂-Emissionen. Sehr viele der zurückgeschickten Artikel werden nicht wieder aufgearbeitet, sondern gleich entsorgt. Das ist besonders bei billigen Produkten der Fall. Bei diesen lohnt es sich nicht, sie zu reinigen und neu zu verpacken. Außerdem gibt es Artikel, die zum Zeitpunkt der Rücksendung bereits das Ende ihrer Lebensdauer erreicht haben, weil der Fast-Fashion-Zyklus sehr schnell ist. Die Retouren sind also ein Wettbewerbsvorteil und ein Wettbewerbsnachteil zugleich."
+  }
+ },
+ "exams": [
+  {
+   "id": "exam",
+   "title": "20 май 2022 · вариант 1",
+   "minutes": 240,
+   "parts": [
+    {
+     "title": "Част 1",
+     "minutes": 60,
+     "instructions": "**HÖRVERSTEHEN**",
+     "tasks": [
+      {
+       "id": "q1",
+       "type": "choice",
+       "points": 1,
+       "passage": "l1",
+       "prompt": "Das ist ein Fotowettbewerb für Grundschüler.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q2",
+       "type": "choice",
+       "points": 1,
+       "passage": "l1",
+       "prompt": "Die Projekte werden von … bewertet.",
+       "options": [
+        "einer unabhängigen Juri",
+        "von den Teilnehmern selbst",
+        "von allen Besuchern der Webseite",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q3",
+       "type": "choice",
+       "points": 1,
+       "passage": "l2",
+       "prompt": "Man sucht Naturfreunde, die einen kostenlosen Urlaub gegen Mithilfe bei Umweltinitiativen machen möchten.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q4",
+       "type": "choice",
+       "points": 1,
+       "passage": "l2",
+       "prompt": "Am späten Nachmittag …",
+       "options": [
+        "darf man Blumen pflücken.",
+        "genießt man die Sonne am Strand.",
+        "macht man bei verschiedenen Umweltinitiativen mit.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q5",
+       "type": "choice",
+       "points": 1,
+       "passage": "l3",
+       "prompt": "Markus hat eine Verabredung mit seinen Eltern um zehn vor sechs.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q6",
+       "type": "choice",
+       "points": 1,
+       "passage": "l3",
+       "prompt": "Markus Eltern sind mit seinen Notenleistungen unzufrieden.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q7",
+       "type": "choice",
+       "points": 1,
+       "passage": "l3",
+       "prompt": "Markus Vater möchte, dass Markus später den Beruf eines Anwalts ausübt.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q8",
+       "type": "choice",
+       "points": 1,
+       "passage": "l3",
+       "prompt": "Die Mutter findet die Ansichten ihres Ehemannes veraltet.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q9",
+       "type": "choice",
+       "points": 1,
+       "passage": "l3",
+       "prompt": "Markus Mutter findet, dass die Belohnung das Wichtigste bei der Berufswahl sein muss.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q10",
+       "type": "choice",
+       "points": 1,
+       "passage": "l3",
+       "prompt": "Markus Mutter wird Markus Berufswahl akzeptieren.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q11",
+       "type": "choice",
+       "points": 1,
+       "passage": "l4",
+       "prompt": "Der in Botswana entdeckte Diamant …",
+       "options": [
+        "ist der größte Diamant der Welt.",
+        "wurde auf dem Diamantenmarkt sehr schnell verkauft.",
+        "wurde in den Achtzigerjahren entdeckt.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q12",
+       "type": "choice",
+       "points": 1,
+       "passage": "l4",
+       "prompt": "Die dunklen Flecken im Inneren des Diamanten …",
+       "options": [
+        "sind wegen intensiver Röntgenstrahlung entstanden.",
+        "reduzieren wesentlich seinen Preis.",
+        "geben dem Diamanten eine grünliche Färbung.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q13",
+       "type": "choice",
+       "points": 1,
+       "passage": "l4",
+       "prompt": "Der Diamant enthält Spuren eines Minerals, das …",
+       "options": [
+        "typisch für die oberflächlichen Schichten der Erde ist.",
+        "in großer Tiefe im Erdmantel entsteht.",
+        "nur in der Nähe der afrikanischen Vulkane zu entdecken ist.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q14",
+       "type": "choice",
+       "points": 1,
+       "passage": "l4",
+       "prompt": "Heutzutage kann man den Diamanten aus Botswana …",
+       "options": [
+        "in der Universität von Los Angeles sehen.",
+        "weiter erforschen.",
+        "online kaufen.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q15",
+       "type": "choice",
+       "points": 1,
+       "passage": "l5",
+       "prompt": "Als William James Sidis … alt war, präsentierte er seine eigene Sprache.",
+       "options": [
+        "8 Jahre",
+        "9 Jahre",
+        "18 Jahre",
+        "21 Jahre"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q16",
+       "type": "choice",
+       "points": 1,
+       "passage": "l5",
+       "prompt": "Sidis` Sprache Vendergood …",
+       "options": [
+        "gilt heutzutage als nicht korrekt.",
+        "ist immer noch nicht völlig erforscht.",
+        "fasziniert die Wissenschaftler.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q17",
+       "type": "choice",
+       "points": 1,
+       "passage": "l5",
+       "prompt": "Sidis war erfolgreich …",
+       "options": [
+        "auf fast allen Gebieten der Wissenschaft.",
+        "besonders in dem Bereich der Geschichte.",
+        "vor allem auf dem Gebiet der Sprachwissenschaft.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q18",
+       "type": "choice",
+       "points": 1,
+       "passage": "l5",
+       "prompt": "Die Leistungen von Sidis als Kind wurden von …",
+       "options": [
+        "den Journalisten nicht berücksichtigt.",
+        "den Medien mit Interesse beobachtet.",
+        "seinen Eltern in Geheimnis gehalten.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q19",
+       "type": "choice",
+       "points": 1,
+       "passage": "l5",
+       "prompt": "Die Intelligenz von Sidis war …",
+       "options": [
+        "genetisch vorbestimmt: beide Eltern waren genial.",
+        "Ergebnis einer geplanten Erziehung.",
+        "eine Naturbegabung.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q20",
+       "type": "choice",
+       "points": 1,
+       "passage": "l5",
+       "prompt": "Berühmtheit bedeutete für Sidis …",
+       "options": [
+        "Anerkennung.",
+        "Belastung.",
+        "Glück.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q21",
+       "type": "choice",
+       "points": 1,
+       "passage": "r1",
+       "prompt": "Mehrsprachige Kinder dürfen am Camp NICHT teilnehmen, wenn sie seit kurzem in Deutschland lernen.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q22",
+       "type": "choice",
+       "points": 1,
+       "passage": "r1",
+       "prompt": "Das Camp findet immer am gleichen Ort statt.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q23",
+       "type": "choice",
+       "points": 1,
+       "passage": "r1",
+       "prompt": "Das Anmeldeformular können die Kinder in der Schule bekommen.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 0,
+       "skill": "read"
+      },
+      {
+       "id": "q24",
+       "type": "choice",
+       "points": 1,
+       "passage": "r1",
+       "prompt": "Der Unterricht findet im Freien statt.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 1,
+       "skill": "read"
+      },
+      {
+       "id": "q25",
+       "type": "choice",
+       "points": 1,
+       "passage": "r1",
+       "prompt": "Im Camp bereichern die Kinder ihre grammatikalischen und lexikalischen Kenntnisse durch traditionelle Lernmethoden.",
+       "options": [
+        "Richtig",
+        "Falsch"
+       ],
+       "answer": 1,
+       "skill": "read"
+      }
+     ]
+    },
+    {
+     "title": "Част 2",
+     "minutes": 180,
+     "instructions": "**LESEVERSTEHEN**",
+     "tasks": [
+      {
+       "id": "q26",
+       "type": "choice",
+       "points": 1,
+       "passage": "r2",
+       "prompt": "Vor dem Experiment ernährte sich Juliane vor allem von …",
+       "options": [
+        "Fast Food.",
+        "Rohprodukten.",
+        "würzigen Speisen.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q27",
+       "type": "choice",
+       "points": 1,
+       "passage": "r2",
+       "prompt": "Wenn Juliane zu Gast eingeladen ist, isst sie …",
+       "options": [
+        "auch Fleischgerichte, die der Gastgeber vorbereitet hat.",
+        "nur vegetarische Speisen, die der Gastgeber vorbereitet hat.",
+        "das vegane Essen, das sie sich von zuhause mitgebracht hat.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q28",
+       "type": "choice",
+       "points": 1,
+       "passage": "r2",
+       "prompt": "Nach dem Experiment isst Juliane … Fleisch.",
+       "options": [
+        "kein",
+        "kaum",
+        "manchmal",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 0,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q29",
+       "type": "choice",
+       "points": 1,
+       "passage": "r2",
+       "prompt": "Wenn Juliane unterwegs ist, …",
+       "options": [
+        "ist die Fahrt immer sehr schwierig für sie.",
+        "isst sie vor allem belegte Brötchen.",
+        "braucht sie treue Freunde als Begleiter.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 1,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q30",
+       "type": "choice",
+       "points": 1,
+       "passage": "r2",
+       "prompt": "Juliane findet die vegane Ernährung nicht …",
+       "options": [
+        "ausgewogen.",
+        "lecker.",
+        "eintönig.",
+        "Keine der genannten Antworten"
+       ],
+       "answer": 2,
+       "added": [
+        3
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q31",
+       "type": "open",
+       "points": 2,
+       "passage": "r3",
+       "prompt": "Warum ist das Einkaufen von Kleidern im Internet so erfolgreich?",
+       "answer": "**Примерен отговор:** Man kann / darf / die Kleider kostenfrei /gebührenfrei zurückschicken. / Man kann sie mehrmals zu Hause anprobieren.\n\nВъпросите от № 31 до № 35 са отворени. Всеки отворен въпрос носи две точки. При проверката на отворените въпроси не се вземат предвид правописни и граматични грешки. В отговора се оценява единствено съответствието между информацията в него с тази в текста. Отговорите на отворените въпроси са примерни. Приема се за верен всеки отговор,, формулиран по различен начин, но съответстващ на въпроса и на информацията в текста, върху която е зададен въпросът.",
+       "rubric": [
+        {
+         "text": "Информацията в отговора съответства на въпроса и на текста",
+         "points": 1
+        },
+        {
+         "text": "Отговорът е пълен, без липсваща или излишна информация (както в примерния отговор)",
+         "points": 1
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q32",
+       "type": "open",
+       "points": 2,
+       "passage": "r3",
+       "prompt": "Welchen Nachteil hat das Onlineshoppen von Kleidern und Schuhen?",
+       "answer": "**Примерен отговор:** Zwischen den Größen der verschiedenen Marken gibt es Unterschiede. / Man kann Kleider und Schuhe im Internet nicht ausprobieren. / Man kann nicht sicher sein, dass die Größe zu einem passt.\n\nВъпросите от № 31 до № 35 са отворени. Всеки отворен въпрос носи две точки. При проверката на отворените въпроси не се вземат предвид правописни и граматични грешки. В отговора се оценява единствено съответствието между информацията в него с тази в текста. Отговорите на отворените въпроси са примерни. Приема се за верен всеки отговор,, формулиран по различен начин, но съответстващ на въпроса и на информацията в текста, върху която е зададен въпросът.",
+       "rubric": [
+        {
+         "text": "Информацията в отговора съответства на въпроса и на текста",
+         "points": 1
+        },
+        {
+         "text": "Отговорът е пълен, без липсваща или излишна информация (както в примерния отговор)",
+         "points": 1
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q33",
+       "type": "open",
+       "points": 2,
+       "passage": "r3",
+       "prompt": "Wie viel von den in Deutschland eingekauften Bekleidungsartikeln werden zurückgeschickt?",
+       "answer": "**Примерен отговор:** Die Hälfte / 50%\n\nВъпросите от № 31 до № 35 са отворени. Всеки отворен въпрос носи две точки. При проверката на отворените въпроси не се вземат предвид правописни и граматични грешки. В отговора се оценява единствено съответствието между информацията в него с тази в текста. Отговорите на отворените въпроси са примерни. Приема се за верен всеки отговор,, формулиран по различен начин, но съответстващ на въпроса и на информацията в текста, върху която е зададен въпросът.",
+       "rubric": [
+        {
+         "text": "Информацията в отговора съответства на въпроса и на текста",
+         "points": 1
+        },
+        {
+         "text": "Отговорът е пълен, без липсваща или излишна информация (както в примерния отговор)",
+         "points": 1
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q34",
+       "type": "open",
+       "points": 2,
+       "passage": "r3",
+       "prompt": "Warum belastet die Rücksendung der Bekleidungsartikel die Umwelt?",
+       "answer": "**Примерен отговор:** Eine Rücksendung bedeutet Transport und dabei werden schädliche Abgase ausgestoßen.\n\nВъпросите от № 31 до № 35 са отворени. Всеки отворен въпрос носи две точки. При проверката на отворените въпроси не се вземат предвид правописни и граматични грешки. В отговора се оценява единствено съответствието между информацията в него с тази в текста. Отговорите на отворените въпроси са примерни. Приема се за верен всеки отговор,, формулиран по различен начин, но съответстващ на въпроса и на информацията в текста, върху която е зададен въпросът.",
+       "rubric": [
+        {
+         "text": "Информацията в отговора съответства на въпроса и на текста",
+         "points": 1
+        },
+        {
+         "text": "Отговорът е пълен, без липсваща или излишна информация (както в примерния отговор)",
+         "points": 1
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q35",
+       "type": "open",
+       "points": 2,
+       "passage": "r3",
+       "prompt": "Welche Nachteile hat die kostenlose Rücksendung für die Händler?",
+       "answer": "**Примерен отговор:** Viele Artikel/ Waren/ Kleider sind oft nicht mehr verkaufbar. / Die Händler haben große Kosten für Reinigen und Verpacken.\n\nВъпросите от № 31 до № 35 са отворени. Всеки отворен въпрос носи две точки. При проверката на отворените въпроси не се вземат предвид правописни и граматични грешки. В отговора се оценява единствено съответствието между информацията в него с тази в текста. Отговорите на отворените въпроси са примерни. Приема се за верен всеки отговор,, формулиран по различен начин, но съответстващ на въпроса и на информацията в текста, върху която е зададен въпросът.",
+       "rubric": [
+        {
+         "text": "Информацията в отговора съответства на въпроса и на текста",
+         "points": 1
+        },
+        {
+         "text": "Отговорът е пълен, без липсваща или излишна информация (както в примерния отговор)",
+         "points": 1
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q36",
+       "type": "open",
+       "points": 15,
+       "prompt": "**TEXTPRODUKTION**\n\n**Aufgabe 36**\n\nLesen Sie die Aufgabe und schreiben Sie eine E-Mail (Wortzahl 100-110). Sie sind an der gewünschten Universität in Deutschland aufgenommen, aber plötzlich fühlen Sie sich verunsichert. Einerseits begeistert Sie das Neue und Sie sind darauf ungeduldig, andererseits macht Ihnen die Unsicherheit Angst. Schreiben Sie eine E-Mail an Ihren Freund Tom. Beachten Sie dabei die folgenden Punkte:\n\n- Was erwarten Sie von der neuen Herausforderung?\n- Was würden Sie vielleicht vermissen?\n- Bitten Sie um Ratschläge, wie Sie die Unsicherheit überwinden können.\n\nUnterschreiben Sie Ihre E-Mail mit dem Namen Ivan / Ivana.\n\n***Писмен текст с обем под 55 думи или текст изцяло несъответстващ на темата се оценява с 0 (нула) точки.***",
+       "answer": "Ключът дава само критерии за оценяване:\n\n- Съдържателно съответствие с темата, смислова свързаност и логическа последователност (умение за представяне на факти, за формулиране на позиция) – 0–4 точки\n- Структура на текста (вкл. и спазване на зададения обем и формат) – 0–3 точки\n- Правилна и адекватна употреба на лексиката, лексикално богатство – 0–3 точки\n- Граматическа правилност (морфологична и синтактична правилност) – 0–3 точки\n- Правопис – 0–2 точки",
+       "rubric": [
+        {
+         "text": "Съдържателно съответствие с темата, смислова свързаност и логическа последователност (умение за представяне на факти, за формулиране на позиция)",
+         "points": 4
+        },
+        {
+         "text": "Структура на текста (вкл. и спазване на зададения обем и формат)",
+         "points": 3
+        },
+        {
+         "text": "Правилна и адекватна употреба на лексиката, лексикално богатство",
+         "points": 3
+        },
+        {
+         "text": "Граматическа правилност (морфологична и синтактична правилност)",
+         "points": 3
+        },
+        {
+         "text": "Правопис",
+         "points": 2
+        }
+       ],
+       "skill": "read"
+      },
+      {
+       "id": "q37",
+       "type": "open",
+       "points": 25,
+       "prompt": "**Aufgabe 37**\n\nLesen Sie die Aufgabe und schreiben Sie einen Aufsatz (Wortzahl 120-130). Beachten Sie dabei die folgenden Fragen.\n\nGesundes Leben – Notwendigkeit oder Mode?\n\n- Was bedeutet für Sie gesunde Lebensweise?\n- Leben Sie gesund?\n- Ist es leicht im Alltag gesund zu leben? Welche Schwierigkeiten gibt es dabei?\n\n***Писмен текст с обем под 65 думи или текст изцяло несъответстващ на темата се оценява с 0 (нула) точки.***",
+       "answer": "Ключът дава само критерии за оценяване:\n\n- Съдържателно съответствие с темата, смислова свързаност и логическа последователност (умение за представяне на факти, за формулиране на позиция) – 0–7 точки\n- Структура на текста (вкл. и спазване на зададения обем и формат) – 0–2 точки\n- Правилна и адекватна употреба на лексиката, лексикално богатство – 0–7 точки\n- Граматическа правилност (морфологична и синтактична правилност) – 0–7 точки\n- Правопис – 0–2 точки",
+       "rubric": [
+        {
+         "text": "Съдържателно съответствие с темата, смислова свързаност и логическа последователност (умение за представяне на факти, за формулиране на позиция)",
+         "points": 7
+        },
+        {
+         "text": "Структура на текста (вкл. и спазване на зададения обем и формат)",
+         "points": 2
+        },
+        {
+         "text": "Правилна и адекватна употреба на лексиката, лексикално богатство",
+         "points": 7
+        },
+        {
+         "text": "Граматическа правилност (морфологична и синтактична правилност)",
+         "points": 7
+        },
+        {
+         "text": "Правопис",
+         "points": 2
+        }
+       ],
+       "skill": "read"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
