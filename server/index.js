@@ -20,6 +20,7 @@ const MODELS = (process.env.ALLOWED_MODELS || 'gemini-3.8-flash,gemini-3.5-flash
 const ORIGINS = (process.env.ALLOWED_ORIGINS || '*').split(',').map(s => s.trim());
 const FEEDBACK_SCRIPT_URL = process.env.FEEDBACK_SCRIPT_URL || '';
 const DEFAULT_MODEL = process.env.GEMINI_MODEL || MODELS[0];
+const TTS_MODEL = process.env.TTS_MODEL || 'gemini-3.1-flash-tts-preview';   /* Gemini text-to-speech, for listening texts */
 const ai = process.env.GEMINI_API_KEY
   ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
   : new GoogleGenAI({ vertexai: true, project: process.env.GOOGLE_CLOUD_PROJECT, location: process.env.GOOGLE_CLOUD_LOCATION || 'global' });
@@ -86,6 +87,26 @@ http.createServer(async (req, res) => {
     } catch (e) {
       console.error('feedback forward failed', e);
       return send(res, 502, { error: 'feedback database error: ' + (e.message || e) });
+    }
+  }
+
+  /* text-to-speech for the listening parts of past language exams (66c-listen.js): { text } -> { audio: base64 16-bit PCM, rate } */
+  if (req.method === 'POST' && req.url === '/tts') {
+    const q = await readJson(req, res, 20000);
+    if (q === null) return;
+    if (typeof q.text !== 'string' || !q.text.trim()) return send(res, 400, { error: 'text is missing' });
+    try {
+      const r = await ai.models.generateContent({
+        model: TTS_MODEL,
+        contents: q.text.slice(0, 12000),
+        config: { responseModalities: ['AUDIO'], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } } } }
+      });
+      const part = (r.candidates?.[0]?.content?.parts || []).find(x => x.inlineData);
+      if (!part) return send(res, 502, { error: 'no audio in the answer' });
+      return send(res, 200, { audio: part.inlineData.data, mime: part.inlineData.mimeType || 'audio/pcm', rate: 24000 });
+    } catch (e) {
+      console.error(e);
+      return send(res, 502, { error: 'Gemini TTS error: ' + (e.message || e) });
     }
   }
 

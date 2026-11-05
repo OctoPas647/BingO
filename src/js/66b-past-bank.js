@@ -54,6 +54,7 @@ function buildPastBank() {
     const skills = SUBJECTS[subj].skills.map(s => s.id);
     for (const { task, part } of pastTasks(m)) {
       if (task.type !== 'choice' || !Array.isArray(task.options) || task.options.length < 4) continue;
+      if (task.passage && m.passages && m.passages[task.passage] && m.passages[task.passage].listen) continue;   /* a listening question needs its audio: only in the exam itself */
       const text = (task.prompt || '') + ' ' + task.options.join(' ');
       /* math: only the skills of that exam (НВО 4 has no trigonometry); the first matching rule wins */
       const examSkills = subj === 'math' && m.past.exam !== 'dzi12' && NVO_PROFILES.math[m.past.exam.slice(3)] ? NVO_PROFILES.math[m.past.exam.slice(3)].skills.map(s => s.id) : skills;

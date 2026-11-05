@@ -169,3 +169,10 @@
   .duo.anim > i { transition: none; }
   .duo.anim > i::before, .duo.full { animation: none; }
 }
+
+/* listening texts of past language exams (66c-listen.js) */
+.card.listen { margin-bottom: 16px; display: grid; gap: 10px; }
+.listen-head { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+.listen-head .ic { color: var(--accent); }
+.listen .transcript summary { cursor: pointer; font-weight: 700; color: var(--accent); }
+.listen .transcript .rt { margin-top: 8px; white-space: pre-wrap; }

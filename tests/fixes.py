@@ -354,6 +354,31 @@ with sync_playwright() as pw:
     p.click('[data-start="diag"]'); p.wait_for_selector('.task')
     ok('philosophy diagnostic shows a real ДЗИ question with four options', p.locator('.opt').count() == 4 and 'вариант' in p.locator('.chips').inner_text(), p.locator('.chips').inner_text())
     ctx.close()
+
+    # listening (66c-listen.js): a player instead of the transcript; the transcript appears after the answer
+    lid = 'dzi12-en-2022-05-20-b1-v1'
+    ctx, p = fresh(b, state={**DONE, 'subject': 'en', 'profile': {**DONE['profile'], 'exam': 'dzi12', 'track': 'lang'}})
+    p.evaluate(f"go('pastexam', {{ id: {json.dumps(lid)} }})"); p.wait_for_selector('[data-listen]')
+    tr = p.evaluate(f"PAST.find(m => m.id === {json.dumps(lid)}).passages.l1.transcript")
+    ok('listening: the player is shown', p.locator('[data-listen] [data-say]').count() == 1)
+    ok('listening: the transcript is hidden before the answer', tr[:40] not in p.locator('.playmain').inner_text() and p.locator('[data-listen] .transcript[hidden]').count() == 1)
+    p.locator('.opt').first.click(); p.click('[data-main]'); p.wait_for_timeout(300)
+    ok('listening: the transcript is shown after the answer', p.locator('[data-listen] .transcript:not([hidden])').count() == 1)
+    ok('listening: its questions are not in training', p.evaluate(f"BANK.en.some(t => t.id.startsWith('past:{lid}:') && /\\/l\\d/.test(t.passage || ''))") is False)
+    p.screenshot(path=str(SHOTS / 'past-listening.png'), full_page=True)
+    ctx.close()
+
+    # listening with BingO's server: the transcript is spoken by Gemini TTS (POST /tts, mocked)
+    ctx, p = fresh(b, state={**DONE, 'subject': 'en'}, server='https://bingo-ai.test.run.app')
+    calls = []
+    def tts(route):
+        calls.append(route.request.url)
+        route.fulfill(status=200, content_type='application/json', headers={'Access-Control-Allow-Origin': '*'}, body=json.dumps({'audio': 'AAAAAAAAAAA=', 'rate': 24000}))
+    p.route('https://bingo-ai.test.run.app/**', tts)
+    p.evaluate(f"go('pastexam', {{ id: {json.dumps(lid)} }})"); p.wait_for_selector('[data-say]')
+    p.click('[data-say]'); p.wait_for_timeout(800)
+    ok('listening: Gemini TTS through the server', any(u.endswith('/tts') for u in calls), str(calls))
+    ctx.close()
     b.close()
 
 print('page errors:', errors or 'none')

@@ -89,7 +89,11 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     <main class="playmain"></main>
     <footer class="checkbar"><div class="verdict"></div><button class="btn accent big" data-main></button></footer>`;
   const main = el.querySelector('.playmain'), foot = el.querySelector('.checkbar'), btn = foot.querySelector('[data-main]'), verdict = foot.querySelector('.verdict');
-  nav.guard = async () => P.done || !P.touched || confirmBox(L('Да спрем ли?'), L('Резултатът от този изпит няма да се запази.'), L('Спри'), true);
+  nav.guard = async () => {
+    const ok = P.done || !P.touched || await confirmBox(L('Да спрем ли?'), L('Резултатът от този изпит няма да се запази.'), L('Спри'), true);
+    if (ok && 'speechSynthesis' in window) speechSynthesis.cancel();   /* a listening text must not keep talking */
+    return ok;
+  };
   let view = null, task = null, rubric = null;
   const paintCount = () => { el.querySelector('.pcount').textContent = `${P.i + 1} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
   const upd = () => {
@@ -106,6 +110,7 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     main.innerHTML = `<div class="taskhead"><div class="chips"><i class="score">${esc(pastTitle(m))}</i><i>${esc(L(part.title || ''))}</i><i>${L('Задача {n} · {p} т.', { n: esc(task.id.replace(/^q/, '')), p: fmtPts(task.points, lg) })}</i></div></div>
       ${first && part.instructions ? `<p class="muted rt">${richInline(part.instructions)}</p>` : ''}`;
     main.appendChild(view.el);
+    listenMount(m, task, view.el);   /* listening texts: a player instead of the text (66c-listen.js) */
     window.scrollTo(0, 0); paintCount();
     foot.className = 'checkbar'; verdict.innerHTML = ''; btn.textContent = L(task.type === 'open' ? 'Виж отговора' : 'Провери'); upd();
   }
@@ -117,7 +122,7 @@ SCREENS.pastexam = async (el, { id }, nav) => {
       if (!String(answer.text || '').trim()) { toast(L('Напиши отговор, преди да се оцениш.'), 'bad'); return; }
       if (task.points >= 30 && (!Array.isArray(task.rubric) || !task.rubric.length)) task.rubric = ESSAY_RUBRIC_30;
       P.phase = 'next'; P.touched = true;
-      view.show({ status: 'ungraded' });
+      view.show({ status: 'ungraded' }); listenReveal(view.el);
       /* pictures that belong to the official solution (a drawing in the key), shown only after the answer */
       if (task.solutionMedia && task.solutionMedia.length) { fb.insertAdjacentHTML('beforeend', `<div class="task-media">${blocksHTML(task.solutionMedia)}</div>`); hydrateMedia(fb, m.id); }
       rubric = rubricView(task, null);
@@ -142,7 +147,7 @@ SCREENS.pastexam = async (el, { id }, nav) => {
       P.phase = 'next'; P.touched = true;
       const res = scoreTask(task, view.get(), m.lang || 'bg'), right = res.status === 'right';
       P.got[P.i] = res.points;
-      view.show(res); sound(right ? 'right' : 'wrong');
+      view.show(res); sound(right ? 'right' : 'wrong'); listenReveal(view.el);
       foot.className = 'checkbar ' + (right ? 'good' : 'bad');
       verdict.innerHTML = `${icon(right ? 'check' : 'close')}<span><b>${L(right ? 'Вярно!' : res.points > 0 ? 'Отчасти' : 'Не съвсем')}</b><small>${L('{a} от {b} т.', { a: fmtPts(res.points, lg), b: fmtPts(task.points, lg) })}</small></span>`;
     }
