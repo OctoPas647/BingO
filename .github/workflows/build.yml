@@ -148,12 +148,25 @@ jobs:
             echo "::warning::The FTP server's certificate is not issued for FTP_HOST. Using '$HOST' from the certificate instead. Set the FTP_HOST secret to '$HOST' to silence this."
           fi
           echo "Certificate names: $(echo $NAMES)"
-          # Without FTP_DIR every build went to the FTP account's top folder, not to the site's bingo/ folder
-          # (preotkrivanegk.com/bingo/ stayed old). Put it in public_html/bingo when the account starts above the site.
+          # Without FTP_DIR, find where the account starts:
+          #  - above the site (public_html is listed)          -> public_html/bingo
+          #  - in the site's root (WordPress files are listed)  -> bingo
+          #  - already in the BingO folder (README: Directory public_html/bingo) -> the top folder itself.
+          # (1.0.0-1.0.1 always added bingo/ here, so the builds landed in public_html/bingo/bingo and
+          # preotkrivanegk.com/bingo/ stayed on 0.8.0.)
+          LIST=$(curl --silent --ssl-reqd --list-only --user "$FTP_USER:$FTP_PASSWORD" "ftp://$HOST/" | tr -d '\r' || true)
+          echo "FTP top folder: $(echo $LIST)"
           if [ -z "$DIR" ]; then
-            LIST=$(curl --silent --ssl-reqd --list-only --user "$FTP_USER:$FTP_PASSWORD" "ftp://$HOST/" || true)
-            if echo "$LIST" | tr -d '\r' | grep -qx "public_html"; then DIR="public_html/bingo"; else DIR="bingo"; fi
-            echo "::notice::FTP_DIR is not set: uploading to $DIR/ (set the FTP_DIR secret to choose another folder)"
+            if echo "$LIST" | grep -qx "public_html"; then DIR="public_html/bingo"
+            elif echo "$LIST" | grep -qxE "wp-config\.php|wp-content|wp-admin"; then DIR="bingo"
+            else DIR=""; fi
+            echo "::notice::FTP_DIR is not set: uploading to ${DIR:-the FTP account's top folder}/ (set the FTP_DIR secret to choose another folder)"
+          fi
+          # Remove the copy the old builds left in public_html/bingo/bingo (preotkrivanegk.com/bingo/bingo/)
+          if [ -z "$DIR" ] && echo "$LIST" | grep -qx "bingo"; then
+            curl --silent --ssl-reqd --user "$FTP_USER:$FTP_PASSWORD" \
+              -Q "DELE bingo/index.html" -Q "DELE bingo/bingo-push-sw.js" -Q "RMD bingo" "ftp://$HOST/" > /dev/null \
+              && echo "Removed the old nested bingo/ folder" || echo "::notice::Could not remove the old nested bingo/ folder (remove public_html/bingo/bingo in cPanel)"
           fi
           URL="ftp://$HOST/${DIR:+$DIR/}index.html"
           # FTPS (encrypted); the folder is created if it doesn't exist yet

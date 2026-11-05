@@ -141,7 +141,7 @@ functions/     Firebase: роли и тестове с оценяване на �
 **Уебсайт (автоматично):** при всеки push в `main` GitHub качва новата уеб версия на сайта (напр. https://preotkrivanegk.com/bingo/).
 1. cPanel → **FTP Accounts** → нов акаунт, Directory: `public_html/bingo` (така акаунтът вижда само папката на BingO).
 2. GitHub → Settings → Secrets and variables → Actions → добави `FTP_HOST` (напр. `ftp.preotkrivanegk.com`), `FTP_USER` (целият потребител, напр. `bingo@preotkrivanegk.com`) и `FTP_PASSWORD`.
-3. `FTP_DIR` е по желание — само ако FTP акаунтът започва от друга папка (напр. `public_html/bingo`).
+3. `FTP_DIR` е по желание. Без него build-ът сам разбира откъде започва акаунтът: от папката на BingO (както в т. 1) → качва там; от корена на сайта (WordPress) → в `bingo/`; над сайта (`public_html`) → в `public_html/bingo/`.
 Без тези secrets build-ът работи както преди, просто не качва нищо.
 
 ## Честно за alpha-та
