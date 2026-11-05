@@ -1,7 +1,6 @@
-/* ================= Bottom menu: Начало · Статистики · Профил =================
-   The menu sits on the three main screens. Home stays the root of the navigation stack:
-   Stats and Profile open on top of it, and switching between them replaces the top screen,
-   so the Android back button always goes back to Home. */
+/* ================= Bottom menu: Начало · Статистики · Клас · Профил =================
+   One persistent menu under the main screens (TABS; 73-class-student.js adds Клас). Home stays the root
+   of the navigation stack: the other tabs open on top of it, so Android's back button goes back to Home. */
 
 Object.assign(ICONS, {
   home: '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/>',
@@ -10,12 +9,58 @@ Object.assign(ICONS, {
 });
 
 const TABS = [['home', 'home', 'Начало'], ['stats', 'chart', 'Статистики'], ['profile', 'user', 'Профил']];
+const isTabScreen = screen => TABS.some(t => t[0] === screen);
+
+/* The bottom menu is ONE element that lives outside the page (#tabdock, under <body>). Pages change under it;
+   it never gets rebuilt, moved or animated with them, so it cannot jump, vanish or double up while switching.
+   The highlight ("lens") is measured from the tab it sits under, so it fits any number of tabs. */
+const DOCK = { el: null, key: '', on: null };
+function dockButtons() { return TABS.map(([id, ic, label]) => `<button data-tab="${id}" type="button">${icon(ic)}<span>${L(label)}</span></button>`).join(''); }
+function syncDock(screen) {
+  const show = isTabScreen(screen);
+  if (!DOCK.el) {
+    if (!show) return;
+    DOCK.el = h(`<nav id="tabdock" class="tabbar dock" aria-label="${L('Основно меню')}"><i class="tab-lens" aria-hidden="true"></i><div class="tab-btns"></div></nav>`);
+    document.body.appendChild(DOCK.el);
+    DOCK.el.addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) goTab(null, b.dataset.tab); });
+    if ('ResizeObserver' in window) new ResizeObserver(() => placeLens(DOCK.el, false)).observe(DOCK.el);
+  }
+  const el = DOCK.el;
+  /* tabs or language changed: new buttons (the lens stays where it is) */
+  const key = UI_LANG + '|' + TABS.map(t => t[0]).join(',');
+  if (key !== DOCK.key) { DOCK.key = key; el.querySelector('.tab-btns').innerHTML = dockButtons(); el.setAttribute('aria-label', L('Основно меню')); }
+  const sub = SUBJECTS[S.subject]; if (sub) { el.style.setProperty('--accent', sub.color); el.style.setProperty('--accent-ink', inkOn(sub.color)); }
+  el.classList.toggle('off', !show); el.inert = !show;
+  if (!show) { DOCK.on = null; return; }
+  el.querySelectorAll('[data-tab]').forEach(b => { const on = b.dataset.tab === screen; b.classList.toggle('on', on); if (on) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+  const wasHidden = DOCK.on == null; DOCK.on = screen;
+  placeLens(el, !wasHidden);
+}
+/* put a tab bar's lens under its selected button; animate = slide there from where it is now */
+function placeLens(bar, animate) {
+  const lens = bar && bar.querySelector('.tab-lens'), on = bar && bar.querySelector('button.on');
+  if (!lens) return;
+  if (!on || !on.offsetWidth) { lens.style.opacity = '0'; return; }
+  if (!animate) lens.style.transition = 'none';
+  lens.style.opacity = '';
+  lens.style.width = on.offsetWidth + 'px';
+  lens.style.transform = `translateX(${on.offsetLeft}px)`;
+  if (!animate) { lens.offsetWidth; lens.style.transition = ''; }
+}
+/* kept for older callers; the student menu is the dock above */
 const tabBar = cur => `<nav class="tabbar" aria-label="${L('Основно меню')}">${TABS.map(([id, ic, label]) => `<button data-tab="${id}" class="${id === cur ? 'on' : ''}"${id === cur ? ' aria-current="page"' : ''}>${icon(ic)}<span>${L(label)}</span></button>`).join('')}</nav>`;
 
+/* Home stays the root of the stack: the other tabs open on top of it, switching between them replaces the
+   top screen, so Android's back button from any tab goes to Home and from Home closes the app.
+   Tapping the tab you are on scrolls it to the top, as on iOS. ("from" is kept for older callers.) */
 function goTab(from, to) {
-  if (to === from) return;
+  const cur = NAV[NAV.length - 1];
+  if (!cur || to === cur.screen) { window.scrollTo({ top: 0, behavior: motionOn() ? 'smooth' : 'auto' }); return; }
+  if (NAV[0].screen !== 'home') return go(to, {}, isTabScreen(cur.screen) && NAV.length > 1 ? { replace: true } : {});
   if (to === 'home') return home();
-  go(to, {}, from === 'home' ? {} : { replace: true });
+  /* always Home + one tab, however the current tab was reached */
+  while (NAV.length > 1) leave(NAV.pop());
+  go(to);
 }
 
 /* Bottom-tab navigation can ask the router to remove its history trap and then open another
@@ -132,13 +177,5 @@ SCREENS.profile = async el => {
   });
 };
 
-/* ---------- put the menu under the three main screens ---------- */
-['home', 'stats', 'profile'].forEach(name => {
-  const inner = SCREENS[name];
-  SCREENS[name] = async (el, ...rest) => {
-    await inner(el, ...rest);
-    el.classList.add('has-nav');
-    el.insertAdjacentHTML('beforeend', tabBar(name));
-    el.querySelector('.tabbar').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) goTab(name, b.dataset.tab); });
-  };
-});
+/* the menu itself is placed by render() (68-motion.js) through syncDock(), so it shows at once,
+   even while a tab is still loading (Клас waits for the cloud) */

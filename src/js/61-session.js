@@ -59,6 +59,7 @@ SCREENS.session = async (el, { subj, mode, skill, similar, skills, size, assignm
   function mark(t) { if (t.src === 'ai') P.aiShown = true; Q[P.i].task = t; P.used.add(t.id); P.used.add(taskKey(t)); if (t.src === 'ai') { const k = subj + '.' + t.skill; S.aiCache[k] = (S.aiCache[k] || []).filter(x => x.id !== t.id); } return t; }
 
   async function showTask() {
+    P.phase = 'loading';   /* taps on the main button wait until the next task is on screen */
     /* "similar" mode waits a moment for Gemini's question before falling back */
     const item0 = Q[P.i];
     if (item0 && item0.waiting && !item0.task) {
@@ -150,8 +151,10 @@ SCREENS.session = async (el, { subj, mode, skill, similar, skills, size, assignm
 
   btn.addEventListener('click', () => {
     if (P.phase === 'answer') return check(false);
-    /* a quick second tap on "Провери" must not skip the feedback the first tap just opened */
-    if (Date.now() - checkedAt < 450) return;
+    if (P.phase !== 'next' || P.done) return;
+    /* an accidental double tap on "Провери" must not skip the feedback it just opened;
+       150 ms is shorter than any deliberate second tap, so fast players never wait */
+    if (Date.now() - checkedAt < 150) return;
     if (++P.i < Q.length) showTask(); else finish();
   });
   dunno.addEventListener('click', () => { if (P.phase === 'answer') { if (P.tried != null) { const last = P.answers[P.answers.length - 1]; last.retryOk = false; reveal({ status: 'wrong', points: 0 }, false, last.misc, true); } else check(true); } });

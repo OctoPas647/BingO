@@ -12,7 +12,7 @@ const DEFAULT_STATE = () => ({
   profile: { name: '', cls: '', age: '', exam: '', track: '', extra: '', role: '', school: '', classCode: '', id: uid() },
   /* No API key is ever typed in or stored: Gemini runs on BingO's own server (54-ai.js), Gemini Nano on the device.
      ai / nano only switch them off for a learner who does not want them. */
-  settings: { ai: true, nano: true, sheetUrl: '', theme: 'auto', glass: true, motion: true, sound: true, lang: 'bg' },
+  settings: { ai: true, nano: true, sheetUrl: '', theme: 'auto', glass: true, smooth: 'auto', motion: true, sound: true, lang: 'bg' },
   subject: 'math',
   demo: false,           /* true while the simulated demo learner is loaded (56-demo.js) */
   skills: {},            /* "math.quad@dzi12" -> { p, n, ok, last, misc: { code: count }, hist: [[time, p]] }: one map per exam */
@@ -44,6 +44,7 @@ const SETTING_OK = {
   sheetUrl: v => v === '' || (isStr(v) && /^https:\/\/script\.google\.com\/[^\s]+$/.test(v)),
   theme: v => ['auto', 'light', 'dark', 'amoled'].includes(v),
   glass: v => typeof v === 'boolean',
+  smooth: v => ['auto', 'full', 'balanced', 'light'].includes(v),
   motion: v => typeof v === 'boolean',
   sound: v => typeof v === 'boolean',
   lang: v => ['bg', 'en'].includes(v)

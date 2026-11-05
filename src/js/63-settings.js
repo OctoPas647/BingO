@@ -30,7 +30,8 @@ SCREENS.settings = async el => {
         <div class="row"><span>${icon('glass')}${L('Liquid glass')}</span><button class="switch${st.glass ? ' on' : ''}" data-sw="glass" role="switch"><i></i></button></div>
         <div class="row"><span>${icon('motion')}${L('Анимации')}</span><button class="switch${st.motion !== false ? ' on' : ''}" data-sw="motion" role="switch"><i></i></button></div>
         <div class="row"><span>${icon('sound')}${L('Звуци')}</span><button class="switch${st.sound ? ' on' : ''}" data-sw="sound" role="switch"><i></i></button></div></div>
-      <p class="muted small">${L('Liquid glass: менютата и лентите са от полупрозрачно стъкло над съдържанието, както в iOS. Изключи го, ако телефонът е бавен или искаш повече контраст.')}</p></section>
+      <p class="muted small">${L('Liquid glass: менютата и лентите са от полупрозрачно стъкло над съдържанието, както в iOS. Изключи го, ако телефонът е бавен или искаш повече контраст.')}</p>
+      ${smoothSetting(st)}</section>
     <section class="card"><h3>${icon('chat')}${L('Обратна връзка')}</h3>
       <button class="btn ghost block" data-feedback>${icon('chat')}${L('Изпрати обратна връзка')}</button>
       <p class="muted small">${L('Ако си офлайн, съобщението се пази на устройството и се изпраща автоматично по-късно.')}</p></section>
@@ -99,6 +100,7 @@ SCREENS.settings = async el => {
     if (b) { st[b.parentNode.dataset.key] = b.dataset.v; APP.settings.theme = st.theme; APP.settings.lang = st.lang; saveState(); applySettings(); return refresh(); }
     const w = e.target.closest('[data-sw]');
     if (w) { const key = w.dataset.sw; st[key] = st[key] === false ? true : !st[key]; APP.settings[key] = st[key]; saveState(); w.classList.toggle('on', st[key]); w.setAttribute('aria-checked', st[key]); if (key === 'glass' || key === 'motion') applySettings(); return; }
+    if (e.target.closest('[data-smooth-recheck]')) { smoothRecheck(); return refresh(); }
     if (e.target.closest('[data-nano-dl]')) { nanoDownload(); return; }
     if (e.target.closest('[data-feedback]')) return openFeedback();
     if (e.target.closest('[data-fb-cancel]') || e.target.closest('[data-fb-overlay]') === e.target) return closeFeedback();

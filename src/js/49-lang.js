@@ -15,6 +15,18 @@ function L(bg, vars) {
 const ptsL = n => L('{n} т.', { n });
 
 const EN_UI = {
+  /* 0.8.1: Smoothness (from LToTS) */
+  "Плавност": "Smoothness",
+  "Авто": "Auto",
+  "Пълно": "Full",
+  "Балансирано": "Balanced",
+  "Леко": "Light",
+  "Автоматично: сега „{l}“ на това устройство. Следи колко бързо се рисува екранът и сам олекотява стъклото, ако приложението започне да накъсва.": "Automatic: now “{l}” on this device. It watches how fast the screen keeps up and makes the glass lighter by itself if the app starts to stutter.",
+  "Пълно: истинско размазване под цялото стъкло — менюто, лентите, листовете, известията и бутоните.": "Full: real blur under all the glass — the menu, the bars, sheets, notifications and buttons.",
+  "Балансирано: размазване само под лентите над съдържанието (менюто и лентата за отговор); листовете и бутоните са матово стъкло без размазване.": "Balanced: blur only under the bars over the content (the menu and the answer bar); sheets and buttons are frosted glass without blur.",
+  "Леко: матово стъкло без никакво размазване. Най-плавното на всеки телефон и най-бързото за решаване на задачи.": "Light: frosted glass with no blur at all. The smoothest on any phone and the fastest for answering questions.",
+  "Liquid glass е изключен, затова тази настройка няма значение сега.": "Liquid glass is off, so this setting has no effect right now.",
+  "Измери отново от „Пълно“": "Measure again from “Full”",
   /* 0.6.0: AI without a key, Gemini Nano, the mistake review, the iOS look and the other maturas */
   "Няма връзка с Gemini": "No connection to Gemini",
   "Сървърът върна {n}": "The server returned {n}",

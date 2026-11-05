@@ -7,15 +7,7 @@
 
 /* ---------- the "Клас" tab ---------- */
 TABS.splice(2, 0, ['classes', 'users', 'Клас']);
-(function wrapClassesTab() {
-  const inner = el => classesScreen(el);
-  SCREENS.classes = async (el, ...rest) => {
-    await inner(el, ...rest);
-    el.classList.add('has-nav');
-    el.insertAdjacentHTML('beforeend', tabBar('classes'));
-    el.querySelector('.tabbar').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) goTab('classes', b.dataset.tab); });
-  };
-})();
+SCREENS.classes = el => classesScreen(el);   /* the bottom menu comes from syncDock() (64-nav.js) */
 
 /* the state of one assignment for this student */
 function studentStatus(a, at) {
@@ -95,7 +87,7 @@ async function classesScreen(el) {
       slot.innerHTML = live.length ? `<button class="card cl-livebanner" data-asg="${esc(live[0].id)}"><span class="cl-dot"></span><div><b>${esc(live[0].title)}</b><small>${L('Тест на живо')} · ${esc(live[0].className || '')}</small></div><span class="btn accent small">${L('Влез')}</span></button>`
         : due.length ? `<button class="card cl-duecard" data-go-classes>${icon('book')}<div><b>${L('{n} за правене от учителя', { n: due.length })}</b><small class="muted">${esc(due[0].title)}</small></div>${icon('next')}</button>` : '';
     };
-    slot.addEventListener('click', e => { const a = e.target.closest('[data-asg]'); if (a) return go('assignment', { aid: a.dataset.asg }); if (e.target.closest('[data-go-classes]')) goTab('home', 'classes'); });
+    slot.addEventListener('click', e => { const a = e.target.closest('[data-asg]'); if (a) return go('assignment', { aid: a.dataset.asg }); if (e.target.closest('[data-go-classes]')) goTab(null, 'classes'); });
     watch(col('assignments').where('studentIds', 'array-contains', uid), s => { asg = docs(s); draw(); }, nav);
     watch(col('attempts').where('studentId', '==', uid), s => { atts = Object.fromEntries(docs(s).map(x => [x.assignmentId, x])); draw(); }, nav);
   };

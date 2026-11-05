@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.8.1 (unreleased)
+Bottom menu rebuilt, every animation made fast and crash-proof, and Smoothness from LToTS.
+
+- **One bottom menu for all tabs** (`#tabdock`, 64-nav.js): it lives outside the pages, so it no longer jumps half off the screen or vanishes while switching, and it shows at once even while Клас is still loading. It slides away on other screens and comes back with the tabs
+- **The highlight fits the menu**: it was sized for 3 tabs and slid off the bar on Профил once Клас made 4. It is now measured from the selected tab (works for 4 student tabs and the teacher's 6). Tapping the tab you are on scrolls it to the top; any way of switching tabs keeps the stack as Home + one tab, so Android back always goes to Home
+- **Page transitions** (68-motion.js): tabs cross-fade in 120 ms, pushed screens slide in 260 ms, sessions come up in 300 ms (were 280–560 ms). Both pages are pinned to the screen while moving, so the answer bar and nav bars stay where they are. A tap during a transition finishes it at once instead of stacking another on top. The page behind a sheet no longer shrinks (it moved the answer bar)
+- **Flying through questions**: "Напред" works 150 ms after "Провери" (was 450 ms — 4–5 taps were swallowed); a tap while the next question loads can no longer skip it; past exams get the same double-tap guard. Questions, verdicts, options, buttons, sheets and toasts animate in 0.14–0.32 s; cards on screen appear at once, only cards below the fold ease in
+- **Smoothness** (Settings → Тема, from LToTS's Look → Smoothness): Авто · Пълно · Балансирано · Леко. Light draws the glass with no blur at all; Auto watches frame times while the app moves and steps down by itself when it keeps stuttering (remembered per device, "Измери отново" starts over)
+- Tests: `tests/motion_stress.py` (menu stays still, highlight lines up, 60 random tab taps, back and push spam, answer bar position, speed run, double taps, Smoothness levels; `--slow` for a 4× slower CPU)
+
 ## 0.8.0
 Test security for teacher-set tests. Setup and details: docs/test-security.md.
 

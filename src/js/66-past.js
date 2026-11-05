@@ -94,7 +94,7 @@ SCREENS.pastexam = async (el, { id }, nav) => {
     if (ok && 'speechSynthesis' in window) speechSynthesis.cancel();   /* a listening text must not keep talking */
     return ok;
   };
-  let view = null, task = null, rubric = null;
+  let view = null, task = null, rubric = null, checkedAt = 0;
   const paintCount = () => { el.querySelector('.pcount').textContent = `${P.i + 1} / ${Q.length}`; el.querySelector('.pbar i').style.width = (P.i / Q.length * 100) + '%'; };
   const upd = () => {
     if (P.phase !== 'answer') return;
@@ -152,11 +152,14 @@ SCREENS.pastexam = async (el, { id }, nav) => {
       verdict.innerHTML = `${icon(right ? 'check' : 'close')}<span><b>${L(right ? 'Вярно!' : res.points > 0 ? 'Отчасти' : 'Не съвсем')}</b><small>${L('{a} от {b} т.', { a: fmtPts(res.points, lg), b: fmtPts(task.points, lg) })}</small></span>`;
     }
     btn.textContent = L(P.i === Q.length - 1 ? 'Виж резултата' : 'Напред');
+    checkedAt = Date.now();
     setTimeout(() => fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
   }
 
   btn.addEventListener('click', () => {
+    if (P.done) return;
     if (P.phase === 'answer') return check();
+    if (Date.now() - checkedAt < 150) return;   /* a double tap must not skip the answer it just showed */
     if (rubric) P.got[P.i] = sum(rubric.get()) || (P.aiPts && P.aiPts[P.i]) || 0;
     if (P.phase === 'next') P.resp[P.i] = view.get();
     if (++P.i < Q.length) showTask(); else finish();

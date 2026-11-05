@@ -1,6 +1,6 @@
 /* ================= BingO: bottom menu, Stats and Profile ================= */
 .has-nav { padding-bottom: calc(86px + env(safe-area-inset-bottom)); }
-.tabbar { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); width: min(760px, 100%); z-index: 10; display: flex; padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); background: var(--surface); box-shadow: 0 -1px 0 var(--line), 0 -6px 20px rgba(0, 0, 0, .06); }
+.tabbar { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); width: min(760px, 100%); z-index: 10; box-sizing: border-box; display: flex; padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); background: var(--surface); box-shadow: 0 -1px 0 var(--line), 0 -6px 20px rgba(0, 0, 0, .06); }
 .tabbar button { flex: 1; display: grid; justify-items: center; gap: 2px; padding: 7px 4px; border-radius: 14px; color: var(--ink-3); font-size: .74rem; font-weight: 750; letter-spacing: .02em; transition: color .15s, background .15s; }
 .tabbar button .ic { width: 25px; height: 25px; }
 .tabbar button.on { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }

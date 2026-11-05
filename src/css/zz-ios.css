@@ -86,24 +86,31 @@ h1, h2, h3, h4 { font-family: var(--font-d); letter-spacing: -0.022em; font-weig
 /* ---------- floating Liquid glass tab bar ---------- */
 .has-nav { padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
 .tabbar {
-  left: 50%; bottom: calc(10px + env(safe-area-inset-bottom)); width: min(400px, calc(100% - 40px)); padding: 6px;
+  left: 50%; bottom: calc(10px + env(safe-area-inset-bottom)); width: min(420px, calc(100% - 32px)); padding: 6px;
   border-radius: 999px; background: var(--glass); border: 0; gap: 0;
   box-shadow: inset 0 0 0 .5px var(--glass-edge), inset 0 1px 0 var(--glass-edge), var(--glass-shadow);
-  transform: translateX(-50%) scale(var(--tb-scale, 1)); transform-origin: 50% 100%;
-  transition: transform .5s var(--spring), width .5s var(--spring), padding .5s var(--spring);
-  isolation: isolate;
+  transform: translateX(-50%) translateY(var(--tb-y, 0px)) scale(var(--tb-scale, 1)); transform-origin: 50% 100%;
+  transition: transform .32s var(--spring), opacity .2s;
+  isolation: isolate; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none;
 }
-.tabbar::before {   /* the lens: a lighter glass drop under the selected tab, sliding between tabs */
-  content: ''; position: absolute; z-index: -1; top: 6px; bottom: 6px; left: 6px; width: calc((100% - 12px) / 3); border-radius: 999px;
+/* the student's menu: one element for all tab screens (64-nav.js); it slides away on other screens */
+.tabbar.dock { z-index: 40; touch-action: manipulation; }
+.tabbar.dock.off { --tb-y: calc(100% + 24px + env(safe-area-inset-bottom)); opacity: 0; pointer-events: none; }
+.tabbar .tab-btns { display: flex; flex: 1; min-width: 0; }
+/* the lens: a lighter glass drop under the selected tab; placed and sized from the tab itself, so it fits 3, 4 or 6 tabs */
+.tab-lens {
+  position: absolute; z-index: -1; top: 6px; bottom: 6px; left: 0; width: 0; border-radius: 999px; pointer-events: none;
   background: color-mix(in srgb, var(--accent) 14%, var(--glass-strong)); box-shadow: inset 0 0 0 .5px var(--glass-edge);
-  transform: translateX(calc(var(--tab-i, 0) * 100%)); transition: transform .55s var(--bounce);
+  transition: transform .34s cubic-bezier(.3, 1.25, .5, 1), width .34s var(--spring), opacity .15s;
 }
-.tabbar button { flex: 1; border-radius: 999px; padding: 7px 4px 6px; gap: 2px; color: var(--ink-2); background: transparent !important; box-shadow: none !important; font-size: .68rem; font-weight: 600; transition: color .25s, transform .35s var(--bounce); }
+.tabbar button { flex: 1; min-width: 0; border-radius: 999px; padding: 7px 2px 6px; gap: 2px; color: var(--ink-2); background: transparent !important; box-shadow: none !important; font-size: .68rem; font-weight: 600; transition: color .15s, transform .2s var(--bounce); }
+.tabbar button span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.tabbar button:active { transform: scale(.92); }
 .tabbar button .ic { width: 25px; height: 25px; stroke-width: 1.9; }
 .tabbar button.on { color: var(--accent); }
 .tabbar.min { --tb-scale: .86; }
 .tabbar.min button span { opacity: .0; max-height: 0; overflow: hidden; }
-.tabbar button span { transition: opacity .3s, max-height .4s var(--spring); max-height: 20px; }
+.tabbar button span { transition: opacity .2s, max-height .25s var(--spring); max-height: 20px; }
 
 /* ---------- cards and grouped lists ---------- */
 .card { background: var(--surface); border-radius: var(--r-l); box-shadow: none; padding: 16px; margin-bottom: 12px; }
@@ -121,16 +128,16 @@ h1, h2, h3, h4 { font-family: var(--font-d); letter-spacing: -0.022em; font-weig
 .sk-main small { color: var(--ink-2); }
 .stchip { border-radius: 999px; font-weight: 600; font-size: .7rem; padding: 3px 9px; letter-spacing: 0; }
 .bar { height: 6px; border-radius: 99px; background: var(--surface-2); }
-.bar i { border-radius: 99px; transition: width .9s var(--spring); }
+.bar i { border-radius: 99px; transition: width .45s var(--spring); }
 .lost { font-weight: 700; font-variant-numeric: tabular-nums; }
 
 /* the loss card on Home */
 .losscard { border-radius: 28px; padding: 18px; gap: 16px; background: var(--surface); }
 .losscard h1 { font-size: 1.5rem; letter-spacing: -0.03em; }
-.ring .fill { transition: stroke-dashoffset 1.2s var(--spring); stroke-linecap: round; }
+.ring .fill { transition: stroke-dashoffset .7s var(--spring); stroke-linecap: round; }
 
 /* the subject picker button */
-.subj-pick { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 14px 10px 10px; margin: 2px 0 14px; border-radius: 22px; background: var(--surface); text-align: left; transition: transform .35s var(--bounce), background .2s; }
+.subj-pick { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 14px 10px 10px; margin: 2px 0 14px; border-radius: 22px; background: var(--surface); text-align: left; transition: transform .22s var(--bounce), background .15s; }
 .subj-pick:active { background: var(--surface-2); }
 .sp-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-size: 1.3rem; flex: none; background: color-mix(in srgb, var(--c, var(--accent)) 16%, var(--surface)); }
 .sp-text { flex: 1; display: grid; gap: 1px; min-width: 0; }
@@ -148,7 +155,7 @@ h1, h2, h3, h4 { font-family: var(--font-d); letter-spacing: -0.022em; font-weig
 .ios-check { color: var(--primary); width: 22px; height: 22px; }
 
 /* ---------- buttons: capsules, filled or tinted, that give under the finger ---------- */
-.btn { border-radius: 999px; min-height: 50px; font-weight: 600; font-size: 1.02rem; letter-spacing: -0.01em; box-shadow: none !important; background: var(--surface-2); color: var(--ink); transition: transform .45s var(--bounce), background .25s, opacity .2s, filter .2s; }
+.btn { border-radius: 999px; min-height: 50px; font-weight: 600; font-size: 1.02rem; letter-spacing: -0.01em; box-shadow: none !important; background: var(--surface-2); color: var(--ink); transition: transform .25s var(--bounce), background .15s, opacity .15s, filter .15s; }
 .btn.big { min-height: 56px; font-size: 1.06rem; border-radius: 999px; }
 .btn.small { min-height: 36px; border-radius: 999px; }
 .btn.primary, .btn.accent { background: var(--accent); color: var(--accent-ink); }
@@ -200,14 +207,14 @@ h1, h2, h3, h4 { font-family: var(--font-d); letter-spacing: -0.022em; font-weig
 .prompt { font-size: 1.12rem; line-height: 1.45; font-weight: 500; letter-spacing: -0.012em; }
 .passage, .task .passage { background: var(--surface); border-radius: 18px; }
 .opts { gap: 10px; }
-.opt { border-radius: 18px; background: var(--surface); box-shadow: none; padding: 14px 14px; gap: 12px; font-weight: 450; transition: transform .45s var(--bounce), background .25s, box-shadow .25s, opacity .3s; }
+.opt { border-radius: 18px; background: var(--surface); box-shadow: none; padding: 14px 14px; gap: 12px; font-weight: 450; transition: transform .2s var(--bounce), background .12s, box-shadow .12s, opacity .15s; touch-action: manipulation; }
 .opt:active { transform: scale(.98); }
-.opt .let { width: 30px; height: 30px; border-radius: 50%; background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--ink-2); font-weight: 600; font-size: .88rem; transition: background .25s, color .25s, transform .45s var(--bounce); }
+.opt .let { width: 30px; height: 30px; border-radius: 50%; background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--ink-2); font-weight: 600; font-size: .88rem; transition: background .12s, color .12s, transform .2s var(--bounce); }
 .opt.sel { background: color-mix(in srgb, var(--accent) 10%, var(--surface)); box-shadow: inset 0 0 0 2px var(--accent); }
 .opt.sel .let { background: var(--accent); color: var(--accent-ink); transform: scale(1.06); }
 .opt.right { background: var(--good-bg); box-shadow: inset 0 0 0 2px var(--good); }
 .opt.right .let { background: var(--good); color: #fff; }
-.opt.wrong { background: var(--bad-bg); box-shadow: inset 0 0 0 2px var(--bad); animation: ios-shake .5s var(--spring); }
+.opt.wrong { background: var(--bad-bg); box-shadow: inset 0 0 0 2px var(--bad); animation: ios-shake .3s var(--spring); }
 .opt.wrong .let { background: var(--bad); color: #fff; }
 .opt.tried { opacity: .45; box-shadow: none; background: var(--surface); }
 .opt.tried .otext { text-decoration: line-through; text-decoration-color: var(--ink-3); }
@@ -217,7 +224,7 @@ h1, h2, h3, h4 { font-family: var(--font-d); letter-spacing: -0.022em; font-weig
 .checkbar {
   left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); padding: 12px 12px 12px; border-radius: 30px; border: 0;
   background: var(--glass-strong); box-shadow: inset 0 0 0 .5px var(--glass-edge), inset 0 1px 0 var(--glass-edge), var(--glass-shadow);
-  transition: background .45s var(--spring), transform .5s var(--spring);
+  transition: background .18s ease-out, transform .25s var(--spring);
 }
 .checkbar > * { max-width: 700px; }
 .checkbar.good { background: color-mix(in srgb, var(--good) 20%, var(--glass-strong)); }
@@ -230,7 +237,11 @@ h1, h2, h3, h4 { font-family: var(--font-d); letter-spacing: -0.022em; font-weig
 .checkbar.good .verdict > .ic, .checkbar.good .verdict b { color: var(--good); }
 .checkbar.bad .verdict > .ic, .checkbar.bad .verdict b { color: var(--bad); }
 .checkbar.meh .verdict > .ic, .checkbar.meh .verdict b { color: var(--meh); }
-.checkbar .verdict:not(:empty) { animation: verdict-in .5s var(--bounce); }
+.checkbar .verdict:not(:empty) { animation: verdict-in .2s var(--spring); }
+.checkbar .btn { touch-action: manipulation; }
+/* a new question: a quick settle, never a wait (it is tappable from the first frame) */
+.task { animation: task-in .14s ease-out; }
+@keyframes task-in { from { opacity: .35; transform: translateY(4px); } }
 @keyframes verdict-in { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
 .cb-actions { display: flex; gap: 8px; }
 .cb-actions .btn.big { flex: 1; }
@@ -254,30 +265,28 @@ h1, h2, h3, h4 { font-family: var(--font-d); letter-spacing: -0.022em; font-weig
 .rv-text { flex: 1; min-width: 0; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rv-tag { font-size: .7rem; font-weight: 600; padding: 3px 8px; border-radius: 999px; flex: none; }
 .rv-tag.wrong { background: var(--bad-bg); color: var(--bad); } .rv-tag.skip { background: var(--surface-2); color: var(--ink-2); } .rv-tag.second { background: var(--meh-bg); color: var(--meh); }
-.rv-chev { color: var(--ink-3); transition: transform .45s var(--spring); } .rv.open .rv-chev { transform: rotate(180deg); }
+.rv-chev { color: var(--ink-3); transition: transform .25s var(--spring); } .rv.open .rv-chev { transform: rotate(180deg); }
 .rv-body { padding: 4px 14px 16px; overflow: hidden; }
 .res-actions .btn { border-radius: 999px; }
 
 /* ---------- sheets: glass, rounded, lifting the page behind them ---------- */
-.overlay { background: rgba(0, 0, 0, 0); transition: background .45s var(--spring); }
+.overlay { background: rgba(0, 0, 0, 0); transition: background .28s var(--spring); }
 .overlay.in { background: rgba(0, 0, 0, .28); }
 :root[data-theme="dark"] .overlay.in { background: rgba(0, 0, 0, .5); }
 .sheet {
   width: calc(100% - 16px); margin-bottom: calc(8px + env(safe-area-inset-bottom)); border-radius: 34px; max-height: 86vh;
   background: var(--glass-strong); box-shadow: inset 0 0 0 .5px var(--glass-edge), inset 0 1px 0 var(--glass-edge), var(--glass-shadow);
-  padding: 6px 16px 18px; transition: transform .55s var(--spring); overscroll-behavior: contain;
+  padding: 6px 16px 18px; transition: transform .3s var(--spring); overscroll-behavior: contain;
 }
+.overlay.out { transition-duration: .2s; } .overlay.out .sheet { transition: transform .2s cubic-bezier(.4, 0, 1, 1); }
 .sheet .grip { width: 36px; height: 5px; border-radius: 99px; background: color-mix(in srgb, var(--ink) 22%, transparent); margin: 4px auto 10px; }
 .sheet-title { font-size: 1.2rem; font-weight: 700; text-align: center; letter-spacing: -0.02em; }
 .sheet .card, .sheet .ios-group, .sheet .sklist { background: color-mix(in srgb, var(--surface) 88%, transparent); }
 .sheet-actions .btn { min-height: 52px; }
-#app { transition: transform .55s var(--spring), border-radius .55s var(--spring), filter .55s; transform-origin: 50% 0; }
-html.sheet-open #app { transform: scale(.94) translateY(12px); border-radius: 18px; overflow: hidden; filter: brightness(.92); }
-html.sheet-open body { background: #000; }
 
 /* ---------- toasts: a glass capsule from the top, like a notification ---------- */
 .toast { top: calc(10px + env(safe-area-inset-top)); bottom: auto; transform: translate(-50%, -24px) scale(.94); border-radius: 24px; padding: 11px 20px; width: max-content; max-width: calc(100% - 32px); text-align: center; line-height: 1.3; font-weight: 600; font-size: .92rem;
-  background: var(--glass-strong); color: var(--ink); box-shadow: inset 0 0 0 .5px var(--glass-edge), var(--glass-shadow); transition: transform .55s var(--bounce), opacity .3s; }
+  background: var(--glass-strong); color: var(--ink); box-shadow: inset 0 0 0 .5px var(--glass-edge), var(--glass-shadow); transition: transform .32s var(--bounce), opacity .2s; }
 .toast.in { transform: translate(-50%, 0) scale(1); }
 .toast.good { background: color-mix(in srgb, var(--good) 85%, transparent); color: #fff; }
 .toast.bad { background: color-mix(in srgb, var(--bad) 85%, transparent); color: #fff; }
@@ -288,14 +297,18 @@ html.sheet-open body { background: #000; }
 .ob-text { font-size: 1.04rem; }
 .ob-card { background: transparent; padding: 0; }
 .ob-actions { position: sticky; bottom: 0; padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(--bg) 70%, transparent); }
-.duo { height: 6px; background: var(--surface-2); } .duo i { background: var(--accent); transition: width .7s var(--spring); }
+.duo { height: 6px; background: var(--surface-2); } .duo i { background: var(--accent); transition: width .35s var(--spring); }
 .ob-brand { font-size: 3.2rem !important; margin: 28px 0 8px; }
 
 /* ---------- motion helpers (68-motion.js) ---------- */
-.ghost-page { position: fixed !important; left: 0; right: 0; top: 0; z-index: 30; pointer-events: none; overflow: hidden; background: var(--bg); }
-.page-shade { position: fixed; inset: 0; z-index: 29; background: #000; pointer-events: none; }
-.reveal { opacity: 0; transform: translateY(14px) scale(.985); }
-.reveal.in { opacity: 1; transform: none; transition: opacity .6s var(--spring), transform .7s var(--spring); transition-delay: var(--d, 0ms); }
+/* during a page transition both pages are viewport-sized boxes, each scrolled to its own place, so their
+   fixed and sticky bars stay put while the page moves (68-motion.js) */
+#app.pinned, .ghost-page { position: fixed !important; top: 0; bottom: 0; left: 0; right: 0; min-height: 0 !important; overflow: hidden !important; background: var(--bg); margin: 0 auto; max-width: 760px; }
+.ghost-page { z-index: 30; pointer-events: none; }
+.ghost-page.t-screen, #app.pinned.t-screen { max-width: none; }
+.page-shade { position: fixed; inset: 0; z-index: 31; background: #000; pointer-events: none; opacity: 0; }
+.reveal { opacity: 0; transform: translateY(10px); }
+.reveal.in { opacity: 1; transform: none; transition: opacity .3s ease-out, transform .35s var(--spring); }
 html.still *, html.still *::before, html.still *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
 
@@ -308,3 +321,17 @@ html.still *, html.still *::before, html.still *::after { transition-duration: 0
 .strongnote { border-radius: 22px; }
 .spinner { border-color: color-mix(in srgb, var(--ink) 12%, transparent); border-top-color: var(--ink-2); }
 .btn-sub { font-size: .78rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 18%, transparent); }
+
+/* ---------- Smoothness (68b-smooth.js, from LToTS): how much blur the glass costs ---------- */
+.fx-title { font-size: .86rem; font-weight: 600; color: var(--ink-2); margin: 14px 2px 8px; }
+.fx-seg button { font-size: .84rem; padding: 7px 2px; white-space: nowrap; }
+/* Balanced: blur only under the bars over the content; sheets, toasts and small glass are frosted without it */
+:root[data-fx="balanced"] { --blur: saturate(160%) blur(14px); }
+:root[data-fx="balanced"] :is(.sheet, .toast, .pill, .iconbtn, .apphead.scrolled, .topbar.scrolled, .glass) { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+:root[data-fx="balanced"][data-glass="1"] :is(.sheet, .toast) { background: color-mix(in srgb, var(--surface) 96%, transparent); }
+:root[data-fx="balanced"][data-glass="1"] :is(.pill, .iconbtn, .apphead.scrolled, .topbar.scrolled) { background: color-mix(in srgb, var(--surface) 90%, transparent); }
+/* Light: no blur anywhere; the glass becomes a nearly solid frosted surface so text stays readable */
+:root[data-fx="light"] { --blur: none; }
+:root[data-fx="light"] *, :root[data-fx="light"] *::before, :root[data-fx="light"] *::after { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+:root[data-fx="light"][data-glass="1"] { --glass: color-mix(in srgb, var(--surface) 93%, transparent); --glass-strong: color-mix(in srgb, var(--surface) 97%, transparent); }
+:root[data-fx="light"][data-glass="1"] .tabbar { background: var(--glass); }
