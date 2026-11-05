@@ -13,7 +13,7 @@ const FB_CFG = (() => {
   const c = globalThis.BINGO_FIREBASE_OVERRIDE || globalThis.BINGO_FIREBASE || null;
   return c && c.projectId && c.apiKey ? c : null;
 })();
-const cloudConfigured = () => !!FB_CFG;
+const cloudConfigured = () => !!FB_CFG || (typeof demoCloudOn === 'function' && demoCloudOn());   /* the demo (80-demo-cloud.js) works without Firebase */
 
 const CLOUD = { loading: null, ready: false, user: null, profile: null, role: '', claims: {}, app: null, auth: null, db: null, fn: null, storage: null, subs: new Set(), waiters: [] };
 
@@ -28,6 +28,7 @@ function loadScript(src) {
 
 /* Load Firebase and start listening to the sign-in state. Safe to call many times. */
 function cloudLoad() {
+  if (typeof demoCloudOn === 'function' && demoCloudOn()) return demoCloudLoad();
   if (!FB_CFG) return Promise.reject(new Error(L('Класната стая още не е настроена (Firebase)')));
   if (CLOUD.loading) return CLOUD.loading;
   CLOUD.loading = (async () => {
@@ -85,6 +86,7 @@ window.__googleSignedIn = (ok, tokenOrError) => { const w = _nativeAuth; _native
 
 async function signInGoogle() {
   await cloudLoad();
+  if (typeof demoCloudOn === 'function' && demoCloudOn()) return CLOUD.user;
   const fb = window.firebase;
   if (window.AndroidAuth && FB_CFG.webClientId) {
     const idToken = await new Promise((resolve, reject) => { _nativeAuth = { resolve, reject }; window.AndroidAuth.signIn(FB_CFG.webClientId); });
@@ -114,6 +116,7 @@ async function cloudTestSignIn(email, name) {
 }
 
 async function signOutCloud() {
+  if (typeof demoCloudOn === 'function' && demoCloudOn()) return demoExit();
   if (!CLOUD.auth) return;
   cloudStopAll(); GTOKENS.clear();
   if (window.AndroidAuth) try { window.AndroidAuth.signOut(); } catch (e) { }
@@ -191,6 +194,7 @@ let _nativeAuthz = null;
 window.__googleAuthorized = (ok, tokenOrError) => { const w = _nativeAuthz; _nativeAuthz = null; if (w) ok ? w.resolve(tokenOrError) : w.reject(new Error(tokenOrError || L('Достъпът беше отказан'))); };
 
 async function googleToken(scopes, force) {
+  if (typeof demoCloudOn === 'function' && demoCloudOn()) throw new Error(L('В демото няма връзка с Google акаунт. В истинското приложение тук се отваря Google.'));
   await cloudLoad();
   const full = scopes.map(s => (s.startsWith('http') ? s : 'https://www.googleapis.com/auth/' + s));
   const key = full.slice().sort().join(' '), have = GTOKENS.get(key);
@@ -222,6 +226,7 @@ async function gapi(url, { method = 'GET', body, scopes, raw, headers = {} } = {
 
 /* ---------- start: if someone signed in before, reconnect in the background ---------- */
 function cloudBoot() {
+  if (typeof demoCloudOn === 'function' && demoCloudOn()) { cloudLoad().then(cloudChanged); return; }
   if (!FB_CFG) return;
   const wants = S.cloud && S.cloud.signedIn;
   const join = (() => { try { return new URLSearchParams(location.search).get('join'); } catch (e) { return null; } })();

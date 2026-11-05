@@ -1,7 +1,9 @@
 # Changelog
 
-## 0.8.1 (unreleased)
-Bottom menu rebuilt, every animation made fast and crash-proof, and Smoothness from LToTS.
+## 0.8.1
+Bottom menu rebuilt, every animation made fast and crash-proof, Smoothness from LToTS, and a demo mode for showing BingO.
+
+- **Demo mode** (80-demo-cloud.js): "Покажи демо" on the very first screen, in Profile, in Settings and in the teacher's "Още" opens **Демо ученик** or **Демо учител** — no internet, no sign-in. The real class and teacher screens run on an in-memory copy of the cloud: class 12А after a mock ДЗИ in Russian (МОН, B1, May 2025) — 23/24 handed in, graded on the matura scale, open answers graded by Gemini waiting for the teacher, two students with anti-cheat alerts (one locked by the server); class 12Б with homework, a live test ready to start and a test next week; every student's skill map. The demo student is Мария Петрова from 12А: her skill maps (math, БЕЛ, Russian), her Russian result with the teacher's note and the right answers, and a finished Russian past exam. Your own data is kept and comes back with "Изход от демото"
 
 - **One bottom menu for all tabs** (`#tabdock`, 64-nav.js): it lives outside the pages, so it no longer jumps half off the screen or vanishes while switching, and it shows at once even while Клас is still loading. It slides away on other screens and comes back with the tabs
 - **The highlight fits the menu**: it was sized for 3 tabs and slid off the bar on Профил once Клас made 4. It is now measured from the selected tab (works for 4 student tabs and the teacher's 6). Tapping the tab you are on scrolls it to the top; any way of switching tabs keeps the stack as Home + one tab, so Android back always goes to Home

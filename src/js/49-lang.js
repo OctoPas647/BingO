@@ -15,6 +15,20 @@ function L(bg, vars) {
 const ptsL = n => L('{n} т.', { n });
 
 const EN_UI = {
+  /* 0.8.1: demo mode */
+  "В демото това не се изпраща никъде.": "In the demo this is not sent anywhere.",
+  "Резултатът е готов: {t}": "Your result is ready: {t}",
+  "Покажи демо": "Show a demo",
+  "Демото пълни приложението с ученик и цял клас — без интернет и без вход. Твоите данни се пазят и се връщат с „Изход от демото“.": "The demo fills the app with a student and a whole class — no internet, no sign-in. Your own data is kept and comes back with “Leave the demo”.",
+  "Демо ученик": "Demo student",
+  "Мария, 12А: карта на уменията, решен ДЗИ по руски, клас": "Maria, 12A: skill map, a finished Russian matura, her class",
+  "Демо учител": "Demo teacher",
+  "12А и 12Б: пробен ДЗИ по руски с резултати, сигнали, тест на живо": "12A and 12B: a mock Russian matura with results, alerts, a live test",
+  "Изход от демото": "Leave the demo",
+  "Ученик и цял клас с резултати — без интернет и без вход.": "A student and a whole class with results — no internet, no sign-in.",
+  "Демо: смени или излез": "Demo: switch or leave",
+  "Покажи демо: ученик или учител": "Show a demo: student or teacher",
+  "В демото няма връзка с Google акаунт. В истинското приложение тук се отваря Google.": "The demo has no Google account. In the real app, Google opens here.",
   /* 0.8.1: Smoothness (from LToTS) */
   "Плавност": "Smoothness",
   "Авто": "Auto",

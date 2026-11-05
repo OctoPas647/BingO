@@ -235,7 +235,8 @@ SCREENS.onboarding = async el => {
       <h1 class="ob-title">${esc(L(obTitle(step)))}</h1><p class="muted ob-text">${esc(L(obText(step.text)))}</p>
       ${step.fields.length ? `<section class="card ob-card">${step.fields.map(fieldHtml).join('')}</section>` : ''}
       <div class="ob-actions"><button class="btn accent big block" data-ob="next">${isLast ? L('Към BingO') : L('Напред')}</button>
-      ${step.skippable ? `<button class="btn ghost block" data-ob="skip">${L('Пропусни')}</button>` : ''}</div></div>`;
+      ${step.skippable ? `<button class="btn ghost block" data-ob="skip">${L('Пропусни')}</button>` : ''}
+      ${o.step === 0 && typeof demoPicker === 'function' ? `<button class="btn ghost block ob-demo" data-demo-pick>${icon('eye')}${L('Покажи демо: ученик или учител')}</button>` : ''}</div></div>`;
     el.querySelector('[data-k]')?.focus({ preventScroll: true });
     const duo = el.querySelector('.duo'), fill = duo.firstElementChild, to = pos / n;
     requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = (to * 100) + '%'; duo.classList.toggle('full', to === 1); }));
