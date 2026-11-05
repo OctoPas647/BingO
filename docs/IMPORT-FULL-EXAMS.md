@@ -76,7 +76,9 @@ Skip: БЕЛ (all in the app); math exams already in `content/past-exams/dzi12-m
 
 ## When a batch is done
 - `node tools/check.js` → 0 problems; `python3 tools/build.py web && python3 tests/fixes.py` → all passed.
-- Commit (one commit per subject is fine) and push to `main`.
+- Work on the branch **`ai/import-past-exams`** (it already exists; never commit to or push `main`). Commit one subject at a time,
+  push the branch, and open (or update) a pull request into `main` titled „Import the rest of the ДЗИ past exams“.
+  Before each push: `git fetch origin && git rebase origin/main`, then run the checks again.
 - Update `PROGRESS.md`: move "More of the Drive folder…" to Done with counts; list skipped exams (no key) and listening texts with `transcript: null`.
 
 ## Summary of what is left
