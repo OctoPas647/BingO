@@ -6,14 +6,14 @@ every question, the official key and points, the official grading criteria, pict
 language exams the listening part. Accuracy matters more than speed: students are scored against these keys.
 
 ## Where things stand (5 Nov 2026)
-- **Done (49 exams):** full versions are in `content/past-exams/`. Use these as the reference:
+- **Done (50 exams):** full versions are in `content/past-exams/`. Use these as the reference:
   - `dzi12-en-2022-05-20-b1-v1.json` — language exam with listening passages and transcripts
   - `dzi12-phil-2025-08-25-v2.json` — Bulgarian-language subject: choice, multi, ДА/НЕ gaps, open tasks with rubrics
   - `dzi12-geo-2025-05-23-v2.json` + `media/dzi12-geo-2025-05-23-v2/` — pictures (maps, charts)
   - Russian 2022–2026 (almost all levels), philosophy 2020–2021, physics/geography 2025 — more examples.
 - **Partial (59 exams):** made earlier by `tools/import_dzi.py`. They keep only some closed questions (no
   open tasks, no pictures, no listening). **Replace each with the full version, same id.**
-- **Missing (235 exams):** not in the app yet.
+- **Missing (234 exams):** not in the app yet.
 - **Done in the app code:** listening player (`src/js/66c-listen.js`, server route `POST /tts` in `server/index.js`).
   A listening passage needs only `listen: true` and `transcript`; the app speaks it (Gemini TTS through BingO's
   server, else the device voice) and shows the transcript after the answer. Listening questions are kept out of training.
@@ -84,7 +84,7 @@ Skip: БЕЛ (all in the app); math exams already in `content/past-exams/dzi12-m
 ## Summary of what is left
 | Subject | Missing | Partial (replace) |
 |---|---|---|
-| Английски (`en`) | 42 | 3 |
+| Английски (`en`) | 41 | 3 |
 | Немски (`de`) | 26 | 4 |
 | Испански (`es`) | 22 | 4 |
 | Френски (`fr`) | 16 | 4 |
@@ -201,7 +201,6 @@ Skip: БЕЛ (all in the app); math exams already in `content/past-exams/dzi12-m
 
 - dzi12-en-2020-06-03-v2 — missing — `2dzi-eng_v2_3-vi-2020.pdf` (13Pv4n4Y1_IHZOaoomAADRNNkrI779y16)
 - dzi12-en-2020-06-04-v1 — missing — `3dzi_angliiski_v1-04062020.pdf` (1UAQFvTndyLMN94m7AfkmAPOBCb6BCM--)
-- dzi12-en-2020-08-28-v2 — missing — `2dzi_english_v2-280820.pdf` (1OrvcBPSS9845xiZXCtKDSoETc9HjB-K1)
 - dzi12-en-2021-05-21-v1 — missing — `2dzi_eng_v1_21052021.pdf` (1_vomGwp2rq5cvYdltkvpF2f4il8lKAqq)
 - dzi12-en-2021-05-26-v1 — missing — `3dzi_eng_v1_03062021.pdf` (1Nh32hEACeDyKM6yNrqd1V0sdB88_2wix)
 - dzi12-en-2021-08-27-v2 — missing — `2dzi_eng_270821.pdf` (1SBsykbqpRxszaUUFrqUb0nYagnUHxvjs)
