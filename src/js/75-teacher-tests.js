@@ -319,10 +319,13 @@ function pastSheet(subj, addTasks) {
 }
 
 /* ---------- giving a test (or a BingO practice) to classes ---------- */
-SCREENS.tPublish = async (el, { testId, classIds = [], kind: kind0, practice }, nav) => {
+SCREENS.tPublish = async (el, { testId, classIds = [], kind: kind0, practice, planId }, nav) => {
   if (!(await tGate(el, 'tTests'))) return;
   let test = null;
   if (testId) { const s = await docRef('tests/' + testId).get(); if (s.exists) test = { id: s.id, ...s.data() }; }
+  /* a test planned in the calendar first (84-plans.js): its class, date and length are filled in */
+  const plan = !practice ? await planForPublish(planId) : null;
+  if (plan) { classIds = [plan.classId]; kind0 = 'test'; }
   const body = tFrame(el, 'tTests', { title: practice ? L('Упражнение в BingO') : esc((test && test.title) || L('Задай')), kicker: L('Задай на клас'), backBtn: true });
   const now = Date.now();
   const st = {
@@ -334,11 +337,13 @@ SCREENS.tPublish = async (el, { testId, classIds = [], kind: kind0, practice }, 
   /* protection follows the kind of assignment (on for tests and live tests) until the teacher changes it */
   const acFollow = () => { if (!st.acTouched) st.settings.antiCheat = eduAcDefaults(st.kind, st.mode); };
   if (st.kind === 'test' || st.kind === 'live') { st.timeLimitMin = 40; st.settings.feedback.when = 'close'; }
+  if (plan) { const at = tsMs(plan.at); if (at > now) { st.opensNow = false; st.opensAt = at; } st.closesAt = Math.max(st.opensNow ? now : at, at) + Math.max(15, plan.durationMin || 40) * 60e3 + 10 * 60e3; st.timeLimitMin = plan.durationMin || 40; if (plan.scale) st.settings.grading.scale = plan.scale; }
   const hasOpen = test && test.tasks.some(t => t.type === 'open' || t.type === 'photo');
   const sw = (path, on, label, sub = '') => `<div class="row"><span class="row-text"><b>${label}</b>${sub ? `<small class="muted">${sub}</small>` : ''}</span><button class="switch${on ? ' on' : ''}" data-sw="${path}" role="switch" aria-checked="${!!on}"><i></i></button></div>`;
   const draw = () => {
     const s = st.settings, ac = s.antiCheat, isLive = st.kind === 'live', quiz = isLive && st.mode === 'quiz';
     body.innerHTML = `<div class="t-publish">
+      ${plan ? `<div class="card tp-plan"><b>${icon('calendar')} ${L('За планирания тест „{t}“', { t: esc(plan.title) })}</b><p class="muted small">${esc(fmtWhen(tsMs(plan.at)))} · ${L('{n} мин', { n: plan.durationMin || 40 })}</p></div>` : ''}
       <div class="card"><h3>${icon('users')}${L('На кои класове')}</h3><div class="t-clspick">${TD.classes.filter(c => !c.archived).map(c => `<button data-cls="${esc(c.id)}" class="${st.classIds.has(c.id) ? 'on' : ''}" style="--cc:${esc(c.color || '#2F5BD3')}">${esc(c.name)}<small>${(c.studentIds || []).length}</small></button>`).join('') || `<p class="muted">${L('Първо създайте клас.')}</p>`}</div></div>
       ${practice ? `<div class="card"><h3>${icon('target')}${L('Упражнението')}</h3><select class="field" data-psubj>${Object.values(SUBJECTS).map(x => `<option value="${x.id}" ${x.id === s.practice.subject ? 'selected' : ''}>${x.icon} ${esc(L(x.title))}</option>`).join('')}</select>
         <div class="rows">${sw('practice.weakest', s.practice.weakest, L('Най-слабите умения на класа'), L('BingO ги избира от упражненията на учениците'))}</div>
@@ -414,12 +419,13 @@ SCREENS.tPublish = async (el, { testId, classIds = [], kind: kind0, practice }, 
     const sp = st.settings.practice, subjTitle = SUBJECTS[sp.subject] ? L(SUBJECTS[sp.subject].title) : '';
     const r = await callFn('publishAssignment', {
       classIds: [...st.classIds], testId: test ? test.id : '', title: test ? test.title : L('Упражнение: {s}', { s: subjTitle }), description: test ? test.description : '', subject: test ? test.subject : subjTitle,
-      tasks: test ? test.tasks : [], kind: st.kind, mode: st.mode, opensAt, closesAt, timeLimitMin: st.timeLimitMin, settings: st.settings
+      tasks: test ? test.tasks : [], kind: st.kind, mode: st.mode, opensAt, closesAt, timeLimitMin: st.timeLimitMin, settings: st.settings, ...(plan ? { planId: plan.id } : {})
     });
     for (const aid of r.assignmentIds) {
       if (st.calendar) await calendarForAssignment(aid).catch(e => toast(L('Google Calendar: {e}', { e: errMsg(e) }), 'bad'));
       if (st.classroom) await classroomPostAssignment(aid).catch(e => toast(L('Google Classroom: {e}', { e: errMsg(e) }), 'bad'));
     }
+    if (plan) await planAttach(plan, r.assignmentIds[0], test ? test.id : '').catch(e => console.warn('plan', e));
     toast(r.assignmentIds.length > 1 ? L('Зададено на {n} класа', { n: r.assignmentIds.length }) : L('Зададено!'));
     while (NAV.length > 1) leave(NAV.pop());
     go(st.kind === 'live' ? 'tLive' : 'tAssignment', { aid: r.assignmentIds[0] });

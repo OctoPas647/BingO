@@ -1013,4 +1013,24 @@ exports.runScheduleNow = onCall(async req => {
   return { made };
 });
 
+/* ---------- a student's results next to the class, as in Shkolo's statistics (0.9.0) ----------
+   Only averages and the student's own place: never another student's name or score. A test with fewer than
+   3 results gives nothing, so one classmate's score can't be worked out. */
+exports.classStats = onCall({ timeoutSeconds: 120 }, async req => {
+  const uid = req.auth && req.auth.uid; if (!uid) fail('unauthenticated', 'Влезте в профила си.');
+  const mine = await db.collection('results').where('studentId', '==', uid).where('visible', '==', true).limit(200).get();
+  const stats = {};
+  const mean = xs => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
+  for (const d of mine.docs) {
+    const r = d.data(); if (!r.assignmentId || stats[r.assignmentId] || !Number.isFinite(r.pct)) continue;
+    const all = (await db.collection('results').where('assignmentId', '==', r.assignmentId).get()).docs.map(x => x.data()).filter(x => Number.isFinite(x.pct));
+    if (all.length < 3) continue;
+    const pcts = all.map(x => x.pct);
+    const grades = all.map(x => x.grade || {}).filter(g => ['bg6', 'bg6exact', 'matura'].includes(g.scale) && Number.isFinite(g.value)).map(g => g.value);
+    const below = pcts.filter(p => p < r.pct).length, same = pcts.filter(p => p === r.pct).length;
+    stats[r.assignmentId] = { n: all.length, avgPct: mean(pcts), avgGrade: grades.length >= 3 ? mean(grades) : null, rank: (below + (same - 1) / 2) / Math.max(1, all.length - 1), classId: r.classId || '' };
+  }
+  return { stats };
+});
+
 exports._test = { deadlineFor, isVisible, zonedParts, cleanSettings };

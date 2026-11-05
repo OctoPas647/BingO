@@ -63,6 +63,16 @@ service cloud.firestore {
         && me() in cls(request.resource.data.classId).teacherIds;
     }
 
+    /* a planned test (0.9.0): a slot in the calendar for a class — date, subject, topics — before the test exists.
+       The teacher attaches a test later; the class's students see what is coming (no tasks are in it). */
+    match /plans/{pid} {
+      allow read: if signedIn() && (resource.data.ownerId == me() || me() in cls(resource.data.classId).teacherIds || me() in cls(resource.data.classId).studentIds);
+      allow delete: if isTeacher() && resource.data.ownerId == me();
+      allow create: if isTeacher() && request.resource.data.ownerId == me() && me() in cls(request.resource.data.classId).teacherIds;
+      allow update: if isTeacher() && resource.data.ownerId == me() && request.resource.data.ownerId == me()
+        && me() in cls(request.resource.data.classId).teacherIds;
+    }
+
     /* a test given to a class: the tasks inside have no answers; the key is a separate document for teachers */
     match /assignments/{aid} {
       allow read: if signedIn() && (me() in resource.data.teacherIds || me() in resource.data.studentIds);

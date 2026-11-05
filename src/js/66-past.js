@@ -133,8 +133,8 @@ SCREENS.pastexam = async (el, { id }, nav) => {
         fb.insertAdjacentHTML('beforeend', `<button class="btn ghost block" data-aigrade>${L('✦ Gemini да провери отговора ми')}</button><div class="aibox" hidden></div>`);
         const gb = fb.querySelector('[data-aigrade]'), box = gb.nextElementSibling;
         gb.onclick = async () => {
-          gb.disabled = true; box.hidden = false; box.innerHTML = '<div class="spinner"></div>';
-          nanoPreGrade(task, answer.text).then(s => { if (s != null && box.querySelector('.spinner')) box.insertAdjacentHTML('beforeend', `<p class="muted small">${L('Първа оценка на устройството: ≈ {p}%', { p: Math.round(s * 100) })}</p>`); }).catch(() => { });
+          gb.disabled = true; box.hidden = false; box.innerHTML = skel('text', 2);
+          nanoPreGrade(task, answer.text).then(s => { if (s != null && box.querySelector('.skel')) box.insertAdjacentHTML('beforeend', `<p class="muted small">${L('Първа оценка на устройството: ≈ {p}%', { p: Math.round(s * 100) })}</p>`); }).catch(() => { });
           try {
             const v = await aiGrade(m.past.subj, { ...task, skill: task.skill || 'read' }, answer.text);
             const pts = roundTo(v.score * task.points, 1);

@@ -162,14 +162,14 @@ SCREENS.session = async (el, { subj, mode, skill, similar, skills, size, assignm
   main.addEventListener('click', async e => {
     const hb = e.target.closest('[data-aihint]');
     if (hb) {
-      const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
+      const box = main.querySelector('.aibox'); hb.disabled = true; box.hidden = false; box.innerHTML = skel('text', 2);
       try { const j = await aiHint(subj, task); aiHints++; box.innerHTML = `<b>${esc(aiBadge())} · ${L('подсказка')}</b><div class="rt">${rich(j.hint || '')}</div>`; hb.remove(); }
       catch (err) { box.innerHTML = `<span class="danger-text">${esc(err.message)}</span>`; hb.disabled = false; }
       return;
     }
     const xb = e.target.closest('[data-aiexplain]');
     if (xb) {
-      const box = xb.nextElementSibling, last = P.answers[P.answers.length - 1]; xb.disabled = true; box.hidden = false; box.innerHTML = `<div class="spinner"></div>`;
+      const box = xb.nextElementSibling, last = P.answers[P.answers.length - 1]; xb.disabled = true; box.hidden = false; box.innerHTML = skel('text', 2);
       try {
         const j = await aiExplainMistake(subj, task, last.resp, last.misc);
         box.innerHTML = `<b>${esc(aiBadge())} · ${esc(j.diagnosis || L('Какво се обърка'))}</b><div class="rt">${rich(j.explanation || '')}</div>${j.check ? `<p class="aicheck"><b>${L('Провери се:')}</b> <span class="rt">${richInline(j.check)}</span></p>` : ''}`;

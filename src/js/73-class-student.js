@@ -41,22 +41,24 @@ async function classesScreen(el) {
     const r = e.target.closest('[data-readall]'); if (r) { (r._ids || []).forEach(id => docRef(`users/${myUid()}/inbox/${id}`).update({ read: true }).catch(() => { })); }
   });
   if (!cloudConfigured()) return shell(notConfiguredCard());
-  shell(`<div class="cl-loading"><span class="spinner"></span></div>`);
+  shell(skel('list', 3));
   try { await cloudLoad(); } catch (e) { return shell(`<div class="card error">${esc(errMsg(e))}</div>`); }
   if (!signedIn()) return shell(`<div class="card cl-hero">${icon('users')}<h3>${L('Свържи се с учителя си')}</h3><p class="muted">${L('С код от учителя влизаш в класа: получаваш тестове и домашни, участваш в тестове на живо и виждаш оценките си.')}</p>
     <button class="btn accent big block" data-join>${icon('users')}${L('Имам код на клас')}</button><button class="btn ghost block" data-signin>${icon('google')}${L('Вход с Google')}</button></div>`);
   const uid = myUid();
-  const data = { classes: [], asg: [], atts: {}, inbox: [] };
+  const data = { classes: [], asg: [], atts: {}, inbox: [], plans: {} };
   const draw = () => {
     const by = st => data.asg.filter(a => studentStatus(a, data.atts[a.id]) === st);
     const live = by('live'), todo = [...by('doing'), ...by('todo')], up = by('upcoming'), done = data.asg.filter(a => ['done', 'missed'].includes(studentStatus(a, data.atts[a.id])));
     todo.sort((x, y) => (tsMs(x.closesAt) || 9e15) - (tsMs(y.closesAt) || 9e15)); up.sort((x, y) => tsMs(x.opensAt) - tsMs(y.opensAt)); done.sort((x, y) => (tsMs(y.closesAt) || tsMs(y.createdAt) || 0) - (tsMs(x.closesAt) || tsMs(x.createdAt) || 0));
     const unread = data.inbox.filter(n => !n.read);
+    /* tests the teacher has planned but not given yet (84-plans.js) */
+    const planned = Object.values(data.plans).flat().filter(pl => !pl.assignmentId && (tsMs(pl.at) || 0) > Date.now() - 3600e3).sort((a, b) => tsMs(a.at) - tsMs(b.at));
     const body = `
       ${live.map(a => `<button class="card cl-livebanner" data-asg="${esc(a.id)}"><span class="cl-dot"></span><div><b>${esc(a.title)}</b><small>${esc(a.className || '')} · ${a.live && a.live.state === 'lobby' ? L('Учителят те чака') : L('Тестът тече')}</small></div><span class="btn accent small">${L('Влез')}</span></button>`).join('')}
       ${unread.length ? `<div class="card cl-inbox"><h3>${icon('bolt')}${L('Ново')}</h3>${unread.slice(0, 5).map(n => `<div class="cl-inrow" data-asg="${esc(n.assignmentId || '')}"><b>${esc(n.title || '')}</b><small class="muted">${esc(L(KIND_LABEL[n.kind] || ''))} · ${esc(n.className || '')}</small></div>`).join('')}<button class="linkbtn" data-readall>${L('Отбележи като прочетени')}</button></div>` : ''}
       <h2 class="sec-title">${L('За правене')}</h2>${todo.length ? `<div class="cl-list">${todo.map(a => assignmentCard(a, data.atts[a.id])).join('')}</div>` : `<p class="muted cl-none">${L('Нищо за правене. Браво!')}</p>`}
-      ${up.length ? `<h2 class="sec-title">${L('Предстоящи')}</h2><div class="cl-list">${up.map(a => assignmentCard(a, data.atts[a.id])).join('')}</div>` : ''}
+      ${up.length || planned.length ? `<h2 class="sec-title">${L('Предстоящи')}</h2><div class="cl-list">${up.map(a => assignmentCard(a, data.atts[a.id])).join('')}${planned.map(pl => `<div class="cl-asg cl-plan"><span class="cl-asg-ic">${icon('calendar')}</span><span class="cl-asg-main"><b>${esc(pl.title)}</b><small class="muted">${esc((data.classes.find(c => c.id === pl.classId) || {}).name || '')} · ${esc(fmtWhen(tsMs(pl.at)))} · ${L('{n} мин', { n: pl.durationMin || 40 })}${pl.note ? ' · ' + esc(pl.note) : ''}</small></span><span class="cl-pill p-scheduled">${L('Планиран')}</span></div>`).join('')}</div>` : ''}
       ${done.length ? `<h2 class="sec-title">${L('Готови')}</h2><div class="cl-list">${done.slice(0, 30).map(a => assignmentCard(a, data.atts[a.id])).join('')}</div>` : ''}
       <h2 class="sec-title">${L('Моите класове')}</h2>
       ${data.classes.length ? `<div class="ios-group">${data.classes.map(c => `<div class="ios-row"><span class="cl-swatch" style="background:${esc(c.color || '#2F5BD3')}"></span><span class="ios-row-text"><b>${esc(c.name)}</b><small>${esc(c.subject || '')}${c.ownerName ? ' · ' + esc(c.ownerName) : ''}</small></span></div>`).join('')}</div>` : `<p class="muted">${L('Още не си в клас.')}</p>`}
@@ -64,7 +66,12 @@ async function classesScreen(el) {
     shell(body);
     const ra = el.querySelector('[data-readall]'); if (ra) ra._ids = unread.map(n => n.id);
   };
-  watch(col('classes').where('studentIds', 'array-contains', uid), s => { data.classes = docs(s); draw(); }, nav);
+  const planWatch = {};
+  watch(col('classes').where('studentIds', 'array-contains', uid), s => {
+    data.classes = docs(s);
+    for (const c of data.classes) if (!planWatch[c.id]) planWatch[c.id] = watch(col('plans').where('classId', '==', c.id), ps => { data.plans[c.id] = docs(ps); draw(); }, nav, () => { });
+    draw();
+  }, nav);
   watch(col('assignments').where('studentIds', 'array-contains', uid), s => { data.asg = docs(s); draw(); }, nav);
   watch(col('attempts').where('studentId', '==', uid), s => { data.atts = Object.fromEntries(docs(s).map(x => [x.assignmentId, x])); draw(); }, nav);
   watch(col(`users/${uid}/inbox`), s => { data.inbox = docs(s).sort((a, b) => (tsMs(b.at) || 0) - (tsMs(a.at) || 0)); draw(); }, nav);
@@ -96,7 +103,7 @@ async function classesScreen(el) {
 /* ---------- one assignment: what it is, start / continue, and the result ---------- */
 SCREENS.assignment = async (el, { aid }) => {
   const nav = NAV[NAV.length - 1];
-  el.innerHTML = `${topbar('')}<section class="pad"><div class="cl-loading"><span class="spinner"></span></div></section>`;
+  el.innerHTML = `${topbar('')}<section class="pad">${skel('page')}</section>`;
   await cloudLoad();
   const uid = myUid(), atId = `${aid}_${uid}`;
   let A = null, AT = null, R = null, RV = null;
@@ -220,7 +227,7 @@ function mixTask(t, seed, on) {
 
 /* ---------- taking a test or homework ---------- */
 SCREENS.take = async (el, { aid }, nav) => {
-  el.innerHTML = `<div class="pad"><div class="cl-loading"><span class="spinner"></span></div></div>`;
+  el.innerHTML = `<div class="pad">${skel('page')}</div>`;
   await cloudLoad();
   const uid = myUid(), atRef = docRef(`attempts/${aid}_${uid}`);
   const [aSnap, atSnap] = await Promise.all([docRef('assignments/' + aid).get(), atRef.get()]);

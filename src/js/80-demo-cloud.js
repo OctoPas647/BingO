@@ -240,7 +240,11 @@ function demoSeed() {
       const misc = (BANK[subj] || []).filter(t => t.skill === sk.id && Array.isArray(t.misc)).flatMap(t => t.misc.filter(Boolean)).slice(0, 3);
       skills[subj + '.' + sk.id] = { p: roundTo(p, 2), w: sk.weight || 1, name: sk.name, status: p >= BKT.strong ? 'strong' : p < BKT.weak ? 'weak' : 'mid', misc: p < 0.6 && misc.length ? [{ k: misc[0], label: miscLabel(misc[0]).replace(/\$/g, ''), n: 1 + Math.floor(r.f() * 3) }] : [] };
     }
-    dbWrite('progress/' + s.id + '_' + subj, { id: s.id, name: s.name, classIds: [cid], teacherIds: [DEMO_T], skills, updatedAt: dts(now - r.f() * 3 * day) });
+    /* one progress document per student, all subjects together, as cloudSyncProgress writes it (73-class-student.js) */
+    for (const v of Object.values(skills)) v.n = 4 + Math.floor(r.f() * 14);
+    const old = DB.get('progress/' + s.id) || {}, streak = Math.floor(r.f() * 9), days = streak + Math.floor(r.f() * 20);
+    dbWrite('progress/' + s.id, { id: s.id, name: s.name, classIds: [...new Set([...(old.classIds || []), cid])], teacherIds: [DEMO_T], skills: { ...(old.skills || {}), ...skills },
+      sessions: days + Math.floor(r.f() * 10), streak, days, answers7: 10 + Math.floor(r.f() * 60), updatedAt: dts(now - r.f() * 3 * day) });
   };
   A12.forEach(s => prog(s, 'c12a', 'ru', { read: 0.62, gram: 0.38, vocab: 0.55 }));
   B12.forEach(s => prog(s, 'c12b', 'math', DEMO_TRUE.math));

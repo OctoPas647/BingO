@@ -31,7 +31,7 @@ function tFrame(el, cur, { title = '', kicker = '', actions = '', backBtn = fals
 async function tGate(el, cur) {
   const body = tFrame(el, cur, { title: L('BingO за учители') });
   if (!cloudConfigured()) { body.innerHTML = notConfiguredCard() + `<button class="btn ghost" data-student>${L('Към ученическата част')}</button>`; body.querySelector('[data-student]').onclick = toStudent; return false; }
-  body.innerHTML = `<div class="cl-loading"><span class="spinner"></span></div>`;
+  body.innerHTML = skel('teacher');
   try { await cloudLoad(); } catch (e) { body.innerHTML = `<div class="card error">${esc(errMsg(e))}</div>`; return false; }
   if (signedIn() && isTeacher()) return true;
   body.innerHTML = `<div class="card cl-hero">${icon('school')}<h3>${signedIn() ? L('Този акаунт още не е учителски') : L('Влезте с Google')}</h3>

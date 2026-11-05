@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.0 — statistics, projections, planned tests
+- Student **Статистики** in three tabs: **Оценки** (Shkolo-style: общ успех, grades by subject and term with срочна/годишна, spread of grades, the year's average next to last year's, you vs the class on BingO tests, teachers' notes, absences), **Упражнения** (activity rings, active days, accuracy by week, the matura forecast over time) and **Години** (every school year side by side). Grades come from BingO tests automatically and can be typed in (one by one, many at once, or past years' year grades); everything is kept across school years.
+- Teacher **Прогнози** (from Табло, a class's tab and each student's page): likely result and grade of every student on each coming test with a range, НВО/ДЗИ forecast, who needs help and why, the class over time and by school year. New `classStats` function gives students class averages only.
+- **Planned tests**: Календар → „Насрочи тест“ puts a test in the calendar before it exists; create it or pick it from the bank later — the class, date and length are filled in. Students see planned tests in Клас.
+- Animated charts (lines, columns, donut, rings, heatmap, ranges) with tooltips, light and dark; Apple-style shimmering skeletons while things load.
+- Orientation: portrait on phones; any orientation on tablets, unfolded foldables and near-square screens (Android); the web version asks to turn a phone back upright.
+- Fixes: notifications stretched over the whole screen on screens with the bottom menu; the demo teacher's student pages showed no skill map; the website upload went to the FTP account's top folder instead of bingo/.
+
 ## 0.8.1
 Bottom menu rebuilt, every animation made fast and crash-proof, Smoothness from LToTS, and a demo mode for showing BingO.
 

@@ -147,6 +147,13 @@ jobs:
             echo "::warning::The FTP server's certificate is not issued for FTP_HOST. Using '$HOST' from the certificate instead. Set the FTP_HOST secret to '$HOST' to silence this."
           fi
           echo "Certificate names: $(echo $NAMES)"
+          # Without FTP_DIR every build went to the FTP account's top folder, not to the site's bingo/ folder
+          # (preotkrivanegk.com/bingo/ stayed old). Put it in public_html/bingo when the account starts above the site.
+          if [ -z "$DIR" ]; then
+            LIST=$(curl --silent --ssl-reqd --list-only --user "$FTP_USER:$FTP_PASSWORD" "ftp://$HOST/" || true)
+            if echo "$LIST" | tr -d '\r' | grep -qx "public_html"; then DIR="public_html/bingo"; else DIR="bingo"; fi
+            echo "::notice::FTP_DIR is not set: uploading to $DIR/ (set the FTP_DIR secret to choose another folder)"
+          fi
           URL="ftp://$HOST/${DIR:+$DIR/}index.html"
           # FTPS (encrypted); the folder is created if it doesn't exist yet
           curl --fail --silent --show-error --ssl-reqd --ftp-create-dirs --retry 3 \

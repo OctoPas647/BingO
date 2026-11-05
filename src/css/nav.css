@@ -47,5 +47,3 @@
 .psub span { font-weight: 750; }
 .psub .bar i { background: var(--accent); }
 
-/* messages sit above the bottom menu */
-body:has(.tabbar) .toast { bottom: calc(96px + env(safe-area-inset-bottom)); }

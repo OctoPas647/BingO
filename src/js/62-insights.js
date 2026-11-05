@@ -34,7 +34,7 @@ SCREENS.insights = async el => {
     if (e.target.closest('[data-flush]')) { const ok = await flushToSheet(); toast(ok ? 'Изпратено към Google Sheets' : 'Няма връзка — ще опитаме пак'); return refresh(); }
     const pb = e.target.closest('[data-plan]');
     if (pb) {
-      const box = el.querySelector('.aiplan'); pb.disabled = true; box.innerHTML = '<div class="spinner"></div>';
+      const box = el.querySelector('.aiplan'); pb.disabled = true; box.innerHTML = skel('text', 4);
       try {
         const j = await aiWeekPlan(subj);
         box.innerHTML = `<div class="rt"><p>${rich(j.summary || '')}</p></div><ol class="plan">${arr(j.days).map(d => `<li><b>${esc(d.day || '')}: ${esc(d.focus || '')}</b><div class="rt">${richInline(d.do || '')}</div><small class="muted">${richInline(d.why || '')}</small></li>`).join('')}</ol>`;

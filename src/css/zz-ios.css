@@ -285,7 +285,7 @@ h1, h2, h3, h4 { font-family: var(--font-d); letter-spacing: -0.022em; font-weig
 .sheet-actions .btn { min-height: 52px; }
 
 /* ---------- toasts: a glass capsule from the top, like a notification ---------- */
-.toast { top: calc(10px + env(safe-area-inset-top)); bottom: auto; transform: translate(-50%, -24px) scale(.94); border-radius: 24px; padding: 11px 20px; width: max-content; max-width: calc(100% - 32px); text-align: center; line-height: 1.3; font-weight: 600; font-size: .92rem;
+.toast { top: calc(10px + env(safe-area-inset-top)); bottom: auto !important; height: auto; /* !important: the engine and older rules pin the bottom above bars; with the top pinned too it stretched over the whole screen */ transform: translate(-50%, -24px) scale(.94); border-radius: 24px; padding: 11px 20px; width: max-content; max-width: calc(100% - 32px); text-align: center; line-height: 1.3; font-weight: 600; font-size: .92rem;
   background: var(--glass-strong); color: var(--ink); box-shadow: inset 0 0 0 .5px var(--glass-edge), var(--glass-shadow); transition: transform .32s var(--bounce), opacity .2s; }
 .toast.in { transform: translate(-50%, 0) scale(1); }
 .toast.good { background: color-mix(in srgb, var(--good) 85%, transparent); color: #fff; }
@@ -342,3 +342,12 @@ html.still *, html.still *::before, html.still *::after { transition-duration: 0
 .demo-pick .sp-icon { background: var(--surface-2); }
 .ob-demo { margin-top: 4px; }
 .demo-card h3 .ic { color: #FF3B30; }
+
+/* ---------- a phone turned sideways in the browser (68c-orient.js): ask to turn it back ---------- */
+#rotatehint { display: none; }
+:root.sideways #rotatehint { display: grid; place-items: center; position: fixed; inset: 0; z-index: 2147483000; background: var(--bg); color: var(--ink); text-align: center; }
+:root.sideways #rotatehint > div { display: grid; gap: 8px; justify-items: center; animation: rot-in .4s var(--spring, ease) both; }
+:root.sideways #rotatehint svg { color: var(--accent, #2F5BD3); animation: rot-turn 1.8s ease-in-out infinite; }
+:root.sideways #rotatehint b { font-size: 1.15rem; } :root.sideways #rotatehint span { color: var(--muted); font-size: .9rem; }
+@keyframes rot-turn { 0%, 30% { transform: rotate(-90deg); } 60%, 100% { transform: rotate(0); } }
+@keyframes rot-in { from { opacity: 0; transform: scale(.94); } }

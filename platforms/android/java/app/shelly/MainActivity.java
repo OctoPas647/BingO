@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
+        applyOrientation();
         root = new FrameLayout(this);
         web = new WebView(this);
         if (Build.VERSION.SDK_INT >= 26) web.setDefaultFocusHighlightEnabled(false);
@@ -276,8 +277,29 @@ public class MainActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration c) {
         super.onConfigurationChanged(c);
+        applyOrientation();   /* folding or unfolding a foldable changes the screen */
         applyFontScale();
         js("window.__systemTheme && __systemTheme()");
+    }
+
+    /* Portrait on phones. Any orientation (following the phone's rotation lock) when the screen is big enough or
+       close to square: tablets, the inner screen of a foldable, Chromebooks (smallest width 600 dp or more, or the
+       long side at most 1.45 × the short side). Measured on the whole display, not the window, so split screen
+       doesn't flip it back and forth. */
+    void applyOrientation() {
+        try {
+            int w, h;
+            if (Build.VERSION.SDK_INT >= 30) {
+                android.graphics.Rect b = getWindowManager().getMaximumWindowMetrics().getBounds(); w = b.width(); h = b.height();
+            } else {
+                android.util.DisplayMetrics m = new android.util.DisplayMetrics(); getWindowManager().getDefaultDisplay().getRealMetrics(m); w = m.widthPixels; h = m.heightPixels;
+            }
+            float density = getResources().getDisplayMetrics().density;
+            float shortDp = Math.min(w, h) / density, ratio = Math.max(w, h) / (float) Math.max(1, Math.min(w, h));
+            boolean free = shortDp >= 600 || ratio <= 1.45f;
+            int want = free ? android.content.pm.ActivityInfo.SCREEN_ORIENTATION_FULL_USER : android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            if (getRequestedOrientation() != want) setRequestedOrientation(want);
+        } catch (Exception e) { /* keep whatever the system chose */ }
     }
 
     /* Text follows Android's font size setting (accessibility): 100% at the normal size, larger

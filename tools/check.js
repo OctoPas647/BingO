@@ -198,7 +198,7 @@ E('resetState(false)');
   const fs = require('fs'), path = require('path'), dir = path.join(__dirname, '../src/js'), EN = E('EN_UI'), keys = new Set();
   const unq = x => x.replace(/\\'/g, "'").replace(/\\\\/g, '\\');
   for (const f of fs.readdirSync(dir)) {
-    if (f === '49-lang.js' || f === '49b-lang-classes.js' || f === '69-qrcode.js') continue;
+    if (f === '49-lang.js' || f === '49b-lang-classes.js' || f === '49c-lang-090.js' || f === '69-qrcode.js') continue;
     const src = fs.readFileSync(path.join(dir, f), 'utf8');
     for (const re of [/\bL\('((?:[^'\\]|\\.)*)'/g, /\btoast\('((?:[^'\\]|\\.)*)'/g, /\blabel: '((?:[^'\\]|\\.)*)'/g, /L\(\w+ [=!<>]+[^?]+\? '((?:[^'\\]|\\.)*)' : '((?:[^'\\]|\\.)*)'/g])
       for (const m of src.matchAll(re)) for (const k of m.slice(1)) if (k && /[А-Яа-я]/.test(k)) keys.add(unq(k));
